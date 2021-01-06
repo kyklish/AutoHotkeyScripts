@@ -1,0 +1,55 @@
+;CSV Example:
+;"first field",SecondField,"the word ""special"" is quoted literally",,"last field, has literal comma"
+;CSV Format:
+;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]"
+;NO ANY SPACES BEFORE AND AFTER COMMA
+;Comments must starts from new line and begins with ";"
+;Example
+;2,U,"calc.exe","first ""second param with spaces"""
+
+	;Executes a command of Command-Prompt (Console Window) without displaying anything on the screen.
+ ;0,U,"D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe","execmd powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
+	;Set Balanced Power Plan
+  0,U,"powercfg","-setactive 381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
+  0,U,"D:\SERGEY\Options\Program Files\BAT\Android_Studio.bat",,,"Hide"
+ ;0,U,"C:\Program Files (x86)\Dropbox\Client\Dropbox.exe"
+  0,U,"D:\SERGEY\Options\Program Files\Mahou\Mahou.exe"
+  0,U,"C:\Users\Fixer\AppData\Local\FluxSoftware\Flux\flux.exe","/noshow"
+  0,A,"C:\Program Files\CEZEO software\SsdReady\SsdReady.exe"
+	;Newest version of Samsung Magician won't work from built-in admin user "Admin Fixer".
+ ;0,A,"C:\Program Files (x86)\Samsung\Samsung Magician\SamsungMagician.exe","/AUTOHIDE"
+  0,U,"C:\Program Files\ESET\ESET NOD32 Antivirus\egui.exe","/hide /waitservice"
+  0,A,"C:\Program Files\Fraps\fraps.exe"
+ ;0,U,"C:\Program Files\Sandboxie\SbieCtrl.exe"
+ ;0,U,"C:\Program Files\Sandboxie-Plus\SbieCtrl.exe"
+  0,U,"C:\Program Files\Sandboxie-Plus\SandMan.exe",,,"Hide"
+  0,U,"C:\Program Files\Windows Firewall Control\wfc.exe"
+	;Windows Gadgets - винда сама запускает, даже если удалить из автозапуска
+ ;0,U,"C:\Program Files\Windows Sidebar\sidebar.exe","/autoRun"
+	;Dexpot умеет все что и AutoSizer и намного больше.
+ ;0,U,"C:\Program Files (x86)\AutoSizer\AutoSizer.exe"
+ ;0,U,"C:\Program Files (x86)\Codebox\BitMeter\BitMeter2.exe"
+ ;0,A,"C:\Program Files (x86)\KillSoft\HKM\hkm.exe"
+  0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"
+	;ScrollNavigator won't start with -AUTOSTART param.
+ ;0,A,"C:\Program Files (x86)\ScrollNavigator\ScrollNavigator.exe","-WAITFORDATAPATH -AUTOSTART"
+  0,A,"C:\Program Files (x86)\ScrollNavigator\ScrollNavigator.exe","-WAITFORDATAPATH",,"Min"
+  0,U,"C:\Program Files (x86)\Workrave\lib\Workrave.exe"
+ ;0,U,"D:\SERGEY\Options\Program Files\7+ Taskbar Tweaker\7+ Taskbar Tweaker.exe","-hidewnd"
+  0,U,"D:\SERGEY\Options\Program Files\7+ Taskbar Tweaker\bin\64\7+ Taskbar Tweaker.ex2","-hidewnd"
+  0,U,"D:\SERGEY\Options\Program Files\BitMeter\BitMeter2.exe","-D ""D:\SERGEY\Options\Program Files\BitMeter\Settings\"""
+  0,U,"D:\SERGEY\Options\Program Files\Clipdiary\clipdiary-portable.exe","--portable"
+  0,A,"D:\SERGEY\Options\Program Files\CrystalDiskInfo\DiskInfoX64.exe","/Startup"
+  0,U,"D:\SERGEY\Options\Program Files\CUIT\CUIT 2012.exe"
+  0,U,"D:\SERGEY\Options\Program Files\Dexpot\dexpot.exe"
+  0,U,"D:\SERGEY\Options\Program Files\Everything x64\Everything.exe","-startup"
+  0,A,"D:\SERGEY\Options\Program Files\MemInfo\meminfo.exe"
+  0,A,"D:\SERGEY\Options\Program Files\OpenHardwareMonitor\OpenHardwareMonitor.exe"
+  0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
+	;HWiNFO должна стартовать раньше AIDA64, чтобы в правильном порядке отображалась инфа в OSD MSI Afterburner
+	;HWiNFO: х64 вылетает, х32 не вылетает
+  7,A,"D:\SERGEY\Options\Program Files\HWiNFO32\HWiNFO32.exe"
+  7,A,"D:\SERGEY\Options\Program Files\BAT\Windows_Firewall_Control.bat",,,"Hide"
+ 15,A,"D:\SERGEY\Options\Program Files\AIDA64\AIDA64.exe"
+ 25,A,"C:\Program Files (x86)\SpeedFan\SpeedFan.exe","/NOPCISCAN /NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
+;25,U,"C:\Program Files (x86)\GXStandard16-in-1\GXStandard16in1.exe","Minimum"

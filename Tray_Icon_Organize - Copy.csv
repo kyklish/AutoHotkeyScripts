@@ -1,0 +1,24 @@
+; ‘ормат CSV файла:
+;	первое значение - EXE
+;	последующие - если у одного приложени€ есть несколько иконок, то это RegExp части строки,
+;				  по которой наход€тс€ нужные иконки [текст ToolTip-а] (CaseSensitive по-умолчанию),
+;				  этот параметр можно опустить, если у приложени€ только одна иконка
+; ѕор€док строк в CSV файле определ€ет результирующий пор€док иконок
+; —ортировка вниз работает, даже если указаны одинаковые ToolTip-ы дл€ поиска
+; —ортировка вверх не срабоает в этом случае, нужно указывать уникальный текст поиска
+;
+; Ётот файл дл€ сортировки вверх (Move To Top) при ширине таскбара равному 5и иконок
+;
+"explorer.exe","BenQ|Edifier|SAMSUNG","Fully charged|available","Network|Identifying|Not Connected|Unidentified network"
+"BitMeter2.exe"
+"meminfo.exe"
+"OpenHardwareMonitor.exe","GPU Core.*C","GPU Core.*MHz","CPU Package.*W","CPU Package.*C","CPU Core #1"
+"OpenHardwareMonitor.exe","Crucial M500","Kingston UV400","Samsung SSD 860 EVO 500GB"
+"AIDA64.exe","Processes"
+"CUIT 2012.exe"
+; CPU Fan Speed должен быть в конце, его иконка может не по€витьс€
+"HWiNFO32.exe","PCH Temperature","CPU Fan"
+"Mahou.exe"
+;"GXStandard16in1.exe","16-in-One"
+; Action Center не сразу по€вл€етс€ после старта винды
+;"explorer.exe","Action Center"
