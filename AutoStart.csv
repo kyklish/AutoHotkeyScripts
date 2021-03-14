@@ -45,7 +45,7 @@
   0,U,"D:\SERGEY\Options\Program Files\Everything x64\Everything.exe","-startup"
   0,A,"D:\SERGEY\Options\Program Files\MemInfo\meminfo.exe"
   0,A,"D:\SERGEY\Options\Program Files\OpenHardwareMonitor\OpenHardwareMonitor.exe"
-  0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
+ ;0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
 	;HWiNFO должна стартовать раньше AIDA64, чтобы в правильном порядке отображалась инфа в OSD MSI Afterburner
 	;HWiNFO: х64 вылетает, х32 не вылетает
   7,A,"D:\SERGEY\Options\Program Files\HWiNFO32\HWiNFO32.exe"
