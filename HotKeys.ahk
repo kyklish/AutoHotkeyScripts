@@ -209,6 +209,7 @@ return
 ^+f::Run_AsUser("D:\SERGEY\Options\Program Files\Everything x64\Everything.exe")
 !+Esc::Run_AsAdmin("C:\Windows\System32\resmon.exe") ;Resource Monitor
 #`::WinSet, AlwaysOnTop, Toggle, A
+#Insert::Run_AsAdmin("D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 0 t b 50")
 Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 
 /*
@@ -292,9 +293,10 @@ Pause:: ShowHelpWindow("
  #^!K -> Kill MPC-HC
  #^!M -> Monitor Off
 [Other]
-   ^+F -> Everything x64
- !+Esc -> Resource Monitor
- Win+`` -> Always On Top
   Mail -> Sylpheed
-    !+t -> Hide/Show taskbar (Disabled)
+ !+Esc -> Resource Monitor
+   ^+F -> Everything x64
+  #Ins -> Toggle monitor brightness
+    #`` -> Always On Top
+   !+t -> Hide/Show taskbar (Disabled)
 )")
