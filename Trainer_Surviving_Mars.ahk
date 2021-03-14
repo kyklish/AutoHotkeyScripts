@@ -7,7 +7,7 @@ GroupAdd, SM, ahk_exe MarsSteam.exe
 ; Set game settings: windowed mode,  1280x720
 
 ; No trailing back slashes
-sSourceModFolder := "F:\_LAYOUT_\Kyklish - Layout Capture Mod"
+sSourceModFolder := "F:\Setup\Paradox\STUFF\Surviving Mars\Mods\Regular\Expanded Cheat Menu\Layout\Fixer\_LAYOUT_\Kyklish - Layout Capture Mod"
 sTargetModFolder := A_AppData . "\Surviving Mars\Mods\Kyklish - Layout Capture Mod"
 
 #IfWinNotExist, ahk_group SM
