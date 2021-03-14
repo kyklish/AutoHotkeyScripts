@@ -27,6 +27,7 @@
 "Workrave.exe"
 ;-----------------
 "dexpot.exe","Dexpot - Virtual desktops"
+"ClickMonitorDDC.exe"
 ;"GXStandard16in1.exe","16-in-One"
 ; Action Center не сразу появляется после старта винды
 ;"explorer.exe","Action Center"
