@@ -146,7 +146,7 @@ StepCPUCores(ByRef Delta) ;изменяем количество ядер сту
 {
 	global ArrayLenC
 	global IndexC
-	;static IndexC := ArrayLenC ; здесь инициализация static не работает как в Си!!! поэтому используем глобальные переменные
+	;static IndexC := ArrayLenC ;здесь инициализация static не работает как в Си!!! поэтому используем глобальные переменные
 	ModifyArrayIndex(IndexC, Delta, ArrayLenC)
 	WriteProcessorCoresSetting(IndexC)
 }
