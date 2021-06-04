@@ -61,6 +61,21 @@ PowerWriteCoreParkingMaxCoresValueIndex(ByRef Value, ByRef Mode)
 	}
 }
 ;-------------------------------------------------------------------------------------
+PowerWriteCoreParkingMinCoresValueIndex(ByRef Value, ByRef Mode)
+{
+	global TARGET_SCHEME
+	PROCCORESMIN := "0cc5b647-c1df-4637-891a-dec35c318583" ;GUID для парковки ядер
+	if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
+	{
+		;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
+		;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
+		;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR %PROCCORESMIN% %Value%,, Hide
+		;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
+		RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR %PROCCORESMIN% %Value%,, Hide
+		RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
+	}
+}
+;-------------------------------------------------------------------------------------
 ;D:\SERGEY\Install\Info\CPU Parking\Processor State Freq Test.txt
 ArrayCPUStateInPercent := [ 30,  31,  34,  40,  46,  53,  56,  62,  68,  71,  78,  84,  90,  93,  99, 100] ;состояние (P-state) процессора в %
 ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (МГц) в соответсвии с P-state процессора
@@ -151,8 +166,27 @@ StepCPUCores(ByRef Delta) ;изменяем количество ядер сту
 	WriteProcessorCoresSetting(IndexC)
 }
 ;-------------------------------------------------------------------------------------
+CPUParkingEnabled := true
+ToggleCPUParking() ;вкл/откл парковку ядер
+{
+	global CPUParkingEnabled
+	if (CPUParkingEnabled) {
+		CPUParkingEnabled := false
+		PowerWriteCoreParkingMinCoresValueIndex(100, "AC")
+		;PowerWriteCoreParkingMinCoresValueIndex(100, "DC")
+		OSD("Core Parking Disabled")
+	}
+	else {
+		CPUParkingEnabled := true
+		PowerWriteCoreParkingMinCoresValueIndex(0, "AC")
+		;PowerWriteCoreParkingMinCoresValueIndex(0, "DC")
+		OSD("Core Parking Enabled")
+	}
+}
+;-------------------------------------------------------------------------------------
 RestoreMaxFreqCores()
 {
+	global CPUParkingEnabled
 	global ArrayLenP
 	global ArrayLenC
 	global IndexP
@@ -161,6 +195,8 @@ RestoreMaxFreqCores()
 	IndexC := ArrayLenC
 	WriteProcessorStateSetting(ArrayLenP)
 	WriteProcessorCoresSetting(ArrayLenC)
+	if(!CPUParkingEnabled)
+		ToggleCPUParking()
 }
 ;-------------------------------------------------------------------------------------
 SetActivePowerScheme(ByRef TARGET_SCHEME, ByRef Info)
@@ -172,6 +208,7 @@ SetActivePowerScheme(ByRef TARGET_SCHEME, ByRef Info)
 ShowCustomFreqAHKInfo() ;показать текущие настройки плана CustomFreqAHK
 {
 	global ArrayCPUFreq
+	global CPUParkingEnabled
 	global IndexP
 	global IndexC
 	text := ArrayCPUFreq[IndexP] . "GHz`n" . IndexC . " "  ;`n - new line
@@ -179,6 +216,10 @@ ShowCustomFreqAHKInfo() ;показать текущие настройки пл
 		text := text . "core"
 	else
 		text := text . "cores"
+	if(CPUParkingEnabled)
+		text := text . "`nCore Parking Enabled"
+	else
+		text := text . "`nCore Parking Disabled"
 	OSD(text)
 	
 	;Or IF-ELSE, or this one line
@@ -219,6 +260,7 @@ NumpadDot & Numpad2:: SetCPUFreqInGHz(1.3)
 NumpadDot & Numpad3:: SetCPUFreqInGHz(2.0)
 NumpadDot & Numpad4:: SetCPUFreqInGHz(2.5)
 NumpadDot & Numpad5:: SetCPUFreqInGHz(3.0)
+NumpadDot & Numpad6:: ToggleCPUParking()
 NumpadDot & Numpad0:: ShowCustomFreqAHKInfo()
 ;~NumpadDot & Numpad0:: ShowCustomFreqAHKInfo() ;тильда для прозрачной работы клавиши, NumpadDot никогда не блокируется, одиночная клавиша NumpadDot срабатывает на нажатие, работает системное автоповторение при длительном нажатии, ниже приведен альтернативный вариант со своими недостатками
 
