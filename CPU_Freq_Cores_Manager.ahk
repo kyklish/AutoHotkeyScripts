@@ -155,6 +155,10 @@ RestoreMaxFreqCores()
 {
 	global ArrayLenP
 	global ArrayLenC
+	global IndexP
+	global IndexC
+	IndexP := ArrayLenP
+	IndexC := ArrayLenC
 	WriteProcessorStateSetting(ArrayLenP)
 	WriteProcessorCoresSetting(ArrayLenC)
 }
