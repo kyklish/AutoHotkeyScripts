@@ -19,7 +19,8 @@
 	;Newest version of Samsung Magician won't work from built-in admin user "Admin Fixer".
  ;0,A,"C:\Program Files (x86)\Samsung\Samsung Magician\SamsungMagician.exe","/AUTOHIDE"
   0,U,"C:\Program Files\ESET\ESET NOD32 Antivirus\egui.exe","/hide /waitservice"
-  0,A,"C:\Program Files\Fraps\fraps.exe"
+	;Crashes modern games. Steam overlay not work propertly in some games. :(
+ ;0,A,"C:\Program Files\Fraps\fraps.exe"
  ;0,U,"C:\Program Files\Sandboxie\SbieCtrl.exe"
  ;0,U,"C:\Program Files\Sandboxie-Plus\SbieCtrl.exe"
   0,U,"C:\Program Files\Sandboxie-Plus\SandMan.exe",,,"Hide"
