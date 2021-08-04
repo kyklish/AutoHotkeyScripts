@@ -56,6 +56,7 @@ return
 !z::Reload
 !x::ExitApp
 
+#IfWinNotActive, ahk_group Game
 F1:: ShowHelpWindow("
 (
 Caps Lock -> Toggle [W]   (auto drive\swim\walk).
