@@ -42,12 +42,33 @@ AutoStartObjectsComplete() ; Returning from this function quickly is often impor
 
 
 SortIconsUp:
-iIcons := TrayIcon_GetInfo().Count()
+;iIcons := TrayIcon_GetInfo().Count() ; не трогает иконки аварийно упавших приложений
+iIcons := TrayIcon_GetValidCount() ; убирает инонки упавших приложений
 if (iIcons != iIconsPrev) {
 	TrayIcon_SortUp(csvFile)
 	iIconsPrev := iIcons
 }
 return
+
+
+; считаем количество иконок для которых существует процесс, попутно удаляя иконки, для которых не существует процесса породившего их
+TrayIcon_GetValidCount()
+{
+	iIcons := 0
+	oIcons := TrayIcon_GetInfo()
+	
+	Loop, % oIcons.MaxIndex()
+	{
+		if (!oIcons[A_Index].Process)
+			;TrayIcon_Delete(...) - удаляет иконки по жесткому, после этого иконки вновь могут не появиться (MPC-HC иконки LAV декодеров)
+			;TrayIcon_Delete(oIcons[A_Index].idx)
+			TrayIcon_Remove(oIcons[A_Index].hWnd, oIcons[A_Index].uID)
+		else
+			iIcons++
+	}
+	
+	return iIcons
+}
 
 
 ; сортируем и перемещаем вниз иконки
