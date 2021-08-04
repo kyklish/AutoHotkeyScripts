@@ -59,8 +59,8 @@ return
 F1:: ShowHelpWindow("
 (
 Caps Lock -> Toggle [W]   (auto drive\swim\walk).
-        t -> Toggle [LMB] (PRAWN Suit drilling/grappling).
-        g -> Toggle [RMB] (useful for many tool).
-        z -> Toggle spam [LMB] (harvesting).
-        x -> Holding key will spam RMB (knife, move items in storage).
+        T -> Toggle [LMB] (PRAWN Suit drilling/grappling).
+        G -> Toggle [RMB] (useful for many tool).
+        Z -> Toggle spam [LMB] (harvesting).
+        X -> Holding key will spam RMB (knife, move items in storage).
 )")
