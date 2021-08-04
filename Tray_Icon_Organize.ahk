@@ -133,7 +133,7 @@ TrayIcon_ShowError(sExeName := "", sToolTip := "")
 			}
 			sList := []
 			SoundBeepTwice()
-			ToolTip(sMsg, 4000, true)
+			ToolTip(sMsg, 4000, true, 0, 0)
 		}
 	}
 }
