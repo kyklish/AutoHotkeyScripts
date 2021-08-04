@@ -23,7 +23,7 @@
  ;0,A,"C:\Program Files\Fraps\fraps.exe"
  ;0,U,"C:\Program Files\Sandboxie\SbieCtrl.exe"
  ;0,U,"C:\Program Files\Sandboxie-Plus\SbieCtrl.exe"
-  0,U,"C:\Program Files\Sandboxie-Plus\SandMan.exe",,,"Hide"
+  0,U,"C:\Program Files\Sandboxie-Plus\SandMan.exe","-autorun"
   0,U,"C:\Program Files\Windows Firewall Control\wfc.exe"
 	;Windows Gadgets - винда сама запускает, даже если удалить из автозапуска
  ;0,U,"C:\Program Files\Windows Sidebar\sidebar.exe","/autoRun"
