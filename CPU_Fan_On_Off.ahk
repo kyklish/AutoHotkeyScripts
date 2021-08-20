@@ -16,7 +16,7 @@
 ;SetControlDelay, 1000
 
 ;delayBeforeShowWindow := 0
-delayBeforeHideWindow := 2000
+delayBeforeHideWindow := 1500
 checkboxColor := 0x20A040 ; RGB цвет зеленой галочки чекбокса
 
 Main()
