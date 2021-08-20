@@ -28,6 +28,7 @@ Main() {
 		HotKey, IfWinExist, SpeedFan
 		HotKey, +^F5, HotKey_StartFan
 		HotKey, +^F6, HotKey_StopFan
+		HotKey, +^F7, HotKey_StartStopFan
 	} else {
 		if (A_Args.Length() == 0) {
 			Reload_AsAdmin()
@@ -163,6 +164,22 @@ StopFan() ;CPU_Fan_Off
 }
 
 
+StartStopFan() ;CPU_Fan_On then CPU_Fan_Off for HWiNFO32 if it not show "CPU Fan RPM" icon
+{
+	global delayBeforeHideWindow, checkboxColor
+	if (!WinActivate())
+		if (!SearchPixel(checkboxColor)) ;пиксель галочки чекбокса найден
+			if (!ToggleCheckbox("TJvXPCheckbox1")) ;меняем на противоположное значение чекбокс автоматического регулятора скорости вентилятора (выключаем его)
+				if (!FindVisibleControl("TRxSpinEdit", index)) { ;ищем видимое поле для ввода
+					ControlSend, TRxSpinEdit%index%, {End}{Backspace 3}{Numpad1}{Numpad0 2}
+					Sleep, 1000
+					if (!ToggleCheckbox("TJvXPCheckbox1")) ;включаем автоматический регулятор
+						Sleep, %delayBeforeHideWindow%
+				}
+	MinimizeWindow()
+}
+
+
 HotKey_StartFan()
 {
 	WinMinimizeAll ;WinMinimizeAll() <-- this func add delay before UnHide window
@@ -177,6 +194,15 @@ HotKey_StopFan()
 	WinMinimizeAll ;WinMinimizeAll()
 	if (!Run_WaitScriptAsUser(A_ScriptFullPath, "UnHide"))
 		StopFan()
+	WinMinimizeAllUndo
+}
+
+
+HotKey_StartStopFan()
+{
+	WinMinimizeAll ;WinMinimizeAll()
+	if (!Run_WaitScriptAsUser(A_ScriptFullPath, "UnHide"))
+		StartStopFan()
 	WinMinimizeAllUndo
 }
 
