@@ -161,8 +161,10 @@ ActiveControlIsOfClass(Class) {
 ;#F3::Run_AsUser("D:\SERGEY\Options\Program Files\BAT\Browser\Chrome.bat")
 ;#F4::Run_AsUser("D:\SERGEY\Options\Program Files\BAT\Browser\Firefox.bat")
 ;#F5::Run_AsUser("D:\SERGEY\Options\Program Files\SimpleDLNA\SimpleDLNA.exe")
-#F11::Run_ScriptAsUser("D:\SERGEY\Options\Program Files\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\MyTheme.theme")
-#F12::Run_ScriptAsUser("D:\SERGEY\Options\Program Files\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\win7msa\win7msa.theme")
+;#F11::Run_ScriptAsUser("D:\SERGEY\Options\Program Files\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\MyTheme.theme")
+;#F12::Run_ScriptAsUser("D:\SERGEY\Options\Program Files\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\win7msa.theme")
+#F11::Run, D:\SERGEY\Options\Program Files\Winaero Theme Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\MyTheme.theme"
+#F12::Run, D:\SERGEY\Options\Program Files\Winaero Theme Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\win7msa.theme"
 
 
 ;CTRL+ALT+SHIFT
