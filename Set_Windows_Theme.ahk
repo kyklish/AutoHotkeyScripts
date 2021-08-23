@@ -7,7 +7,6 @@ if (A_Args.Length() != 1) {
 if (A_IsAdmin) {
 	MsgBox % "Run only as regular user, NOT admin!"
 	ExitApp
-	
 }
 
 SetWindowsTheme(A_Args[1])
