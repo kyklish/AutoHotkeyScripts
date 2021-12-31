@@ -205,6 +205,7 @@ return
 ;WIN+CTRL+ALT
 #^!f::Run_AsUser("C:\Users\Fixer\AppData\Local\FluxSoftware\Flux\flux.exe")
 #^!k::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
+#^!l::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
 #^!m::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "monitor off")
 
 
@@ -293,6 +294,7 @@ Pause:: ShowHelpWindow("
 [Win+Ctrl+Alt]
  #^!F -> f.lux
  #^!K -> Kill MPC-HC
+ #^!L -> Kill MPC-BE
  #^!M -> Monitor Off
 [Other]
   Mail -> Sylpheed
