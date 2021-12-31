@@ -3,11 +3,6 @@
 ; С админ правами вешает Explorer!!!
 Reload_AsUser()
 
-if (A_IsAdmin) {
-	MsgBox, Run as regular user, NOT admin!!!
-	ExitApp
-}
-
 
 ; Передвигаем иконки в трее, согласно содержимому CSV файла
 ; Формат CSV файла:
