@@ -31,6 +31,7 @@ Run, %A_ScriptDir%\HotKeys.ahk
 Run, %A_ScriptDir%\Scroll_Without_Activating.ahk
 Run, %A_ScriptDir%\Slow_Down_Mouse.ahk
 Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Organize.ahk") ;If run as admin - it hangs explorer.exe
+Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Click.ahk") ;If run as admin - it hangs explorer.exe
 Run, %A_ScriptDir%\Window_Manipulation.ahk
 
 ;-------------------------------------------------------------------------------------
