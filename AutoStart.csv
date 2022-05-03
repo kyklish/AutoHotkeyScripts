@@ -48,6 +48,7 @@
   0,A,"D:\SERGEY\Options\Program Files\MemInfo\meminfo.exe"
   0,A,"D:\SERGEY\Options\Program Files\OpenHardwareMonitor\OpenHardwareMonitor.exe"
   0,U,"D:\SERGEY\Options\Program Files\Volume2\Volume2.exe"
+  0,U,"C:\Users\Fixer\AppData\Local\Viber\Viber.exe","StartMinimized"
  ;0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
 	;HWiNFO должна стартовать раньше AIDA64, чтобы в правильном порядке отображалась инфа в OSD MSI Afterburner
 	;HWiNFO: х64 вылетает, х32 не вылетает
