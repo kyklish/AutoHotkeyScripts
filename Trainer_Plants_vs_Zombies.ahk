@@ -43,6 +43,9 @@ q:: ClickOnColor(0xFEFE48) ;Gold Coin - Very diffucult find out Color
 #IfWinNotActive, ahk_group PvZ
 F1:: ShowHelpWindow("
 (
+В начале игры дают 7ь слотов для растений + лопата
+После увеличивают до 8и + лопата -> ширина иконки уменьшается
+Нужно менять флаг is8Slots в начале скрипта
 1-9 -> Карточки растений в верхнем ряду.
   0 -> Выбор первого растения в бегущем ряду
        пиктограмм растений вверху экрана и
@@ -65,7 +68,7 @@ return
 
 ClickOnColor(ColorID)
 {
-	ToolTip("Search: " ColorID, 10000)
+	;ToolTip("Search: " ColorID, 10000)
 	Loop {
 		PixelSearch, X, Y, 35, 88, 750, 580, %ColorID%, , Fast RGB
 		if (!ErrorLevel) {
