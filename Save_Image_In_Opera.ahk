@@ -35,5 +35,17 @@ Sleep 750
 Gosub F2
 return
 
+^F1:: ;Save + Go to prev tab
+Gosub F1
+Sleep 500
+Send ^+{Tab}
+return
+
+^F2:: ;Click + Close
+Send {LButton}
+Sleep 500
+Send ^w
+return
+
 !x:: ExitApp
 !z:: Reload
