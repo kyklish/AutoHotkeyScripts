@@ -437,9 +437,18 @@ ShowHelp()
 		SplashImage, OFF
 }
 
-SendInput(key)
+Send(key)
 {
-	SendInput, {%key% down}
-	Sleep, 25
-	SendInput, {%key% up}
+	global bSendInput
+	global SendInputDelay
+	global SendInputPressDuration
+	
+	if (bSendInput) {
+		SendInput, {%key% down}
+		Sleep, %SendInputPressDuration%
+		SendInput, {%key% up}
+		Sleep, %SendInputDelay%
+	} else {
+		SendEvent, %key%
+	}
 }
