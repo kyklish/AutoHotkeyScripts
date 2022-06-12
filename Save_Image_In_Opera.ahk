@@ -5,6 +5,9 @@ CoordMode, Mouse, Screen
 
 GroupAdd, Opera, ahk_exe opera.exe
 
+!x:: ExitApp
+!z:: Reload
+
 #IfWinActive ahk_group Opera
 F1:: ShowHelpWindow("
 (
@@ -59,6 +62,3 @@ Send {LButton}
 Sleep 500
 Send ^w
 return
-
-!x:: ExitApp
-!z:: Reload
