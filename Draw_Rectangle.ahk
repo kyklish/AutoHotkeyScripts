@@ -1,6 +1,7 @@
-﻿; Draw Rectangle
-CoordMode, Mouse, Screen
+﻿; Draw rectangle (Not work with fullscreen applications!)
+#NoEnv
 SetBatchLines, -1
+CoordMode, Mouse, Screen
 
 LButton_Held = 0
 
@@ -71,3 +72,4 @@ LButton_Held = 0
 Return
 
 !x::ExitApp
+!z::Reload
