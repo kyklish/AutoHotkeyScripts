@@ -16,7 +16,7 @@ Win -> MButton
  F3 -> Save + Close
 +F2 -> Click + Save
 +F3 -> Click + Save + Close
-^F2 -> Save + Prev. Tab (save favorite then ^F2 to remove)
+^F2 -> Save + Prev. Tab (save favorite then ^F3 to remove)
 ^F3 -> Click + Close (remove from favorite)
 )")
 
