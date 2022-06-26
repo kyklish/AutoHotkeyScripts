@@ -2,6 +2,8 @@
 OutputDebug(sText := "DBGVIEWCLEAR")
 {
 	global IsDebug
-	if IsDebug
+	FullCmdLine := DllCall("GetCommandLine", "Str")
+	IsDebugScript := RegExMatch(FullCmdLine, "i)/debug")
+	if (IsDebug OR IsDebugScript)
 		OutputDebug, %sText%
 }
