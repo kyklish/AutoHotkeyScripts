@@ -105,14 +105,16 @@ AppsKey & RButton Up::DragEnd()
 ;-------------------------------------------------------------
 
 #If
-F1::ShowHelp()
+F1::ShowHelp("NorthgardHotKeys1.png")
++F1::ShowHelp("NorthgardHotKeys2.png")
 <!z::Reload
 <!x::ExitApp
 <!c::Suspend
 
 #IfWinActive ahk_group Game
 
-F10::ShowHelp()
+F10::ShowHelp("NorthgardHotKeys1.png")
++F10::ShowHelp("NorthgardHotKeys2.png")
 F11::Reload
 
 ;-------------------------------------------------------------
@@ -432,11 +434,11 @@ HideDots()
 ;----------------------- GENERAL CODE ------------------------
 ;-------------------------------------------------------------
 
-ShowHelp()
+ShowHelp(imageFile)
 {
 	static toggle
 	if (toggle := !toggle)
-		SplashImage, NorthgardHotKeys.png, B
+		SplashImage, % imageFile, B
 	else
 		SplashImage, OFF
 }
