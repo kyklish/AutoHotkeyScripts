@@ -7,16 +7,16 @@ Menu, Tray, Icon
 ; Example #3: Detection of single, double, and triple-presses of a hotkey.
 ; This allows a hotkey to perform a different operation depending on how many times you press it:
 
-SendMode, Event
-SetKeyDelay, 50, 50
+; SendMode, Event
+; SetKeyDelay, 50, 50
 timerKeyPressPeriod := 400 ; Milliseconds. Measure interval for counting key presses
-timerMouseWheelPeriod := 250
+timerMouseWheelPeriod := 50 ; Period of mouse wheel scroll. Smaller is faster
+isTimerMouseWheelRunning := false
 ; MOUSE MOVE SETTINGS AND VARIABLES
 SetDefaultMouseSpeed, 0 ; Instant mouse move
-D := 5 ; Mouse move relative distance
-isFirstTimerCall := true
-isTimerRunning := false
+D := 5 ; Mouse move relative distance. Bigger is faster mouse move.
 timerMouseMovePeriod := 10
+isTimerMouseMoveRunning := false
 mouseMoveHotkeys := ["*Numpad1", "*Numpad2", "*Numpad3", "*Numpad4", "*Numpad6", "*Numpad7", "*Numpad8", "*Numpad9"]
 ; Create hotkeys for mouse move
 for _, keyName in mouseMoveHotkeys
@@ -32,8 +32,8 @@ HotkeyToggle()
 *Numpad0::Click, Left
 *NumpadDot::Click, Middle
 *NumpadEnter::Click, Right
-*NumpadAdd::Click, WheelDown
-*NumpadSub::Click, WheelUp
+*NumpadAdd::GoSub, StartMouseWheelTimer
+*NumpadSub::GoSub, StartMouseWheelTimer
 *NumpadMult::Send, {Browser_Forward}
 *NumpadDiv::Send, {Browser_Back}
 
@@ -57,10 +57,10 @@ F1::ShowHelp()
 
 ; $~NumLock:: ;~ modificator: do not disable default key behavior
 $NumLock:: ; override key, do not change keyboard's num lock state
-	if key_presses > 0 ; [KeyPresses] timer already started, so we log the [key_presses] instead.
+	if (key_presses > 0) ; [KeyPresses] timer already started, so we log the [key_presses] instead.
 	{
 		key_presses += 1
-		if key_presses = 3
+		if (key_presses = 3)
 		{
 			GoSub, KeyPresses ; Do the job on triple press without waiting timer's end
 		}
@@ -83,7 +83,6 @@ KeyPresses:
 	else if key_presses = 2 ; The key was pressed twice.
 	{
 		HotkeyToggle()
-		SoundBeep
 	}
 	else if key_presses = 3 ; The key was pressed triple.
 	{
@@ -96,9 +95,10 @@ return
 ;-------------------------------------------------------------------------------------
 
 StartMouseMoveTimer:
-	if (!isTimerRunning) {
-		isTimerRunning := true
+	if (!isTimerMouseMoveRunning) {
+		isTimerMouseMoveRunning := true
 		SetTimer, MouseMoveTimer, % timerMouseMovePeriod
+		GoSub, MouseMoveTimer ; Don't wait timer execution, execute now
 	}
 return
 
@@ -108,14 +108,8 @@ MouseMoveTimer:
 	Critical, On
 	if (!MouseMoveKeyPressed()) {
 		SetTimer, ,Off
-		HotkeyBindWork() ; restore hotkeys purpose
-		isFirstTimerCall := true
-		isTimerRunning := false
+		isTimerMouseMoveRunning := false
 	} else {
-		if (isFirstTimerCall) {
-			HotkeyBindNopOperation() ; now hotkeys do nothing (don't send digits to OS)
-			isFirstTimerCall := false
-		}
 		dX := dY := 0
 		if (GetKeyState("Numpad1", "P")) {
 			dX += -D
@@ -152,40 +146,44 @@ return
 
 ;-------------------------------------------------------------------------------------
 
-Nop: ; [NOP] operation: do nothing
+StartMouseWheelTimer:
+	if (!isTimerMouseWheelRunning) {
+		isTimerMouseWheelRunning := true
+		SetTimer, MouseWheelTimer, % timerMouseWheelPeriod
+		GoSub, MouseWheelTimer ; Don't wait timer execution, execute now
+	}
+return
+
+;-------------------------------------------------------------------------------------
+
+MouseWheelTimer:
+	Critical, On
+	if (!GetKeyState("NumpadAdd", "P") AND !GetKeyState("NumpadSub", "P")) {
+		SetTimer, , Off
+		isTimerMouseWheelRunning := false
+	} else {
+		if (GetKeyState("NumpadAdd", "P")) {
+			Click, WheelDown
+		} else {
+			if (GetKeyState("NumpadSub", "P")) {
+				Click, WheelUp
+			}
+		}
+	}
+	Critical, Off
 return
 
 ;-------------------------------------------------------------------------------------
 
 ; Return [true], if any hotkey for mouse move is pressed by user
 MouseMoveKeyPressed() {
-	if (GetKeyState("Numpad1", "P") OR GetKeyState("Numpad2", "P") OR GetKeyState("Numpad3", "P") OR GetKeyState("Numpad4", "P")
-	OR GetKeyState("Numpad6", "P") OR GetKeyState("Numpad7", "P") OR GetKeyState("Numpad8", "P") OR GetKeyState("Numpad9", "P")) {
-		return true
-	}
-	else {
-		return false
-	}
-}
-;-------------------------------------------------------------------------------------
-
-; We can't disable hotkeys, because they restore default behavior: send digits to OS
-; Bind [NOP] operation to mouse move hotkeys
-HotkeyBindNopOperation() {
 	global mouseMoveHotkeys
-	for _, keyName in mouseMoveHotkeys
-		Hotkey, % keyName, Nop
-	OutputDebug, % A_ThisFunc
-}
-
-;-------------------------------------------------------------------------------------
-
-; Bind [MouseMove] operation to mouse move hotkeys
-HotkeyBindWork() {
-	global mouseMoveHotkeys
-	for _, keyName in mouseMoveHotkeys
-		Hotkey, % keyName, StartMouseMoveTimer
-	OutputDebug, % A_ThisFunc
+	for _, keyName in mouseMoveHotkeys {
+		; Remove wildcard [*] before hotkey name
+		if (GetKeyState(StrReplace(keyName, "*"), "P"))
+			return true
+	}
+	return false
 }
 
 ;-------------------------------------------------------------------------------------
@@ -203,7 +201,6 @@ HotkeyToggle() {
 	Hotkey, *NumpadSub, Toggle
 	Hotkey, *NumpadMult, Toggle
 	Hotkey, *NumpadDiv, Toggle
-	OutputDebug, % A_ThisFunc
 }
 
 ;-------------------------------------------------------------------------------------
