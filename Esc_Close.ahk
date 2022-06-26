@@ -8,7 +8,7 @@
 
 SendMode, Event ; нужен Event режим, т.к. только в этом режиме можно задать задержки для клавиш
 SetKeyDelay, 50, 50 ; чтобы работало в играх, нужно использовать задержки при нажатиях (only Event mode)
-timerDelay := 400 ; milleseconds. Measure interval for counting key presses
+timerDelay := 400 ; milliseconds. Measure interval for counting key presses
 ;-------------------------------------------------------------------------------------
 ; $ before HotKey
 ; This is usually only necessary if the script uses the Send command to send the keys that comprise
@@ -42,17 +42,17 @@ KeyEsc:
 SetTimer, KeyEsc, off
 if esc_presses = 1 ; The key was pressed once.
 {
-	; ничего не делаем, т.к. Esc уже отослана сразу при срабатывании горячей клавиши 
+	; ничего не делаем, т.к. Esc уже отослана сразу при срабатывании горячей клавиши
 	;Send {Escape down}{Escape up}
 }
 else if esc_presses = 2 ; The key was pressed twice.
-	{
-		Send, ^{F4} ; Ctrl+F4
-	}
-	else if esc_presses = 3 ; The key was pressed triple.
-		{
-			Send, !{F4} ; Alt+F4
-		}
+{
+	Send, ^{F4} ; Ctrl+F4
+}
+else if esc_presses = 3 ; The key was pressed triple.
+{
+	Send, !{F4} ; Alt+F4
+}
 ; Regardless of which action above was triggered, reset the count to prepare for the next series of presses:
 esc_presses = 0
 return
