@@ -54,14 +54,14 @@ global rowMystic   := 655
 ; Dots - points on screen, where each type of military units will be sended.
 ; Dots - points on screen, where GUI window (circle) will be shown to help user see future unit's formation.
 global period := 100 ; period of calculation dots positions
-; Distanse beatween units (unit order are set in unitOrder[] array)
+; Distance between units (unit order are set in unitOrder[] array)
 ; 0 - position will be on start point (if scale is 1)
 ; 1 - position will be on end point (if scale is 1)
 global unitDist := [0, 1/2, 1] ; length of this array must be in sync with "unitOrder" array length
 global unitOrder := ["NorthgardShieldBearer.png", "NorthgardWarrior.png", "NorthgardAxeThrower.png"]
-;global unitDist := [0, 1/3, 2/3, 1] ; can't figure out haw to select warcheaf when playing different clanes
-;global unitOrder := ["NorthgardWarcheaf.png", NorthgardShieldBearer.png", "NorthgardWarrior.png", "NorthgardAxeThrower.png"]
-global scale := 1 ; Scale all distanses in unitDist[] (each value is multiply by [scale]): <1 less sesitive, ==1 linear, >1 more sensitive.
+;global unitDist := [0, 1/3, 2/3, 1] ; can't figure out haw to select WarChief when playing different clans
+;global unitOrder := ["NorthgardWarChief.png", NorthgardShieldBearer.png", "NorthgardWarrior.png", "NorthgardAxeThrower.png"]
+global scale := 1 ; Scale all distances in unitDist[] (each value is multiply by [scale]): <1 less sensitive, ==1 linear, >1 more sensitive.
 global d := 20 ; gui dot diameter
 global r := d // 2 ; gui dot radius
 global dotNum := unitDist.Length() ; number of dots
@@ -70,7 +70,7 @@ global dotY := [] ; coordinates of dots
 global dotColor := "Lime" ; [HTML color names] in AutoHotKey.chm
 global x0, y0 ; Start point - coordinates of mouse, when you click [modifierKey & RButton].
 global x1, y1 ; End point - current mouse coordinates (when you drag mouse after click).
-global hypotenuse ; distance beatween Start point and End point
+global hypotenuse ; distance between Start point and End point
 
 ;   x
 ; ------*x1,y1
@@ -82,7 +82,7 @@ global hypotenuse ; distance beatween Start point and End point
 ; * x0,y0
 
 if (unitDist.Length() != unitOrder.Length())
-	MsgBox, unitDist.Length() != unitOrder.Length()`nLook at cooments above their declaration
+	MsgBox, unitDist.Length() != unitOrder.Length()`nLook at comments above [unitDist] and [unitOrder] declaration
 
 CreateDots()
 
@@ -126,7 +126,7 @@ K Up::SendInput {a up}
 L::SendInput {s down}
 L Up::SendInput {s up}
 SC027::SendInput {d down} ; [;]
-SC027 Up::SendInput {d up} 
+SC027 Up::SendInput {d up}
 ;---------------------------------------
 J::Send b ; BUILD
 ;---------------------------------------
@@ -141,7 +141,7 @@ U::Send x ; CANCEL ORDER
 =::Send p ; PAUSE
 ;---------------------------------------
 B::Send k ; DIPLOMACY
-N::Send n ; RIVALITY
+N::Send n ; RIVALRY
 H::Send l ; LORE
 ,::Send l ; LORE
 ;---------------------------------------
@@ -162,17 +162,17 @@ Space & W::SelectAllCivUnitsExceptOne("NorthgardWoodcutter.png")
 ; VILLAGE BASED ON J
 J & O::Build(colOne, rowVillage)       ; SCOUT CAMP
 J & P::Build(colTwo, rowVillage)       ; HOUSE
-J & K::Build(colThree, rowVillage)     ; HEALERS HUT
+J & K::Build(colThree, rowVillage)     ; HEALER'S HUT
 J & L::Build(colFour, rowVillage)      ; BREWERY
 J & SC027::Build(colThree, rowProdOne) ; CARVED STONE [;]
 J & SC028::Build(colFour, rowProdOne)  ; FORGE [']
 
 
 ; PRODUCTION BASED ON H
-H & O::Build(colOne, rowProdOne)       ; WOODCUTTERS LODGE
+H & O::Build(colOne, rowProdOne)       ; WOODCUTTER'S LODGE
 H & P::Build(colTwo, rowProdOne)       ; MINE
-H & K::Build(colOne, rowProdTwo)       ; FISHERMANS HUT
-H & L::Build(colTwo, rowProdTwo)       ; HUNTERS LODGE
+H & K::Build(colOne, rowProdTwo)       ; FISHERMAN'S HUT
+H & L::Build(colTwo, rowProdTwo)       ; HUNTER'S LODGE
 H & SC027::Build(colThree, rowProdTwo) ; FIELDS [;]
 H & SC028::Build(colFour, rowProdTwo)  ; FOOD SILO [']
 
@@ -224,7 +224,7 @@ FixBuildingMenuPosition(y)
 	; on new position don't overlap with button "House" on new position,
 	; so we need shift coordinate of all rows.
 	; For example, when you choose military path "GUARDIAN" you got
-	; four "Milita" units, you can recieve some unique mistic units, etc.
+	; four "Militia" units, you can receive some unique mystic units, etc.
 	PixelGetColor, color, 1674, 727, RGB ; Axe icon of Warband
 	if (color != 0xA4B5C1)
 		y := y - 50 ; axe icon not there, warband menu is taller, fix position
@@ -239,7 +239,7 @@ DestroyBuilding()
 	MouseGetPos, _x, _y
 	Click, 1200 902 ; "Destroy Building" [Fire button] except "Marketplace"
 	Sleep, 50
-	Click, 855 560  ; Confirm [OK button]
+	Click, 855 560 ; Confirm [OK button]
 	MouseMove, %_x%, %_y%
 }
 
@@ -340,8 +340,8 @@ DragEnd()
 	SetTimer, CalculateDots, Off
 	if (hypotenuse != -1) { ; "cancel formation" logic, see comments in CalculateDots()
 		BlockInput On
-		; If military units aready selected, their icon in "Warband" menu changed (glowed and shifted).
-		; It can't be finded by [ImageSearch], so reset selection by clicking LButton.
+		; If military units already selected, their icon in "Warband" menu changed (glowed and shifted).
+		; It can't be found by [ImageSearch], so reset selection by clicking LButton.
 		; It will selected something under cursor, but we don't care what it will be (land, building, unit, etc...)
 		Click
 		Sleep, 50
