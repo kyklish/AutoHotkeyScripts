@@ -1,3 +1,6 @@
+; TODO:
+; - Delete buildings - search by image to be worked on all buildings
+; - Select all and Select all except one
 ; [The Core] Hotkey Layout
 #NoEnv
 #SingleInstance Force
@@ -91,8 +94,8 @@ CreateDots()
 ;-------------------------------------------------------------
 
 #IfWinActive ahk_group Game
-; Modifier key of RButton (Right Alt in this hotkey) must be in sync with [modifierKey] variable
-; It implement "cancel formation" logic in CalculateDots() when user release [modifierKey]
+; Modifier key of RButton ("AppsKey" in this hotkey) must be in sync with [modifierKey] variable
+; It implements "cancel formation" logic in CalculateDots() when user release [modifierKey]
 global modifierKey := "AppsKey"
 AppsKey & RButton::DragBegin()
 AppsKey & RButton Up::DragEnd()
@@ -302,7 +305,7 @@ DragBegin()
 CalculateDots()
 {
 	Critical, On
-	
+
 	; Disable timer ("cancel" formation) if user release [modifierKey]
 	if (!GetKeyState(modifierKey, "P")) {
 		SetTimer, , Off
@@ -312,7 +315,7 @@ CalculateDots()
 		HideDots()
 		return
 	}
-	
+
 	MouseGetPos, x1, y1
 	x := x1 - x0
 	y := y1 - y0
@@ -332,6 +335,7 @@ CalculateDots()
 		dotY[i] := y0 + dotY[i]
 	}
 	ShowDots()
+
 	Critical, Off
 }
 
@@ -442,7 +446,7 @@ Send(key)
 	global bSendInput
 	global SendInputDelay
 	global SendInputPressDuration
-	
+
 	if (bSendInput) {
 		SendInput, {%key% down}
 		Sleep, %SendInputPressDuration%
