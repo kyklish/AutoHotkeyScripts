@@ -124,13 +124,13 @@ F11::Reload
 ;---------------------------------------
 ; REMAP DEFAULT HOTKEYS
 ; CAMERA
-O::SendInput {w down}
+O::   SendInput {w down}
 O Up::SendInput {w up}
-K::SendInput {a down}
+K::   SendInput {a down}
 K Up::SendInput {a up}
-L::SendInput {s down}
+L::   SendInput {s down}
 L Up::SendInput {s up}
-SC027::SendInput {d down} ; [;]
+SC027::   SendInput {d down} ; [;]
 SC027 Up::SendInput {d up}
 ;---------------------------------------
 J::Send b ; BUILD
@@ -253,7 +253,7 @@ SelectAllCivUnits(unit)
 	; Search unit icon on Civilians menu
 	ImageSearch, x, y, 1665, 830, 1895, 970, %unit%
 	if (ErrorLevel) {
-		ToolTip, %A_ThisFunc%:%unit% - can't find unit's image.
+		ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image.
 		return
 	}
 	MouseGetPos, _x, _y
@@ -273,9 +273,10 @@ SelectAllCivUnitsExceptOne(unit)
 		return
 	}
 	MouseGetPos, _x, _y
-	Send {Shift down}{Click %x% %y%}
+	Send {Shift down}
+	Click, %x% %y%
 	Sleep, 50
-	Send, {Shift up}
+	Send {Shift up}
 	MouseMove, %_x%, %_y%
 }
 
