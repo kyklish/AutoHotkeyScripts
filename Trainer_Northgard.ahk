@@ -452,10 +452,12 @@ Send(key)
 
 	if (bSendInput) {
 		SendInput, {%key% down}
-		Sleep, %SendInputPressDuration%
+		if (SendInputPressDuration != -1)
+			Sleep, %SendInputPressDuration%
 		SendInput, {%key% up}
-		Sleep, %SendInputDelay%
+		if (SendInputDelay != -1)
+			Sleep, %SendInputDelay%
 	} else {
-		SendEvent, %key%
+		SendEvent, {%key%}
 	}
 }
