@@ -256,7 +256,10 @@ SelectAllCivUnits(unit)
 	; Search unit icon on Civilians menu
 	ImageSearch, x, y, 1665, 830, 1895, 970, %unit%
 	if (ErrorLevel) {
-		ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image.
+		if (isDebug) {
+			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
+			SoundBeep
+		}
 		return
 	}
 	MouseGetPos, _x, _y
@@ -272,7 +275,10 @@ SelectAllCivUnitsExceptOne(unit)
 	; Search first unit icon in first column of selected units (central bottom menu)
 	ImageSearch, x, y, 855, 890, 895, 1045, %unit%
 	if (ErrorLevel) {
-		ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image.
+		if (isDebug) {
+			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
+			SoundBeep
+		}
 		return
 	}
 	MouseGetPos, _x, _y
@@ -292,9 +298,12 @@ SelectAllMilUnits(unit)
 	; Search unit icon on Warband menu
 	ImageSearch, x, y, 1665, 695, 1895, 790, %unit%
 	if (ErrorLevel) {
-		; In this function it is normal logic, when ImageSearch didn't find unit's image.
-		; So comment this ToolTip, script will be not reliable with it.
-		;ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image.
+		if (isDebug) {
+			; In this function it is normal logic, when ImageSearch didn't find unit's image.
+			; So comment this ToolTip, script will be not reliable with it.
+			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
+			SoundBeep
+		}
 		return false
 	}
 	Click, %x% %y% Right
