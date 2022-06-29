@@ -245,6 +245,8 @@ FixBuildingMenuPosition(y)
 	return y
 }
 
+; Pixel based function, don't cover all buildings
+/*
 DestroyBuilding()
 {
 	; Building's info window has several sizes. In most cases "Destroy Building"
@@ -252,6 +254,25 @@ DestroyBuilding()
 	; Y = 902 is optimal coordinate to click overlapped button's region.
 	MouseGetPos, _x, _y
 	Click, 1200 902 ; "Destroy Building" [Fire button] except "Marketplace"
+	Sleep, 50
+	Click, 855 560 ; Confirm [OK button]
+	MouseMove, %_x%, %_y%
+}
+*/
+
+; Image based function, cover all buildings
+DestroyBuilding()
+{
+	MouseGetPos, _x, _y
+	ImageSearch, x, y, 1185, 860, 1220, 930, NorthgardDestroy.png
+	if (ErrorLevel) {
+		if (isDebug) {
+			ToolTip, %A_ThisFunc%(NorthgardDestroy.png) - can't find image., 0, 0
+			SoundBeep
+		}
+		return
+	}
+	Click, %x% %y%
 	Sleep, 50
 	Click, 855 560 ; Confirm [OK button]
 	MouseMove, %_x%, %_y%
