@@ -13,6 +13,9 @@ Menu, Tray, Tip, Northgard [The Core] Hotkey Layout
 SetMouseDelay, -1
 SetKeyDelay, -1, 25
 
+; Comment out "Reload_AsAdmin()" if you want debug script.
+global isDebug = IsDebugScript()
+
 Reload_AsAdmin() ; for BlockInput we need admin rights
 GroupAdd, Game, ahk_exe Northgard.exe
 
@@ -460,4 +463,12 @@ Send(key)
 	} else {
 		SendEvent, {%key%}
 	}
+}
+
+IsDebugScript() {
+	FullCmdLine := DllCall("GetCommandLine", "Str")
+	if(RegExMatch(FullCmdLine, "i)/debug"))
+		return true
+	else
+		return false
 }
