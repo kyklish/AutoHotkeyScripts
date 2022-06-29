@@ -1,5 +1,4 @@
 ; TODO:
-; - Delete buildings - search by image to be worked on all buildings
 ; - Select all and Select all except one
 ; [The Core] Hotkey Layout
 #NoEnv
