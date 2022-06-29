@@ -13,6 +13,11 @@ Menu, Tray, Tip, Northgard [The Core] Hotkey Layout
 SetMouseDelay, -1
 SetKeyDelay, -1, 25
 
+; Send() wrapper function settings: TRUE = SendInput, FALSE = SendEvent
+bSendInput := true
+SendInputDelay := -1
+SendInputPressDuration := 25
+
 global isDebug = IsDebugScript()
 
 if (!isDebug) ; on Debug reload script will break debugging
@@ -137,24 +142,24 @@ L Up::SendInput {s up}
 SC027::   SendInput {d down} ; [;]
 SC027 Up::SendInput {d up}
 ;---------------------------------------
-J::Send b ; BUILD
+J::Send("b") ; BUILD
 ;---------------------------------------
-P::Send e     ; SELECT WARBAND
--::Send u     ; SELECT IDLE WORKERS
-SC028::Send g ; SELECT ALL VILLAGERS
-[::Send h     ; SELECT ALL SCOUTS
-I::Send {Tab} ; SELECT NEXT OF SAME TYPE
+P::Send("e")     ; SELECT WARBAND
+-::Send("u")     ; SELECT IDLE WORKERS
+SC028::Send("g") ; SELECT ALL VILLAGERS
+[::Send("h")     ; SELECT ALL SCOUTS
+I::Send("Tab")   ; SELECT NEXT OF SAME TYPE
 ;---------------------------------------
-U::Send x ; CANCEL ORDER
+U::Send("x") ; CANCEL ORDER
 ;---------------------------------------
-=::Send p ; PAUSE
+=::Send("p") ; PAUSE
 ;---------------------------------------
-B::Send k ; DIPLOMACY
-N::Send n ; RIVALRY
-H::Send l ; LORE
-,::Send l ; LORE
+B::Send("k") ; DIPLOMACY
+N::Send("n") ; RIVALRY
+H::Send("l") ; LORE
+,::Send("l") ; LORE
 ;---------------------------------------
-Space::Send {Space}
+Space::Send("Space")
 ;---------------------------------------
 
 Delete::DestroyBuilding()
@@ -208,7 +213,7 @@ Build(x, y)
 	y := FixBuildingMenuPosition(y)
 	MouseGetPos, _x, _y
 	if (!IsBuildingMenuOpen()) ; if building menu closed, open it
-		Send b
+		Send("b")
 	Click, %x% %y%
 	MouseMove, %_x%, %_y%
 }
@@ -376,7 +381,7 @@ DragEnd()
 			if (id > dotNum) ; no more units left in unitOrder[] array
 				break
 		}
-		Send {Esc}
+		Send("Esc")
 		BlockInput Off
 		Send {%modifierKey% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
 	}
