@@ -94,7 +94,7 @@ global hypotenuse ; distance between Start point and End point
 ; * x0,y0
 
 if (unitDist.Length() != unitOrder.Length())
-	MsgBox, unitDist.Length() != unitOrder.Length()`nLook at comments above [unitDist] and [unitOrder] declaration
+	MsgBox % "unitDist.Length() != unitOrder.Length()`nLook at comments above [unitDist] and [unitOrder] declaration"
 
 CreateDots()
 
