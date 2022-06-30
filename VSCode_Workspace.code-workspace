@@ -19,5 +19,17 @@
 		],
 		"editor.formatOnPaste": true,
 		"editor.formatOnType": true
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "ahk",
+				"request": "launch",
+				"name": "AutoHotkey Debugger",
+				"program": "${file}",
+				"stopOnEntry": true
+			}
+		]
 	}
 }
