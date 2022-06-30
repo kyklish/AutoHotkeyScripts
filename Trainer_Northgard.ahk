@@ -15,9 +15,9 @@ SetMouseDelay, -1
 SetKeyDelay, -1, 25
 
 ; Send() wrapper function settings: TRUE = SendInput, FALSE = SendEvent
-bSendInput := true
-SendInputDelay := -1
-SendInputPressDuration := 25
+global bSendInput := true
+global SendInputDelay := -1
+global SendInputPressDuration := 25
 
 global isDebug = IsDebugScript()
 
@@ -214,7 +214,7 @@ Build(x, y)
 	MouseGetPos, _x, _y
 	if (!IsBuildingMenuOpen()) ; if building menu closed, open it
 		Send("b")
-	Click, %x% %y%
+	Click(x, y)
 	MouseMove, %_x%, %_y%
 }
 
@@ -253,9 +253,9 @@ DestroyBuilding()
 	; button overlaps in different size info windows (except "Marketplace").
 	; Y = 902 is optimal coordinate to click overlapped button's region.
 	MouseGetPos, _x, _y
-	Click, 1200 902 ; "Destroy Building" [Fire button] except "Marketplace"
+	Click(1200, 902) ; "Destroy Building" [Fire button] except "Marketplace"
 	Sleep, 50
-	Click, 855 560 ; Confirm [OK button]
+	Click(855, 560) ; Confirm [OK button]
 	MouseMove, %_x%, %_y%
 }
 */
@@ -272,9 +272,9 @@ DestroyBuilding()
 		}
 		return
 	}
-	Click, %x% %y%
+	Click(x, y)
 	Sleep, 50
-	Click, 855 560 ; Confirm [OK button]
+	Click(855, 560) ; Confirm [OK button]
 	MouseMove, %_x%, %_y%
 }
 
@@ -290,7 +290,7 @@ SelectAllCivUnits(unit)
 		return
 	}
 	MouseGetPos, _x, _y
-	Click, %x% %y% Right
+	Click(x, y, "Right")
 	Sleep, 50
 	MouseMove, %_x%, %_y%
 }
@@ -309,10 +309,10 @@ SelectAllCivUnitsExceptOne(unit)
 		return
 	}
 	MouseGetPos, _x, _y
-	Send {Shift down}
-	Click, %x% %y%
+	SendRaw("{Shift down}")
+	Click(x, y)
 	Sleep, 50
-	Send {Shift up}
+	SendRaw("{Shift up}")
 	MouseMove, %_x%, %_y%
 }
 
@@ -333,7 +333,7 @@ SelectAllMilUnits(unit)
 		}
 		return false
 	}
-	Click, %x% %y% Right
+	Click(x, y, "Right")
 	return true
 }
 
@@ -417,7 +417,7 @@ MoveUnits(startIndex, x, y)
 	while (i <= dotNum) {
 		if (SelectAllMilUnits(unitOrder[i])) { ; returns [true] on success, [false] if didn't find military unit
 			Sleep, 50
-			Click, %x% %y% Right
+			Click(x, y, "Right")
 			break
 		}
 		i++
@@ -485,10 +485,6 @@ ShowHelp(imageFile)
 
 Send(key)
 {
-	global bSendInput
-	global SendInputDelay
-	global SendInputPressDuration
-
 	if (bSendInput) {
 		SendInput, {%key% down}
 		if (SendInputPressDuration != -1)
@@ -499,6 +495,22 @@ Send(key)
 	} else {
 		SendEvent, {%key%}
 	}
+}
+
+SendRaw(string)
+{
+	if (bSendInput)
+		SendInput, %string%
+	else
+		SendEvent, %string%
+}
+
+Click(x := "", y := "", WhichButton := "")
+{
+	if (bSendInput)
+		SendInput, {Click %x% %y% %WhichButton%}
+	else
+		SendEvent, {Click %x% %y% %WhichButton%}
 }
 
 IsDebugScript() {
