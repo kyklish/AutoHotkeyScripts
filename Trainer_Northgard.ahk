@@ -408,7 +408,7 @@ DragEnd()
 		; but he hasn't any military units it will bring game's menu. [NOW] Select all warband.
 		Send("e")
 		BlockInput Off
-		Send {%modifierKey% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
+		; Send {%modifierKey% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
 	}
 	; Hide GUI dots on "cancel formation" or for example when we buy only two types of units in game,
 	; they will be sended in first two dots, so we need hide other unused dots.
