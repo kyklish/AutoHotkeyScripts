@@ -404,7 +404,9 @@ DragEnd()
 			if (id > dotNum) ; no more units left in unitOrder[] array
 				break
 		}
-		Send("Esc")
+		; After last military unit move deselect them. [BEFORE] I send "Esc", but if user try make military formation,
+		; but he hasn't any military units it will bring game's menu. [NOW] Select all warband.
+		Send("e")
 		BlockInput Off
 		Send {%modifierKey% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
 	}
