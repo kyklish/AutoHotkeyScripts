@@ -1,6 +1,8 @@
-; TODO:
-; - Select all and Select all except one
-; [The Core] Hotkey Layout
+; [The Core] Hotkey Layout + Military Formation Helper
+
+; Changelog
+; v1.0 - Initial release.
+
 #NoEnv
 #SingleInstance Force
 #UseHook ; All hotkeys can't be triggered by Send command
@@ -28,8 +30,7 @@ GroupAdd, Game, ahk_exe Northgard.exe
 ;--------------------- CIVILIAN VARIABLE ---------------------
 ;-------------------------------------------------------------
 
-; Start game not in fullscreen to proper show help picture by F1 or F10
-; "Marketplace" has bigger info menu, so [Delete] hotkey "misses" it's destroy button
+; Start game not in fullscreen to proper show help picture by [F1, Shift+F1] or [F10, Shift+F10]
 
 ; Hotkey combination A&B will screen A key
 ; $ modifier = to not trigger hotkey itself
@@ -59,11 +60,11 @@ global rowMystic   := 655
 ; Any ToolTip, which appear on screen (from any AutoHotKey script) will break this script functionality.
 ; Game will be "switching", taskbar may appear, cursor will move outside of game window, etc...
 
-; Click and hold [modifierKey & RButton], where you want place head of formation and drag where you want place end of formation.
-; Release RButton. Your units will go on places, marked by yellow dots.
-; Release [modifierKey] will cancel formation mode.
-; Dots - points on screen, where each type of military units will be sended.
-; Dots - points on screen, where GUI window (circle) will be shown to help user see future unit's formation.
+; Click and hold [modifierKey & RightMouseButton], where you want place head of formation and drag where you want place end of formation.
+; Release [RightMouseButton]. Your units will go on places, marked by yellow dots.
+; Release [modifierKey] before release [RightMouseButton] will cancel formation mode.
+; Dots - points on screen, where each type of military units will be send.
+; Dots - points on screen, where GUI window (circle) will be shown to help user see future unit's positions.
 global period := 100 ; period of calculation dots positions
 ; Distance between units (unit order are set in unitOrder[] array)
 ; 0 - position will be on start point (if scale is 1)
@@ -79,7 +80,7 @@ global dotNum := unitDist.Length() ; number of dots
 global dotX := [] ; coordinates of dots
 global dotY := [] ; coordinates of dots
 global dotColor := "Lime" ; [HTML color names] in AutoHotKey.chm
-global x0, y0 ; Start point - coordinates of mouse, when you click [modifierKey & RButton].
+global x0, y0 ; Start point - coordinates of mouse, when you click [modifierKey & RightMouseButton].
 global x1, y1 ; End point - current mouse coordinates (when you drag mouse after click).
 global hypotenuse ; distance between Start point and End point
 
@@ -102,7 +103,7 @@ CreateDots()
 ;-------------------------------------------------------------
 
 #IfWinActive ahk_group Game
-; Modifier key of RButton ("AppsKey" in this hotkey) must be in sync with [modifierKey] variable
+; Modifier key ("AppsKey" in this hotkey) of RButton (RightMouseButton) must be in sync with [modifierKey] variable
 ; It implements "cancel formation" logic in CalculateDots() when user release [modifierKey]
 global modifierKey := "AppsKey"
 AppsKey & RButton::DragBegin()
