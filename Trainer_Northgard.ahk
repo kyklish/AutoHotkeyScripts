@@ -125,6 +125,7 @@ F1::ShowHelp("NorthgardHotKeys1.png")
 F10::ShowHelp("NorthgardHotKeys1.png")
 +F10::ShowHelp("NorthgardHotKeys2.png")
 F11::Reload
++F11::ToggleSendMode()
 
 ;-------------------------------------------------------------
 ;--------------------- CIVILIAN HOTKEYS ----------------------
@@ -511,6 +512,18 @@ Click(x := "", y := "", WhichButton := "")
 		SendInput, {Click %x% %y% %WhichButton%}
 	else
 		SendEvent, {Click %x% %y% %WhichButton%}
+}
+
+ToggleSendMode()
+{
+	SoundBeep
+	bSendInput := !bSendInput
+	if (bSendInput)
+		ToolTip, SendMode: Input, 0, 0
+	else
+		ToolTip, SendMode: Event, 0, 0
+	Sleep, 1000
+	ToolTip
 }
 
 IsDebugScript() {
