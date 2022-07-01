@@ -14,6 +14,12 @@ Menu, Tray, Tip, Northgard [The Core] Hotkey Layout
 SetMouseDelay, -1
 SetKeyDelay, -1, 25
 
+; By default all [CoordMode] are relative to [Screen], but ToolTip somehow did not obey default value.
+; For clarity set them explicitly.
+CoordMode,   Pixel, Screen
+CoordMode,   Mouse, Screen
+CoordMode, ToolTip, Screen
+
 ; Send() wrapper function settings: TRUE = SendInput, FALSE = SendEvent
 global bSendInput := true
 global SendInputDelay := -1
@@ -25,6 +31,9 @@ if (!isDebug) ; on Debug reload script will break debugging
 	Reload_AsAdmin() ; for BlockInput we need admin rights
 
 GroupAdd, Game, ahk_exe Northgard.exe
+
+; Coordinates of search area of all used [ImageSearch] commands
+coords := ParseImageSearchScript()
 
 ;-------------------------------------------------------------
 ;--------------------- CIVILIAN VARIABLE ---------------------
@@ -116,6 +125,7 @@ AppsKey & RButton Up::DragEnd()
 #If
 F1::ShowHelp("NorthgardHotKeys1.png")
 +F1::ShowHelp("NorthgardHotKeys2.png")
+^F1::ShowImageSearchAreas(coords)
 <!z::Reload
 <!x::ExitApp
 <!c::Suspend
@@ -472,6 +482,79 @@ HideDots()
 {
 	Loop, % dotNum
 		HideDot(A_Index)
+}
+
+;-------------------------------------------------------------
+;---------------------- RECTANGLE CODE -----------------------
+;-------------------------------------------------------------
+
+CreateLine(id)
+{
+	Gui, Rect%id%: -Caption +ToolWindow +ToolWindow +AlwaysOnTOp
+	Gui, Rect%id%: Color, Red
+}
+
+CreateRectangleLines(id) {
+	Loop, 4
+		CreateLine(A_Index . id)
+}
+
+DrawRectangle(id, coord)
+{
+	Gui, Rect1%id%: Show, % "x" coord.X1 " y" coord.Y1 " w" coord.X2 - coord.X1 " h1 NoActivate"
+	Gui, Rect4%id%: Show, % "x" coord.X1 " y" coord.Y2 " w" coord.X2 - coord.X1 " h1 NoActivate"
+
+	Gui, Rect2%id%: Show, % "x" coord.X1 " y" coord.Y1 " w1 h" coord.Y2 - coord.Y1 " NoActivate"
+	Gui, Rect3%id%: Show, % "x" coord.X2 " y" coord.Y1 " w1 h" coord.Y2 - coord.Y1 " NoActivate"
+
+	; First tooltip window is used for debug messages, start from second window. Max is 20 windows.
+	ToolTip, % "LineNum: " coord.lineNum, % coord.X2, % coord.Y2, % id + 1
+}
+
+DrawRectangles(coords)
+{
+	for id, coord in coords {
+		CreateRectangleLines(id)
+		DrawRectangle(id, coord)
+	}
+}
+
+DestroyRectangles(coords)
+{
+	for id, coord in coords {
+		Loop, 4
+			Gui, Rect%A_Index%%id%: Destroy
+		ToolTip, , , , % id + 1
+	}
+}
+
+ParseImageSearchScript()
+{
+	coords := {} ; All found coordinates in script
+	Loop, Read, % A_ScriptName
+	{
+		; ImageSearch, x, y, (1185), (860), (1220), (930), (NorthgardDestroy.png)
+		;                    match1 match2  match3 match4                  match5
+		if (RegExMatch(A_LoopReadLine, ".*,.*,.*,\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),\s*(.+)", match)) {
+			c := {} ; Coordinates of [ImageSearch] search area rectangle
+			c.X1 := match1
+			c.Y1 := match2
+			c.X2 := match3
+			c.Y2 := match4
+			c.lineNum := A_Index
+			coords.Push(c)
+		}
+	}
+	return coords
+}
+
+ShowImageSearchAreas(coords)
+{
+	static toggleArea
+	if (toggleArea := !toggleArea)
+		DrawRectangles(coords)
+	else
+		DestroyRectangles(coords)
 }
 
 ;-------------------------------------------------------------
