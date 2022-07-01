@@ -480,8 +480,8 @@ HideDots()
 
 ShowHelp(imageFile)
 {
-	static toggle
-	if (toggle := !toggle)
+	static toggleHelp
+	if (toggleHelp := !toggleHelp)
 		SplashImage, % imageFile, B
 	else
 		SplashImage, OFF
