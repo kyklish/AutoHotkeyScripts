@@ -24,7 +24,7 @@ If (LButton_Held == 0)
 		{
 			Gui, 1: Show, % "x" Mouse_X " y" Mouse_Y " w" Mouse_X_2 - Mouse_X " h1 NoActivate"
 			Gui, 4: Show, % "x" Mouse_X " y" Mouse_Y_2 " w" Mouse_X_2 - Mouse_X " h1 NoActivate"
-		}	
+		}
 		Else
 		{
 			Gui, 1: Show, % "x" Mouse_X_2 " y" Mouse_Y " w" Mouse_X - Mouse_X_2 " h1 NoActivate"
@@ -37,10 +37,10 @@ If (LButton_Held == 0)
 		}
 		Else
 		{
-			Gui, 2: Show, % "x" Mouse_X_2 " y" Mouse_Y_2 " w1 h" Mouse_Y - Mouse_Y_2 " NoActivate" 
+			Gui, 2: Show, % "x" Mouse_X_2 " y" Mouse_Y_2 " w1 h" Mouse_Y - Mouse_Y_2 " NoActivate"
 			Gui, 3: Show, % "x" Mouse_X " y" Mouse_Y_2 " w1 h" Mouse_Y - Mouse_Y_2 " NoActivate"
 		}
-		ToolTip, % "Width: " Mouse_X_2 - Mouse_X " - Height: " Mouse_Y_2 - Mouse_Y 
+		ToolTip, % "Width: " Mouse_X_2 - Mouse_X " - Height: " Mouse_Y_2 - Mouse_Y
 		If (LButton_Held == 0)
 			Break
 	}
