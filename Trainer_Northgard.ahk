@@ -449,7 +449,7 @@ CreateDot(id)
 CreateDots()
 {
 	Loop, % dotNum
-		CreateDot(A_Index) ; create outside of  screen
+		CreateDot(A_Index) ; create outside of screen
 }
 
 ShowDot(id, x, y)
