@@ -209,7 +209,7 @@ return
 #^!m::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "monitor off")
 
 
-#IfWinNotActive, Visual Studio Code ; VSCode use Ctrl+Shift+F for internal global search
+#IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search
 ^+f::Run_AsUser("D:\SERGEY\Options\Program Files\Everything x64\Everything.exe")
 #If
 !+Esc::Run_AsAdmin("C:\Windows\System32\resmon.exe") ;Resource Monitor
