@@ -311,7 +311,7 @@ SelectAllCivUnitsExceptOne(unit)
 	SelectAllCivUnits(unit)
 	Sleep, 50 ; wait for bottom menu with selected units
 	; Search first unit icon in first column of selected units (central bottom menu)
-	ImageSearch, x, y, 855, 890, 895, 1045, %unit%
+	ImageSearch, x, y, 860, 890, 895, 1045, %unit%
 	if (ErrorLevel) {
 		if (isDebug) {
 			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
