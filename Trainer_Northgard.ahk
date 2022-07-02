@@ -64,13 +64,13 @@ Shift + F11 = Toggle Send Mode
               [MILITARY FORMATION HELPER]
 'Military Formation Helper' has two modes: 3 units (default) or 4 units:
     3 units moves three unit's type: 'Shield', 'Warrior', 'Axe'.
-    4 units moves  four unit's type: 'WarChef', 'Shield', 'Warrior', 'Axe'.
-I can't detect WarChef presence in game. So if you use 4 units mode, but
-you don't have 'WarChef', no units will be send to start dot.
+    4 units moves  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
+I can't detect Warchief presence in game. So if you use 4 units mode, but
+you don't have 'WarChief', no units will be send to start dot.
 
-'WarChef' means all units, that are assigned to in-game '1' hotkey.
-Select Warchef, bear, any big units and press [Ctrl + 1].
-Toggle to 4 units mode via hotkey (see below). Draw formation with 'WarChef'.
+'WarChief' means all units, that are assigned to in-game '1' hotkey.
+Select Warchief, bear, any big units and press [Ctrl + 1].
+Toggle to 4 units mode via hotkey (see below). Draw formation with 'WarChief'.
 
          J + AppsKey = Toggle Mode: 3 units or 4 units
 AppsKey + RMB + Drag = Make Military Formation
@@ -116,7 +116,7 @@ global rowMystic   := 655
 ; Dots - points on screen, where each type of military units will be send.
 ; Dots - points on screen, where GUI window (circle) will be shown to help user see future unit's positions.
 global period := 100 ; period of calculation dots positions
-global idWarChef := "WarChef" ; can by any word or even number, using like ID
+global idWarChief := "WarChief" ; can be any word or even number, script uses it like ID
 global idShield  := "NorthgardShieldBearer.png" ; file name of search picture of unit's icon
 global idWarrior := "NorthgardWarrior.png"      ; file name of search picture of unit's icon
 global idAxe     := "NorthgardAxeThrower.png"   ; file name of search picture of unit's icon
@@ -124,17 +124,17 @@ global idAxe     := "NorthgardAxeThrower.png"   ; file name of search picture of
 ; 0 - position will be on start point (if scale is 1)
 ; 1 - position will be on end point (if scale is 1)
 ; unitDistN - N is number of units and dots
-; I don't know how to select WarChef (different icons for different clans and additional units like bear), so...
+; I don't know how to select WarChief (different icons for different clans and additional units like bear), so...
 ; I use settings for 3 and 4 unit's type.
 ; With 3 unit's types script select military units via their icons in "Warband" menu on the right side of screen.
-; With 4 unit's types we need assign WarChef to hotkey "1" (use in-game hotkey "Ctrl+1"), so WarChef will be selectable via in-game hotkey.
+; With 4 unit's types we need assign WarChief to hotkey "1" (use in-game hotkey "Ctrl+1"), so WarChief will be selectable via in-game hotkey.
 global unitDist  := {} ; we will assign our 3 or 4 settings to this variables
 global unitOrder := {} ; we will assign our 3 or 4 settings to this variables
 global unitDist3  := [0, 1/2, 1] ; length of this array must be in sync with unitOrder[] array length
 global unitOrder3 := [idShield, idWarrior, idAxe]
 global unitDist4  := [0, 1/3, 2/3, 1]
-global unitOrder4 := [idWarChef, idShield, idWarrior, idAxe]
-ToggleWarChef() ; initialize unitDist[] and unitOrder[] values, check for loosing sync in unitOrder[] and unitDist[] arrays
+global unitOrder4 := [idWarChief, idShield, idWarrior, idAxe]
+ToggleWarChief() ; initialize unitDist[] and unitOrder[] values, check for loosing sync in unitOrder[] and unitDist[] arrays
 global scale := 1 ; Scale all distances in unitDist[] (each value is multiply by [scale]): <1 less sensitive, ==1 linear, >1 more sensitive.
 global d := 20 ; gui dot diameter
 global r := d // 2 ; gui dot radius
@@ -167,7 +167,7 @@ CreateDots()
 global modifierKey := "AppsKey"
 AppsKey & RButton::DragBegin()
 AppsKey & RButton Up::DragEnd()
-J & AppsKey::ToggleWarChef()
+J & AppsKey::ToggleWarChief()
 
 ;-------------------------------------------------------------
 ;---------------------- GENERAL HOTKEYS ----------------------
@@ -384,7 +384,7 @@ SelectAllCivUnitsExceptOne(unit)
 
 SelectAllMilUnits(unit)
 {
-	if (unit == idWarChef) {
+	if (unit == idWarChief) {
 		Send("1")
 	} else {
 		; Search unit icon on Warband menu
@@ -551,7 +551,7 @@ DestroyDots()
 }
 
 ; Assign relevant unitDist[] and unitOrder[] values
-ToggleWarChef()
+ToggleWarChief()
 {
 	static toggle
 	if (toggle := !toggle) {
