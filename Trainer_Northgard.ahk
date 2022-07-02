@@ -36,6 +36,46 @@ GroupAdd, Game, ahk_exe Northgard.exe
 ; Coordinates of search area of all used [ImageSearch] commands
 coords := ParseImageSearchScript()
 
+helpText := "
+(
+                      [CIVILIAN]
+          J = Build        |           P = Select Warband
+          U = Cancel Order |           - = Select Idle Workers
+          = = Pause        |           ‘ = Select All Villagers
+          B = Diplomacy    |           [ = Select All Scouts
+          N = Rivalry      |           I = Select Next of Same Type
+          H = Lore         |      Delete = Destroy Building
+          , = Lore         |
+
+           [SELECT ALL]    | [SELECT ALL EXCEPT ONE]
+           Q = Villager    | Space + Q = Villager
+           W = Woodcutter  | Space + W = Woodcutter
+
+                       [SCRIPT]
+         F1 = Show Help 1  |         F11 =  Reload Script
+ Shift + F1 = Show Help 2  | LeftAlt + Z =  Reload Script
+        F10 = Show Help 1  | LeftAlt + X =    Exit Script
+Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
+
+                        [DEBUG]
+  Ctrl + F1 = Show ImageSearch Areas
+Shift + F11 = Toggle Send Mode
+
+              [MILITARY FORMATION HELPER]
+'Military Formation Helper' has two modes: 3 units (default) or 4 units:
+    3 units moves three unit's type: 'Shield', 'Warrior', 'Axe'.
+    4 units moves  four unit's type: 'WarChef', 'Shield', 'Warrior', 'Axe'.
+I can't detect WarChef presence in game. So if you use 4 units mode, but
+you don't have 'WarChef', no units will be send to start dot.
+
+'WarChef' means all units, that are assigned to in-game '1' hotkey.
+Select Warchef, bear, any big units and press [Ctrl + 1].
+Toggle to 4 units mode via hotkey (see below). Draw formation with 'WarChef'.
+
+         J + AppsKey = Toggle Mode: 3 units or 4 units
+AppsKey + RMB + Drag = Make Military Formation
+)"
+
 ;-------------------------------------------------------------
 ;--------------------- CIVILIAN VARIABLE ---------------------
 ;-------------------------------------------------------------
@@ -134,8 +174,8 @@ J & AppsKey::ToggleWarChef()
 ;-------------------------------------------------------------
 
 #If
-F1::ShowHelp("NorthgardHotKeys1.png")
-+F1::ShowHelp("NorthgardHotKeys2.png")
+F1::ShowHelpImage("NorthgardHotKeys.png")
++F1::ShowHelpText(helpText)
 ^F1::ShowImageSearchAreas(coords)
 <!z::Reload
 <!x::ExitApp
@@ -143,8 +183,8 @@ F1::ShowHelp("NorthgardHotKeys1.png")
 
 #IfWinActive ahk_group Game
 
-F10::ShowHelp("NorthgardHotKeys1.png")
-+F10::ShowHelp("NorthgardHotKeys2.png")
+F10::ShowHelpImage("NorthgardHotKeys.png")
++F10::ShowHelpText(helpText)
 F11::Reload
 +F11::ToggleSendMode()
 
@@ -623,13 +663,42 @@ CheckMilitarySettings()
 	}
 }
 
-ShowHelp(imageFile)
+; ShowHelpImage(imageFile)
+; {
+; 	static toggle
+; 	if (toggle := !toggle)
+; 		SplashImage, % imageFile, B
+; 	else
+; 		SplashImage, OFF
+; }
+
+ShowHelpImage(imageFile)
 {
-	static toggleHelp
-	if (toggleHelp := !toggleHelp)
-		SplashImage, % imageFile, B
+	static toggle
+	if (toggle := !toggle) {
+		; +E0x20 makes GUI mouse-click transparent.
+		Gui, HelpImage: New, -Caption -SysMenu +ToolWindow +AlwaysOnTop +LastFound +E0x20
+		WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
+		Gui, HelpImage: Add, Picture, , % imageFile
+		Gui, HelpImage: Show, NoActivate
+	}
 	else
-		SplashImage, OFF
+		Gui, HelpImage: Destroy
+}
+
+ShowHelpText(text)
+{
+	static toggle
+	if (toggle := !toggle) {
+		; +E0x20 makes GUI mouse-click transparent.
+		Gui, HelpText: New, -Caption -SysMenu +ToolWindow +AlwaysOnTop +LastFound +E0x20
+		WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
+		Gui, HelpText: Font, s14, Consolas
+		Gui, HelpText: Add, Text, , % text
+		Gui, HelpText: Show, NoActivate
+	}
+	else
+		Gui, HelpText: Destroy
 }
 
 Send(key)
