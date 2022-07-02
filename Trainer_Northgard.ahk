@@ -501,8 +501,10 @@ DestroyDots()
 
 CreateLine(id)
 {
-	Gui, Rect%id%: -Caption +ToolWindow +ToolWindow +AlwaysOnTOp
+	; +E0x20 makes GUI mouse-click transparent.
+	Gui, Rect%id%: New, -Caption -SysMenu +ToolWindow +AlwaysOnTop +LastFound +E0x20
 	Gui, Rect%id%: Color, Red
+	WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
 }
 
 CreateRectangleLines(id) {
