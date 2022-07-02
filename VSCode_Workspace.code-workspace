@@ -8,15 +8,6 @@
 		"cSpell.enableFiletypes": [
 			"*"
 		],
-		"cSpell.words": [
-			"fullscreen",
-			"hotstrings",
-			"modificator",
-			"Mult",
-			"Northgard",
-			"Numpad",
-			"Warband"
-		],
 		"editor.formatOnPaste": true,
 		"editor.formatOnType": true
 	},
