@@ -11,6 +11,7 @@ SetWorkingDir %A_ScriptDir%
 Menu, Tray, Icon, Northgard.ico
 Menu, Tray, Tip, Northgard [The Core] Hotkey Layout
 
+SetDefaultMouseSpeed, 0
 SetMouseDelay, -1
 SetKeyDelay, -1, 25
 
