@@ -408,6 +408,7 @@ DragBegin()
 	MouseGetPos, x0, y0
 	ShowDot(1, x0, y0)
 	SetTimer, CalculateDots, %period%
+	CalculateDots() ; don't wait [period], call immediately
 }
 
 CalculateDots()
