@@ -448,9 +448,9 @@ CreateDot(id)
 	; If GuiName is specified, a new GUI will be created, destroying any existing GUI with that name.
 	; Otherwise, a new unnamed and unnumbered GUI will be created.
 	; +E0x20 makes GUI mouse-click transparent.
-	Gui, %id%: New, +AlwaysOnTop -Caption +LastFound -SysMenu +ToolWindow +E0x20
-	Gui, %id%: Margin, 0, 0
-	Gui, %id%: Color, %dotColor%
+	Gui, Dot%id%: New, +AlwaysOnTop -Caption +LastFound -SysMenu +ToolWindow +E0x20
+	Gui, Dot%id%: Margin, 0, 0
+	Gui, Dot%id%: Color, %dotColor%
 	WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
 ;	WinSet, Transparent, 150
 	WinSet, Region, 0-0 W%d% H%d% E
@@ -464,7 +464,7 @@ CreateDots()
 
 ShowDot(id, x, y)
 {
-	Gui, %id%: Show, % "W"d " H"d " X" (x - r) " Y" (y - r) " NA"
+	Gui, Dot%id%: Show, % "W"d " H"d " X" (x - r) " Y" (y - r) " NA"
 }
 
 ShowDots()
@@ -475,7 +475,7 @@ ShowDots()
 
 HideDot(id)
 {
-	Gui, %id%: Hide
+	Gui, Dot%id%: Hide
 }
 
 HideDots()
