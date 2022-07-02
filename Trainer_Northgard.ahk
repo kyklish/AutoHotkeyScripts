@@ -453,12 +453,10 @@ DragEnd()
 	SetTimer, CalculateDots, Off
 	if (hypotenuse != -1) { ; "cancel formation" logic, see comments in CalculateDots()
 		BlockInput On
-		; If military units already selected, their icon in "Warband" menu changed (glowed and shifted).
-		; It can't be found by [ImageSearch], so reset selection by clicking LButton.
-		; It will selected something under cursor, but we don't care what it will be (land, building, unit, etc...)
-		; Click()
-		; Sleep, 50
-		; Fixed: units icons are cropped to 6x6 pixels (avoid glowed pixels), now they can be found by [ImageSearch]
+		; If you use 4 units mode and has selected WarChief, script will select him again via in-game hotkey "1".
+		; This second selection will move camera to WarChief and script moves units in wrong positions.
+		; Select all warband to prevent camera movement.
+		Send("e")
 		; "GUI Point" main loop A_Index for dotX[] and dotY[] arrays
 		id := 1 ; "Military Unit" secondary loop index in MoveUnits() function for unitOrder[] array
 		; If [ImageSearch] didn't find military unit, we try find out next available, until we find or unitOrder[] array is finished.
