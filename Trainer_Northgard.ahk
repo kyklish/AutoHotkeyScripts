@@ -479,7 +479,7 @@ CreateDots()
 
 ShowDot(id, x, y)
 {
-	Gui, Dot%id%: Show, % "W"d " H"d " X" (x - r) " Y" (y - r) " NA"
+	Gui, Dot%id%: Show, % "W"d " H"d " X" (x - r) " Y" (y - r) " NoActivate"
 }
 
 ShowDots()
