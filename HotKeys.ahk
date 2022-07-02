@@ -1,7 +1,7 @@
 ﻿#Include <_COMMON_SETTINGS_>
 
 ;-------------------------------------------------------------------------------------
-; Ctrl+L Alt+D - adress bar
+; Ctrl+L Alt+D - address bar
 ; Ctrl+E - Search bar
 
 Process, Priority, , H
@@ -38,7 +38,7 @@ if (ErrorLevel) {
     return
 }
 Clipboard := "https://www.youtube.com/results?search_query=" . StrReplace(Clipboard, A_Space, "+")
-Gosub, ^b
+GoSub, ^b
 return
 F9:: SendEvent, ^+{Tab} ; Prev Tab
 F10:: SendEvent, ^{Tab} ; Next Tab
@@ -168,7 +168,7 @@ ActiveControlIsOfClass(Class) {
 
 
 ;CTRL+ALT+SHIFT
-;Empty Recycle Bin ;FileRecycleEmpty and "nircmd.exe empybin" not work, if launched from another account!!!
+;Empty Recycle Bin ;FileRecycleEmpty and "nircmd.exe emptybin" not work, if launched from another account!!!
 ^!+k::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "emptybin")
 ^!+m::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\Procmon.exe") ;Process Monitor
 ^!+p::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\procexp64.exe") ;Process Explorer
@@ -220,7 +220,7 @@ Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 	If (toggle := !toggle) {
 		WinHide, ahk_class Shell_TrayWnd ; TaskBar
 		WinHide, Start ahk_class Button  ; "Start" button
-		
+
 		;WinActivate, ahk_class WorkerW
 		;WinWaitActive, ahk_class WorkerW, , 0
 		;If (!ErrorLevel)
@@ -228,14 +228,14 @@ Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 	} Else {
 		WinShow, ahk_class Shell_TrayWnd
 		WinShow, Start ahk_class Button
-		
+
 		;WinActivate, ahk_class WorkerW
 		;WinWaitActive, ahk_class WorkerW, , 0
 		;If (!ErrorLevel)
 			;Control, Show,, SysListView321, ahk_class WorkerW
 	}
 	return
-	
+
 */
 
 #IfWinActive ahk_group Desktop
