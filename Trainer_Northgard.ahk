@@ -76,13 +76,25 @@ global rowMystic   := 655
 ; Dots - points on screen, where each type of military units will be send.
 ; Dots - points on screen, where GUI window (circle) will be shown to help user see future unit's positions.
 global period := 100 ; period of calculation dots positions
+global idWarChef := "WarChef" ; can by any word or even number, using like ID
+global idShield  := "NorthgardShieldBearer.png" ; file name of search picture of unit's icon
+global idWarrior := "NorthgardWarrior.png"      ; file name of search picture of unit's icon
+global idAxe     := "NorthgardAxeThrower.png"   ; file name of search picture of unit's icon
 ; Distance between units (unit order are set in unitOrder[] array)
 ; 0 - position will be on start point (if scale is 1)
 ; 1 - position will be on end point (if scale is 1)
-global unitDist := [0, 1/2, 1] ; length of this array must be in sync with "unitOrder" array length
-global unitOrder := ["NorthgardShieldBearer.png", "NorthgardWarrior.png", "NorthgardAxeThrower.png"]
-;global unitDist := [0, 1/3, 2/3, 1] ; can't figure out haw to select WarChief when playing different clans
-;global unitOrder := ["NorthgardWarChief.png", NorthgardShieldBearer.png", "NorthgardWarrior.png", "NorthgardAxeThrower.png"]
+; unitDistN - N is number of units and dots
+; I don't know how to select WarChef (different icons for different clans and additional units like bear), so...
+; I use settings for 3 and 4 unit's type.
+; With 3 unit's types script select military units via their icons in "Warband" menu on the right side of screen.
+; With 4 unit's types we need assign WarChef to hotkey "1" (use in-game hotkey "Ctrl+1"), so WarChef will be selectable via in-game hotkey.
+global unitDist  := {} ; we will assign our 3 or 4 settings to this variables
+global unitOrder := {} ; we will assign our 3 or 4 settings to this variables
+global unitDist3  := [0, 1/2, 1] ; length of this array must be in sync with unitOrder[] array length
+global unitOrder3 := [idShield, idWarrior, idAxe]
+global unitDist4  := [0, 1/3, 2/3, 1]
+global unitOrder4 := [idWarChef, idShield, idWarrior, idAxe]
+ToggleWarChef() ; initialize unitDist[] and unitOrder[] values, check for loosing sync in unitOrder[] and unitDist[] arrays
 global scale := 1 ; Scale all distances in unitDist[] (each value is multiply by [scale]): <1 less sensitive, ==1 linear, >1 more sensitive.
 global d := 20 ; gui dot diameter
 global r := d // 2 ; gui dot radius
@@ -103,9 +115,6 @@ global hypotenuse ; distance between Start point and End point
 ; |/ <-- A angle
 ; * x0,y0
 
-if (unitDist.Length() != unitOrder.Length())
-	MsgBox % "unitDist.Length() != unitOrder.Length()`nLook at comments above [unitDist] and [unitOrder] declaration"
-
 CreateDots()
 
 ;-------------------------------------------------------------
@@ -118,6 +127,7 @@ CreateDots()
 global modifierKey := "AppsKey"
 AppsKey & RButton::DragBegin()
 AppsKey & RButton Up::DragEnd()
+J & AppsKey::ToggleWarChef()
 
 ;-------------------------------------------------------------
 ;---------------------- GENERAL HOTKEYS ----------------------
@@ -334,18 +344,22 @@ SelectAllCivUnitsExceptOne(unit)
 
 SelectAllMilUnits(unit)
 {
-	; Search unit icon on Warband menu
-	ImageSearch, x, y, 1665, 695, 1895, 790, %unit%
-	if (ErrorLevel) {
-		if (isDebug) {
-			; In this function it is normal logic, when ImageSearch didn't find unit's image.
-			; So comment this ToolTip, script will be not reliable with it.
-			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
-			SoundBeep
+	if (unit == idWarChef) {
+		Send("1")
+	} else {
+		; Search unit icon on Warband menu
+		ImageSearch, x, y, 1665, 695, 1895, 790, %unit%
+		if (ErrorLevel) {
+			if (isDebug) {
+				; In this function it is normal logic, when ImageSearch didn't find unit's image.
+				; So comment this ToolTip, script will be not reliable with it.
+				ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
+				SoundBeep
+			}
+			return false
 		}
-		return false
+		Click(x, y, "Right")
 	}
-	Click(x, y, "Right")
 	return true
 }
 
@@ -496,6 +510,23 @@ DestroyDots()
 		DestroyDot(A_Index)
 }
 
+; Assign relevant unitDist[] and unitOrder[] values
+ToggleWarChef()
+{
+	static toggleWarChef
+	if (toggleWarChef := !toggleWarChef) {
+		unitDist := unitDist3
+		unitOrder := unitOrder3
+	} else {
+		unitDist := unitDist4
+		unitOrder := unitOrder4
+	}
+	CheckMilitarySettings()
+	DestroyDots() ; uses old value of [dotNum]
+	dotNum := unitDist.Length()
+	CreateDots() ; uses new value of [dotNum]
+}
+
 ;-------------------------------------------------------------
 ;---------------------- RECTANGLE CODE -----------------------
 ;-------------------------------------------------------------
@@ -574,6 +605,23 @@ ShowImageSearchAreas(coords)
 ;-------------------------------------------------------------
 ;----------------------- GENERAL CODE ------------------------
 ;-------------------------------------------------------------
+
+CheckMilitarySettings()
+{
+	err := ""
+	if (unitDist.Length() != unitOrder.Length())
+		err .= A_Tab . "unitDist.Length() != unitOrder.Length()`n"
+	if (unitDist3.Length() != unitOrder3.Length())
+		err .= A_Tab . "unitDist3.Length() != unitOrder3.Length()`n"
+	if (unitDist4.Length() != unitOrder4.Length())
+		err .= A_Tab . "unitDist4.Length() != unitOrder4.Length()`n"
+	if (err) {
+		str := "Error in military params:`n"
+		str .= err
+		str .= "Look at comments above [unitDist] and [unitOrder] declaration"
+		MsgBox % str
+	}
+}
 
 ShowHelp(imageFile)
 {
