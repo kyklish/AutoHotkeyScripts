@@ -484,6 +484,17 @@ HideDots()
 		HideDot(A_Index)
 }
 
+DestroyDot(id)
+{
+	Gui, Dot%id%: Destroy
+}
+
+DestroyDots()
+{
+	Loop, % dotNum
+		DestroyDot(A_Index)
+}
+
 ;-------------------------------------------------------------
 ;---------------------- RECTANGLE CODE -----------------------
 ;-------------------------------------------------------------
