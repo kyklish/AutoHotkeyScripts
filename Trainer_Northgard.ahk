@@ -513,8 +513,8 @@ DestroyDots()
 ; Assign relevant unitDist[] and unitOrder[] values
 ToggleWarChef()
 {
-	static toggleWarChef
-	if (toggleWarChef := !toggleWarChef) {
+	static toggle
+	if (toggle := !toggle) {
 		unitDist := unitDist3
 		unitOrder := unitOrder3
 	} else {
@@ -595,8 +595,8 @@ ParseImageSearchScript()
 
 ShowImageSearchAreas(coords)
 {
-	static toggleArea
-	if (toggleArea := !toggleArea)
+	static toggle
+	if (toggle := !toggle)
 		DrawRectangles(coords)
 	else
 		DestroyRectangles(coords)
