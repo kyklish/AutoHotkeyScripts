@@ -7,8 +7,15 @@ LButton_Held = 0
 
 Loop, 4
 {
-	Gui, %A_Index%: -Caption +ToolWindow +ToolWindow +AlwaysOnTOp
+	; Original
+	; Gui, %A_Index%: -Caption +ToolWindow +AlwaysOnTop
+	; Gui, %A_Index%: Color, Red
+
+	; Better variant
+	; +E0x20 makes GUI mouse-click transparent
+	Gui, %A_Index%: New, -Caption -SysMenu +ToolWindow +AlwaysOnTop +LastFound +E0x20
 	Gui, %A_Index%: Color, Red
+	WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
 }
 Return
 
