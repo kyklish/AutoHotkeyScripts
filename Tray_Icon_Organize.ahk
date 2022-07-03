@@ -18,12 +18,17 @@ Reload_AsUser()
 csvFile := "Tray_Icon_Organize.csv"
 iUpdatePeriod := 2000 ; период автосортировки
 
-OnMessage(0x5555, "AutoStartObjectsComplete") ; Wait message from AutoStartObjects.ahk script
+OnMessage(0x5555, "MsgMonitor") ; Wait message from AutoStartObjects.ahk script (autostart complete, start sorting)
+OnMessage(0x5556, "MsgMonitor") ; Wait message from HotKeys.ahk script (PC shutdown or reboot, stop sorting)
 
-AutoStartObjectsComplete() ; Returning from this function quickly is often important
+MsgMonitor(wParam, lParam, msg) ; Returning from this function quickly is often important
 {	; Heavy job don't work here, because script didn't respond to windows messages here
 	global iUpdatePeriod
-	SetTimer, SortIconsUp, %iUpdatePeriod%
+	switch msg
+	{
+		case 0x5555: SetTimer, SortIconsUp, %iUpdatePeriod%
+		case 0x5556: SetTimer, SortIconsUp, Off
+	}
 }
 
 ;Sleep % 4*60*1000 ;иконка ОС "Action Center" (белый флажок) появляются через минуты 3, поэтому такая большая задержка

@@ -173,8 +173,16 @@ ActiveControlIsOfClass(Class) {
 ^!+m::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\Procmon.exe") ;Process Monitor
 ^!+p::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\procexp64.exe") ;Process Explorer
 ;Reboot ;AutoHotkey commands "Shutdown" not work, if launched from another account!!!
-^!+r::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "exitwin reboot") ;there is "force" parameter can be used
-^!+s::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "exitwin shutdown") ;Shutdown
+^!+r::
+if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+	PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "exitwin reboot") ;there is "force" parameter can be used
+return
+^!+s::
+if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+	PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "exitwin shutdown") ;Shutdown
+return
 ^!+l:: ;Logoff
 MsgBox, % 4 + 256,, Log off?
 IfMsgBox, Yes
