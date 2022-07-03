@@ -1,4 +1,4 @@
-Reload_AsAdmin()
+﻿Reload_AsAdmin()
 
 
 ; To include an actual quote-character inside a literal string, specify two consecutive quotes as shown twice in this example:

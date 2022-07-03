@@ -1,4 +1,4 @@
-#NoEnv
+﻿#NoEnv
 
 if (A_Args.Length() != 1) {
 	MsgBox % "This script requires 1 parameter: path to *.theme file"

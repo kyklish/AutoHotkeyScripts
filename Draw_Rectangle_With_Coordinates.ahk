@@ -1,4 +1,4 @@
-; Draw rectangle and get coordinates relative to active windows (Work with fullscreen applications!)
+﻿; Draw rectangle and get coordinates relative to active windows (Work with fullscreen applications!)
 #NoEnv
 SetBatchLines, -1 ; For speed in general
 SetWinDelay, -1   ; For speed of WinMove

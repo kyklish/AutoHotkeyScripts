@@ -1,4 +1,4 @@
-#Include <_COMMON_SETTINGS_>
+﻿#Include <_COMMON_SETTINGS_>
 
 ; The first parameter is always 0x71 (SPI_SETMOUSESPEED).
 ; The third parameter is the speed (range is 1-20, 10 is default).

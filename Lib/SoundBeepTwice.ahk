@@ -1,4 +1,4 @@
-SoundBeepTwice()
+﻿SoundBeepTwice()
 {
 	Loop, 2
 		SoundBeep

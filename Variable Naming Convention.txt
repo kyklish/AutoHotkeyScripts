@@ -1,4 +1,4 @@
-https://en.wikipedia.org/wiki/Hungarian_notation
+﻿https://en.wikipedia.org/wiki/Hungarian_notation
 
 a  - Anything
 b  - Boolean

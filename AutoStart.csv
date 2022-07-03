@@ -1,4 +1,4 @@
-;CSV Example:
+пїњ;CSV Example:
 ;"first field",SecondField,"the word ""special"" is quoted literally",,"last field, has literal comma"
 ;CSV Format:
 ;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]"
@@ -25,9 +25,8 @@
  ;0,U,"C:\Program Files\Sandboxie-Plus\SbieCtrl.exe"
   0,U,"C:\Program Files\Sandboxie-Plus\SandMan.exe","-autorun"
   0,U,"C:\Program Files\Windows Firewall Control\wfc.exe"
-	;Windows Gadgets - винда сама запускает, даже если удалить из автозапуска
- ;0,U,"C:\Program Files\Windows Sidebar\sidebar.exe","/autoRun"
-	;Dexpot умеет все что и AutoSizer и намного больше.
+	;Windows Gadgets - в®≠д††б†ђа†Іаѓ≥б™†е≤ђ д†¶е†•бЂ® г§†л®≤м†®з††в≤Ѓз†ѓг±™ЌК ;0,U,"C:\Program Files\Windows Sidebar\sidebar.exe","/autoRun"
+	;Dexpot гђ•е≤†в±• з≤Ѓ и†БutoSizer и†≠ађ≠о£Ѓ бЃЂмЄ•.
  ;0,U,"C:\Program Files (x86)\AutoSizer\AutoSizer.exe"
  ;0,U,"C:\Program Files (x86)\Codebox\BitMeter\BitMeter2.exe"
  ;0,A,"C:\Program Files (x86)\KillSoft\HKM\hkm.exe"
@@ -50,8 +49,8 @@
   0,U,"D:\SERGEY\Options\Program Files\Volume2\Volume2.exe"
   0,U,"C:\Users\Fixer\AppData\Local\Viber\Viber.exe","StartMinimized"
  ;0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
-	;HWiNFO должна стартовать раньше AIDA64, чтобы в правильном пор€дке отображалась инфа в OSD MSI Afterburner
-	;HWiNFO: х64 вылетает, х32 не вылетает
+	;HWiNFO дЃЂж≠† б≤†а≤Ѓв†≤м†∞а≠Љи•†AIDA64, з≤Ѓбї†в†ѓа†ҐиЂЉнЃђ пЃ∞п§™е†ЃвЃ°а†¶аЂ†бЉ†и≠іа†Ґ OSD MSI Afterburner
+	;HWiNFO: еґі вїЂе≤†е≤ђ е≥≤ н•†вїЂе≤†е≤Н
   7,A,"D:\SERGEY\Options\Program Files\HWiNFO32\HWiNFO32.exe"
   7,A,"D:\SERGEY\Options\Program Files\BAT\Windows_Firewall_Control.bat",,,"Hide"
  15,A,"D:\SERGEY\Options\Program Files\AIDA64\AIDA64.exe"

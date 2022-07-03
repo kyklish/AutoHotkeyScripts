@@ -1,4 +1,4 @@
-;Joystick POV to key
+﻿;Joystick POV to key
 ;
 ;Only a direct function call such as MyFunc() can cause a library to be auto-included.
 ;If the function is only called dynamically or indirectly, such as by a timer or GUI event,

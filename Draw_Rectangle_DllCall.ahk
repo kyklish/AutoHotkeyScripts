@@ -1,4 +1,4 @@
-; Draw rectangle via DllCall() (Not work with fullscreen applications!)
+﻿; Draw rectangle via DllCall() (Not work with fullscreen applications!)
 #NoEnv
 SetBatchLines, -1
 CoordMode, Mouse, Screen

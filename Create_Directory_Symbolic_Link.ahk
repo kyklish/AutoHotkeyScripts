@@ -1,4 +1,4 @@
-#Include <_COMMON_SETTINGS_>
+﻿#Include <_COMMON_SETTINGS_>
 
 if (A_Args.Length() != 2)
 {

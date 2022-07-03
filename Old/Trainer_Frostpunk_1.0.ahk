@@ -9,12 +9,12 @@ if not WinExist("ahk_group Frostpunk")
 
 ;Reload_AsAdmin()
 
-; Script will click on Scout icon (top right side of screen) when underlyed title becomes red.
+; Script will click on Scout icon (top right side of screen) when underlying title becomes red.
 ; Scout Timer
 Period := 5000 ; Period of scanning Scout icons
 PeriodAfterClick := Period * 3 ; Period after click was made, to get more time
 ; Buttons in dialog window of Building
-;	Coordinates of NONE button and offsets of columns choosed to be universal
+;	Coordinates of NONE button and offsets of columns selected to be universal
 ;	for all offsets of NONE button and to be able use X coordinate for Automation
 ;	buttons
 noneX := 1490 ; NONE button for "Workers" in most tall dialog window
@@ -64,7 +64,7 @@ return
 ClickOnScout()
 {
 	ColorScout := 0xB2 ; цвет надписи (красная) под иконкой скаута, когда он бездействует, используем только красный канал цвета
-	X := 1905 ; координаты первой иконки (нижнаяя правая часть)
+	X := 1905 ; координаты первой иконки (нижняя правая часть)
 	Y := 210
 	dY := 100 ; шаг иконок скаутов по вертикали
 	N := 2 ; проверяем первые N иконок
@@ -151,7 +151,7 @@ SetWorkForce(typeOfWorker, isMax)
 	if (isMax)
 		X += colOffsetX
 	
-	Switch typeOfWorker { ; by default comparision is not case sensitive
+	Switch typeOfWorker { ; by default comparison is not case sensitive
 		Case "W": ; no need to do anything
 		Case "E": Y += rowOffsetY ; Engineers is second row
 		Case "A": Y += rowOffsetY * 2 ; Automations is second row

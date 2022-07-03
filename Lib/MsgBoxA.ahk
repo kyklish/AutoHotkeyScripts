@@ -1,4 +1,4 @@
-MsgBoxA(oArray, sComment := "") ;print array in one line
+﻿MsgBoxA(oArray, sComment := "") ;print array in one line
 {
 	str := ""
 	if (sComment) {

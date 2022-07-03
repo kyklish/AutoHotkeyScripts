@@ -9,7 +9,7 @@ if not WinExist("ahk_group Frostpunk")
 
 ;Reload_AsAdmin()
 
-; Script will click on Scout icon (top right side of screen) when underlyed title becomes red.
+; Script will click on Scout icon (top right side of screen) when underlying title becomes red.
 ; Scout Timer
 Period := 5000 ; Period of scanning Scout icons
 PeriodAfterClick := Period * 3 ; Period after click was made, to get more time
@@ -20,7 +20,7 @@ Yscout := 210
 YnextScoutIconOffset := 100 ; шаг иконок скаутов по вертикали
 NumScout := 2 ; проверяем первые N иконок
 ; Buttons in dialog window of Building
-;	Coordinates of NONE button and offsets of columns choosed to be universal for
+;	Coordinates of NONE button and offsets of columns selected to be universal for
 ;	all offsets of NONE button and to be able use X coordinate for Automation buttons.
 Xnone := 1490 ; NONE button
 YnoneOffset := 83 ; offset to first row from ----WORKERS---- line in dialog window

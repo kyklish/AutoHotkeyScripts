@@ -1,4 +1,4 @@
-ToolTip(sMessage, iDisplayTime := 1000, bIsModal := false, X := "", Y := "", iNum := 20)
+﻿ToolTip(sMessage, iDisplayTime := 1000, bIsModal := false, X := "", Y := "", iNum := 20)
 {
 	CoordMode, ToolTip, Screen
 	ToolTip, % sMessage, % X, % Y, %iNum%

@@ -1,4 +1,4 @@
-;Joystick UV-axises to Mouse cursor
+п»ї;Joystick UV-axises to Mouse cursor
 ;
 ;Only a direct function call such as MyFunc() can cause a library to be auto-included.
 ;If the function is only called dynamically or indirectly, such as by a timer or GUI event,
@@ -19,10 +19,10 @@
 ;	In this function default JoyMultiplier values rounded to integer,
 ;	so values below 0.5 rounded to 0 and above 0.5 to 1. In example script this works,
 ;	in function SetFormat works different.
-;	Я думаю, что если значение по умолчанию, то первое обращение к переменной (и присвоение ей дефолтного значения)
-;	происходит после комманды SetFormat, поэтому она округлятеся.
-;	Если значение передается явно в функцию, то оно присваевается переменной до комманды SetFormat и все работает как надо.
-;	Поэтому я перенес SetFormat в самый конец функции, где она почему-то работает как надо.
+;	РЇ РґСѓРјР°СЋ, С‡С‚Рѕ РµСЃР»Рё Р·РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, С‚Рѕ РїРµСЂРІРѕРµ РѕР±СЂР°С‰РµРЅРёРµ Рє РїРµСЂРµРјРµРЅРЅРѕР№ (Рё РїСЂРёСЃРІРѕРµРЅРёРµ РµР№ РґРµС„РѕР»С‚РЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ)
+;	РїСЂРѕРёСЃС…РѕРґРёС‚ РїРѕСЃР»Рµ РєРѕРјРјР°РЅРґС‹ SetFormat, РїРѕСЌС‚РѕРјСѓ РѕРЅР° РѕРєСЂСѓРіР»СЏС‚РµСЃСЏ.
+;	Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРґР°РµС‚СЃСЏ СЏРІРЅРѕ РІ С„СѓРЅРєС†РёСЋ, С‚Рѕ РѕРЅРѕ РїСЂРёСЃРІР°РµРІР°РµС‚СЃСЏ РїРµСЂРµРјРµРЅРЅРѕР№ РґРѕ РєРѕРјРјР°РЅРґС‹ SetFormat Рё РІСЃРµ СЂР°Р±РѕС‚Р°РµС‚ РєР°Рє РЅР°РґРѕ.
+;	РџРѕСЌС‚РѕРјСѓ СЏ РїРµСЂРµРЅРµСЃ SetFormat РІ СЃР°РјС‹Р№ РєРѕРЅРµС† С„СѓРЅРєС†РёРё, РіРґРµ РѕРЅР° РїРѕС‡РµРјСѓ-С‚Рѕ СЂР°Р±РѕС‚Р°РµС‚ РєР°Рє РЅР°РґРѕ.
 
 JoyAxis2MouseCursor(AxisX := "X", AxisY := "Y", JoyMultiplier := 0.2, JoyThreshold := 5, JoyNumber := 1)
 {

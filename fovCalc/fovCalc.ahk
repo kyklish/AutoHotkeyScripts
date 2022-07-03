@@ -142,16 +142,16 @@ CalcFOV()
 		else
 			baseFOV := 58
 		fovAngle := LimitFOV(fovAngle, baseFOV * 0.5, baseFOV * 1.3)
-		fov := Format("{:.1f}", fovAngle / basefov) . "x (vFOV)"
+		fov := Format("{:.1f}", fovAngle / baseFOV) . "x (vFOV)"
 	} else if (game == GTR2) {
 		fovType := "Vertical, Multiplier of base FOV."
-		local basefov := 58
+		local baseFOV := 58
 		fovAngle := LimitFOV(fovAngle, baseFOV * 0.5, baseFOV * 1.5)
-		fov := Format("{:.1f}", fovAngle / basefov) . "x (vFOV)"
+		fov := Format("{:.1f}", fovAngle / baseFOV) . "x (vFOV)"
 	} else if (game == Race07) {
 		fovType := "Vertical, Percentage of base FOV."
-		local basefov := 58
+		local baseFOV := 58
 		fovAngle := LimitFOV(fovAngle, baseFOV * 0.4, baseFOV * 1.5)
-		fov := Round(fovAngle / basefov * 100) . "% (vFOV)"
+		fov := Round(fovAngle / baseFOV * 100) . "% (vFOV)"
 	}
 }

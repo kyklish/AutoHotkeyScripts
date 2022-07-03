@@ -148,7 +148,7 @@ class All_Games
 		
 		this.sTempFolder := A_Temp "\" this.sName
 		this.sTempFilePattern := this.sTempFolder "\" this.sCarFolder "\" this.sFileName
-		; using realtive path without beginning ".\", Loop(Files) will give "nice" folder path.
+		; using relative path without beginning ".\", Loop(Files) will give "nice" folder path.
 		this.sFilePattern := this.sCarFolder "\" this.sFileName
 	}
 	

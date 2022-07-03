@@ -1,4 +1,4 @@
-#Include <_COMMON_SETTINGS_>
+﻿#Include <_COMMON_SETTINGS_>
 
 sOperaPath := "D:\SERGEY\Options\Program Files\Opera"
 sOperaRamPath := "R:\TEMP\Opera"

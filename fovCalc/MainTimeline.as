@@ -1,4 +1,4 @@
-package fovCalc_new2_fla
+﻿package fovCalc_new2_fla
 {
    import fl.controls.Button;
    import fl.controls.ComboBox;

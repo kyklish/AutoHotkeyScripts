@@ -1,4 +1,4 @@
-; ExecScript: Executes the given code as a new AutoHotkey process.
+﻿; ExecScript: Executes the given code as a new AutoHotkey process.
 ExecScript(Script, Wait:=true)
 {
 	shell := ComObjCreate("WScript.Shell")

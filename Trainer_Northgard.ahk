@@ -1,4 +1,4 @@
-; [The Core] Hotkey Layout + Military Formation Helper
+﻿; [The Core] Hotkey Layout + Military Formation Helper
 
 ; Changelog
 ; v1.0 - Initial release.

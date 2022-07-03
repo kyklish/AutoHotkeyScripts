@@ -1,4 +1,4 @@
-;!!!!!!!!!!! For normal work need: DetectHiddenWindows, On !!!!!!!!!!!! and #Persistent if no hotkeys or hotstrings
+﻿;!!!!!!!!!!! For normal work need: DetectHiddenWindows, On !!!!!!!!!!!! and #Persistent if no hotkeys or hotstrings
 
 OSD(sText, iDisplayTime := 750, iNum := 10)
 {

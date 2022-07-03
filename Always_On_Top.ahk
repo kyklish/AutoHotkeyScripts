@@ -1,4 +1,4 @@
-#Include <_COMMON_SETTINGS_>
+﻿#Include <_COMMON_SETTINGS_>
 ;-------------------------------------------------------------------------------------
 #`::	;Press Win+`
 WinSet, AlwaysOnTop, Toggle, A
