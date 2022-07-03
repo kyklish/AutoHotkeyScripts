@@ -33,8 +33,8 @@ if (!isDebug) ; on Debug reload script will break debugging
 
 GroupAdd, Game, ahk_exe Northgard.exe
 
-; Coordinates of search area of all used [ImageSearch] commands
-coords := ParseImageSearchScript()
+; Coordinates of search area of all used [ImageSearch] and [PixelGetColor] commands
+coords := ParseImageSearchPixelScript()
 
 helpText := "
 (
@@ -58,7 +58,7 @@ helpText := "
 Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
 
                         [DEBUG]
-  Ctrl + F1 = Show ImageSearch Areas
+  Ctrl + F1 = Show 'ImageSearch' and 'PixelGetColor' Areas
 Shift + F11 = Toggle Send Mode
 
               [MILITARY FORMATION HELPER]
@@ -176,7 +176,7 @@ J & AppsKey::ToggleWarChief()
 #If
 F1::ShowHelpImage("NorthgardHotKeys.png")
 +F1::ShowHelpText(helpText)
-^F1::ShowImageSearchAreas(coords)
+^F1::ShowImageSearchPixelAreas(coords)
 <!z::Reload
 <!x::ExitApp
 <!c::Suspend
@@ -284,9 +284,9 @@ IsBuildingMenuOpen()
 {
 	targetColor := 0x5D6677 ; color of building menu boundary
 	; Check three points to be sure, that building menu opened
-	PixelGetColor, color1, 1658, 350, RGB
-	PixelGetColor, color2, 1658, 400, RGB
-	PixelGetColor, color3, 1658, 450, RGB
+	PixelGetColor, color1, 1658, 350, RGB ; IsBuildingMenuOpen
+	PixelGetColor, color2, 1658, 400, RGB ; IsBuildingMenuOpen
+	PixelGetColor, color3, 1658, 450, RGB ; IsBuildingMenuOpen
 	if (color1 == color2 && color2 == color3)
 		return true
 	else
@@ -301,9 +301,10 @@ FixBuildingMenuPosition(y)
 	; so we need shift coordinate of all rows.
 	; For example, when you choose military path "GUARDIAN" you got
 	; four "Militia" units, you can receive some unique mystic units, etc.
-	PixelGetColor, color, 1674, 727, RGB ; Axe icon of Warband
+	; Check if Axe icon of Warband on it's place
+	PixelGetColor, color, 1674, 727, RGB ; FixBuildingMenuPosition, AxeIcon
 	if (color != 0xA4B5C1)
-		y := y - 50 ; axe icon not there, warband menu is taller, fix position
+		y := y - 50 ; Axe icon not there, Warband menu is taller, fix position
 	return y
 }
 
@@ -326,7 +327,7 @@ DestroyBuilding()
 DestroyBuilding()
 {
 	MouseGetPos, _x, _y
-	ImageSearch, x, y, 1185, 860, 1220, 930, NorthgardDestroy.png
+	ImageSearch, x, y, 1185, 860, 1220, 930, NorthgardDestroy.png ; DestroyBuilding
 	if (ErrorLevel) {
 		if (isDebug) {
 			ToolTip, %A_ThisFunc%(NorthgardDestroy.png) - can't find image., 0, 0
@@ -343,7 +344,7 @@ DestroyBuilding()
 SelectAllCivUnits(unit)
 {
 	; Search unit icon on Civilians menu
-	ImageSearch, x, y, 1665, 830, 1895, 970, %unit%
+	ImageSearch, x, y, 1665, 830, 1895, 970, %unit% ; SelectAllCivUnits
 	if (ErrorLevel) {
 		if (isDebug) {
 			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
@@ -362,7 +363,7 @@ SelectAllCivUnitsExceptOne(unit)
 	SelectAllCivUnits(unit)
 	Sleep, 50 ; wait for bottom menu with selected units
 	; Search first unit icon in first column of selected units (central bottom menu)
-	ImageSearch, x, y, 860, 890, 895, 1045, %unit%
+	ImageSearch, x, y, 860, 890, 895, 1045, %unit% ; DeselectOneUnit
 	if (ErrorLevel) {
 		if (isDebug) {
 			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
@@ -388,11 +389,11 @@ SelectAllMilUnits(unit)
 		Send("1")
 	} else {
 		; Search unit icon on Warband menu
-		ImageSearch, x, y, 1665, 695, 1895, 790, %unit%
+		ImageSearch, x, y, 1665, 695, 1895, 790, %unit% ; SelectAllMilUnits
 		if (ErrorLevel) {
 			if (isDebug) {
-				; In this function it is normal logic, when ImageSearch didn't find unit's image.
-				; So comment this ToolTip, script will be not reliable with it.
+				; In this function it is normal logic, when [ImageSearch] didn't find unit's image.
+				; So comment this [ToolTip], script will be not reliable with it.
 				ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
 				SoundBeep
 			}
@@ -570,6 +571,21 @@ ToggleWarChief()
 ;---------------------- RECTANGLE CODE -----------------------
 ;-------------------------------------------------------------
 
+; How to use:
+; * Parse script to find [ImageSearch] rectangles and [PixelGetColor] pixels with explicit parameters
+;   (hardcoded numbers).
+;		coords := ParseImageSearchPixelScript()
+; * If parameters are implicit ([ImageSearch] or [PixelGetColor] are inside some function and parameters
+;   for them passed as variables) register rectangle or pixel manually, for example before actual func call.
+;		RegisterRectangleToShow(coords, A_LineNumber, "comment", varX, varY) ; adds objects to [coords] variable
+;		GetSomePixelColor(color, varX, varY) ; any func
+; * Draw rectangles.
+;		DrawRectangles(coords)
+; * Destroy rectangles.
+;		DestroyRectangles(coords)
+; ! Rectangle consist of four lines. Each line is [Gui] window. Create all lines (not visible) for
+;   all rectangles. Show all lines. Destroy all lines.
+
 CreateLine(id)
 {
 	; +E0x20 makes GUI mouse-click transparent.
@@ -591,8 +607,8 @@ DrawRectangle(id, coord)
 	Gui, Rect2%id%: Show, % "x" coord.X1 " y" coord.Y1 " w1 h" coord.Y2 - coord.Y1 " NoActivate"
 	Gui, Rect3%id%: Show, % "x" coord.X2 " y" coord.Y1 " w1 h" coord.Y2 - coord.Y1 " NoActivate"
 
-	; First tooltip window is used for debug messages, start from second window. Max is 20 windows.
-	ToolTip, % "LineNum: " coord.lineNum, % coord.X2, % coord.Y2, % id + 1
+	; First [ToolTip] window is used for debug messages, start from second window. Max is 20 windows.
+	ToolTip, % "Line " coord.lineNumber ": " coord.comment, % coord.X1, % coord.Y2, % id + 1
 }
 
 DrawRectangles(coords)
@@ -612,27 +628,80 @@ DestroyRectangles(coords)
 	}
 }
 
-ParseImageSearchScript()
+ParseImageSearchPixelScript()
 {
 	coords := {} ; All found coordinates in script
+	; Sync radius value with [RegisterRectangleToShow()]
+	r := 2 ; Radius around pixel in [PixelGetColor] to show it on screen
 	Loop, Read, % A_ScriptName
 	{
-		; ImageSearch, x, y, (1185), (860), (1220), (930), (NorthgardDestroy.png)
-		;                    match1 match2  match3 match4                  match5
-		if (RegExMatch(A_LoopReadLine, ".*,.*,.*,\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),\s*(.+)", match)) {
-			c := {} ; Coordinates of [ImageSearch] search area rectangle
+		line := Trim(A_LoopReadLine)
+
+		if (SubStr(line, 1, 1) == ";") ; skip comments
+			continue
+
+		; ImageSearch, x, y, (1185), (860), (1220), (930), (NorthgardDestroy.png) ; (comment)
+		;                    match1 match2  match3 match4                  match5     match6
+		c := {} ; Coordinates of search area rectangle
+		if (RegExMatch(A_LoopReadLine, "ImageSearch\s*,.+?,.+?,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([^;]+)\s*;?\s*(.*)?", match)) {
 			c.X1 := match1
 			c.Y1 := match2
 			c.X2 := match3
 			c.Y2 := match4
-			c.lineNum := A_Index
+			c.lineNumber := A_Index
+			c.comment := match6
 			coords.Push(c)
+			continue
+		}
+
+		; PixelGetColor, color, (1658), (400), RGB ; (comment)
+		;                       match1 match2           match3
+		if (RegExMatch(A_LoopReadLine, "PixelGetColor\s*,.+?,\s*(\d+)\s*,\s*(\d+)\s*,?[^;]*;?\s*(.*)?", match)) {
+			c.X1 := match1 - r
+			c.Y1 := match2 - r
+			c.X2 := match1 + r
+			c.Y2 := match2 + r
+			c.lineNumber := A_Index
+			c.comment := match3
+			coords.Push(c)
+			continue
 		}
 	}
 	return coords
 }
+/*
+	; Test strings for RegExMatch() above in ParseImageSearchPixelScript()
+	;; PixelGetColor, color1, 20, 20, RGB ; Must be not visible comment
+	; PixelGetColor, color1, 20, 60, RGB ; comment
+	; PixelGetColor, color2, 20, 100, RGB
+	; PixelGetColor, color3, 20, 140 ; comment
+	; PixelGetColor, color3, 20, 180
+	; ImageSearch, x, y, 200, 60, 240, 100, NorthgardDestroy.png ; DestroyBuilding
+	; ImageSearch, x, y, 200, 140, 240, 180, NorthgardDestroy.png
+*/
 
-ShowImageSearchAreas(coords)
+RegisterRectangleToShow(ByRef coords, lineNumber, comment, x1, y1, x2 := "", y2 := "")
+{
+	c := {}
+	; Sync radius value with [ParseImageSearchPixelScript()]
+	r := 2 ; Radius around pixel in [PixelGetColor] to show it on screen
+	if (x2 == "" and y2 == "") {
+		c.X1 := x1 - r
+		c.Y1 := y1 - r
+		c.X2 := x1 + r
+		c.Y2 := y1 + r
+	} else {
+		c.X1 := x1
+		c.Y1 := y1
+		c.X2 := x2
+		c.Y2 := y2
+	}
+	c.lineNumber := lineNumber
+	c.comment := comment
+	coords.Push(c)
+}
+
+ShowImageSearchPixelAreas(coords)
 {
 	static toggle
 	if (toggle := !toggle)
