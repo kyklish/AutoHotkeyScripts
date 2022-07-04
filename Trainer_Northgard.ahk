@@ -34,7 +34,7 @@ if (!isDebug) ; on Debug reload script will break debugging
 GroupAdd, Game, ahk_exe Northgard.exe
 
 ; Coordinates of search area of all used [ImageSearch] and [PixelGetColor] commands
-coords := ParseImageSearchPixelScript()
+coords := ParseScriptForOverlay()
 
 helpText := "
 (
@@ -58,7 +58,8 @@ helpText := "
 Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
 
                         [DEBUG]
-  Ctrl + F1 = Show 'ImageSearch' and 'PixelGetColor' Areas
+'Overlay' shows 'ImageSearch' and 'PixelGetColor' areas
+  Ctrl + F1 = Toggle Overlay
 Shift + F11 = Toggle Send Mode
 
               [MILITARY FORMATION HELPER]
@@ -176,7 +177,7 @@ J & AppsKey::ToggleWarChief()
 #If
 F1::ShowHelpImage("NorthgardHotKeys.png")
 +F1::ShowHelpText(helpText)
-^F1::ShowImageSearchPixelAreas(coords)
+^F1::ToggleOverlay(coords)
 <!z::Reload
 <!x::ExitApp
 <!c::Suspend
@@ -591,9 +592,17 @@ CreateMouseClickTransGui(id, color := "")
 	WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
 }
 
-CreateRectangleLines(id) {
+CreateComment(id)
+{
+	CreateMouseClickTransGui("RectToolTip" . id)
+	Gui, RectToolTip%id%: Margin, 0, 0
+	Gui, RectToolTip%id%: Font, , Consolas
+}
+
+CreateRectangle(id, color) {
+	; Create 4 rectangle lines
 	Loop, 4
-		CreateMouseClickTransGui("Rect" . A_Index . id, "Red")
+		CreateMouseClickTransGui("Rect" . A_Index . id, color)
 }
 
 DrawRectangle(id, coord)
@@ -603,30 +612,70 @@ DrawRectangle(id, coord)
 
 	Gui, Rect2%id%: Show, % "x" coord.X1 " y" coord.Y1 " w1 h" coord.Y2 - coord.Y1 " NoActivate"
 	Gui, Rect3%id%: Show, % "x" coord.X2 " y" coord.Y1 " w1 h" coord.Y2 - coord.Y1 " NoActivate"
-
-	; First [ToolTip] window is used for debug messages, start from second window. Max is 20 windows.
-	ToolTip, % "Line " coord.lineNumber ": " coord.comment, % coord.X1, % coord.Y2, % id + 1
 }
 
-DrawRectangles(coords)
+DrawComment(id, coord)
+{
+	; First [ToolTip] window is used for debug messages, start from second window. Max is 20 windows.
+	; [ToolTip] has word wrap and automatically create window inside screen area.
+	; But it's not mouse-click transparent.
+	; ToolTip, % "Line " coord.lineNumber ": " coord.comment, % coord.X1, % coord.Y2, % id + 1
+
+	comment := "Line " coord.lineNumber ": " coord.comment
+
+	; Gui has no limitation in window number, is mouse-click transparent.
+	; Shows text in one line if we don't specify height of [Text] control.
+	; But we must manually calculate is it inside or outside of screen and correct position.
+
+	; Variant 1 (fast, but hardcoded char size): fix position (calculate variables) and show gui window.
+	; 6px is char width and 13px is char height of 'Consolas' font with default size.
+	w := StrLen(comment) * 6 ; width
+	h := 13                  ; height
+	x := (coord.X1 + w) < 1920 ? coord.X1 : 1920 - w
+	y := (coord.Y2 + h) < 1080 ? coord.Y2 : 1080 - h
+
+	Gui, RectToolTip%id%: Add, Text, , % comment
+	Gui, RectToolTip%id%: Show, % "x" x " y" y + 1 " NoActivate" ; move 1px below to not overlap with rectangle
+
+	; Variant 2 (slow, but universal): show gui window and then fix position (move it).
+	; WinMove is very slow command!!!
+	; Gui, RectToolTip%id%: Add, Text, , % comment
+	; Gui, RectToolTip%id%: Show, % "x" coord.X1 " y" coord.Y2 " NoActivate"
+
+	; Gui, RectToolTip%id%: +LastFoundExist
+	; VarSetCapacity(rect, 16, 0)
+	; DllCall("GetClientRect", uint, myGuiHWND := WinExist(), uint, &rect)
+	; w := NumGet(rect, 8, "int")
+	; h := NumGet(rect, 12, "int")
+	; x := (coord.X1 + w) < 1920 ? coord.X1 : 1920 - w
+	; y := (coord.Y2 + h) < 1080 ? coord.Y2 : 1080 - h
+	; if (coord.X1 != x or coord.Y2 != y)
+		; WinMove, % x, % y + 1 ; move 1px below to not overlap with rectangle
+}
+
+DrawOverlay(coords)
 {
 	for id, coord in coords {
-		CreateRectangleLines(id)
+		CreateRectangle(id, "Red")
 		DrawRectangle(id, coord)
+		CreateComment(id)
+		DrawComment(id, coord)
 	}
 }
 
-DestroyRectangles(coords)
+DestroyOverlay(coords)
 {
 	for id, coord in coords {
 		Loop, 4
 			Gui, Rect%A_Index%%id%: Destroy
-		ToolTip, , , , % id + 1
+		; ToolTip, , , , % id + 1
+		Gui, RectToolTip%id%: Destroy
 	}
 }
 
-ParseImageSearchPixelScript()
+ParseScriptForOverlay()
 {
+	; Parse script text to find [ImageSearch] areas and [GetPixelColor] pixels for overlay
 	coords := {} ; All found coordinates in script
 	; Sync radius value with [RegisterRectangleToShow()]
 	r := 2 ; Radius around pixel in [PixelGetColor] to show it on screen
@@ -677,7 +726,8 @@ ParseImageSearchPixelScript()
 	; ImageSearch, x, y, 200, 140, 240, 180, NorthgardDestroy.png
 */
 
-RegisterRectangleToShow(ByRef coords, lineNumber, comment, x1, y1, x2 := "", y2 := "")
+; Add rectangle or pixel to overlay
+AddAreaToOverlay(ByRef coords, lineNumber, comment, x1, y1, x2 := "", y2 := "")
 {
 	c := {}
 	; Sync radius value with [ParseImageSearchPixelScript()]
@@ -698,13 +748,13 @@ RegisterRectangleToShow(ByRef coords, lineNumber, comment, x1, y1, x2 := "", y2 
 	coords.Push(c)
 }
 
-ShowImageSearchPixelAreas(coords)
+ToggleOverlay(coords)
 {
 	static toggle
 	if (toggle := !toggle)
-		DrawRectangles(coords)
+		DrawOverlay(coords)
 	else
-		DestroyRectangles(coords)
+		DestroyOverlay(coords)
 }
 
 ;-------------------------------------------------------------
