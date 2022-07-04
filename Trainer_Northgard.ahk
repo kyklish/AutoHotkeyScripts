@@ -499,15 +499,8 @@ MoveUnits(startIndex, x, y)
 
 CreateDot(id)
 {
-	; Gui, GuiName:New [, Options, Title]
-	; If GuiName is specified, a new GUI will be created, destroying any existing GUI with that name.
-	; Otherwise, a new unnamed and unnumbered GUI will be created.
-	; +E0x20 makes GUI mouse-click transparent.
-	Gui, Dot%id%: New, +AlwaysOnTop -Caption +LastFound -SysMenu +ToolWindow +E0x20
+	CreateMouseClickTransGui("Dot" . id, dotColor)
 	Gui, Dot%id%: Margin, 0, 0
-	Gui, Dot%id%: Color, %dotColor%
-	WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
-;	WinSet, Transparent, 150
 	WinSet, Region, 0-0 W%d% H%d% E
 }
 
@@ -586,17 +579,21 @@ ToggleWarChief()
 ; ! Rectangle consist of four lines. Each line is [Gui] window. Create all lines (not visible) for
 ;   all rectangles. Show all lines. Destroy all lines.
 
-CreateLine(id)
+CreateMouseClickTransGui(id, color := "")
 {
+	; Gui, GuiName:New [, Options, Title]
+	; If [GuiName] is specified, a new GUI will be created, destroying any existing GUI with that name.
+	; Otherwise, a new unnamed and unnumbered GUI will be created.
+	; Calling [Gui, New] ensures that the script is creating a new GUI, not modifying an existing one.
 	; +E0x20 makes GUI mouse-click transparent.
-	Gui, Rect%id%: New, -Caption -SysMenu +ToolWindow +AlwaysOnTop +LastFound +E0x20
-	Gui, Rect%id%: Color, Red
+	Gui, %id%: New, -Caption -SysMenu +AlwaysOnTop +LastFound +ToolWindow +E0x20
+	Gui, %id%: Color, % color
 	WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
 }
 
 CreateRectangleLines(id) {
 	Loop, 4
-		CreateLine(A_Index . id)
+		CreateMouseClickTransGui("Rect" . A_Index . id, "Red")
 }
 
 DrawRectangle(id, coord)
@@ -744,9 +741,7 @@ ShowHelpImage(imageFile)
 {
 	static toggle
 	if (toggle := !toggle) {
-		; +E0x20 makes GUI mouse-click transparent.
-		Gui, HelpImage: New, -Caption -SysMenu +ToolWindow +AlwaysOnTop +LastFound +E0x20
-		WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
+		CreateMouseClickTransGui("HelpImage")
 		Gui, HelpImage: Add, Picture, , % imageFile
 		Gui, HelpImage: Show, NoActivate
 	}
@@ -758,9 +753,7 @@ ShowHelpText(text)
 {
 	static toggle
 	if (toggle := !toggle) {
-		; +E0x20 makes GUI mouse-click transparent.
-		Gui, HelpText: New, -Caption -SysMenu +ToolWindow +AlwaysOnTop +LastFound +E0x20
-		WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
+		CreateMouseClickTransGui("HelpText")
 		Gui, HelpText: Font, s14, Consolas
 		Gui, HelpText: Add, Text, , % text
 		Gui, HelpText: Show, NoActivate
