@@ -13,15 +13,15 @@ Double_Tap_Delay := 400
 !z:: Reload
 
 #IfWinActive, ahk_exe FacesOfWar.exe
-~F1::DoubleClickOnDoubleTap(815) ; All soldiers throw Infanntry Granade
-~F2::DoubleClickOnDoubleTap(855) ; All soldiers throw Anti-Tank Granade
+~F1::DoubleClickOnDoubleTap(815) ; All soldiers throw Infantry Grenade
+~F2::DoubleClickOnDoubleTap(855) ; All soldiers throw Anti-Tank Grenade
 ~F9::DoubleClickOnDoubleTap(1125) ; призыв союзников
 
 +1::SelectTab(1) ; выбор вкладок меню, они так и называются 1, 2, 3
 +2::SelectTab(2)
 +3::SelectTab(3)
 
-+x::PressIconOnAmmoExchange(361) ; взять всю аммуницию в окне обмена
++x::PressIconOnAmmoExchange(361) ; взять всю амуницию в окне обмена
 ^x::PressIconOnAmmoExchange(426) ; отдать -//-
 
 Numpad1::SelectWeapon("Secondary", 1)

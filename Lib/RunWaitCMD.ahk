@@ -1,6 +1,6 @@
 ﻿; This is example from Autohotkey.chm, I add some fixes:
 ; 	A_ScriptDir must be in double quotes, because in path may be spaces
-;	RunWaitOne did not propertly wait result from runed program. So best way use RunWaitMany, it's more relieble.
+;	RunWaitOne did not properly wait result from ran program. So best way use RunWaitMany, it's more reliable.
 ;	Rename RunWaitMany to RunWainCMD
 
 ; The following can be used to run a command and retrieve its output:

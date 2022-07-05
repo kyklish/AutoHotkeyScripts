@@ -33,7 +33,6 @@ if KeyToHoldDown   ; There is a key to press down.
 return
 
 
-
 Joy8::
 Send {Up down}
 SetTimer, WaitForButtonUp8, 10

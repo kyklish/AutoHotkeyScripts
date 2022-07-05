@@ -17,7 +17,7 @@ F1:: ShowHelpWindow("
 )")
 
 #IfWinActive, ahk_group RT3
-Numpad0:: SendCheat("safety first") ;пoeздa никoгдa нe paзбивaютcя
+Numpad0:: SendCheat("safety first") ;поезда никогда нe разбиваются
 Numpad1:: SendCheat("trains are in my blood") ;все локомотивы
 
 SendCheat(sCheat)

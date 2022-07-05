@@ -15,7 +15,7 @@ Insert:: ; make ScreenShot with FastStone Capture, crop it with ImageMagick and 
 GetData()
 ToolTip ; remove tooltip
 
-/* This is verion for FRAPS
+/* This is version for FRAPS
 if FileExist(imageMagick) {
 	; picture parameters and parameters for ImageMagick
 	pW := 40 ; width of crop zone

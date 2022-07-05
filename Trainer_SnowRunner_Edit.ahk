@@ -43,7 +43,7 @@ Edit(sFilePath)
 }
 
 
-Replace(sData, sParamName, sNewVal, iStartingPos := 1, iLimit := -1) { ;Replace all occurens in file
+Replace(sData, sParamName, sNewVal, iStartingPos := 1, iLimit := -1) { ;Replace all occurrences in file
 	global sEndRegEx, sBeginRegEx
 	return RegExReplace(sData, sBeginRegEx . sParamName . sEndRegEx, sNewVal, , iLimit, iStartingPos)
 }

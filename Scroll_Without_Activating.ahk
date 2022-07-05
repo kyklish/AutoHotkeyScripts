@@ -40,7 +40,6 @@ return
 */
 
 
-
 /*
 But, we don't really need WindowFromPoint. MouseGetPos returns the window ID and the name of the control under the mouse pointer. If we use them both in PostMessage, it works:
 ...
@@ -53,8 +52,6 @@ Do you know why MouseGetPos returns a window ID which is different from what Win
 By the way, the ahk_id technique can be used to directly operate on a control via PostMessage and other windowing commands. But you have to know its unique ID (HWND), either via the GetChildHWND() function (on the DllCall page) or some other function like the WindowFromPoint() you mentioned.
 	Thanks, Chris. The Control, WinID combination from MouseGetPos seems to work, though.
 */
-
-
 
 
 /*
@@ -106,8 +103,6 @@ Return
 */
 
 
-
-
 /*
 	Пример из документации	
 	
@@ -127,7 +122,6 @@ Return
 	}
 	return
 */
-
 
 
 /*
@@ -205,12 +199,6 @@ Scroll(WHEEL_DELTA) {
  PostMessage, 0x20A, WHEEL_DELTA, (mY << 16) | mX,,% "ahk_id" (hCtrl ? hCtrl:hWin)
 }  ;WM_MOUSEWHEEL
 */
-
-
-
-
-
-
 
 
 /*

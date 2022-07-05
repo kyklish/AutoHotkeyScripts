@@ -42,7 +42,6 @@ GuiClose:
 ;-------------------------------------------------
 
 
-
 Update:
 ;Here hidden semantics!!! Only this order needed.
 GetGuiData()

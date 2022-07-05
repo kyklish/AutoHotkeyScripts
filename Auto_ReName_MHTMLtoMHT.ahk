@@ -1,6 +1,6 @@
 ﻿#Include <_COMMON_SETTINGS_>
 
-;Automaticaly rename all MHTML files to MHT in %TargetDir% every %Period% milliseconds
+;Automatically rename all MHTML files to MHT in %TargetDir% every %Period% milliseconds
 
 #Persistent ;see help to understand why it's needed here
 ;-------------------------------------------------------------------------------------

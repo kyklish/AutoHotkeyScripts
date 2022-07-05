@@ -50,7 +50,7 @@ CloseAllScripts()
 {
 	;----Exclude section
 	WinGet, pid_studio, PID, AHK Studio
-	WinGet, pid_esc_close, PID, Esc Close ;this was for separate programm "Esc Close" (compiled AHK script)
+	WinGet, pid_esc_close, PID, Esc Close ;this was for separate program "Esc Close" (compiled AHK script)
 	WinGet, pid_splat, PID, Splat
 	pid_this := DllCall("GetCurrentProcessId") ;не закрыть самого себя
 	;----End exclude Section

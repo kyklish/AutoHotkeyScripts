@@ -5,7 +5,7 @@
 ;Kill "Discord" processes to minimize it.
 ;In CMD: "taskkill /IM discord.exe" works fine
 ;In AHK "RunWaitCMD("taskkill /IM discord.exe")" will kill it to death
-;Use "taskkill", because it will kill all "discrod.exe" processes simultaneously
+;Use "taskkill", because it will kill all "discord.exe" processes simultaneously
 ;MsgBox % RunWaitCMD("taskkill /IM discord.exe")
 /*
 WM_CLOSE := 0x10

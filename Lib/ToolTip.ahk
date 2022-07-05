@@ -17,7 +17,6 @@ RemoveToolTip(iNum := 20)
 }
 
 
-
 ; Original version
 /*
 ToolTip(sMessage, iDisplayTime := 1, bIsModal := false, X := "", Y := "")

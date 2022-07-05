@@ -20,9 +20,9 @@
 /*
 class CommandN ; each class for each POV button
 {
-	__New() ;if you need autorepeate function
+	__New() ;if you need auto repeat function
 	{
-		this.AutoRepeate := true
+		this.AutoRepeat := true
 	}
 	
 	Down()
@@ -43,7 +43,7 @@ JoyPOV2Key(Up := "Up", Down := "Down", Left := "Left", Right := "Right", JoyNumb
 	GetKeyState, POV, %JoyNumber%JoyPOV  ; Get position of the POV control.
 	KeyToHoldDownPrev := KeyToHoldDown  ; Prev now holds the key that was down before (if any).
 	
-	; Some joysticks might have a smooth/continous POV rather than one in fixed increments.
+	; Some joysticks might have a smooth/continuous POV rather than one in fixed increments.
 	; To support them all, use a range:
 	if POV < 0   ; No angle to report
 		KeyToHoldDown := ""
@@ -60,7 +60,7 @@ JoyPOV2Key(Up := "Up", Down := "Down", Left := "Left", Right := "Right", JoyNumb
 	
 	if (KeyToHoldDown == KeyToHoldDownPrev)  ; The correct key is already down (or no key is needed).
 	{
-		if (IsObject(KeyToHoldDown) && KeyToHoldDown.AutoRepeate)
+		if (IsObject(KeyToHoldDown) && KeyToHoldDown.AutoRepeat)
 			KeyToHoldDown.Down()
 		return
 	}

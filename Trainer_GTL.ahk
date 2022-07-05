@@ -16,7 +16,7 @@ JoyPrefix = %JoyNumber%Joy
 JoyMultiplier = 0.2 ; Mouse cursor speed.
 JoyThreshold = 5 ; Dead zone for RStick. A perfect joystick could use a value of 1.
 MouseWheelNumber = 8 ; How many lines will be scrolled.
-MouseWheelDelay = 25 ; Delay during sequental sending Mouse Wheel keys.
+MouseWheelDelay = 25 ; Delay during sequential sending Mouse Wheel keys.
 
 ; Calculate the axis displacements that are needed to start moving the mouse cursor:
 JoyThresholdUpper := 50 + JoyThreshold ; 50 - is a center, Min-Max = 0-100
@@ -54,7 +54,7 @@ if WinActive("ahk_group GTL") {
 	GetKeyState, POV, %JoyNumber%JoyPOV  ; Get position of the POV control.
 	KeyToSendPrev = %KeyToSend%  ; Prev now holds the key that was down before (if any).
 	
-	; Some joysticks might have a smooth/continous POV rather than one in fixed increments.
+	; Some joysticks might have a smooth/continuos POV rather than one in fixed increments.
 	; To support them all, use a range:
 	if POV < 0   ; No angle to report
 		KeyToSend =

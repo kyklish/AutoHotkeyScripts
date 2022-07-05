@@ -16,14 +16,12 @@ RemoveOSD(iNum)
 }
 
 
-
-
 ; Original version
 /*
 OSD(sText, iDisplayTime := 750)
 {
 	#Persistent
-	; borderless, no progressbar, font size 25, color text 009900
+	; BorderLess, no ProgressBar, font size 25, color text 009900
 	Progress, Hide Y600 W1000 b zh0 cwFFFFFF FM50 CT00BB00,, %sText%, AutoHotKeyProgressBar, Backlash BRK
 	WinSet, TransColor, FFFFFF 255, AutoHotKeyProgressBar
 	Progress, Show

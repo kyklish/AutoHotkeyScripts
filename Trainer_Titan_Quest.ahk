@@ -13,7 +13,7 @@ sStationaryAttackKey := "LShift"
 iTimeIdleKeyboard := 200
 iTimerDelay := 250
 
-; {HotKey: "FuncName", ...}; () - becase we use variables, inside object initialization
+; {HotKey: "FuncName", ...}; () - because we use variables, inside object initialization
 oTimers := {(sMoveAttackKey): "MoveAttack", (sStationaryAttackKey): "StationaryAttack"}
 
 GroupAdd, TQ, ahk_exe TQ.exe
@@ -98,7 +98,7 @@ return
 #IfWinActive
 F1:: ShowHelpWindow("
 (LTrim
-	Q     -> ВЫКЛ. все; автоклик левой кнопкой мыши
+	Q     -> ВЫКЛ. все; авто клик левой кнопкой мыши
 	Ctrl  -> ВКЛ. авто движение и атака
 	Shift -> ВКЛ. авто атака на месте
 )")

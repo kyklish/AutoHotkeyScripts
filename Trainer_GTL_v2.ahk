@@ -17,7 +17,7 @@ JoyPrefix = %JoyNumber%Joy
 JoyMultiplier = 0.2 ; Mouse cursor speed.
 JoyThreshold = 5 ; Dead zone for RStick. A perfect joystick could use a value of 1.
 MouseWheelNumber = 8 ; How many lines will be scrolled.
-MouseWheelDelay = 25 ; Delay during sequental sending Mouse Wheel keys.
+MouseWheelDelay = 25 ; Delay during sequential sending Mouse Wheel keys.
 
 ; Calculate the axis displacements that are needed to start moving the mouse cursor:
 JoyThresholdUpper := 50 + JoyThreshold ; 50 - is a center, Min-Max = 0-100

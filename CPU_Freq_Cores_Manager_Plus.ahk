@@ -6,7 +6,7 @@ OSD(text)
 {
 	TimeOut := 750
 	#Persistent
-	; borderless, no progressbar, font size 25, color text 009900
+	; BorderLess, no ProgressBar, font size 25, color text 009900
 	Progress, hide Y600 W1000 b zh0 cwFFFFFF FM50 CT00BB00,, %text%, AutoHotKeyProgressBar, Backlash BRK
 	WinSet, TransColor, FFFFFF 255, AutoHotKeyProgressBar
 	Progress, show
@@ -31,7 +31,7 @@ HasVal(ByRef haystack, ByRef needle) {
 	return 0
 }
 ;-------------------------------------------------------------------------------------
-TARGET_SCHEME := "d740827b-295c-4564-b160-6c98ca38069c" ;GUID того плана энергосбережения, которого будем "мучать" (заранее нужно создать новый Power Scheme в Windows на базе Balanced Power Scheme и к примеру назвать его "CustomFreqAHK", чтобы не портить Balanced план, добавить в автозагрузку комманду установки Balanced плана)
+TARGET_SCHEME := "d740827b-295c-4564-b160-6c98ca38069c" ;GUID того плана энергосбережения, которого будем "мучать" (заранее нужно создать новый Power Scheme в Windows на базе Balanced Power Scheme и к примеру назвать его "CustomFreqAHK", чтобы не портить Balanced план, добавить в автозагрузку команду установки Balanced плана)
 PowerWriteMaxProcessorStateValueIndex(ByRef Value, ByRef Mode)
 {
 	global TARGET_SCHEME
@@ -63,7 +63,7 @@ PowerWriteCoreParkingMaxCoresValueIndex(ByRef Value, ByRef Mode)
 ;-------------------------------------------------------------------------------------
 ;D:\SERGEY\Install\Info\CPU Parking\Processor State Freq Test.txt
 ArrayCPUStateInPercent := [ 30,  31,  34,  40,  46,  53,  56,  62,  68,  71,  78,  84,  90,  93,  99, 100] ;состояние (P-state) процессора в %
-ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (МГц) в соответсвии с P-state процессора
+ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (МГц) в соответствии с P-state процессора
 WriteProcessorStateSetting(ByRef Index)
 {
 	global ArrayCPUStateInPercent
@@ -89,7 +89,7 @@ WriteProcessorCoresSetting(ByRef Index)
 	;OSD("Cores num: " . Index)
 }
 ;-------------------------------------------------------------------------------------
-ModifyArrayIndex(ByRef Index, ByRef Delta, ByRef ArrayLen) ;инкримент или дикримент Index на величину Delta
+ModifyArrayIndex(ByRef Index, ByRef Delta, ByRef ArrayLen) ;инкремент или декремент Index на величину Delta
 {
 	Index += Delta
 	if (Index < 1)
@@ -218,4 +218,4 @@ NumpadDot & Numpad5:: SetCPUFreqInGHz(3.0)
 NumpadDot & Numpad0:: ShowCustomFreqAHKInfo()
 ;~NumpadDot & Numpad0:: ShowCustomFreqAHKInfo() ;тильда для прозрачной работы клавиши, NumpadDot никогда не блокируется, одиночная клавиша NumpadDot срабатывает на нажатие, работает системное автоповторение при длительном нажатии, ниже приведен альтернативный вариант со своими недостатками
 
-$NumpadDot:: Send {NumpadDot} ;для прозрачной работы клавиши, иначе NumpadDot не будет работать как точка при наборе текста, NumpadDot блокируется при срабатывании комбинации клавиш, есть один минус - срабатывает только на отпускание клавиши, соответсвенно нет автоповторения при длительном нажатии
+$NumpadDot:: Send {NumpadDot} ;для прозрачной работы клавиши, иначе NumpadDot не будет работать как точка при наборе текста, NumpadDot блокируется при срабатывании комбинации клавиш, есть один минус - срабатывает только на отпускание клавиши, соответственно нет автоповторения при длительном нажатии

@@ -41,7 +41,7 @@ if WinActive("ahk_group GPL") {
 	GetKeyState, POV, %JoyNumber%JoyPOV  ; Get position of the POV control.
 	KeyToSendPrev = %KeyToSend%  ; Prev now holds the key that was down before (if any).
 	
-	; Some joysticks might have a smooth/continous POV rather than one in fixed increments.
+	; Some joysticks might have a smooth/continuos POV rather than one in fixed increments.
 	; To support them all, use a range:
 	if POV < 0   ; No angle to report
 		KeyToSend =

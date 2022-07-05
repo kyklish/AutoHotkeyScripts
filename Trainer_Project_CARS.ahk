@@ -15,11 +15,11 @@ if(WinExist(sFolder))
 
 ;==============================================================================================
 
-;Joystick POV to Arrows - Ремапим POV в стрелочки
+;Joystick POV to Arrows - Переназначаем POV в стрелочки
 #Include <JoyPOV2Key> ; <- See comments in JoyPOV2Key function
 SetTimer, JoyPOV2Key, 10
 
-;Joystic VU axises to Mouse Cursor
+;Joystick VU axises to Mouse Cursor
 #Include <JoyAxis2MouseCursor>
 WatchJoystick := Func("JoyAxis2MouseCursor").Bind("V", "U", 0.5)
 SetTimer, %WatchJoystick%, 10

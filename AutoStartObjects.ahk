@@ -44,8 +44,8 @@ class Process
 		;!!! iDelay - Script will SLEEP this time before starting process.
 		;Расчет: из задержки текущего процесса вычитается задержка предыдущего.
 		;Происходит последовательное "накопление" задержек от запусков предыдущих процессов.
-		;Вначале присваевается целевая задержка, а потом она заменяется разницей,
-		;	для корректного запуска последоваетльности процессов с разными задержками.
+		;Вначале присваивается целевая задержка, а потом она заменяется разницей,
+		;	для корректного запуска последовательности процессов с разными задержками.
 		this.iDelay := oProcParams.iDelay
 		this.bAdmin := oProcParams.bAdmin
 		this.sExeName := oProcParams.sExeName
@@ -58,7 +58,7 @@ class Process
 	{
 		;Если перезапустить скрипт, когда приложения из списка уже запущены,
 		;то задержка запуска незапущенного приложения будет равна разнице задержек текущего
-		;и предыдущего приложений. Это удобно, когда нужно презапустить приложение из автозагрузки:
+		;и предыдущего приложений. Это удобно, когда нужно перезапустить приложение из автозагрузки:
 		;закрыли приложение и перезапустили скрипт.
 		if (!this.Exist()) {
 			Sleep % this.iDelay "000"
@@ -234,7 +234,7 @@ class Manager
 		{
 			iDelayBetween := oProcParams.iDelay - iDelayPrev ; we SLEEP this script between start processes
 			if (iDelayBetween < 0)
-				throw Exception("Wrong sorting order.`nDelay berween starting processes cannot be negative.", , iDelayBetween)
+				throw Exception("Wrong sorting order.`nDelay between starting processes cannot be negative.", , iDelayBetween)
 			iDelayPrev := oProcParams.iDelay
 			oProcParams.iDelay := iDelayBetween
 			this.oProcList.Push(new Process(oProcParams))
@@ -248,14 +248,14 @@ class Manager
 			if (oProc.iDelay && !oProc.Exist()) {
 				maxProgress := oProc.iDelay
 				SplitPath, % oProc.sExeName, , , , exeName
-				Progress, b zx0 zy0 cwFFFFFF r0-%maxProgress% y0 zh6, %exeName% ;!!!if size of progress bar equals 4 or less it may be invisible, when choosed non-default Windows Theme!!!
+				Progress, b zx0 zy0 cwFFFFFF r0-%maxProgress% y0 zh6, %exeName% ;!!!if size of progress bar equals 4 or less it may be invisible, when user set non-default Windows Theme!!!
 				barPosition := 0
 				;Первое обновление раньше, чтобы последнее задержалось на экране на 1000-750=250мс дольше,
 				;перед тем как его обнулят, иначе прогресс дойдя до конца моментально сбрасывается в начало.
 				SetTimer, FirstProgressUpdate, -750
 			}
 			oProc.Start() ;we Sleep here to make delay
-			SetTimer, FirstProgressUpdate, Off ;stop timer agter each process to prevent glitch, when reload script and all processes already exists
+			SetTimer, FirstProgressUpdate, Off ;stop timer after each process to prevent glitch, when reload script and all processes already exists
 			SetTimer, ProgressUpdate, Off ;stop timer after each process to prevent glitch, when timer continue updates Progress while process launches and there no need for update
 		}
 		Progress, Off
@@ -271,8 +271,6 @@ class Manager
 		return ;I suggest this code runs in Manager.Start() scope view, which stay alive due to Sleep in method Process.Start()
 	}
 }
-
-
 
 
 ;CSV Example:

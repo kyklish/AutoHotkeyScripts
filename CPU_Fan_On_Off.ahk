@@ -1,15 +1,15 @@
 ﻿#Include <_COMMON_SETTINGS_>
 
 ;!!!!!!!!!!!!!!!!!!!!!!
-;номера форм ввода TRxSpinEditX могут менятся после переустановки и перезагрузки винды
+;номера форм ввода TRxSpinEditX могут изменяться после переустановки и перезагрузки Windows
 
-;из-за специфики приложения SpeedFan этими коммандами невозможно добиться надежного вызова окна и его исчезновения в трей
+;из-за специфики приложения SpeedFan этими командами невозможно добиться надежного вызова окна и его исчезновения в трей
 ;WinHide -> WinShow
 ;WinMinimize -> WinRestore
 ;WinMaximize -> WinRestore
 ;but you can use in cross way :)
-;поэтому приходится использовать TrayIcon_Button(), она работает только из под ограниченых прав, иначе вешает эксплорер
-;но все последующие комманды нужно выполнять с админ правами
+;поэтому приходится использовать TrayIcon_Button(), она работает только из под ограниченных прав, иначе вешает эксплорер
+;но все последующие команды нужно выполнять с админ правами
 
 #SingleInstance Off
 ;CoordMode, Pixel, Client
@@ -127,7 +127,7 @@ FindVisibleControl(name, ByRef index)
 	if (err)
 		MsgBox, %A_ThisFunc%: didn't find any visible input field "%name%".
 	return err
-	;return value = zero - finded visible input box
+	;return value = zero - found visible input box
 	;return value = non zero - didn't find or error
 }
 

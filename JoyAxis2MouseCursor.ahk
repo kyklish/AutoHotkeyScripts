@@ -20,8 +20,8 @@
 ;	so values below 0.5 rounded to 0 and above 0.5 to 1. In example script this works,
 ;	in function SetFormat works different.
 ;	Я думаю, что если значение по умолчанию, то первое обращение к переменной (и присвоение ей дефолтного значения)
-;	происходит после комманды SetFormat, поэтому она округлятеся.
-;	Если значение передается явно в функцию, то оно присваевается переменной до комманды SetFormat и все работает как надо.
+;	происходит после команды SetFormat, поэтому она округляется.
+;	Если значение передается явно в функцию, то оно присваивается переменной до команды SetFormat и все работает как надо.
 ;	Поэтому я перенес SetFormat в самый конец функции, где она почему-то работает как надо.
 
 JoyAxis2MouseCursor(AxisX := "X", AxisY := "Y", JoyMultiplier := 0.2, JoyThreshold := 5, JoyNumber := 1)
@@ -66,7 +66,7 @@ JoyAxis2MouseCursor(AxisX := "X", AxisY := "Y", JoyMultiplier := 0.2, JoyThresho
 
 	if MouseNeedsToBeMoved
 	{
-		SetFormat, float, 03 ; New position. Round next math to decimals. Without all SetFormat commands function works propertly too, MouseMove accepts float values.
+		SetFormat, float, 03 ; New position. Round next math to decimals. Without all SetFormat commands function works properly too, MouseMove accepts float values.
 		SetMouseDelay, -1  ; Makes movement smoother.
 		MouseMove, DeltaX * JoyMultiplier, DeltaY * JoyMultiplier, 0, R
 	}

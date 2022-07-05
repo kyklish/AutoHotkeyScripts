@@ -12,7 +12,7 @@ Reload_AsUser()
 ;				  этот параметр можно опустить, если у приложения только одна иконка
 ; Порядок строк в CSV файле определяет результирующий порядок иконок
 ; Сортировка вниз работает, даже если указаны одинаковые ToolTip-ы для поиска
-; Сортировка вверх не срабоает в этом случае, нужно указывать уникальный текст поиска
+; Сортировка вверх не сработает в этом случае, нужно указывать уникальный текст поиска
 ; Можно посмотреть всю инфу по текущим иконкам с помощью функции ShowTrayInfo()
 
 csvFile := "Tray_Icon_Organize.csv"
@@ -43,7 +43,7 @@ MsgMonitor(wParam, lParam, msg) ; Returning from this function quickly is often 
 
 SortIconsUp:
 ;iIcons := TrayIcon_GetInfo().Count() ; не трогает иконки аварийно упавших приложений
-iIcons := TrayIcon_GetValidCount() ; убирает инонки упавших приложений
+iIcons := TrayIcon_GetValidCount() ; убирает иконки упавших приложений
 if (iIcons != iIconsPrev) {
 	TrayIcon_SortUp(csvFile)
 	iIconsPrev := iIcons
@@ -193,7 +193,7 @@ TrayIcon_MoveToTop(sExeName, oToolTip := "")
 }
 
 
-; ищем порядковый номер иконки определенного процесса и определенного текста в трее (нумерация начинатеся с 0)
+; ищем порядковый номер иконки определенного процесса и определенного текста в трее (нумерация начинается с 0)
 TrayIcon_GetIdx(sExeName, sToolTip := "")
 {
 	idx := -1 ; -1 is error value
@@ -215,7 +215,7 @@ TrayIcon_GetIdx(sExeName, sToolTip := "")
 ; показать всю инфу по иконкам в трее
 ShowTrayInfo()
 {
-	; Removes previosly created GUI
+	; Removes previously created GUI
 	Gui Destroy
 	
 	; Create a ListView to display the list of info gathered

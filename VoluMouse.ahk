@@ -5,7 +5,7 @@
 WheelUp::Send {Volume_Up}
 WheelDown::Send {Volume_Down}
 NumpadAdd::
-if (doubleup := !doubleup) {
+if (doubleUp := !doubleUp) {
 	Hotkey, WheelUp, DoubleUp
 	Hotkey, WheelDown, DoubleDown
 }

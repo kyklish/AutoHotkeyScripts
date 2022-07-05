@@ -11,14 +11,14 @@ if A_Args.Length() > 0
 	ExitApp
 }
 
-sendToShorcut := A_AppData . "\Microsoft\Windows\SendTo\" . RegExReplace(A_ScriptName, "\.(exe|ahk)$") . ".lnk"
+sendToShortcut := A_AppData . "\Microsoft\Windows\SendTo\" . RegExReplace(A_ScriptName, "\.(exe|ahk)$") . ".lnk"
 if (A_IsCompiled)
 	icon := A_ScriptFullPath
 else
 	icon := "Icon.ico"
 Menu, Tray, Icon, %icon% ; this will not enable tray icon, but will be visible in window title bar
 ;@Ahk2Exe-SetMainIcon Icon.ico ; Script Compiler Directives (begins with semicolon! it's not comment!)
-; with above command we can ommit /icon parameter during compiling
+; with above command we can omit /icon parameter during compiling
 
 Gui +AlwaysOnTop
 Gui Add, Picture, x8 y8 w64 h64 0x6, %icon%
@@ -29,7 +29,7 @@ Gui Add, Button, x8 y504 w345 h24 gDeleteShortcutSendTo, Click to &remove "Send 
 Gui Font ; set default font params
 Gui Add, Tab2, x5 y80 w350 h385, General|Changelog ; subsequently added controls automatically belong to first tab
 Gui Add, Edit, x10 y104 w340 h357 +Multi +ReadOnly, % GetDescription()
-Gui Tab, 2 ; subsequently added controls automatically belong to second tab (you can use tab's Name insteed number)
+Gui Tab, 2 ; subsequently added controls automatically belong to second tab (you can use tab's Name instead number)
 Gui Font,, Courier New
 Gui Add, Edit, x10 y104 w340 h357 +Multi +ReadOnly, % GetChangelog()
 ; by default single Edit control on first tab will select all text, we change focus to Text control to prevent this behavior
@@ -115,9 +115,9 @@ Convert(FileArray)
 
 CreateShortcutSendTo()
 {
-	global sendToShorcut
+	global sendToShortcut
 	shell := ComObjCreate("WScript.Shell")
-	lnk := shell.CreateShortcut(sendToShorcut)
+	lnk := shell.CreateShortcut(sendToShortcut)
 	lnk.TargetPath := A_ScriptFullPath
 	lnk.WorkingDirectory := A_ScriptDir
 	lnk.IconLocation := A_ScriptFullPath . ",0"
@@ -126,9 +126,9 @@ CreateShortcutSendTo()
 
 DeleteShortcutSendTo()
 {
-	global sendToShorcut
-	if (FileExist(sendToShorcut))
-		FileDelete, %sendToShorcut%
+	global sendToShortcut
+	if (FileExist(sendToShortcut))
+		FileDelete, %sendToShortcut%
 }
 
 GetDescription()

@@ -19,14 +19,15 @@
 	;Newest version of Samsung Magician won't work from built-in admin user "Admin Fixer".
  ;0,A,"C:\Program Files (x86)\Samsung\Samsung Magician\SamsungMagician.exe","/AUTOHIDE"
   0,U,"C:\Program Files\ESET\ESET NOD32 Antivirus\egui.exe","/hide /waitservice"
-	;Crashes modern games. Steam overlay not work propertly in some games. :(
+	;Crashes modern games. Steam overlay not work properly in some games. :(
  ;0,A,"C:\Program Files\Fraps\fraps.exe"
  ;0,U,"C:\Program Files\Sandboxie\SbieCtrl.exe"
  ;0,U,"C:\Program Files\Sandboxie-Plus\SbieCtrl.exe"
   0,U,"C:\Program Files\Sandboxie-Plus\SandMan.exe","-autorun"
   0,U,"C:\Program Files\Windows Firewall Control\wfc.exe"
-	;Windows Gadgets - ⨭䠠ᠬࠧ௳᪠岬 䠦堥᫨ 㤠먲젨砠Ⲯ砯㱪͊ ;0,U,"C:\Program Files\Windows Sidebar\sidebar.exe","/autoRun"
-	;Dexpot 㬥岠ⱥ 粮 蠁utoSizer 蠭ଭ ᮫츥.
+	;Windows Gadgets - self restore in autostart registry key
+  ;0,U,"C:\Program Files\Windows Sidebar\sidebar.exe","/autoRun"
+	;Dexpot is have same functionality as AutoSizer.
  ;0,U,"C:\Program Files (x86)\AutoSizer\AutoSizer.exe"
  ;0,U,"C:\Program Files (x86)\Codebox\BitMeter\BitMeter2.exe"
  ;0,A,"C:\Program Files (x86)\KillSoft\HKM\hkm.exe"
@@ -49,10 +50,19 @@
   0,U,"D:\SERGEY\Options\Program Files\Volume2\Volume2.exe"
   0,U,"C:\Users\Fixer\AppData\Local\Viber\Viber.exe","StartMinimized"
  ;0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
-	;HWiNFO 䮫歠 Რಮ⠲젰୼襠AIDA64, 粮Ỡ⠯ࠢ諼��� ﮰ浪堮⮡ࠦૠἠ譴ࠢ OSD MSI Afterburner
-	;HWiNFO: 嶴 ⻫岠岬 峲 ���⻫岠岍
+	;HWiNFO add sensors value to OSD MSI Afterburner:
+		;Core 0 Frequency
+		;CPU Fan speed
+	;HWiNFO: OS crushed if launched without delay
   7,A,"D:\SERGEY\Options\Program Files\HWiNFO32\HWiNFO32.exe"
   7,A,"D:\SERGEY\Options\Program Files\BAT\Windows_Firewall_Control.bat",,,"Hide"
+	;AIDA64 add sensors value to OSD MSI Afterburner:
+		;Time
+		;Desktop Resolution
+		;Vertical Refresh Rate
+		;Battery Level
+		;Battery Power Load
+		;Battery Input
  15,A,"D:\SERGEY\Options\Program Files\AIDA64\AIDA64.exe"
  25,A,"C:\Program Files (x86)\SpeedFan\SpeedFan.exe","/NOPCISCAN /NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
 ;25,U,"C:\Program Files (x86)\GXStandard16-in-1\GXStandard16in1.exe","Minimum"

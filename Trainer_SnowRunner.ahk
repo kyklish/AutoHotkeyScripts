@@ -10,7 +10,7 @@ if not WinExist("ahk_group SpinTires")
 
 SetKeyDelay, 100
 iOffset := 18 ;Distance to move mouse cursor to shift gear inside game
-SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not relieble
+SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
 
 oStates := [] ;Service variable for script logic. Contains all possible Gear States. Only for debug purpose.
 oGearBox := GearBoxFactory(oStates)
@@ -139,8 +139,8 @@ class State { ;Положение рычага КПП
 	
 	InitLinkedStates() { ;Создаем ответные связи на этот экземпляр класса
 		for cDirection, oState in this.oDirections {
-			cOppositDirection := this.InvertDirection(cDirection)
-			oState.oDirections[cOppositDirection] := this
+			cOppositeDirection := this.InvertDirection(cDirection)
+			oState.oDirections[cOppositeDirection] := this
 		}
 	}
 	

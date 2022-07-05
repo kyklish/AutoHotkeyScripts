@@ -21,7 +21,7 @@ F1:: ShowHelpWindow("
 
 #IfWinActive, ahk_group RT2
 ;RT2 accept only 14 characters via SendInput, if you need more use SendEvent with delay
-Numpad0:: SendCheat("nowreck") ;пoeздa никoгдa нe paзбивaютcя
+Numpad0:: SendCheat("nowreck") ;поезда никогда нe разбиваются
 Numpad1:: SendCheat("show me the trains") ;все локомотивы
 Numpad2:: SendCheat("viagra") ;города увеличиваются в два раза
 

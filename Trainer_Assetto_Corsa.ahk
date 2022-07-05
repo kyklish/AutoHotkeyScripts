@@ -28,11 +28,11 @@ if (!WinExist(Content_Manager)) {
 	Run, %CM_FullName%, %CM_Dir%
 	WinWait, %Content_Manager%, , 5
 	if (ErrorLevel)
-		MsgBox, Сontent Manager won't start in 5 seconds.
+		MsgBox, Content Manager won't start in 5 seconds.
 	WinActivate
 }
 
-Reload_AsAdmin() ; run "Сontent Manager" before this (regular rights) and "FreePIE" after (admin rights)
+Reload_AsAdmin() ; run "Content Manager" before this (regular rights) and "FreePIE" after (admin rights)
 
 if (!WinExist(FreePIE)) {
 	Run, %FP_FullName% "E:\GAMES\Assetto Corsa.py" /run /t, %FP_Dir%, Min, FP_PID
@@ -90,7 +90,7 @@ return
 F1:: ShowHelpWindow("
 (LTrim
 	Use this script, only when play with vJoy.
-	Automaticly blocks mouse movement, when game runs.
+	Automatically blocks mouse movement, when game runs.
 	3 -> Exit game and unblock mouse movement.
 )")
 

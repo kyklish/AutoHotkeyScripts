@@ -1,6 +1,6 @@
 ﻿#Include <_COMMON_SETTINGS_>
 
-; Есть программка "Esc Close", которая по сути является скомпиллированным AutoHotKey скриптом
+; Есть программка "Esc Close", которая по сути является скомпилированным AutoHotKey скриптом
 ; Я решил написать свой скрипт по примеру из справки
 ; Третий пример из справки (SetTimer), изрядно изменил
 ; Example #3: Detection of single, double, and triple-presses of a hotkey.

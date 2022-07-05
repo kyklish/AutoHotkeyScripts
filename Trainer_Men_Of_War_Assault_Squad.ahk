@@ -15,7 +15,7 @@ Ypri := 1055 ;
 !z:: Reload
 
 #IfWinActive, ahk_exe mow_assault_squad.exe
-+x::PressIconOnAmmoExchange(361) ; взять всю аммуницию в окне обмена
++x::PressIconOnAmmoExchange(361) ; взять всю амуницию в окне обмена
 ^x::PressIconOnAmmoExchange(426) ; отдать -//-
 
 Numpad1::SelectWeapon(Xsec, 1)
@@ -60,7 +60,7 @@ PressIconOnAmmoExchange(X, Y := 83)
 {
 	ClickAndRestore(X, Y)
 	Sleep, 100
-	Send, {Escape} ; если зажата клавиша Shift, то Esc не закроет меню с инвентарем, полезная фича, можно несколько раз нажимать Shift+X, перекидывая всю аммуницию
+	Send, {Escape} ; если зажата клавиша Shift, то Esc не закроет меню с инвентарем, полезная фича, можно несколько раз нажимать Shift+X, перекидывая всю амуницию
 }
 
 ClickAndRestore(X, Y, ClickCount := 1)

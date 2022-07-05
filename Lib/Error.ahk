@@ -2,7 +2,7 @@
 ;Usage:
 ;	#Include <Error>
 ;	...
-;	CheckError(sMessage [, aExtra, sWhat, sFile, sLine, sFuncNameFinnaly]) - use this, if command set ErrorLevel
+;	CheckError(sMessage [, aExtra, sWhat, sFile, sLine, sFuncNameFinally]) - use this, if command set ErrorLevel
 ;	throw Exception(sMessage, , aExtra) - use this in all other cases
 
 ;Example:
@@ -28,10 +28,10 @@
 OnError("ShowError")
 
 
-CheckError(sMessage, aExtra := "", sWhat := "", sFile := "", sLine := "", sFuncNameFinnaly := "") ; sLine := A_LineNumber ==> Unsupported parameter default.
+CheckError(sMessage, aExtra := "", sWhat := "", sFile := "", sLine := "", sFuncNameFinally := "") ; sLine := A_LineNumber ==> Unsupported parameter default.
 {
 	if (ErrorLevel)
-		throw { message: sMessage, extra: aExtra, what: sWhat, file: sFile, line: sLine, err: ErrorLevel, func: sFuncNameFinnaly }
+		throw { message: sMessage, extra: aExtra, what: sWhat, file: sFile, line: sLine, err: ErrorLevel, func: sFuncNameFinally }
 }
 
 
@@ -58,7 +58,7 @@ ShowError(e)
 	sText = %sText%
 		(LTrim
 			EXIT FROM CURRENT THREAD.
-			To change this behaviour edit ".\Lib\Error.ahk"
+			To change this behavior edit ".\Lib\Error.ahk"
 		)
 	;----------------------------------------------------
 	MsgBox, 16, , %sText%
