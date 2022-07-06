@@ -627,30 +627,29 @@ DrawComment(id, coord)
 	; Shows text in one line if we don't specify height of [Text] control.
 	; But we must manually calculate is it inside or outside of screen and correct position.
 
-	; Variant 1 (fast, but hardcoded char size): fix position (calculate variables) and show gui window.
+	; Variant 1 (hardcoded char size): fix position (calculate variables) and show gui window.
 	; 6px is char width and 13px is char height of 'Consolas' font with default size.
-	w := StrLen(comment) * 6 ; width
-	h := 13                  ; height
-	x := (coord.X1 + w) < 1920 ? coord.X1 : 1920 - w
-	y := (coord.Y2 + h) < 1080 ? coord.Y2 : 1080 - h
+	; w := StrLen(comment) * 6 ; width
+	; h := 13                  ; height
+	; x := (coord.X1 + w) < A_ScreenWidth ? coord.X1 : A_ScreenWidth - w
+	; y := (coord.Y2 + h) < A_ScreenHeight ? coord.Y2 : A_ScreenHeight - h
 
-	Gui, RectToolTip%id%: Add, Text, , % comment
-	Gui, RectToolTip%id%: Show, % "x" x " y" y + 1 " NoActivate" ; move 1px below to not overlap with rectangle
-
-	; Variant 2 (slow, but universal): show gui window and then fix position (move it).
-	; WinMove is very slow command!!!
 	; Gui, RectToolTip%id%: Add, Text, , % comment
-	; Gui, RectToolTip%id%: Show, % "x" coord.X1 " y" coord.Y2 " NoActivate"
+	; Gui, RectToolTip%id%: Show, % "x" x " y" y + 1 " NoActivate" ; Move 1px below to not overlap with rectangle
 
-	; Gui, RectToolTip%id%: +LastFoundExist
-	; VarSetCapacity(rect, 16, 0)
-	; DllCall("GetClientRect", uint, myGuiHWND := WinExist(), uint, &rect)
-	; w := NumGet(rect, 8, "int")
-	; h := NumGet(rect, 12, "int")
-	; x := (coord.X1 + w) < 1920 ? coord.X1 : 1920 - w
-	; y := (coord.Y2 + h) < 1080 ? coord.Y2 : 1080 - h
-	; if (coord.X1 != x or coord.Y2 != y)
-		; WinMove, % x, % y + 1 ; move 1px below to not overlap with rectangle
+	; Variant 2 (universal): show gui window outside of screen, measure text area, fix position, show on proper position.
+	; WinMove is very slow command!!!
+	Gui, RectToolTip%id%: Add, Text, , % comment
+	Gui, RectToolTip%id%: Show, % "x" A_ScreenWidth + coord.X1 " y" A_ScreenHeight + coord.Y2 " NoActivate" ; Show window out of screen
+
+	Gui, RectToolTip%id%: +LastFoundExist
+	VarSetCapacity(rect, 16, 0)
+	DllCall("GetClientRect", uint, myGuiHWND := WinExist(), uint, &rect)
+	w := NumGet(rect, 8, "int")
+	h := NumGet(rect, 12, "int")
+	x := (coord.X1 + w) < A_ScreenWidth ? coord.X1 : A_ScreenWidth - w
+	y := (coord.Y2 + h) < A_ScreenHeight ? coord.Y2 : A_ScreenHeight - h
+	Gui, RectToolTip%id%: Show, % "x" x " y" y + 1 " NoActivate" ; Move 1px below to not overlap with rectangle
 }
 
 DrawOverlay(coords)
