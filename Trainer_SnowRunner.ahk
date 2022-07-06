@@ -34,10 +34,11 @@ return
 Send, {w up} ;Not worked if combined in one Send command!
 Send, {s up}
 return
+
 NumpadMult::bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
-/*
-#If WinActive("ahk_group SpinTires") and !bManualMod ;Автоматическое перемещение рычага КПП
 Numpad0::oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
+
+#If WinActive("ahk_group SpinTires") and !bManualMod ;Автоматическое перемещение рычага КПП
 Numpad1::oGearBox.ShiftGear(1) ;Включить передачу в соответствии со схемой
 Numpad2::oGearBox.ShiftGear(2)
 Numpad3::oGearBox.ShiftGear(3)
@@ -49,11 +50,16 @@ Numpad8::oGearBox.ShiftGear(8)
 Numpad9::oGearBox.ShiftGear(9)
 
 #If WinActive("ahk_group SpinTires") and bManualMod ;Перемещение рычага КПП с помощью "крестовины"
-Numpad4::ShiftGear("L")
-Numpad6::ShiftGear("R")
-Numpad8::ShiftGear("U")
-Numpad2::ShiftGear("D")
-*/
+; Numpad4::ShiftGear("L")
+; Numpad6::ShiftGear("R")
+; Numpad8::ShiftGear("U")
+; Numpad2::ShiftGear("D")
+Numpad4::oGearBox.ShiftGearManual("L")
+Numpad6::oGearBox.ShiftGearManual("R")
+Numpad8::oGearBox.ShiftGearManual("U")
+Numpad2::oGearBox.ShiftGearManual("D")
+
+
 #IfWinNotActive ahk_group SpinTires
 F1:: ShowHelpWindow("
 (LTrim
@@ -68,6 +74,12 @@ F1:: ShowHelpWindow("
 	Numpad8    -> Рычаг КПП вверх  (Ручное).
 	Numpad2    -> Рычаг КПП вниз   (Ручное).
 	M          -> Открыть карту, предварительно отключив зажатые клавиши движения.
+	Схема КПП:
+	7 8      + H
+	| |      | |
+	4-5-6 -> L-A-N
+	| |      | |
+	1 2      - R
 )")
 
 
@@ -162,22 +174,34 @@ class GearBox { ;Коробка передач
 	
 	__New(oCurrentState) {
 		this.oCurrentState := this.oResetState := oCurrentState
+		this.OutputDebugCurrentGear()
 	}
 	
 	ExecuteShiftSequence(sDirectionSequence) { ;For example "LLU": left, left, up
 		Loop, Parse, sDirectionSequence
 		{
 			this.oCurrentState := this.oCurrentState.Shift(A_LoopField)
+			this.OutputDebugCurrentGear()
 		}
 	}
 	
 	ShiftGear(iTargetGear) { ;переключить передачу
 		sDirectionSequence := this.FindShiftSequence(this.oCurrentState, iTargetGear)
-		this.ExecuteShiftSequence(sDirectionSequence)
+		if (sDirectionSequence)
+			this.ExecuteShiftSequence(sDirectionSequence)
+		else
+			this.WrongGearSound()
+	}
+	
+	ShiftGearManual(cDirection) { ;переключить передачу вручную
+		if (IsObject(this.oCurrentState.oDirections[cDirection])) ;oDirections содержит связь для данного направления перемещения рычага КПП
+			this.ExecuteShiftSequence(cDirection)
+		else ;You can't shift in that direction
+			this.WrongGearSound()
 	}
 	
 	FindShiftSequence(oSearchState, iTargetGear, iParentGear := -1, sTempSequence := "") { ;Return for example "ULD": up, left, down
-		if (oState.iGear = iTargetGear)
+		if (oSearchState.iGear = iTargetGear)
 			return
 		for cDirection, oState in oSearchState.oDirections
 		{
@@ -193,6 +217,23 @@ class GearBox { ;Коробка передач
 	
 	Reset() { ;Reset to initial State if you loose sync in-game gearbox with script GearBox.
 		this.oCurrentState := this.oResetState
+		this.OutputDebugCurrentGear()
+	}
+	
+	WrongGearSound() {
+		Random, i, 0, 5
+		SoundPlay, ShowRunnerShift%i%.mp3, Wait ;Wait until play finish
+		SoundPlay, StopPlayback.mp3 ;Release allocated codecs
+		this.OutputDebugCurrentGear(true)
+	}
+	
+	OutputDebugCurrentGear(bWrongGear := false) {
+		msg := "Gear Position: "
+		if (bWrongGear)
+			msg .= "Пиздец блять!"
+		else
+			msg .= this.oCurrentState.iGear
+		OutputDebug, % msg
 	}
 }
 
