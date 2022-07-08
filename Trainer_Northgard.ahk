@@ -92,18 +92,18 @@ Toggle to 4 units mode via hotkey (see below). Draw formation with 'WarChief'.
 
 ; BUILDINGS BUTTON COORDINATES
 colStep  := 57
-colBase  := 1695
+colBase  := 1696
 colOne   := colBase + colStep * 0
 colTwo   := colBase + colStep * 1
 colThree := colBase + colStep * 2
 colFour  := colBase + colStep * 3
 
-global rowVillage  := 220
-global rowProdOne  := 315
-global rowProdTwo  := 375
-global rowMilitary := 465
-global rowTrade    := 560
-global rowMystic   := 655
+global rowVillage  := 223
+global rowProdOne  := 317
+global rowProdTwo  := 374
+global rowMilitary := 468
+global rowTrade    := 562
+global rowMystic   := 656
 
 ;-------------------------------------------------------------
 ;--------------------- MILITARY VARIABLE ---------------------
