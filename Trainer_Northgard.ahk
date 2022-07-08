@@ -47,9 +47,9 @@ helpText := "
           H = Lore         |      Delete = Destroy Building
           , = Lore         |
 
-           [SELECT ALL]    | [SELECT ALL EXCEPT ONE]
-           Q = Villager    | Space + Q = Villager
-           W = Woodcutter  | Space + W = Woodcutter
+          [SELECT ALL]     |   [SELECT ALL EXCEPT ONE]
+          Q = Villager     |   Space + Q = Villager
+          W = Woodcutter   |   Space + W = Woodcutter
 
                        [SCRIPT]
          F1 = Show Help 1  |         F11 =  Reload Script
@@ -62,6 +62,10 @@ Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
   Ctrl + F1 = Toggle Overlay
 Shift + F11 = Toggle Send Mode
 
+                      [MILITARY]
+         J + AppsKey = Toggle Mode: 3 units or 4 units
+AppsKey + RMB + Drag = Make Military Formation
+
               [MILITARY FORMATION HELPER]
 'Military Formation Helper' has two modes: 3 units (default) or 4 units:
     3 units moves three unit's type: 'Shield', 'Warrior', 'Axe'.
@@ -72,9 +76,6 @@ you don't have 'WarChief', no units will be send to start dot.
 'WarChief' means all units, that are assigned to in-game '1' hotkey.
 Select Warchief, bear, any big units and press [Ctrl + 1].
 Toggle to 4 units mode via hotkey (see below). Draw formation with 'WarChief'.
-
-         J + AppsKey = Toggle Mode: 3 units or 4 units
-AppsKey + RMB + Drag = Make Military Formation
 )"
 
 ;-------------------------------------------------------------
