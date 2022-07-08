@@ -304,10 +304,19 @@ FixBuildingMenuPosition(y)
 	; For example, when you choose military path "GUARDIAN" you got
 	; four "Militia" units, you can receive some unique mystic units, etc.
 	; Check if Axe icon of Warband on it's place
-	PixelGetColor, color, 1674, 727, RGB ; FixBuildingMenuPosition, AxeIcon
-	if (color != 0xA4B5C1)
-		y := y - 50 ; Axe icon not there, Warband menu is taller, fix position
-	return y
+	axeX := 1675
+	axeColor := 0xA4B5C1
+	PixelGetColor, color, axeX, 638, RGB ; FixBuildingMenuPosition, AxeIcon, TallMilUnitMenu
+	if (color == axeColor) ; Example: Bodyguard for Warchief (Dear Clan)
+		return y - 89 ; Warband menu is tall, fix Build menu position
+	PixelGetColor, color, axeX, 680, RGB ; FixBuildingMenuPosition, AxeIcon, MediumMilUnitMenu
+	if (color == axeColor) ; Example: Militia units (Any clan with "GUARDIAN" military path)
+		return y - 47 ; Warband menu is medium, fix Build menu position
+	PixelGetColor, color, axeX, 727, RGB ; FixBuildingMenuPosition, AxeIcon, SmallMilUnitMenu
+	if (color == axeColor) ; Example: No any additional military units
+		return y ; Warband menu is small, no need to fix Build menu position
+	ToolTip, Can't find Axe icon in military menu!, 0, 0
+	SoundBeep
 }
 
 ; Pixel based function, don't cover all buildings
@@ -391,7 +400,7 @@ SelectAllMilUnits(unit)
 		Send("1")
 	} else {
 		; Search unit icon on Warband menu
-		ImageSearch, x, y, 1665, 695, 1895, 790, %unit% ; SelectAllMilUnits
+		ImageSearch, x, y, 1665, 655, 1895, 790, %unit% ; SelectAllMilUnits
 		if (ErrorLevel) {
 			if (isDebug) {
 				; In this function it is normal logic, when [ImageSearch] didn't find unit's image.
