@@ -668,7 +668,6 @@ DestroyOverlay(coords)
 	for id, coord in coords {
 		Loop, 4
 			Gui, Rect%A_Index%%id%: Destroy
-		; ToolTip, , , , % id + 1
 		Gui, RectToolTip%id%: Destroy
 	}
 }
@@ -854,7 +853,8 @@ ToggleSendMode()
 	ToolTip
 }
 
-IsDebugScript() {
+IsDebugScript()
+{
 	FullCmdLine := DllCall("GetCommandLine", "Str")
 	if(RegExMatch(FullCmdLine, "i)/debug"))
 		return true
