@@ -897,8 +897,9 @@ ShowHelpText(text)
 		Gui, HelpText: Destroy
 }
 
-ShowToolTip(text := "", x := "", y := "", id := "", fontSize := "s20")
+ShowToolTip(text := "", x := "", y := "", displayTime := -1, id := "", fontSize := "s20")
 {
+	static RmToolTip := {}
 	if (x == "" or y == "")
 		MouseGetPos, x, y
 	id := "ToolTip" . id
@@ -908,9 +909,19 @@ ShowToolTip(text := "", x := "", y := "", id := "", fontSize := "s20")
 		Gui, %id%: Font, % fontSize, Consolas
 		Gui, %id%: Add, Text, , % text
 		Gui, %id%: Show, % "x" x " y" y " NoActivate"
+		if (displayTime != -1) {
+			SetTimer, % RmToolTip, Off ; stop previously launched timer if we quickly show several tooltips
+			RmToolTip := Func("RemoveToolTip").Bind(id)
+			SetTimer, % RmToolTip, % -displayTime
+		}
 	} else {
 		Gui, %id%: Destroy
 	}
+}
+
+RemoveToolTip(id := "ToolTip")
+{
+	Gui, %id%: Destroy
 }
 
 Send(key)
