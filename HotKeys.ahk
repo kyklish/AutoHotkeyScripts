@@ -312,7 +312,7 @@ AppsKey -> Middle Mouse Click
   Mail -> Sylpheed
  !+Esc -> Resource Monitor
    ^+F -> Everything x64
-  #Ins -> Toggle monitor brightness
+  #Ins -> Toggle monitor brightness (0 ÷ 50)
     #`` -> Always On Top
    !+t -> Hide/Show taskbar (Disabled)
 )")
