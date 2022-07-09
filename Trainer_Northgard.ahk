@@ -785,6 +785,19 @@ ParseScriptForOverlay()
 			coords.Push(c)
 			continue
 		}
+		
+		; PixelSearch, x, y, (860), (890), (1185), (1045), color, options ; (comment)
+		;                   match1 match2  match3  match4                      match5
+		if (RegExMatch(A_LoopReadLine, "PixelSearch\s*,.+?,.+?,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*[^;]*;?\s*(.*)?", match)) {
+			c.X1 := match1
+			c.Y1 := match2
+			c.X2 := match3
+			c.Y2 := match4
+			c.lineNumber := A_Index
+			c.comment := match5
+			coords.Push(c)
+			continue
+		}
 	}
 	return coords
 }
