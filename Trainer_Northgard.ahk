@@ -413,6 +413,10 @@ SelectAllCivUnitsExceptOne(unit)
 SelectAllMilUnits(unit)
 {
 	if (unit == idWarChief) {
+		; If user has selected WarChief units on "1" hotkey, it's will move camera to them,
+		; deselect them by selecting entire Warband
+		Send("e")
+		Sleep, 50
 		Send("1")
 	} else {
 		; Search unit icon on Warband menu
