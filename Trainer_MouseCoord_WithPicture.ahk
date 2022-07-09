@@ -102,16 +102,51 @@ GetData()
 }
 
 
-;Left::MouseMove, -1, 0, , R
-;Right::MouseMove, 1, 0, , R
-;Up::MouseMove, 0, -1, , R
-;Down::MouseMove, 0, 1, , R
+;Left:: MouseMove, -1,  0, , R
+;Right::MouseMove,  1,  0, , R
+;Up::   MouseMove,  0, -1, , R
+;Down:: MouseMove,  0,  1, , R
 
-Numpad4::MouseMove, -1, 0, , R
-Numpad6::MouseMove, 1, 0, , R
-Numpad8::MouseMove, 0, -1, , R
-Numpad2::MouseMove, 0, 1, , R
+Numpad4::MouseMove, -1,  0, , R
+Numpad6::MouseMove,  1,  0, , R
+Numpad8::MouseMove,  0, -1, , R
+Numpad2::MouseMove,  0,  1, , R
 Numpad5::GoTo Insert
+
+
++LButton::   StartDrawRect()
++LButton Up:: StopDrawRect()
+
+
+StartDrawRect()
+{
+	global LButton_Held
+	id := "MouseCoord"
+	if (!LButton_Held)
+	{
+		LButton_Held := true
+		MouseGetPos, X1CL, Y1CL
+		JEE_ClientToScreen(WinExist("A"), X1CL, Y1CL, X1SC, Y1SC)
+		Loop {
+			MouseGetPos, X2CL, Y2CL
+			JEE_ClientToScreen(WinExist("A"), X2CL, Y2CL, X2SC, Y2SC)
+			DrawRectangle(X1SC, Y1SC, X2SC, Y2SC, id)
+			ToolTip, % "X1:" X1CL " Y1:" Y1CL " X2:" X2CL " Y2:" Y2CL
+			if (LButton_Held == false)
+				break
+		}
+		DestroyRectangle(id)
+		ToolTip
+		Clipboard := X1CL ", " Y1CL ", " X2CL ", " Y2CL
+	}
+}
+
+
+StopDrawRect()
+{
+	global LButton_Held := false
+}
+
 
 F1:: ShowHelpWindow("
 (
@@ -120,6 +155,7 @@ Insert         -> Save coord, color, pic
 Scroll Lock    -> Toggle show tooltip with info
 Numpad 2 4 6 8 -> Move cursor by one pixel
 Numpad 5       -> Save coord, color, pic
++LMB & Drag    -> Draw rectangle, save to clipboard
 )")
 
 
