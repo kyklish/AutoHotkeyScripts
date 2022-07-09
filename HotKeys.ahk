@@ -42,6 +42,7 @@ GoSub, ^b
 return
 F9:: SendEvent, ^+{Tab} ; Prev Tab
 F10:: SendEvent, ^{Tab} ; Next Tab
+AppsKey:: Click, Middle
 
 +Delete:: ; delete mail
 ; SendMode - Also makes Click and MouseMove/Click/Drag use the specified method
@@ -252,12 +253,13 @@ Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 Pause:: ShowHelpWindow("
 (
 [Browser]
-   ^B -> Paste clipboard and Go
-   ^D -> Search in YouTube selected text
-   ^Z -> Restore recently closed tab
-   F9 -> Previous Tab
-  F10 -> Next Tab
- +Del -> Delete main in Gmail and open next
+     ^B -> Paste clipboard and Go
+     ^D -> Search in YouTube selected text
+     ^Z -> Restore recently closed tab
+     F9 -> Previous Tab
+    F10 -> Next Tab
+   +Del -> Delete main in Gmail and open next
+AppsKey -> Middle Mouse Click
 [Explorer]
  BS -> Go back in file system hierarchy
 [SumatraPDF + STDU Viewer]
