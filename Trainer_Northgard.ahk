@@ -76,10 +76,11 @@ Shift + F11 = Toggle Send Mode
 
                       [MILITARY]
          J + AppsKey = Toggle Mode: 3 units or 4 units
-AppsKey + RMB + Drag = Make Military Formation
+AppsKey + RMB + Drag = Make Military Formation by Unit's Type
+      J + RMB + Drag = Make Military Formation by Unit's Health
 
               [MILITARY FORMATION HELPER]
-'Military Formation Helper' has two modes: 3 units (default) or 4 units:
+'Military Formation by Unit's Type' has two modes: 3 units (default) or 4 units:
     3 units moves three unit's type: 'Shield', 'Warrior', 'Axe'.
     4 units moves  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
 I can't detect Warchief presence in game. So if you use 4 units mode, but
@@ -88,6 +89,9 @@ you don't have 'WarChief', no units will be send to start dot.
 'WarChief' means all units, that are assigned to in-game '1' hotkey.
 Select Warchief, bear, any big units and press [Ctrl + 1].
 Toggle to 4 units mode via hotkey (see below). Draw formation with 'WarChief'.
+
+'Military Formation by Unit's Health' moves health units on start position,
+and not health units to end position.
 )"
 
 ;-------------------------------------------------------------
@@ -182,6 +186,8 @@ global modifierKey := "AppsKey"
 AppsKey & RButton::DragBegin()
 AppsKey & RButton Up::DragEnd()
 J & AppsKey::ToggleWarChief()
+J & RButton::DragHealthBegin()
+J & RButton Up::DragHealthEnd()
 
 ;-------------------------------------------------------------
 ;---------------------- GENERAL HOTKEYS ----------------------
@@ -591,6 +597,44 @@ ToggleWarChief()
 	DestroyDots() ; uses old value of [dotNum]
 	dotNum := unitDist.Length()
 	CreateDots() ; uses new value of [dotNum]
+}
+
+DragHealthBegin()
+{
+	MouseGetPos, x0, y0
+}
+
+DragHealthEnd()
+{
+	BlockInput, On
+	MouseGetPos, x1, y1
+	Send("e") ; Select Warband
+	Sleep, 50
+	DeselectUnitsByHpColor(0x26A517) ; Green Health Points
+	Click(x1, y1, "Right") ; Send not health units to end point
+	; Sleep, 50
+	Send("e") ; Select Warband
+	Sleep, 50
+	DeselectUnitsByHpColor(0xEEAC0E) ; Yellow Health Points
+	DeselectUnitsByHpColor(0x9F0023) ; Red Health Points
+	Click(x0, y0, "Right")
+	; Sleep, 50
+	Send("e") ; Select Warband
+	BlockInput, Off
+}
+
+DeselectUnitsByHpColor(hpColor)
+{
+	Loop {
+		PixelSearch, x, y, 860, 890, 1185, 1045, %hpColor%, , Fast RGB ; DeselectUnitsByHpColor
+		if (ErrorLevel)
+			break
+		SendRaw("{Shift down}")
+		Click(x, y)
+		Sleep, 50
+		SendRaw("{Shift up}")
+		Sleep, 50
+	}
 }
 
 ;-------------------------------------------------------------
