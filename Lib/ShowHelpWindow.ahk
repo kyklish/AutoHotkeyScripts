@@ -1,5 +1,6 @@
-﻿;DO NOT use Tabs in string!!! In editor 1 tab =  4 spaces, but in window 1 tab == 8 spaces.
+﻿;DO NOT use Tabs in string!!! In editor 1 tab = 4 spaces, but in window 1 tab == 8 spaces.
 
+/*
 ShowHelpWindow(ByRef str := "")
 {
 	static bToggle
@@ -15,4 +16,20 @@ ShowHelpWindow(ByRef str := "")
 	}
 	else
 		Progress, Off
+}
+*/
+
+ShowHelpWindow(ByRef str := "", fontSize := "")
+{
+	static bToggle
+	id := "HelpWindow"
+	
+	if (bToggle := !bToggle) {
+		CreateMouseClickTransGui(id)
+		Gui, %id%: Font, %fontSize%, Consolas
+		Gui, %id%: Add, Text, , %str%
+		Gui, %id%: Show, NoActivate
+	}
+	else
+		Gui, %id%: Destroy
 }
