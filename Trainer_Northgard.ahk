@@ -184,7 +184,13 @@ F1::ShowHelpImage("NorthgardHotKeys.png")
 ^F1::ToggleOverlay(coords)
 <!z::Reload
 <!x::ExitApp
-<!c::Suspend
+<!c::
+	Suspend
+	if (toggleSuspend := !toggleSuspend)
+		ShowToolTip("Script SUSPEND", 0, 0)
+	else
+		ShowToolTip()
+	return
 
 #IfWinActive ahk_group Game
 
