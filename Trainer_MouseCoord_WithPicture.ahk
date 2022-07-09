@@ -74,7 +74,7 @@ if FileExist(imageMagick) {
 }
 
 FileAppend, % mX . ", " . mY . ", " . mColor . "`n", R:\MouseCoord.txt ; or %A_ScriptFullPath%
-Clipboard := mX . ", " . mY
+Clipboard := mX . ", " . mY . ", " . mColor
 return
 
 
@@ -137,6 +137,7 @@ StartDrawRect()
 		}
 		DestroyRectangle(id)
 		ToolTip
+		FileAppend, % X1CL ", " Y1CL ", " X2CL ", " Y2CL . "`n", R:\MouseCoord.txt ; or %A_ScriptFullPath%
 		Clipboard := X1CL ", " Y1CL ", " X2CL ", " Y2CL
 	}
 }
