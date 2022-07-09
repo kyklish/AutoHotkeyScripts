@@ -75,23 +75,20 @@ Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
 Shift + F11 = Toggle Send Mode
 
                       [MILITARY]
-         J + AppsKey = Toggle Mode: 3 units or 4 units
-AppsKey + RMB + Drag = Make Military Formation by Unit's Type
-      J + RMB + Drag = Make Military Formation by Unit's Health
+         J + AppsKey = Cycle Mode: 3 units or 4 units or Health units
+AppsKey + RMB + Drag = Make Military Formation
 
               [MILITARY FORMATION HELPER]
-'Military Formation by Unit's Type' has two modes: 3 units (default) or 4 units:
-    3 units moves three unit's type: 'Shield', 'Warrior', 'Axe'.
-    4 units moves  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
+'Military Formation' has three modes:
+    3 units move three unit's type: 'Shield', 'Warrior', 'Axe'.
+    4 units move  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
+	Health units move health units to front, wound units - back.
 I can't detect Warchief presence in game. So if you use 4 units mode, but
 you don't have 'WarChief', no units will be send to start dot.
 
 'WarChief' means all units, that are assigned to in-game '1' hotkey.
 Select Warchief, bear, any big units and press [Ctrl + 1].
 Toggle to 4 units mode via hotkey (see below). Draw formation with 'WarChief'.
-
-'Military Formation by Unit's Health' moves health units on start position,
-and not health units to end position.
 )"
 
 ;-------------------------------------------------------------
@@ -134,6 +131,8 @@ global rowMystic   := 656
 ; Dots - points on screen, where each type of military units will be send.
 ; Dots - points on screen, where GUI window (circle) will be shown to help user see future unit's positions.
 global period := 100 ; period of calculation dots positions
+global idHealth   := "Health"   ; can be any word or even number, script uses it like ID
+global idWound    := "Wound"    ; can be any word or even number, script uses it like ID
 global idWarChief := "WarChief" ; can be any word or even number, script uses it like ID
 global idShield  := "NorthgardShieldBearer.png" ; file name of search picture of unit's icon
 global idWarrior := "NorthgardWarrior.png"      ; file name of search picture of unit's icon
@@ -146,13 +145,15 @@ global idAxe     := "NorthgardAxeThrower.png"   ; file name of search picture of
 ; I use settings for 3 and 4 unit's type.
 ; With 3 unit's types script select military units via their icons in "Warband" menu on the right side of screen.
 ; With 4 unit's types we need assign WarChief to hotkey "1" (use in-game hotkey "Ctrl+1"), so WarChief will be selectable via in-game hotkey.
-global unitDist  := {} ; we will assign our 3 or 4 settings to this variables
-global unitOrder := {} ; we will assign our 3 or 4 settings to this variables
+global unitDist  := {} ; we will assign our 2 or 3 or 4 settings to this variables
+global unitOrder := {} ; we will assign our 2 or 3 or 4 settings to this variables
+global unitDist2  := [0, 1] ; length of this array must be in sync with unitOrder[] array length
+global unitOrder2 := [idHealth, idWound]
 global unitDist3  := [0, 1/2, 1] ; length of this array must be in sync with unitOrder[] array length
 global unitOrder3 := [idShield, idWarrior, idAxe]
 global unitDist4  := [0, 1/3, 2/3, 1]
 global unitOrder4 := [idWarChief, idShield, idWarrior, idAxe]
-ToggleWarChief() ; initialize unitDist[] and unitOrder[] values, check for loosing sync in unitOrder[] and unitDist[] arrays
+CycleMilitaryFormationMode() ; initialize unitDist[] and unitOrder[] values, check for loosing sync in unitOrder[] and unitDist[] arrays
 global scale := 1 ; Scale all distances in unitDist[] (each value is multiply by [scale]): <1 less sensitive, ==1 linear, >1 more sensitive.
 global d := 20 ; gui dot diameter
 global r := d // 2 ; gui dot radius
@@ -185,9 +186,7 @@ CreateDots()
 global modifierKey := "AppsKey"
 AppsKey & RButton::DragBegin()
 AppsKey & RButton Up::DragEnd()
-J & AppsKey::ToggleWarChief()
-J & RButton::DragHealthBegin()
-J & RButton Up::DragHealthEnd()
+J & AppsKey::CycleMilitaryFormationMode()
 
 ;-------------------------------------------------------------
 ;---------------------- GENERAL HOTKEYS ----------------------
@@ -416,28 +415,47 @@ SelectAllCivUnitsExceptOne(unit)
 ;------------------ MILITARY FORMATION CODE ------------------
 ;-------------------------------------------------------------
 
+; Return [true] on success, [false] if didn't find military unit
 SelectAllMilUnits(unit)
 {
+	if (unit == idHealth) {
+		Send("e") ; Work with entire Warband
+		Sleep, 50
+		DeselectUnitsByHpColor(0xEEAC0E) ; Yellow Health Points
+		DeselectUnitsByHpColor(0x9F0023) ; Red Health Points
+		return true
+	}
+
+	if (unit == idWound) {
+		Send("e") ; Work with entire Warband
+		Sleep, 50
+		DeselectUnitsByHpColor(0x26A517) ; Green Health Points
+		return true
+	}
+
 	if (unit == idWarChief) {
-		; If user has selected WarChief units on "1" hotkey, it's will move camera to them,
-		; deselect them by selecting entire Warband
+		; If user has selected WarChief units on "1" hotkey, script will select him again via in-game hotkey "1".
+		; This second selection will move camera to WarChief units and script move units in wrong positions.
+		; Select all warband to prevent camera movement.
 		Send("e")
 		Sleep, 50
 		Send("1")
-	} else {
-		; Search unit icon on Warband menu
-		ImageSearch, x, y, 1665, 655, 1895, 790, %unit% ; SelectAllMilUnits
-		if (ErrorLevel) {
-			if (isDebug) {
-				; In this function it is normal logic, when [ImageSearch] didn't find unit's image.
-				; So comment this [ToolTip], script will be not reliable with it.
-				ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
-				SoundBeep
-			}
-			return false
-		}
-		Click(x, y, "Right")
+		return true
 	}
+
+	; Search unit icon on Warband menu
+	ImageSearch, x, y, 1665, 655, 1895, 790, %unit% ; SelectAllMilUnits
+	if (ErrorLevel) {
+		if (isDebug) {
+			; In this function it is normal logic, when [ImageSearch] didn't find unit's image.
+			; So comment this [ToolTip], script will be not reliable with it.
+			ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
+			SoundBeep
+		}
+		return false
+	}
+	Click(x, y, "Right") ; Click on found unit's icon
+
 	return true
 }
 
@@ -491,10 +509,6 @@ DragEnd()
 	SetTimer, CalculateDots, Off
 	if (hypotenuse != -1) { ; "cancel formation" logic, see comments in CalculateDots()
 		BlockInput, On
-		; If you use 4 units mode and has selected WarChief, script will select him again via in-game hotkey "1".
-		; This second selection will move camera to WarChief and script moves units in wrong positions.
-		; Select all warband to prevent camera movement.
-		Send("e")
 		; "GUI Point" main loop A_Index for dotX[] and dotY[] arrays
 		id := 1 ; "Military Unit" secondary loop index in MoveUnits() function for unitOrder[] array
 		; If [ImageSearch] didn't find military unit, we try find out next available, until we find or unitOrder[] array is finished.
@@ -521,7 +535,7 @@ MoveUnits(startIndex, x, y)
 {
 	i := startIndex
 	while (i <= dotNum) {
-		if (SelectAllMilUnits(unitOrder[i])) { ; returns [true] on success, [false] if didn't find military unit
+		if (SelectAllMilUnits(unitOrder[i])) { ; return [true] on success, [false] if didn't find military unit
 			Sleep, 50
 			Click(x, y, "Right")
 			break
@@ -581,15 +595,21 @@ DestroyDots()
 }
 
 ; Assign relevant unitDist[] and unitOrder[] values
-ToggleWarChief()
+SetMilitaryFormationMode(mode)
 {
-	static toggle
-	if (toggle := !toggle) {
-		unitDist := unitDist3
-		unitOrder := unitOrder3
-	} else {
-		unitDist := unitDist4
-		unitOrder := unitOrder4
+	switch mode
+	{
+		case "Health":
+			unitDist  := unitDist2
+			unitOrder := unitOrder2
+		case "3units":
+			unitDist  := unitDist3
+			unitOrder := unitOrder3
+		case "4units":
+			unitDist  := unitDist4
+			unitOrder := unitOrder4
+		default:
+			MsgBox % A_ThisFunc ": wrong 'mode' parameter"
 	}
 	CheckMilitarySettings()
 	DestroyDots() ; uses old value of [dotNum]
@@ -597,9 +617,14 @@ ToggleWarChief()
 	CreateDots() ; uses new value of [dotNum]
 }
 
-DragHealthBegin()
+CycleMilitaryFormationMode()
 {
-	MouseGetPos, x0, y0
+	static i := 1
+	mode := ["3units", "4units", "Health"]
+	SetMilitaryFormationMode(mode[i])
+	ShowToolTip("Military Formation Mode: " mode[i], 0, 0, 1000)
+	if (++i > mode.Length())
+		i := 1
 }
 
 DragHealthEnd()
@@ -851,6 +876,8 @@ CheckMilitarySettings()
 	err := ""
 	if (unitDist.Length() != unitOrder.Length())
 		err .= A_Tab . "unitDist.Length() != unitOrder.Length()`n"
+	if (unitDist2.Length() != unitOrder2.Length())
+		err .= A_Tab . "unitDist2.Length() != unitOrder2.Length()`n"
 	if (unitDist3.Length() != unitOrder3.Length())
 		err .= A_Tab . "unitDist3.Length() != unitOrder3.Length()`n"
 	if (unitDist4.Length() != unitOrder4.Length())
