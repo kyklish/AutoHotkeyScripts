@@ -11,7 +11,7 @@
 #UseHook ; All hotkeys can't be triggered by Send command
 SetBatchLines -1
 SetWorkingDir %A_ScriptDir%
-Menu, Tray, Icon, Northgard.ico
+Menu, Tray, Icon, Northgard.ico, 1, 1
 Menu, Tray, Tip, Northgard [The Core] Hotkey Layout
 
 SetDefaultMouseSpeed, 0
