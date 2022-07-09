@@ -878,8 +878,7 @@ Click(x := "", y := "", WhichButton := "")
 ToggleSendMode()
 {
 	SoundBeep
-	bSendInput := !bSendInput
-	if (bSendInput)
+	if (bSendInput := !bSendInput)
 		ShowToolTip("SendMode: Input", 0, 0)
 	else
 		ShowToolTip("SendMode: Event", 0, 0)
