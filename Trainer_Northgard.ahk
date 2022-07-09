@@ -328,15 +328,14 @@ FixBuildingMenuPosition(y)
 	; For example, when you choose military path "GUARDIAN" you got
 	; four "Militia" units, you can receive some unique mystic units, etc.
 	; Check if Axe icon of Warband on it's place
-	axeX := 1675
 	axeColor := 0xA4B5C1
-	PixelGetColor, color, axeX, 638, RGB ; FixBuildingMenuPosition, AxeIcon, TallMilUnitMenu
+	PixelGetColor, color, 1675, 638, RGB ; FixBuildingMenuPosition, AxeIcon, TallMilUnitMenu
 	if (color == axeColor) ; Example: Bodyguard for Warchief (Stag Clan)
 		return y - 89 ; Warband menu is tall, fix Build menu position
-	PixelGetColor, color, axeX, 680, RGB ; FixBuildingMenuPosition, AxeIcon, MediumMilUnitMenu
+	PixelGetColor, color, 1675, 680, RGB ; FixBuildingMenuPosition, AxeIcon, MediumMilUnitMenu
 	if (color == axeColor) ; Example: Militia units (Any clan with "GUARDIAN" military path)
 		return y - 47 ; Warband menu is medium, fix Build menu position
-	PixelGetColor, color, axeX, 727, RGB ; FixBuildingMenuPosition, AxeIcon, SmallMilUnitMenu
+	PixelGetColor, color, 1675, 727, RGB ; FixBuildingMenuPosition, AxeIcon, SmallMilUnitMenu
 	if (color == axeColor) ; Example: No any additional military units
 		return y ; Warband menu is small, no need to fix Build menu position
 	ShowToolTip("Can't find Axe icon in military menu!", 0, 0)
