@@ -491,7 +491,7 @@ DragEnd()
 {
 	SetTimer, CalculateDots, Off
 	if (hypotenuse != -1) { ; "cancel formation" logic, see comments in CalculateDots()
-		BlockInput On
+		BlockInput, On
 		; If you use 4 units mode and has selected WarChief, script will select him again via in-game hotkey "1".
 		; This second selection will move camera to WarChief and script moves units in wrong positions.
 		; Select all warband to prevent camera movement.
@@ -510,7 +510,7 @@ DragEnd()
 		; After last military unit move deselect them. [BEFORE] I send "Esc", but if user try make military formation,
 		; but he hasn't any military units it will bring game's menu. [NOW] Select all warband.
 		Send("e")
-		BlockInput Off
+		BlockInput, Off
 		; Send {%modifierKey% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
 	}
 	; Hide GUI dots on "cancel formation" or for example when we buy only two types of units in game,
