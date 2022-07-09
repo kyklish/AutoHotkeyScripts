@@ -318,7 +318,7 @@ FixBuildingMenuPosition(y)
 	PixelGetColor, color, axeX, 727, RGB ; FixBuildingMenuPosition, AxeIcon, SmallMilUnitMenu
 	if (color == axeColor) ; Example: No any additional military units
 		return y ; Warband menu is small, no need to fix Build menu position
-	ToolTip, Can't find Axe icon in military menu!, 0, 0
+	ShowToolTip("Can't find Axe icon in military menu!", 0, 0)
 	SoundBeep
 }
 
@@ -344,7 +344,7 @@ DestroyBuilding()
 	ImageSearch, x, y, 1185, 860, 1220, 930, NorthgardDestroy.png ; DestroyBuilding
 	if (ErrorLevel) {
 		if (isDebug) {
-			ToolTip, %A_ThisFunc%(NorthgardDestroy.png) - can't find image., 0, 0
+			ShowToolTip(A_ThisFunc "(NorthgardDestroy.png) - can't find image.", 0, 0)
 			SoundBeep
 		}
 		return
@@ -361,7 +361,7 @@ SelectAllCivUnits(unit)
 	ImageSearch, x, y, 1665, 830, 1895, 970, %unit% ; SelectAllCivUnits
 	if (ErrorLevel) {
 		if (isDebug) {
-			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
+			ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
 			SoundBeep
 		}
 		return
@@ -380,7 +380,7 @@ SelectAllCivUnitsExceptOne(unit)
 	ImageSearch, x, y, 860, 890, 895, 1045, %unit% ; DeselectOneUnit
 	if (ErrorLevel) {
 		if (isDebug) {
-			ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
+			ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
 			SoundBeep
 		}
 		return
@@ -408,7 +408,7 @@ SelectAllMilUnits(unit)
 			if (isDebug) {
 				; In this function it is normal logic, when [ImageSearch] didn't find unit's image.
 				; So comment this [ToolTip], script will be not reliable with it.
-				ToolTip, %A_ThisFunc%(%unit%) - can't find unit's image., 0, 0
+				ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
 				SoundBeep
 			}
 			return false
@@ -823,6 +823,22 @@ ShowHelpText(text)
 		Gui, HelpText: Destroy
 }
 
+ShowToolTip(text := "", x := "", y := "", id := "", fontSize := "s20")
+{
+	if (x == "" or y == "")
+		MouseGetPos, x, y
+	id := "ToolTip" . id
+	if (text) {
+		CreateMouseClickTransGui(id)
+		Gui, %id%: Margin, 0, 0
+		Gui, %id%: Font, % fontSize, Consolas
+		Gui, %id%: Add, Text, , % text
+		Gui, %id%: Show, % "x" x " y" y " NoActivate"
+	} else {
+		Gui, %id%: Destroy
+	}
+}
+
 Send(key)
 {
 	if (bSendInput) {
@@ -858,11 +874,11 @@ ToggleSendMode()
 	SoundBeep
 	bSendInput := !bSendInput
 	if (bSendInput)
-		ToolTip, SendMode: Input, 0, 0
+		ShowToolTip("SendMode: Input", 0, 0)
 	else
-		ToolTip, SendMode: Event, 0, 0
+		ShowToolTip("SendMode: Event", 0, 0)
 	Sleep, 1000
-	ToolTip
+	ShowToolTip()
 }
 
 IsDebugScript()
