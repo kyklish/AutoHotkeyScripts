@@ -1,6 +1,8 @@
 ﻿; [The Core] Hotkey Layout + Military Formation Helper
 
 ; Changelog
+; v1.0.3
+;  ! Fix camera movement on military formation when WarChief units are select
 ; v1.0.2
 ;  ! Fix icon not load
 ;  + On script's suspend show message
