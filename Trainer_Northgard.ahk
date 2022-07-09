@@ -10,6 +10,9 @@
 ; v1.0.0
 ;  + Initial release
 
+; SteamLibrary\steamapps\common\Northgard\NGEditor\Editor.exe (ui -> units -> unitsIcons.png)
+; SteamLibrary\steamapps\common\Northgard\NGEditor\res\ui\units\unitsIcons.png
+
 #NoEnv
 #SingleInstance Force
 #UseHook ; All hotkeys can't be triggered by Send command
@@ -320,7 +323,7 @@ FixBuildingMenuPosition(y)
 	axeX := 1675
 	axeColor := 0xA4B5C1
 	PixelGetColor, color, axeX, 638, RGB ; FixBuildingMenuPosition, AxeIcon, TallMilUnitMenu
-	if (color == axeColor) ; Example: Bodyguard for Warchief (Dear Clan)
+	if (color == axeColor) ; Example: Bodyguard for Warchief (Stag Clan)
 		return y - 89 ; Warband menu is tall, fix Build menu position
 	PixelGetColor, color, axeX, 680, RGB ; FixBuildingMenuPosition, AxeIcon, MediumMilUnitMenu
 	if (color == axeColor) ; Example: Militia units (Any clan with "GUARDIAN" military path)
