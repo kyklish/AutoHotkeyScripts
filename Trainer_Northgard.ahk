@@ -196,7 +196,6 @@ J & RButton Up::DragHealthEnd()
 #If
 F1::ShowHelpImage("NorthgardHotKeys.png")
 +F1::ShowHelpText(helpText)
-^F1::ToggleOverlay(coords)
 <!z::Reload
 <!x::ExitApp
 <!c::
@@ -208,7 +207,7 @@ F1::ShowHelpImage("NorthgardHotKeys.png")
 	return
 
 #IfWinActive ahk_group Game
-
+^F1::ToggleOverlay(coords)
 F10::ShowHelpImage("NorthgardHotKeys.png")
 +F10::ShowHelpText(helpText)
 F11::Reload
