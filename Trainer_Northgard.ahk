@@ -1,10 +1,14 @@
 ﻿; [The Core] Hotkey Layout + Military Formation Helper
 
 ; Changelog
-; v1.0.1 - Bugfix tall military menu:
-;  * FixBuildingMenuPosition()
-;  * SelectAllMilUnits()
-; v1.0.0 - Initial release.
+; v1.0.2
+;  ! Fix icon not load
+;  + On script's suspend show message
+;  * Change all ToolTip to Gui window
+; v1.0.1
+;  ! Fix tall military menu
+; v1.0.0
+;  + Initial release
 
 #NoEnv
 #SingleInstance Force
