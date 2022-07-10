@@ -1004,11 +1004,9 @@ ToggleSendMode()
 {
 	SoundBeep
 	if (bSendInput := !bSendInput)
-		ShowToolTip("SendMode: Input", 0, 0)
+		ShowToolTip("SendMode: Input", 0, 0, 1000)
 	else
-		ShowToolTip("SendMode: Event", 0, 0)
-	Sleep, 1000
-	ShowToolTip()
+		ShowToolTip("SendMode: Event", 0, 0, 1000)
 }
 
 IsDebugScript()
