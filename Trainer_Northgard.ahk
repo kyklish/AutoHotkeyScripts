@@ -476,7 +476,6 @@ SelectAllMilUnits(unit)
 		return false
 	}
 	Click(x, y, "Right") ; Click on found unit's icon
-
 	return true
 }
 
@@ -646,25 +645,6 @@ CycleMilitaryFormationMode()
 	ShowToolTip("Military Formation Mode: " mode[i], 0, 0, 1000)
 	if (++i > mode.Length())
 		i := 1
-}
-
-DragHealthEnd()
-{
-	BlockInput, On
-	MouseGetPos, x1, y1
-	Send("e") ; Select Warband
-	Sleep, 50
-	DeselectUnitsByHpColor(0x26A517) ; Green Health Points
-	Click(x1, y1, "Right") ; Send not health units to end point
-	; Sleep, 50
-	Send("e") ; Select Warband
-	Sleep, 50
-	DeselectUnitsByHpColor(0xEEAC0E) ; Yellow Health Points
-	DeselectUnitsByHpColor(0x9F0023) ; Red Health Points
-	Click(x0, y0, "Right")
-	; Sleep, 50
-	Send("e") ; Select Warband
-	BlockInput, Off
 }
 
 DeselectUnitsByHpColor(hpColor)
