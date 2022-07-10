@@ -87,7 +87,7 @@ AppsKey + RMB + Drag = Make Military Formation
 'Military Formation' has three modes:
     3Units move three unit's type: 'Shield', 'Warrior', 'Axe'.
     4Units move  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
-	HealthUnits move Warband health units to front, wound units - back.
+    HealthUnits move Warband health units to front, wound units - back.
 I can't detect Warchief presence in game. So if you use 4Units mode, but
 you don't have 'WarChief', no units will be send to start dot.
 
