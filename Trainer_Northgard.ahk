@@ -135,6 +135,9 @@ global rowMystic   := 656
 ; Dots - points on screen, where each type of military units will be send.
 ; Dots - points on screen, where GUI window (circle) will be shown to help user see future unit's positions.
 global period := 100 ; period of calculation dots positions
+global hpGreen  := 0x26A517 ; "Health Bar" color of health unit
+global hpYellow := 0xEEAC0E ; "Health Bar" color of wound unit
+global hpRed    := 0x9F0023 ; "Health Bar" color of critical wound unit
 global idHealth   := "Health"   ; can be any word or even number, script uses it like ID
 global idWound    := "Wound"    ; can be any word or even number, script uses it like ID
 global idWarChief := "WarChief" ; can be any word or even number, script uses it like ID
@@ -425,16 +428,30 @@ SelectAllMilUnits(unit)
 	if (unit == idHealth) {
 		Send("e") ; Work with entire Warband
 		Sleep, 50
-		DeselectUnitsByHpColor(0xEEAC0E) ; Yellow Health Points
-		DeselectUnitsByHpColor(0x9F0023) ; Red Health Points
-		return true
+		DeselectUnitsByHpColor(hpYellow) ; Yellow Health Points
+		DeselectUnitsByHpColor(hpRed) ; Red Health Points
+		; If we have wound units, last unit will be send to "Health" position
+		; Check if last unit are wound, if true - deselect him and return false: we don't have health units
+		PixelGetColor, color, 720, 906, RGB
+		if (color == hpYellow or color == hpRed) {
+			Send("Esc")
+			return false
+		} else
+			return true
 	}
 
 	if (unit == idWound) {
 		Send("e") ; Work with entire Warband
 		Sleep, 50
-		DeselectUnitsByHpColor(0x26A517) ; Green Health Points
-		return true
+		DeselectUnitsByHpColor(hpGreen) ; Green Health Points
+		; If we have health units, last unit will be send to "Wound" position
+		; Check if last unit are health, if true - deselect him and return false: we don't have wound units
+		PixelGetColor, color, 720, 906, RGB ; SelectAllMilUnits, HealthBarColor
+		if (color == hpGreen) {
+			Send("Esc")
+			return false
+		} else
+			return true
 	}
 
 	if (unit == idWarChief) {
@@ -653,7 +670,10 @@ DragHealthEnd()
 DeselectUnitsByHpColor(hpColor)
 {
 	Loop {
-		PixelSearch, x, y, 860, 890, 1185, 1045, %hpColor%, , Fast RGB ; DeselectUnitsByHpColor
+		; Bottom unit's icon has max Y coordinate, when selected units fit in three lines.
+		; Top unit's icon has max Y coordinate, when selected units are more then three lines (add dots icons below) 
+		;   or has Warchief with abilities (add additional icon below) and don't fit three lines (add dots icons below).
+		PixelSearch, x, y, 860, 870, 1185, 1045, %hpColor%, , Fast RGB ; DeselectUnitsByHpColor (bigRect), DeselectOneUnit (smallRect)
 		if (ErrorLevel)
 			break
 		SendRaw("{Shift down}")
