@@ -1,10 +1,11 @@
 ﻿; [The Core] Hotkey Layout + Military Formation Helper
 
 ; Changelog
-; v1.0.4
+; v1.1.0
 ;  ! Fix PixelGetColor not show in overlay
 ;  ! Fix overlay hotkey work outside of game
 ;  + Add military formation by unit's health
+;  * Change WarChief hotkey to digit "0"
 ; v1.0.3
 ;  ! Fix camera movement on military formation when WarChief units are select
 ; v1.0.2
