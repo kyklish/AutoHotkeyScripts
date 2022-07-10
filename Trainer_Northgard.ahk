@@ -469,6 +469,7 @@ SelectAllMilUnits(unit)
 			return true
 	}
 
+	/* Original ugly version, if WarChief not present, units not send to start dot
 	if (unit == idWarChief) {
 		; For example WarChiefHotkey:="1"
 		; If user has selected WarChief units on "1" hotkey, script will select him again via in-game hotkey "1".
@@ -478,6 +479,21 @@ SelectAllMilUnits(unit)
 		Sleep, 50
 		Send(WarChiefHotkey)
 		return true
+	}
+	*/
+
+	if (unit == idWarChief) {
+		Loop, 2 ; 1st time for notification on screen (if present), 2nd time for bottom menu (if present)
+			if (IsBottomMenuOnScreen()) {
+				Send("Esc")
+				Sleep, 50
+			}
+		Send(WarChiefHotkey)
+		Sleep, 50
+		if (IsBottomMenuOnScreen())
+			return true
+		else
+			return false
 	}
 
 	; Search unit icon on Warband menu
@@ -549,9 +565,12 @@ DragEnd()
 		id := 1 ; "Military Unit" secondary loop index in MoveUnits() function for unitOrder[] array
 		; If [ImageSearch] didn't find military unit, we try find out next available, until we find or unitOrder[] array is finished.
 		Loop, % dotNum {
-			HideDot(A_Index)
 			id := MoveUnits(id, dotX[A_Index], dotY[A_Index]) ; returns index of last checked element in unitOrder[] array
 			id++ ; increment this index for next main loop iteration
+			; Our dots are mouse-click transparent, so hide it after MoveUnits().
+			; WarChief selection algorithm is time expensive. If we hide dots before MoveUnits() there will be ugly delay.
+			; Hide dot, delay (WarChief), move units. To prevent this hide dot after MoveUnits().
+			HideDot(A_Index)
 			Sleep, 50
 			if (id > dotNum) ; no more units left in unitOrder[] array
 				break
