@@ -79,20 +79,20 @@ Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
 Shift + F11 = Toggle Send Mode
 
                       [MILITARY]
-         J + AppsKey = Cycle Mode: 3 units or 4 units or Health units
+         J + AppsKey = Cycle Formation Mode: 3Units or 4Units or HealthUnits
 AppsKey + RMB + Drag = Make Military Formation
 
               [MILITARY FORMATION HELPER]
 'Military Formation' has three modes:
-    3 units move three unit's type: 'Shield', 'Warrior', 'Axe'.
-    4 units move  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
-	Health units move health units to front, wound units - back.
-I can't detect Warchief presence in game. So if you use 4 units mode, but
+    3Units move three unit's type: 'Shield', 'Warrior', 'Axe'.
+    4Units move  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
+	HealthUnits move Warband health units to front, wound units - back.
+I can't detect Warchief presence in game. So if you use 4Units mode, but
 you don't have 'WarChief', no units will be send to start dot.
 
-'WarChief' means all units, that are assigned to in-game '1' hotkey.
-Select Warchief, bear, any big units and press [Ctrl + 1].
-Toggle to 4 units mode via hotkey (see below). Draw formation with 'WarChief'.
+'WarChief' means all units, that are assigned to in-game '0' hotkey.
+Select Warchief, bear, any big units and press [Ctrl + 0].
+Toggle to 4Units mode via hotkey (see above). Draw formation with 'WarChief'.
 )"
 
 ;-------------------------------------------------------------
@@ -151,7 +151,8 @@ global idAxe     := "NorthgardAxeThrower.png"   ; file name of search picture of
 ; I don't know how to select WarChief (different icons for different clans and additional units like bear), so...
 ; I use settings for 3 and 4 unit's type.
 ; With 3 unit's types script select military units via their icons in "Warband" menu on the right side of screen.
-; With 4 unit's types we need assign WarChief to hotkey "1" (use in-game hotkey "Ctrl+1"), so WarChief will be selectable via in-game hotkey.
+; With 4 unit's types we need assign WarChief to [WarChiefHotkey], so WarChief will be selectable via in-game hotkey.
+global WarChiefHotkey := "0" ; assign WarChief units to this in-game hotkey (select big units and press Ctrl+0)
 global unitDist  := {} ; we will assign our 2 or 3 or 4 settings to this variables
 global unitOrder := {} ; we will assign our 2 or 3 or 4 settings to this variables
 global unitDist2  := [0, 1] ; length of this array must be in sync with unitOrder[] array length
@@ -455,12 +456,13 @@ SelectAllMilUnits(unit)
 	}
 
 	if (unit == idWarChief) {
+		; For example WarChiefHotkey:="1"
 		; If user has selected WarChief units on "1" hotkey, script will select him again via in-game hotkey "1".
 		; This second selection will move camera to WarChief units and script move units in wrong positions.
 		; Select all warband to prevent camera movement.
 		Send("e")
 		Sleep, 50
-		Send("1")
+		Send(WarChiefHotkey)
 		return true
 	}
 
@@ -619,13 +621,13 @@ SetMilitaryFormationMode(mode)
 {
 	switch mode
 	{
-		case "Health":
+		case "HealthUnits":
 			unitDist  := unitDist2
 			unitOrder := unitOrder2
-		case "3units":
+		case "3Units":
 			unitDist  := unitDist3
 			unitOrder := unitOrder3
-		case "4units":
+		case "4Units":
 			unitDist  := unitDist4
 			unitOrder := unitOrder4
 		default:
@@ -640,7 +642,7 @@ SetMilitaryFormationMode(mode)
 CycleMilitaryFormationMode()
 {
 	static i := 1
-	mode := ["3units", "4units", "Health"]
+	mode := ["3Units", "4Units", "HealthUnits"] ; must be in sync with [switch] inj SetMilitaryFormationMode()
 	SetMilitaryFormationMode(mode[i])
 	ShowToolTip("Military Formation Mode: " mode[i], 0, 0, 1000)
 	if (++i > mode.Length())
