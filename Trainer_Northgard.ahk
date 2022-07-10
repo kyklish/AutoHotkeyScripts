@@ -930,28 +930,43 @@ ShowHelpText(text)
 
 ShowToolTip(text := "", x := "", y := "", displayTime := -1, id := "", fontSize := "s20")
 {
-	static RmToolTip := {}
-	if (x == "" or y == "")
-		MouseGetPos, x, y
+	; To update tooltip's [displayTime] we need identify timer by it's label, in our case it's BoundFunc Object
+	static oLabels := {} ; Object to store timer's [BoundFunc Object] 'value' by tooltip's [ID] 'key'
 	id := "ToolTip" . id
 	if (text) {
+		if (x == "" or y == "") {
+			coordModeMousePrev := A_CoordModeMouse
+			CoordMode, Mouse, Screen
+			MouseGetPos, x, y
+			CoordMode, Mouse, % coordModeMousePrev
+		}
+		;======ToolTip Window======;
 		CreateMouseClickTransGui(id)
 		Gui, %id%: Margin, 0, 0
 		Gui, %id%: Font, % fontSize, Consolas
 		Gui, %id%: Add, Text, , % text
 		Gui, %id%: Show, % "x" x " y" y " NoActivate"
+		;==========================;
+		oLabel := oLabels[id] ; Get saved object of displayed tooltip to identify waiting timer to update it
 		if (displayTime != -1) {
-			SetTimer, % RmToolTip, Off ; stop previously launched timer if we quickly show several tooltips
-			RmToolTip := Func("RemoveToolTip").Bind(id)
-			SetTimer, % RmToolTip, % -displayTime
+			if (oLabel == "") {
+				rmId := StrReplace(id, "ToolTip", , , 1) ; remove prefix "ToolTip", which was add to [id]
+				oLabel := Func("RemoveToolTip").Bind(rmId, oLabels)
+				oLabels[id] := oLabel
+			}
+			SetTimer, % oLabel, % -displayTime
+		} else {
+			SetTimer, % oLabel, Off
 		}
 	} else {
 		Gui, %id%: Destroy
 	}
 }
 
-RemoveToolTip(id := "ToolTip")
+RemoveToolTip(id := "", oLabels := "")
 {
+	id := "ToolTip" . id
+	oLabels.Delete(id)
 	Gui, %id%: Destroy
 }
 
