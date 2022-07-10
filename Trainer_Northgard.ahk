@@ -326,6 +326,19 @@ IsBuildingMenuOpen()
 		return false
 }
 
+; When you select unit, building, land zone bottom menu show on screen
+IsBottomMenuOnScreen()
+{
+	; Check three points to be sure, that bottom menu opened
+	PixelGetColor, color1,  860, 1068, RGB ; IsBottomMenuOpen
+	PixelGetColor, color2,  960, 1068, RGB ; IsBottomMenuOpen
+	PixelGetColor, color3, 1060, 1068, RGB ; IsBottomMenuOpen
+	if (color1 == color2 && color2 == color3)
+		return true
+	else
+		return false
+}
+
 FixBuildingMenuPosition(y)
 {
 	; When you got too many types of military units appears second
