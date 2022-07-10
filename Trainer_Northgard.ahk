@@ -136,6 +136,7 @@ global rowMystic   := 656
 ; Dots - points on screen, where each type of military units will be send.
 ; Dots - points on screen, where GUI window (circle) will be shown to help user see future unit's positions.
 global period := 100 ; period of calculation dots positions
+global menuBoundaryColor := 0x5D6677 ; each menu (bottom, when select unit or right, when open build menu) has boundary with this color
 global hpGreen  := 0x26A517 ; "Health Bar" color of health unit
 global hpYellow := 0xEEAC0E ; "Health Bar" color of wound unit
 global hpRed    := 0x9F0023 ; "Health Bar" color of critical wound unit
@@ -315,7 +316,6 @@ Build(x, y)
 
 IsBuildingMenuOpen()
 {
-	targetColor := 0x5D6677 ; color of building menu boundary
 	; Check three points to be sure, that building menu opened
 	PixelGetColor, color1, 1658, 350, RGB ; IsBuildingMenuOpen
 	PixelGetColor, color2, 1658, 400, RGB ; IsBuildingMenuOpen
