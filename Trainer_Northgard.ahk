@@ -380,8 +380,7 @@ DestroyBuilding()
 	; button overlaps in different size info windows (except "Marketplace").
 	; Y = 902 is optimal coordinate to click overlapped button's region.
 	MouseGetPos, _x, _y
-	Click(1200, 902) ; "Destroy Building" [Fire button] except "Marketplace"
-	Sleep, 50
+	Click(1200, 902, , 50) ; "Destroy Building" [Fire button] except "Marketplace"
 	Click(855, 560) ; Confirm [OK button]
 	MouseMove, %_x%, %_y%
 }
@@ -399,8 +398,7 @@ DestroyBuilding()
 		}
 		return
 	}
-	Click(x, y)
-	Sleep, 50
+	Click(x, y, , 50)
 	Click(855, 560) ; Confirm [OK button]
 	MouseMove, %_x%, %_y%
 }
@@ -417,8 +415,7 @@ SelectAllCivUnits(unit)
 		return
 	}
 	MouseGetPos, _x, _y
-	Click(x, y, "Right")
-	Sleep, 50
+	Click(x, y, "Right", 50)
 	MouseMove, %_x%, %_y%
 }
 
@@ -437,8 +434,7 @@ SelectAllCivUnitsExceptOne(unit)
 	}
 	MouseGetPos, _x, _y
 	SendRaw("{Shift down}")
-	Click(x, y)
-	Sleep, 50
+	Click(x, y, , 50)
 	SendRaw("{Shift up}")
 	MouseMove, %_x%, %_y%
 }
@@ -451,8 +447,7 @@ SelectAllCivUnitsExceptOne(unit)
 SelectAllMilUnits(unit)
 {
 	if (unit == idHealth) {
-		Send("e") ; Work with entire Warband
-		Sleep, 50
+		Send("e", 50) ; Search in entire Warband
 		DeselectUnitsByHpColor(hpYellow) ; Yellow Health Points
 		DeselectUnitsByHpColor(hpRed) ; Red Health Points
 		; If we have wound units, last unit will be send to "Health" position
@@ -466,8 +461,7 @@ SelectAllMilUnits(unit)
 	}
 
 	if (unit == idWound) {
-		Send("e") ; Work with entire Warband
-		Sleep, 50
+		Send("e", 50) ; Search in entire Warband
 		DeselectUnitsByHpColor(hpGreen) ; Green Health Points
 		; If we have health units, last unit will be send to "Wound" position
 		; Check if last unit are health, if true - deselect him and return false: we don't have wound units
@@ -485,21 +479,17 @@ SelectAllMilUnits(unit)
 		; If user has selected WarChief units on "1" hotkey, script will select him again via in-game hotkey "1".
 		; This second selection will move camera to WarChief units and script move units in wrong positions.
 		; Select all warband to prevent camera movement.
-		Send("e")
-		Sleep, 50
-		Send(WarChiefHotkey)
+		Send("e", 50)
+		Send(WarChiefHotkey, 50)
 		return true
 	}
 	*/
 
 	if (unit == idWarChief) {
 		Loop, 2 ; 1st time for notification on screen (if present), 2nd time for bottom menu (if present)
-			if (IsBottomMenuOnScreen()) {
-				Send("Esc")
-				Sleep, 50
-			}
-		Send(WarChiefHotkey)
-		Sleep, 50
+			if (IsBottomMenuOnScreen())
+				Send("Esc", 50)
+		Send(WarChiefHotkey, 50)
 		if (IsBottomMenuOnScreen())
 			return true
 		else
@@ -713,10 +703,8 @@ DeselectUnitsByHpColor(hpColor)
 		if (ErrorLevel)
 			break
 		SendRaw("{Shift down}")
-		Click(x, y)
-		Sleep, 50
-		SendRaw("{Shift up}")
-		Sleep, 50
+		Click(x, y, , 50)
+		SendRaw("{Shift up}", 50)
 	}
 }
 
