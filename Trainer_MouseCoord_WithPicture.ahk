@@ -11,7 +11,7 @@ scrDir := "R:" ; directory with ScreenShots from FastStone Capture
 scrExt := "bmp" ; ScreenShot file extension
 fileNamePrefix := "FastStoneCapture" ; file name prefix of ScreenShot file, it used to identify newly created picture
 
-Insert:: ; make ScreenShot with FastStone Capture, crop it with ImageMagick and save with coordinates X_Y in file name
+Numpad5:: ; make ScreenShot with FastStone Capture, crop it with ImageMagick and save with coordinates X_Y in file name
 GetData()
 ToolTip ; remove tooltip
 
@@ -107,14 +107,20 @@ GetData()
 ;Up::   MouseMove,  0, -1, , R
 ;Down:: MouseMove,  0,  1, , R
 
+
 Numpad4::MouseMove, -1,  0, , R
 Numpad6::MouseMove,  1,  0, , R
 Numpad8::MouseMove,  0, -1, , R
 Numpad2::MouseMove,  0,  1, , R
-Numpad5::GoTo Insert
+Numpad7::MouseMove, -1, -1, , R
+Numpad9::MouseMove,  1, -1, , R
+Numpad1::MouseMove, -1,  1, , R
+Numpad3::MouseMove,  1,  1, , R
 
 
-+LButton::   StartDrawRect()
+ Numpad0::
++LButton:: StartDrawRect()
+ Numpad0 Up::
 +LButton Up:: StopDrawRect()
 
 
@@ -152,13 +158,16 @@ StopDrawRect()
 F1:: ShowHelpWindow("
 (
 Launch 'FastStone Capture' to save pictures
-Insert         -> Save coord, color, pic
-Scroll Lock    -> Toggle show tooltip with info
-Numpad 2 4 6 8 -> Move cursor by one pixel
-Numpad 5       -> Save coord, color, pic
-+LMB & Drag    -> Draw rectangle, save to clipboard
+Scroll Lock     -> Toggle show tooltip with info
+Numpad 2 4 6 8  -> Move cursor by one pixel orthogonally
+Numpad 1 3 7 9  -> Move cursor by one pixel diagonally
+Numpad 5        -> Save coord, color, pic
+Numpad 0 + Drag -> Draw rectangle, save to clipboard
+    +LMB + Drag -> Draw rectangle, save to clipboard
+!Insert         -> Reload Script
+ Insert         -> Exit Script
 )")
 
 
-!x:: ExitApp
-!z:: Reload
+Insert:: ExitApp
+!Insert:: Reload
