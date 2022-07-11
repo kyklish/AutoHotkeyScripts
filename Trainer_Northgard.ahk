@@ -507,8 +507,16 @@ SelectAllMilUnits(unit)
 		}
 		return false
 	}
-	Click(x, y, "Right") ; Click on found unit's icon
-	return true
+	; Bodyguard of Warchief (Stag Clan) has same icon as Shield Bearer.
+	; If Bodyguard present and Shield Bearer not ImageSearch above will find Bodyguard icon (wrong logic).
+	; Bodyguard icon is in 1st column of unit's icons, Shield Bearer - in 3rd. To detect this wrong logic
+	; we test X coordinate of found icon. If it's below 1760 - this is Bodyguard. Skip him.
+	if (unit == idShield and x < 1760)
+		return false
+	else {
+		Click(x, y, "Right") ; Click on found unit's icon
+		return true
+	}
 }
 
 DragBegin()
