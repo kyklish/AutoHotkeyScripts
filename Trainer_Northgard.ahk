@@ -558,6 +558,7 @@ CalculateDots()
 
 DragEnd()
 {
+	MouseGetPos, x1, y1 ; save mouse cursor original position
 	SetTimer, CalculateDots, Off
 	if (hypotenuse != -1) { ; "cancel formation" logic, see comments in CalculateDots()
 		BlockInput, On
@@ -575,6 +576,7 @@ DragEnd()
 			if (id > dotNum) ; no more units left in unitOrder[] array
 				break
 		}
+		MouseMove, %x1%, %y1% ; restore mouse cursor original position
 		; After last military unit move deselect them. [BEFORE] I send "Esc", but if user try make military formation,
 		; but he hasn't any military units it will bring game's menu. [NOW] Select all warband.
 		Send("e")
