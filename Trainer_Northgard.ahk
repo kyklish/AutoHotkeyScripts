@@ -999,7 +999,8 @@ ShowToolTip(text := "", x := "", y := "", displayTime := -1, id := "", fontSize 
 			}
 			SetTimer, % oLabel, % -displayTime
 		} else {
-			SetTimer, % oLabel, Off
+			if (oLabel != "")
+				SetTimer, % oLabel, Off
 		}
 	} else {
 		Gui, %id%: Destroy
