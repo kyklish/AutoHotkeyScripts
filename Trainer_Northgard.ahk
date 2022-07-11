@@ -1,17 +1,27 @@
 ﻿; [The Core] Hotkey Layout + Military Formation Helper
 
 ; Changelog
+;  + added
+;  * changed
+;  - deleted
+;  ! bug fixed
+;
+; v1.2.0
+;  * Make 4Units mode universal
+;  - Remove 3Units mode
+;  ! Fix select by mistake allied unit Bodyguard
+;  ! Fix mouse cursor not return to original position after military formation move end
 ; v1.1.0
-;  ! Fix PixelGetColor not show in overlay
-;  ! Fix overlay hotkey work outside of game
 ;  + Add military formation by unit's health
 ;  * Change WarChief hotkey to digit "0"
+;  ! Fix PixelGetColor not show in overlay
+;  ! Fix overlay hotkey work outside of game
 ; v1.0.3
 ;  ! Fix camera movement on military formation when WarChief units are select
 ; v1.0.2
-;  ! Fix icon not load
 ;  + On script's suspend show message
 ;  * Change all ToolTip to Gui window
+;  ! Fix icon not load
 ; v1.0.1
 ;  ! Fix tall military menu
 ; v1.0.0
