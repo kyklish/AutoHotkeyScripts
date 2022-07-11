@@ -1026,7 +1026,7 @@ RemoveToolTip(id := "", oLabels := "")
 	Gui, %id%: Destroy
 }
 
-Send(key)
+Send(key, delay := -1)
 {
 	if (bSendInput) {
 		SendInput, {%key% down}
@@ -1038,22 +1038,28 @@ Send(key)
 	} else {
 		SendEvent, {%key%}
 	}
+	if (delay != -1)
+		Sleep, %delay%
 }
 
-SendRaw(string)
+SendRaw(string, delay := -1)
 {
 	if (bSendInput)
 		SendInput, %string%
 	else
 		SendEvent, %string%
+	if (delay != -1)
+		Sleep, %delay%
 }
 
-Click(x := "", y := "", WhichButton := "")
+Click(x := "", y := "", WhichButton := "", delay := -1)
 {
 	if (bSendInput)
 		SendInput, {Click %x% %y% %WhichButton%}
 	else
 		SendEvent, {Click %x% %y% %WhichButton%}
+	if (delay != -1)
+		Sleep, %delay%
 }
 
 ToggleSendMode()
