@@ -454,7 +454,7 @@ SelectAllMilUnits(unit)
 		; Check if last unit are wound, if true - deselect him and return false: we don't have health units
 		PixelGetColor, color, 720, 906, RGB
 		if (color == hpYellow or color == hpRed) {
-			Send("Esc")
+			Send("Esc", 50)
 			return false
 		} else
 			return true
@@ -467,7 +467,7 @@ SelectAllMilUnits(unit)
 		; Check if last unit are health, if true - deselect him and return false: we don't have wound units
 		PixelGetColor, color, 720, 906, RGB ; SelectAllMilUnits, HealthBarColor
 		if (color == hpGreen) {
-			Send("Esc")
+			Send("Esc", 50)
 			return false
 		} else
 			return true
