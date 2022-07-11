@@ -975,7 +975,8 @@ ShowToolTip(text := "", x := "", y := "", displayTime := -1, id := "", fontSize 
 {
 	; To update tooltip's [displayTime] we need identify timer by it's label, in our case it's BoundFunc Object
 	static oLabels := {} ; Object to store timer's [BoundFunc Object] 'value' by tooltip's [ID] 'key'
-	id := "ToolTip" . id
+	idOrig := id ; Save original id
+	id := "ToolTip" . id ; Add prefix to be sure, Gui window belong to tooltip
 	if (text) {
 		if (x == "" or y == "") {
 			coordModeMousePrev := A_CoordModeMouse
@@ -993,8 +994,7 @@ ShowToolTip(text := "", x := "", y := "", displayTime := -1, id := "", fontSize 
 		oLabel := oLabels[id] ; Get saved object of displayed tooltip to identify waiting timer to update it
 		if (displayTime != -1) {
 			if (oLabel == "") {
-				rmId := StrReplace(id, "ToolTip", , , 1) ; remove prefix "ToolTip", which was add to [id]
-				oLabel := Func("RemoveToolTip").Bind(rmId, oLabels)
+				oLabel := Func("RemoveToolTip").Bind(idOrig, oLabels)
 				oLabels[id] := oLabel
 			}
 			SetTimer, % oLabel, % -displayTime
