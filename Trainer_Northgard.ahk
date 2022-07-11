@@ -685,7 +685,8 @@ SetMilitaryFormationMode(mode)
 CycleMilitaryFormationMode()
 {
 	static i := 1
-	mode := ["3Units", "4Units", "HealthUnits"] ; must be in sync with [switch] inj SetMilitaryFormationMode()
+	; mode := ["3Units", "4Units", "HealthUnits"] ; must be in sync with [switch] in SetMilitaryFormationMode()
+	mode := ["4Units", "HealthUnits"] ; must be in sync with [switch] in SetMilitaryFormationMode()
 	SetMilitaryFormationMode(mode[i])
 	ShowToolTip("Military Formation Mode: " mode[i], 0, 0, 1000)
 	if (++i > mode.Length())
