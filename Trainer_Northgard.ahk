@@ -601,7 +601,6 @@ MoveUnits(startIndex, x, y)
 	i := startIndex
 	while (i <= dotNum) {
 		if (SelectAllMilUnits(unitOrder[i])) { ; return [true] on success, [false] if didn't find military unit
-			Sleep, 50
 			Click(x, y, "Right", 50)
 			break
 		}
