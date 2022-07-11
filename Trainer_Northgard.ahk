@@ -514,7 +514,7 @@ SelectAllMilUnits(unit)
 	if (unit == idShield and x < 1760)
 		return false
 	else {
-		Click(x, y, "Right") ; Click on found unit's icon
+		Click(x, y, "Right", 50) ; Click on found unit's icon
 		return true
 	}
 }
