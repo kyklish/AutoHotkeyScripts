@@ -318,8 +318,8 @@ B & SC028::Build(colFour, rowTrade)  ; LIGHTHOUSE [']
 
 Build(x, y)
 {
-	y := FixBuildingMenuPosition(y)
 	MouseGetPos, _x, _y
+	y := FixBuildingMenuPosition(y)
 	if (!IsBuildingMenuOpen()) ; if building menu closed, open it
 		Send("b")
 	Click(x, y)
