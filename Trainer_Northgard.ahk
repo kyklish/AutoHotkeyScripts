@@ -7,7 +7,7 @@
 ;  ! bug fixed
 ;
 ; v1.2.1
-;  + New hotkey to slow down mouse move speed for debug purpose
+;  + New hotkey to decrease mouse move speed for debug purpose
 ;  ! Fix error on permanent tooltip
 ;  ! Fix undefined behavior on using hotkeys in main menu
 ; v1.2.0
@@ -52,17 +52,19 @@ SetDefaultMouseSpeed, 0
 SetMouseDelay, -1
 SetKeyDelay, -1, 25
 
-global dl := 50 ; default sleep delay to wait some game reaction: show menu, select units, some mouse move, some send keys, etc...
-
 ; Send() wrapper function settings: TRUE = SendInput, FALSE = SendEvent
 global bSendInput := true
 global SendInputDelay := -1
 global SendInputPressDuration := 25
 
-global isDebug = IsDebugScript()
+global dlDefault := 50 ; default sleep delay to wait some game reaction: show menu, select units, some mouse move, some send keys, etc...
+global dl := dlDefault ; this variable used in script, [dlDefault] and [dlSlow] are hardcoded settings for it
 
-global bSlowMouseMove := false ; slow down mouse speed for debug purpose
-global slowMouseSpeed := 50 ; mouse speed, when 'Slow Mouse Move' enable
+global bSlowMode := false ; slow down mouse speed for debug purpose
+global mouseSpeedSlow := 50 ; mouse speed on 'Slow Mode'
+global dlSlow := 500 ; sleep delay to wait some game reaction on 'Slow Mode'
+
+global isDebug = IsDebugScript()
 
 if (!isDebug) ; on Debug reload script will break debugging
 	Reload_AsAdmin() ; for BlockInput we need admin rights
@@ -96,7 +98,11 @@ Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
                         [DEBUG]
 'Overlay' shows 'ImageSearch' and 'PixelGetColor' areas.
 Hotkeys not design to use, when 'Overlay' is on screen.
-   Alt + F1 = Toggle 'Slow Mouse Move Speed'
+'Slow Mode':
+    * decrease mouse move speed.
+    * increase sleep delay between game actions.
+
+   Alt + F1 = Toggle 'Slow Mode'
   Ctrl + F1 = Toggle 'Overlay'
 Shift + F11 = Toggle 'Send Mode'
 
@@ -234,7 +240,7 @@ F1::ShowHelpImage("NorthgardHotKeys.png")
 
 #IfWinActive ahk_group Game
 ^F1::ToggleOverlay(coords)
-!F1::ToggleSlowMouseMove()
+!F1::ToggleSlowMode()
 F10::ShowHelpImage("NorthgardHotKeys.png")
 +F10::ShowHelpText(helpText)
 F11::Reload
@@ -1052,7 +1058,7 @@ Click(x := "", y := "", WhichButton := "", delay := -1)
 		ShowToolTip(A_ThisFunc "(X, Y) - undefined X or Y parameter", 0, 0)
 		return
 	}
-	SetSlowMouseSpeed()
+	SetMouseSpeedSlow()
 	if (bSendInput)
 		SendInput, {Click %x% %y% %WhichButton%}
 	else
@@ -1063,24 +1069,28 @@ Click(x := "", y := "", WhichButton := "", delay := -1)
 
 MouseMove(x, y, speed := "")
 {
-	SetSlowMouseSpeed()
+	SetMouseSpeedSlow()
 	MouseMove, %x%, %y%, %speed%
 }
 
-SetSlowMouseSpeed()
+SetMouseSpeedSlow()
 {
-	if (bSlowMouseMove) {
+	if (bSlowMode) {
 		SetMouseDelay, 10
-		SetDefaultMouseSpeed, %slowMouseSpeed%
+		SetDefaultMouseSpeed, %mouseSpeedSlow%
 	}
 }
 
-ToggleSlowMouseMove()
+ToggleSlowMode()
 {
-	if (bSlowMouseMove := !bSlowMouseMove)
-		ShowToolTip("Mouse Move: Slow", 0, 0)
-	else
-		ShowToolTip()
+	if (bSlowMode := !bSlowMode) {
+		dl := dlSlow
+		ShowToolTip("Slow Mode: Enabled", 0, 0, 1000)
+	}
+	else {
+		dl := dlDefault
+		ShowToolTip("Slow Mode: Disabled", 0, 0, 1000)
+	}
 }
 
 ToggleSendMode()
