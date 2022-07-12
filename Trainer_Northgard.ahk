@@ -318,12 +318,14 @@ B & SC028::Build(colFour, rowTrade)  ; LIGHTHOUSE [']
 
 Build(x, y)
 {
+	BlockInput, On
 	MouseGetPos, _x, _y
 	y := FixBuildingMenuPosition(y)
 	if (!IsBuildingMenuOpen()) ; if building menu closed, open it
 		Send("b")
 	Click(x, y)
 	MouseMove(_x, _y)
+	BlockInput, Off
 }
 
 IsBuildingMenuOpen()
@@ -416,9 +418,11 @@ SelectAllCivUnits(unit)
 		}
 		return
 	}
+	BlockInput, On
 	MouseGetPos, _x, _y
 	Click(x, y, "Right", 50)
 	MouseMove(_x, _y)
+	BlockInput, Off
 }
 
 SelectAllCivUnitsExceptOne(unit)
@@ -434,11 +438,13 @@ SelectAllCivUnitsExceptOne(unit)
 		}
 		return
 	}
+	BlockInput, On
 	MouseGetPos, _x, _y
 	SendRaw("{Shift down}")
 	Click(x, y, , 50)
 	SendRaw("{Shift up}")
 	MouseMove(_x, _y)
+	BlockInput, Off
 }
 
 ;-------------------------------------------------------------
