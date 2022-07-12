@@ -54,8 +54,9 @@ global SendInputDelay := -1
 global SendInputPressDuration := 25
 
 global isDebug = IsDebugScript()
-global isDebugOverlay := false ; is Overlay on screen
-global debugMouseSpeed := 50 ; mouse speed, when Overlay is on screen
+
+global bSlowMouseMove := false ; slow down mouse speed for debug purpose
+global slowMouseSpeed := 50 ; mouse speed, when 'Slow Mouse Move' enable
 
 if (!isDebug) ; on Debug reload script will break debugging
 	Reload_AsAdmin() ; for BlockInput we need admin rights
@@ -1046,7 +1047,7 @@ Click(x := "", y := "", WhichButton := "", delay := -1)
 		ShowToolTip(A_ThisFunc "(X, Y) - undefined X or Y parameter", 0, 0)
 		return
 	}
-	SetMouseSpeedOnOverlay()
+	SetSlowMouseSpeed()
 	if (bSendInput)
 		SendInput, {Click %x% %y% %WhichButton%}
 	else
@@ -1057,15 +1058,15 @@ Click(x := "", y := "", WhichButton := "", delay := -1)
 
 MouseMove(x, y, speed := "")
 {
-	SetMouseSpeedOnOverlay()
+	SetSlowMouseSpeed()
 	MouseMove, %x%, %y%, %speed%
 }
 
-SetMouseSpeedOnOverlay()
+SetSlowMouseSpeed()
 {
-	if (isDebugOverlay) {
+	if (bSlowMouseMove) {
 		SetMouseDelay, 10
-		SetDefaultMouseSpeed, %debugMouseSpeed%
+		SetDefaultMouseSpeed, %slowMouseSpeed%
 	}
 }
 
