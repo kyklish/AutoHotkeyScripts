@@ -373,7 +373,6 @@ FixBuildingMenuPosition(y)
 	if (color == axeColor) ; Example: No any additional military units
 		return y ; Warband menu is small, no need to fix Build menu position
 	ShowToolTip("Can't find Axe icon in military menu!", 0, 0)
-	SoundBeep
 }
 
 ; Pixel based function, don't cover all buildings
@@ -396,10 +395,8 @@ DestroyBuilding()
 	MouseGetPos, _x, _y
 	ImageSearch, x, y, 1185, 860, 1220, 930, NorthgardDestroy.png ; DestroyBuilding
 	if (ErrorLevel) {
-		if (isDebug) {
+		if (isDebug)
 			ShowToolTip(A_ThisFunc "(NorthgardDestroy.png) - can't find image.", 0, 0)
-			SoundBeep
-		}
 		return
 	}
 	Click(x, y, , 50)
@@ -412,10 +409,8 @@ SelectAllCivUnits(unit)
 	; Search unit icon on Civilians menu
 	ImageSearch, x, y, 1665, 830, 1895, 970, %unit% ; SelectAllCivUnits
 	if (ErrorLevel) {
-		if (isDebug) {
+		if (isDebug)
 			ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
-			SoundBeep
-		}
 		return
 	}
 	BlockInput, On
@@ -432,10 +427,8 @@ SelectAllCivUnitsExceptOne(unit)
 	; Search first unit icon in first column of selected units (central bottom menu)
 	ImageSearch, x, y, 860, 890, 895, 1045, %unit% ; DeselectOneUnit
 	if (ErrorLevel) {
-		if (isDebug) {
+		if (isDebug)
 			ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
-			SoundBeep
-		}
 		return
 	}
 	BlockInput, On
@@ -507,12 +500,10 @@ SelectAllMilUnits(unit)
 	; Search unit icon on Warband menu
 	ImageSearch, x, y, 1665, 655, 1895, 790, %unit% ; SelectAllMilUnits
 	if (ErrorLevel) {
-		if (isDebug) {
+		if (isDebug)
 			; In this function it is normal logic, when [ImageSearch] didn't find unit's image.
 			; So comment this [ToolTip], script will be not reliable with it.
 			ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
-			SoundBeep
-		}
 		return false
 	}
 	; Bodyguard of Warchief (Stag Clan) has same icon as Shield Bearer.
@@ -1074,7 +1065,6 @@ SetMouseSpeedOnOverlay()
 
 ToggleSendMode()
 {
-	SoundBeep
 	if (bSendInput := !bSendInput)
 		ShowToolTip("SendMode: Input", 0, 0, 1000)
 	else
