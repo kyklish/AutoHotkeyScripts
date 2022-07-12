@@ -42,15 +42,15 @@ SetWorkingDir %A_ScriptDir%
 Menu, Tray, Icon, Northgard.ico, 1, 1
 Menu, Tray, Tip, Northgard [The Core] Hotkey Layout
 
-SetDefaultMouseSpeed, 0
-SetMouseDelay, -1
-SetKeyDelay, -1, 25
-
 ; By default all [CoordMode] are relative to [Screen], but ToolTip somehow did not obey default value.
 ; For clarity set them explicitly.
 CoordMode,   Pixel, Screen
 CoordMode,   Mouse, Screen
 CoordMode, ToolTip, Screen
+
+SetDefaultMouseSpeed, 0
+SetMouseDelay, -1
+SetKeyDelay, -1, 25
 
 ; Send() wrapper function settings: TRUE = SendInput, FALSE = SendEvent
 global bSendInput := true
