@@ -52,6 +52,8 @@ SetDefaultMouseSpeed, 0
 SetMouseDelay, -1
 SetKeyDelay, -1, 25
 
+global dl := 50 ; default sleep delay to wait some game reaction: show menu, select units, some mouse move, some send keys, etc...
+
 ; Send() wrapper function settings: TRUE = SendInput, FALSE = SendEvent
 global bSendInput := true
 global SendInputDelay := -1
@@ -388,7 +390,7 @@ DestroyBuilding()
 	; button overlaps in different size info windows (except "Marketplace").
 	; Y = 902 is optimal coordinate to click overlapped button's region.
 	MouseGetPos, _x, _y
-	Click(1200, 902, , 50) ; "Destroy Building" [Fire button] except "Marketplace"
+	Click(1200, 902, , dl) ; "Destroy Building" [Fire button] except "Marketplace"
 	Click(855, 560) ; Confirm [OK button]
 	MouseMove(_x, _y)
 }
@@ -404,7 +406,7 @@ DestroyBuilding()
 			ShowToolTip(A_ThisFunc "(NorthgardDestroy.png) - can't find image.", 0, 0)
 		return
 	}
-	Click(x, y, , 50)
+	Click(x, y, , dl)
 	Click(855, 560) ; Confirm [OK button]
 	MouseMove(_x, _y)
 }
@@ -420,7 +422,7 @@ SelectAllCivUnits(unit)
 	}
 	BlockInput, On
 	MouseGetPos, _x, _y
-	Click(x, y, "Right", 50)
+	Click(x, y, "Right", dl)
 	MouseMove(_x, _y)
 	BlockInput, Off
 }
@@ -428,7 +430,7 @@ SelectAllCivUnits(unit)
 SelectAllCivUnitsExceptOne(unit)
 {
 	SelectAllCivUnits(unit)
-	Sleep, 50 ; wait for bottom menu with selected units
+	Sleep, % dl ; wait for bottom menu with selected units
 	; Search first unit icon in first column of selected units (central bottom menu)
 	ImageSearch, x, y, 860, 890, 895, 1045, %unit% ; DeselectOneUnit
 	if (ErrorLevel) {
@@ -439,7 +441,7 @@ SelectAllCivUnitsExceptOne(unit)
 	BlockInput, On
 	MouseGetPos, _x, _y
 	SendRaw("{Shift down}")
-	Click(x, y, , 50)
+	Click(x, y, , dl)
 	SendRaw("{Shift up}")
 	MouseMove(_x, _y)
 	BlockInput, Off
@@ -453,27 +455,27 @@ SelectAllCivUnitsExceptOne(unit)
 SelectAllMilUnits(unit)
 {
 	if (unit == idHealth) {
-		Send("e", 50) ; Search in entire Warband
+		Send("e", dl) ; Search in entire Warband
 		DeselectUnitsByHpColor(hpYellow) ; Yellow Health Points
 		DeselectUnitsByHpColor(hpRed) ; Red Health Points
 		; If we have wound units, last unit will be send to "Health" position
 		; Check if last unit are wound, if true - deselect him and return false: we don't have health units
 		PixelGetColor, color, 720, 906, RGB
 		if (color == hpYellow or color == hpRed) {
-			Send("Esc", 50)
+			Send("Esc", dl)
 			return false
 		} else
 			return true
 	}
 
 	if (unit == idWound) {
-		Send("e", 50) ; Search in entire Warband
+		Send("e", dl) ; Search in entire Warband
 		DeselectUnitsByHpColor(hpGreen) ; Green Health Points
 		; If we have health units, last unit will be send to "Wound" position
 		; Check if last unit are health, if true - deselect him and return false: we don't have wound units
 		PixelGetColor, color, 720, 906, RGB ; SelectAllMilUnits, HealthBarColor
 		if (color == hpGreen) {
-			Send("Esc", 50)
+			Send("Esc", dl)
 			return false
 		} else
 			return true
@@ -485,8 +487,8 @@ SelectAllMilUnits(unit)
 		; If user has selected WarChief units on "1" hotkey, script will select him again via in-game hotkey "1".
 		; This second selection will move camera to WarChief units and script move units in wrong positions.
 		; Select all warband to prevent camera movement.
-		Send("e", 50)
-		Send(WarChiefHotkey, 50)
+		Send("e", dl)
+		Send(WarChiefHotkey, dl)
 		return true
 	}
 	*/
@@ -494,8 +496,8 @@ SelectAllMilUnits(unit)
 	if (unit == idWarChief) {
 		Loop, 2 ; 1st time for notification on screen (if present), 2nd time for bottom menu (if present)
 			if (IsBottomMenuOnScreen())
-				Send("Esc", 50)
-		Send(WarChiefHotkey, 50)
+				Send("Esc", dl)
+		Send(WarChiefHotkey, dl)
 		if (IsBottomMenuOnScreen())
 			return true
 		else
@@ -518,7 +520,7 @@ SelectAllMilUnits(unit)
 	if (unit == idShield and x < 1760)
 		return false
 	else {
-		Click(x, y, "Right", 50) ; Click on found unit's icon
+		Click(x, y, "Right", dl) ; Click on found unit's icon
 		return true
 	}
 }
@@ -584,7 +586,7 @@ DragEnd()
 			; WarChief selection algorithm is time expensive. If we hide dots before MoveUnits() there will be ugly delay.
 			; Hide dot, delay (WarChief), move units. To prevent this hide dot after MoveUnits().
 			HideDot(A_Index)
-			Sleep, 50
+			Sleep, % dl
 			if (id > dotNum) ; no more units left in unitOrder[] array
 				break
 		}
@@ -605,7 +607,7 @@ MoveUnits(startIndex, x, y)
 	i := startIndex
 	while (i <= dotNum) {
 		if (SelectAllMilUnits(unitOrder[i])) { ; return [true] on success, [false] if didn't find military unit
-			Click(x, y, "Right", 50)
+			Click(x, y, "Right", dl)
 			break
 		}
 		i++
@@ -706,8 +708,8 @@ DeselectUnitsByHpColor(hpColor)
 		if (ErrorLevel)
 			break
 		SendRaw("{Shift down}")
-		Click(x, y, , 50)
-		SendRaw("{Shift up}", 50)
+		Click(x, y, , dl)
+		SendRaw("{Shift up}", dl)
 	}
 }
 
