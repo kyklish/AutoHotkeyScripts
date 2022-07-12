@@ -98,15 +98,11 @@ AppsKey + RMB + Drag = Make Military Formation
 
               [MILITARY FORMATION HELPER]
 'Military Formation' has three modes:
-    3Units move three unit's type: 'Shield', 'Warrior', 'Axe'.
     4Units move  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
     HealthUnits move Warband health units to front, wound units - back.
-I can't detect Warchief presence in game. So if you use 4Units mode, but
-you don't have 'WarChief', no units will be send to start dot.
 
 'WarChief' means all units, that are assigned to in-game '0' hotkey.
 Select Warchief, bear, any big units and press [Ctrl + 0].
-Toggle to 4Units mode via hotkey (see above). Draw formation with 'WarChief'.
 )"
 
 ;-------------------------------------------------------------
