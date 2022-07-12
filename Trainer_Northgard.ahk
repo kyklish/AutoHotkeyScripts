@@ -88,9 +88,11 @@ helpText := "
 Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
 
                         [DEBUG]
-'Overlay' shows 'ImageSearch' and 'PixelGetColor' areas
-  Ctrl + F1 = Toggle Overlay
-Shift + F11 = Toggle Send Mode
+'Overlay' shows 'ImageSearch' and 'PixelGetColor' areas.
+Hotkeys not design to use, when 'Overlay' is on screen.
+   Alt + F1 = Toggle 'Slow Mouse Move Speed'
+  Ctrl + F1 = Toggle 'Overlay'
+Shift + F11 = Toggle 'Send Mode'
 
                       [MILITARY]
          J + AppsKey = Cycle Formation Mode: 3Units or 4Units or HealthUnits
