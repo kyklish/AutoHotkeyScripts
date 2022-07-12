@@ -1043,12 +1043,19 @@ SendRaw(string, delay := -1)
 
 Click(x := "", y := "", WhichButton := "", delay := -1)
 {
+	SetMouseSpeedOnOverlay()
 	if (bSendInput)
 		SendInput, {Click %x% %y% %WhichButton%}
 	else
 		SendEvent, {Click %x% %y% %WhichButton%}
 	if (delay != -1)
 		Sleep, %delay%
+}
+
+MouseMove(x, y, speed := "")
+{
+	SetMouseSpeedOnOverlay()
+	MouseMove, %x%, %y%, %speed%
 }
 
 SetMouseSpeedOnOverlay()
