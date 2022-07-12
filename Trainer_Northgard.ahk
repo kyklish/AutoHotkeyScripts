@@ -907,7 +907,8 @@ AddAreaToOverlay(ByRef coords, lineNumber, comment, x1, y1, x2 := "", y2 := "")
 
 ToggleOverlay(coords)
 {
-	if (isDebugOverlay := !isDebugOverlay)
+	static toggle
+	if (toggle := !toggle)
 		DrawOverlay(coords)
 	else
 		DestroyOverlay(coords)
