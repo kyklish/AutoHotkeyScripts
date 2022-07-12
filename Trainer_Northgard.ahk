@@ -6,6 +6,10 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v1.2.2
+;  + Slow mode (mouse move speed, delay between script's actions)
+;  - Slow mouse move speed
+;  ! Fix wrong help text
 ; v1.2.1
 ;  + New hotkey to decrease mouse move speed for debug purpose
 ;  ! Fix error on permanent tooltip
