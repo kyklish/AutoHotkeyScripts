@@ -6,6 +6,10 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v1.2.1
+;  + New hotkey to slow down mouse move speed for debug purpose
+;  ! Fix error on permanent tooltip
+;  ! Fix undefined behavior on using hotkeys in main menu
 ; v1.2.0
 ;  * Make 4Units mode universal
 ;  - Remove 3Units mode
