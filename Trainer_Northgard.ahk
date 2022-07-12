@@ -230,6 +230,7 @@ F1::ShowHelpImage("NorthgardHotKeys.png")
 
 #IfWinActive ahk_group Game
 ^F1::ToggleOverlay(coords)
+!F1::ToggleSlowMouseMove()
 F10::ShowHelpImage("NorthgardHotKeys.png")
 +F10::ShowHelpText(helpText)
 F11::Reload
@@ -1068,6 +1069,14 @@ SetSlowMouseSpeed()
 		SetMouseDelay, 10
 		SetDefaultMouseSpeed, %slowMouseSpeed%
 	}
+}
+
+ToggleSlowMouseMove()
+{
+	if (bSlowMouseMove := !bSlowMouseMove)
+		ShowToolTip("Mouse Move: Slow", 0, 0)
+	else
+		ShowToolTip()
 }
 
 ToggleSendMode()
