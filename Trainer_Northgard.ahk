@@ -323,7 +323,7 @@ Build(x, y)
 	if (!IsBuildingMenuOpen()) ; if building menu closed, open it
 		Send("b")
 	Click(x, y)
-	MouseMove, %_x%, %_y%
+	MouseMove(_x, _y)
 }
 
 IsBuildingMenuOpen()
@@ -384,7 +384,7 @@ DestroyBuilding()
 	MouseGetPos, _x, _y
 	Click(1200, 902, , 50) ; "Destroy Building" [Fire button] except "Marketplace"
 	Click(855, 560) ; Confirm [OK button]
-	MouseMove, %_x%, %_y%
+	MouseMove(_x, _y)
 }
 */
 
@@ -402,7 +402,7 @@ DestroyBuilding()
 	}
 	Click(x, y, , 50)
 	Click(855, 560) ; Confirm [OK button]
-	MouseMove, %_x%, %_y%
+	MouseMove(_x, _y)
 }
 
 SelectAllCivUnits(unit)
@@ -418,7 +418,7 @@ SelectAllCivUnits(unit)
 	}
 	MouseGetPos, _x, _y
 	Click(x, y, "Right", 50)
-	MouseMove, %_x%, %_y%
+	MouseMove(_x, _y)
 }
 
 SelectAllCivUnitsExceptOne(unit)
@@ -438,7 +438,7 @@ SelectAllCivUnitsExceptOne(unit)
 	SendRaw("{Shift down}")
 	Click(x, y, , 50)
 	SendRaw("{Shift up}")
-	MouseMove, %_x%, %_y%
+	MouseMove(_x, _y)
 }
 
 ;-------------------------------------------------------------
@@ -586,7 +586,7 @@ DragEnd()
 			if (id > dotNum) ; no more units left in unitOrder[] array
 				break
 		}
-		MouseMove, %x1%, %y1% ; restore mouse cursor original position
+		MouseMove(x1, y1) ; restore mouse cursor original position
 		; After last military unit move deselect them. [BEFORE] I send "Esc", but if user try make military formation,
 		; but he hasn't any military units it will bring game's menu. [NOW] Select all warband.
 		Send("e")
