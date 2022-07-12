@@ -1040,6 +1040,10 @@ SendRaw(string, delay := -1)
 
 Click(x := "", y := "", WhichButton := "", delay := -1)
 {
+	if ((x and !y) or (!x and y)) {
+		ShowToolTip(A_ThisFunc "(X, Y) - undefined X or Y parameter", 0, 0)
+		return
+	}
 	SetMouseSpeedOnOverlay()
 	if (bSendInput)
 		SendInput, {Click %x% %y% %WhichButton%}
