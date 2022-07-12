@@ -372,7 +372,7 @@ FixBuildingMenuPosition(y)
 	PixelGetColor, color, 1675, 727, RGB ; FixBuildingMenuPosition, AxeIcon, SmallMilUnitMenu
 	if (color == axeColor) ; Example: No any additional military units
 		return y ; Warband menu is small, no need to fix Build menu position
-	ShowToolTip("Can't find Axe icon in military menu!", 0, 0)
+	ShowToolTip(A_ThisFunc "() - can't find Axe icon in military menu!", 0, 0)
 	return y
 }
 
