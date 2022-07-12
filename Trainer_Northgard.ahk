@@ -54,6 +54,8 @@ global SendInputDelay := -1
 global SendInputPressDuration := 25
 
 global isDebug = IsDebugScript()
+global isDebugOverlay := false ; is Overlay on screen
+global debugMouseSpeed := 50 ; mouse speed, when Overlay is on screen
 
 if (!isDebug) ; on Debug reload script will break debugging
 	Reload_AsAdmin() ; for BlockInput we need admin rights
@@ -907,8 +909,7 @@ AddAreaToOverlay(ByRef coords, lineNumber, comment, x1, y1, x2 := "", y2 := "")
 
 ToggleOverlay(coords)
 {
-	static toggle
-	if (toggle := !toggle)
+	if (isDebugOverlay := !isDebugOverlay)
 		DrawOverlay(coords)
 	else
 		DestroyOverlay(coords)
@@ -1048,6 +1049,14 @@ Click(x := "", y := "", WhichButton := "", delay := -1)
 		SendEvent, {Click %x% %y% %WhichButton%}
 	if (delay != -1)
 		Sleep, %delay%
+}
+
+SetMouseSpeedOnOverlay()
+{
+	if (isDebugOverlay) {
+		SetMouseDelay, 10
+		SetDefaultMouseSpeed, %debugMouseSpeed%
+	}
 }
 
 ToggleSendMode()
