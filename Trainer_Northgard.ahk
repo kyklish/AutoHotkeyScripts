@@ -99,13 +99,13 @@ Hotkeys not design to use, when 'Overlay' is on screen.
 Shift + F11 = Toggle 'Send Mode'
 
                       [MILITARY]
-         J + AppsKey = Cycle Formation Mode: 3Units or 4Units or HealthUnits
+         J + AppsKey = Cycle Formation Mode: 4Units or HealthUnits
 AppsKey + RMB + Drag = Make Military Formation
 
               [MILITARY FORMATION HELPER]
-'Military Formation' has three modes:
-    4Units move  four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
-    HealthUnits move Warband health units to front, wound units - back.
+'Military Formation' has two modes:
+    * 4Units move four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
+    * HealthUnits move Warband health units to front, wound units - back.
 
 'WarChief' means all units, that are assigned to in-game '0' hotkey.
 Select Warchief, bear, any big units and press [Ctrl + 0].
