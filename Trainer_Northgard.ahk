@@ -6,6 +6,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v1.2.3
+;  * Update help text
 ; v1.2.2
 ;  + Slow mode (mouse move speed, delay between script's actions)
 ;  - Slow mouse move speed
