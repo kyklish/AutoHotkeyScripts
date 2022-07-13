@@ -67,7 +67,7 @@ global dlDefault := 50 ; default sleep delay to wait some game reaction: show me
 global dl := dlDefault ; this variable used in script, [dlDefault] and [dlSlow] are hardcoded settings for it
 
 global bSlowMode := false ; slow down mouse speed for debug purpose
-global mouseSpeedSlow := 50 ; mouse speed on 'Slow Mode'
+global mouseSpeedSlow := 25 ; mouse speed on 'Slow Mode'
 global dlSlow := 500 ; sleep delay to wait some game reaction on 'Slow Mode'
 
 global isDebug = IsDebugScript()
