@@ -83,6 +83,8 @@ coords := ParseScriptForOverlay()
 helpText := "
 (
 BlockInput (to prevent mouse move interfere with user input) need admin rights!
+If script block input by mistake, press [Ctrl + Alt + Del] to unblock.
+
                       [CIVILIAN]
           J = Build        |           P = Select Warband
           U = Cancel Order |           - = Select Idle Workers
