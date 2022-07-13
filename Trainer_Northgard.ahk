@@ -339,6 +339,8 @@ B & SC028::Build(colFour, rowTrade)  ; LIGHTHOUSE [']
 
 Build(x, y)
 {
+	; [BlockInput, On] allow hotkeys, use [Critical, On] to buffer them
+	Critical, On
 	BlockInput, On
 	MouseGetPos, _x, _y
 	y := FixBuildingMenuPosition(y)
@@ -347,6 +349,7 @@ Build(x, y)
 	Click(x, y)
 	MouseMove(_x, _y)
 	BlockInput, Off
+	Critical, Off
 }
 
 IsBuildingMenuOpen()
@@ -435,11 +438,13 @@ SelectAllCivUnits(unit)
 			ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
 		return
 	}
+	Critical, On
 	BlockInput, On
 	MouseGetPos, _x, _y
 	Click(x, y, "Right", dl)
 	MouseMove(_x, _y)
 	BlockInput, Off
+	Critical, Off
 }
 
 SelectAllCivUnitsExceptOne(unit)
@@ -453,6 +458,7 @@ SelectAllCivUnitsExceptOne(unit)
 			ShowToolTip(A_ThisFunc "(" unit ") - can't find unit's image.", 0, 0)
 		return
 	}
+	Critical, On
 	BlockInput, On
 	MouseGetPos, _x, _y
 	SendRaw("{Shift down}")
@@ -460,6 +466,7 @@ SelectAllCivUnitsExceptOne(unit)
 	SendRaw("{Shift up}")
 	MouseMove(_x, _y)
 	BlockInput, Off
+	Critical, Off
 }
 
 ;-------------------------------------------------------------
@@ -590,6 +597,7 @@ DragEnd()
 	MouseGetPos, x1, y1 ; save mouse cursor original position
 	SetTimer, CalculateDots, Off
 	if (hypotenuse != -1) { ; "cancel formation" logic, see comments in CalculateDots()
+		Critical, On
 		BlockInput, On
 		; "GUI Point" main loop A_Index for dotX[] and dotY[] arrays
 		id := 1 ; "Military Unit" secondary loop index in MoveUnits() function for unitOrder[] array
@@ -610,6 +618,7 @@ DragEnd()
 		; but he hasn't any military units it will bring game's menu. [NOW] Select all warband.
 		Send("e")
 		BlockInput, Off
+		Critical, Off
 		; Send {%modifierKey% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
 	}
 	; Hide GUI dots on "cancel formation" or for example when we buy only two types of units in game,
