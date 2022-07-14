@@ -17,8 +17,8 @@
 ;  ! Fix error on permanent tooltip
 ;  ! Fix undefined behavior on using hotkeys in main menu
 ; v1.2.0
-;  * Make 4Units mode universal
-;  - Remove 3Units mode
+;  * Make 4Units military formation mode universal
+;  - Remove 3Units military formation mode
 ;  ! Fix select by mistake allied unit Bodyguard
 ;  ! Fix mouse cursor not return to original position after military formation move end
 ; v1.1.0
@@ -567,7 +567,7 @@ CalculateDots()
 	if (!GetKeyState(modifierKey1, "P") and !GetKeyState(modifierKey2, "P")) {
 		SetTimer, , Off
 		; On release RButton DragEnd() check [hypotenuse] value
-		; Set it equal -1 to "cancel" unit's moving
+		; Set it equal -1 to "cancel" unit's move
 		hypotenuse := -1
 		HideDots()
 		return
