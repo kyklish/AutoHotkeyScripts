@@ -116,7 +116,6 @@ Hotkeys not design to use, when 'Overlay' is on screen.
 Shift + F11 = Toggle 'Send Mode'
 
                       [MILITARY]
-         J + AppsKey = Cycle Formation Mode: 4Units or HealthUnits
 AppsKey + RMB + Drag = Make Military Formation
 
               [MILITARY FORMATION HELPER]
@@ -193,7 +192,6 @@ global unitDist2  := [0, 1] ; length of this array must be in sync with unitOrde
 global unitOrder2 := [idHealth, idWound]
 global unitDist4  := [0, 1/3, 2/3, 1]
 global unitOrder4 := [idWarChief, idShield, idWarrior, idAxe]
-CycleMilitaryFormationMode() ; initialize unitDist[] and unitOrder[] values, check for loosing sync in unitOrder[] and unitDist[] arrays
 global scale := 1 ; Scale all distances in unitDist[] (each value is multiply by [scale]): <1 less sensitive, ==1 linear, >1 more sensitive.
 global d := 20 ; gui dot diameter
 global r := d // 2 ; gui dot radius
@@ -226,7 +224,6 @@ CreateDots()
 global modifierKey := "AppsKey"
 AppsKey & RButton::DragBegin()
 AppsKey & RButton Up::DragEnd()
-J & AppsKey::CycleMilitaryFormationMode()
 
 ;-------------------------------------------------------------
 ;---------------------- GENERAL HOTKEYS ----------------------
