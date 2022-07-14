@@ -120,8 +120,8 @@ AppsKey + RMB + Drag = Make Military Formation
 
               [MILITARY FORMATION HELPER]
 'Military Formation' has two modes:
-    * 4Units move four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
-    * HealthUnits move Warband health units to front, wound units - back.
+    * UnitsByType move four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
+    * UnitsByHealth move Warband health units to front, wound units - back.
 
 'WarChief' means all units, that are assigned to in-game '0' hotkey.
 Select Warchief, bear, any big units and press [Ctrl + 0].
@@ -688,10 +688,10 @@ SetMilitaryFormationMode(mode)
 {
 	switch mode
 	{
-		case "HealthUnits":
+		case "UnitsByHealth":
 			unitDist  := unitDist2
 			unitOrder := unitOrder2
-		case "4Units":
+		case "UnitsByType":
 			unitDist  := unitDist4
 			unitOrder := unitOrder4
 		default:
@@ -706,7 +706,7 @@ SetMilitaryFormationMode(mode)
 CycleMilitaryFormationMode()
 {
 	static i := 1
-	mode := ["4Units", "HealthUnits"] ; must be in sync with [switch] in SetMilitaryFormationMode()
+	mode := ["UnitsByType", "UnitsByHealth"] ; must be in sync with [switch] in SetMilitaryFormationMode()
 	SetMilitaryFormationMode(mode[i])
 	ShowToolTip("Military Formation Mode: " mode[i], 0, 0, 1000)
 	if (++i > mode.Length())
