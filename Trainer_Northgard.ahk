@@ -191,8 +191,6 @@ global unitDist  := {} ; we will assign our 2 or 3 or 4 settings to this variabl
 global unitOrder := {} ; we will assign our 2 or 3 or 4 settings to this variables
 global unitDist2  := [0, 1] ; length of this array must be in sync with unitOrder[] array length
 global unitOrder2 := [idHealth, idWound]
-global unitDist3  := [0, 1/2, 1] ; length of this array must be in sync with unitOrder[] array length
-global unitOrder3 := [idShield, idWarrior, idAxe]
 global unitDist4  := [0, 1/3, 2/3, 1]
 global unitOrder4 := [idWarChief, idShield, idWarrior, idAxe]
 CycleMilitaryFormationMode() ; initialize unitDist[] and unitOrder[] values, check for loosing sync in unitOrder[] and unitDist[] arrays
@@ -696,9 +694,6 @@ SetMilitaryFormationMode(mode)
 		case "HealthUnits":
 			unitDist  := unitDist2
 			unitOrder := unitOrder2
-		case "3Units":
-			unitDist  := unitDist3
-			unitOrder := unitOrder3
 		case "4Units":
 			unitDist  := unitDist4
 			unitOrder := unitOrder4
@@ -714,7 +709,6 @@ SetMilitaryFormationMode(mode)
 CycleMilitaryFormationMode()
 {
 	static i := 1
-	; mode := ["3Units", "4Units", "HealthUnits"] ; must be in sync with [switch] in SetMilitaryFormationMode()
 	mode := ["4Units", "HealthUnits"] ; must be in sync with [switch] in SetMilitaryFormationMode()
 	SetMilitaryFormationMode(mode[i])
 	ShowToolTip("Military Formation Mode: " mode[i], 0, 0, 1000)
@@ -955,8 +949,6 @@ CheckMilitarySettings()
 		err .= A_Tab . "unitDist.Length() != unitOrder.Length()`n"
 	if (unitDist2.Length() != unitOrder2.Length())
 		err .= A_Tab . "unitDist2.Length() != unitOrder2.Length()`n"
-	if (unitDist3.Length() != unitOrder3.Length())
-		err .= A_Tab . "unitDist3.Length() != unitOrder3.Length()`n"
 	if (unitDist4.Length() != unitOrder4.Length())
 		err .= A_Tab . "unitDist4.Length() != unitOrder4.Length()`n"
 	if (err) {
