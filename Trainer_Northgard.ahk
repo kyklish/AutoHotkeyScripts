@@ -6,6 +6,13 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v1.2.4
+;  + Add hotkey for UnitsByHealth military formation mode
+;  * Rename 4Units to UnitsByType military formation mode
+;  * Faster mouse move speed on Slow mode
+;  * Update help text
+;  - Remove hotkey for cycle military formation
+;  ! Fix BlockInput not block hotkeys in some cases
 ; v1.2.3
 ;  * Update help text
 ; v1.2.2
