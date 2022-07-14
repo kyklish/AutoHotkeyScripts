@@ -116,7 +116,8 @@ Hotkeys not design to use, when 'Overlay' is on screen.
 Shift + F11 = Toggle 'Send Mode'
 
                       [MILITARY]
-AppsKey + RMB + Drag = Make Military Formation
+AppsKey + RMB + Drag = Make Military Formation (UnitsByType)
+      J + RMB + Drag = Make Military Formation (UnitsByHealth)
 
               [MILITARY FORMATION HELPER]
 'Military Formation' has two modes:
@@ -221,9 +222,12 @@ CreateDots()
 #IfWinActive ahk_group Game
 ; Modifier key ("AppsKey" in this hotkey) of RButton (RightMouseButton) must be in sync with [modifierKey] variable
 ; It implements "cancel formation" logic in CalculateDots() when user release [modifierKey]
-global modifierKey := "AppsKey"
-AppsKey & RButton::DragBegin()
+global modifierKey1 := "AppsKey"
+global modifierKey2 := "J"
+AppsKey & RButton::DragBegin("UnitsByType")
 AppsKey & RButton Up::DragEnd()
+J & RButton::DragBegin("UnitsByHealth")
+J & RButton Up::DragEnd()
 
 ;-------------------------------------------------------------
 ;---------------------- GENERAL HOTKEYS ----------------------
@@ -542,8 +546,13 @@ SelectAllMilUnits(unit)
 	}
 }
 
-DragBegin()
+DragBegin(mode)
 {
+	static currentMode
+	if (currentMode != mode) {
+		currentMode := mode
+		SetMilitaryFormationMode(mode)
+	}
 	MouseGetPos, x0, y0
 	ShowDot(1, x0, y0)
 	SetTimer, CalculateDots, %period%
@@ -555,7 +564,7 @@ CalculateDots()
 	Critical, On
 
 	; Disable timer ("cancel" formation) if user release [modifierKey]
-	if (!GetKeyState(modifierKey, "P")) {
+	if (!GetKeyState(modifierKey1, "P") and !GetKeyState(modifierKey2, "P")) {
 		SetTimer, , Off
 		; On release RButton DragEnd() check [hypotenuse] value
 		; Set it equal -1 to "cancel" unit's moving
@@ -614,7 +623,8 @@ DragEnd()
 		Send("e")
 		BlockInput, Off
 		Critical, Off
-		; Send {%modifierKey% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
+		; Send {%modifierKey1% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
+		; Send {%modifierKey2% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
 	}
 	; Hide GUI dots on "cancel formation" or for example when we buy only two types of units in game,
 	; they will be sended in first two dots, so we need hide other unused dots.
