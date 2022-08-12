@@ -10,7 +10,7 @@
 ; Этот файл для сортировки вверх (Move To Top) при ширине таскбара равному 5и иконок
 ;
 ;-----------------
-"explorer.exe","BenQ|Edifier|SAMSUNG","Fully charged|available","Network|Identifying|Not Connected|Unidentified network|Nokia|Datagroup"
+"explorer.exe","BenQ|Edifier|SAMSUNG|QCY","Fully charged|available","Network|Identifying|Not Connected|Unidentified network|Nokia|Datagroup|ASUS"
 "BitMeter2.exe"
 "meminfo.exe"
 ;-----------------
