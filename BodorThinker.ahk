@@ -22,10 +22,12 @@ global _X, _Y
 !x::ExitApp
 
 #IfWinActive ahk_group Bodor
+; Head Move
 Numpad4:: Press(1500, 315)
 Numpad6:: Press(1610, 315)
 Numpad2:: Press(1555, 370)
 Numpad8:: Press(1555, 260)
+; Move Mode
 Numpad5:: Press(1555, 315) ; Rapid
 Numpad0:: Press(1525, 490) ; Zero
 Numpad7:: Press(1480, 445) ; Backward
@@ -36,6 +38,10 @@ Numpad1:: ; Set Origin
 	Sleep, 250
 	Send {Enter}
 return
+; Nest
+!1:: Press( 75, 930) ; Parts
+!2:: Press(165, 930) ; Plates
+!3:: Press(245, 930) ; Nest Result
 
 Press(X, Y) {
 	Critical, On
