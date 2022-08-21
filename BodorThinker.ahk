@@ -66,4 +66,7 @@ F1:: ShowHelpWindow("
 	9          -> Forward
 	3          -> Step/Jog
 	0          -> Set Origin
+    !1         -> Nest Parts
+    !2         -> Nest Plates
+    !3         -> Nest Result
 )")
