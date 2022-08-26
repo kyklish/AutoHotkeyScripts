@@ -52,7 +52,6 @@ Press(X, Y) {
 		Sleep, 10
 	Click Up
 	MouseMove, _X, _Y
-	Critical, Off
 }
 
 #IfWinNotActive ahk_group Bodor
