@@ -44,6 +44,7 @@ return
 !3:: Press(245, 930) ; Nest Result
 ; Simple Arithmetic
 ^Enter:: CalculateTextField()
+^BackSpace:: Send {Home}+{End}{BackSpace} ; Delete all text in text field.
 
 ; Simple calculation in text field, when user directly set XY and WH values of object.
 ; Do not use spaces between operands: '1+1' valid, '1 + 1' not valid.
@@ -104,4 +105,5 @@ F1:: ShowHelpWindow("
 	!2         -> Nest Plates
 	!3         -> Nest Result
 	^Enter     -> Calculate text field
+	^BackSpace -> Clear text field
 )")
