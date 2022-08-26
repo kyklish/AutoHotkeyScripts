@@ -42,6 +42,41 @@ return
 !1:: Press( 75, 930) ; Parts
 !2:: Press(165, 930) ; Plates
 !3:: Press(245, 930) ; Nest Result
+; Simple Arithmetic
+^Enter:: CalculateTextField()
+
+; Simple calculation in text field, when user directly set XY and WH values of object.
+; Do not use spaces between operands: '1+1' valid, '1 + 1' not valid.
+CalculateTextField() {
+	; BodorThinker3.0 override hotkeys very hard:
+	; 1. 'Ctrl+C' copy selected object, not selected text.
+	; 2. 'End' show current position of laser head in middle of screen.
+	Critical, On
+	Clipboard := "" ; Start off empty to allow ClipWait to detect when the text has arrived.
+	Send {Home}+{End} ; Move carret to 'Home', then 'Shift+End' to select all text.
+	Send ^{Insert} ; Copy selected text.
+	ClipWait, 1 ; Wait for the clipboard to contain text.
+	if (ErrorLevel) {
+		MsgBox, The attempt to copy text onto the clipboard failed.
+		return
+	}
+	needleRegEx := "(?P<A>-?\d+(\.\d+)?)(?P<Op>[+\-*/])(?P<B>-?\d+(\.\d+)?)" ; '-' has special meaning inside a character class
+	if (RegExMatch(Clipboard, needleRegEx, txt)) {
+		Switch txtOp {
+			Case "+": rs := txtA + txtB
+			Case "-": rs := txtA - txtB
+			Case "*": rs := txtA * txtB
+			Case "/": rs := txtA / txtB
+			Default: MsgBox, Wrong arithmetic operator.
+		}
+		rs := Format("{:.3f}", rs) ; Example: 1000.000
+		rs := RTrim(rs, "0") ; Trim zeros. Example: 1000.
+		rs := RTrim(rs, ".") ; After trimming zeros, trim possible dot. Example: 1000
+		; ToolTip, %txtA% %txtOp% %txtB% `= %rs%
+		Clipboard := rs
+		Send +{Insert}
+	}
+}
 
 Press(X, Y) {
 	Critical, On
@@ -68,4 +103,5 @@ F1:: ShowHelpWindow("
 	!1         -> Nest Parts
 	!2         -> Nest Plates
 	!3         -> Nest Result
+	^Enter     -> Calculate text field
 )")
