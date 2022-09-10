@@ -18,7 +18,8 @@
   0,A,"C:\Program Files\CEZEO software\SsdReady\SsdReady.exe"
 	;Newest version of Samsung Magician won't work from built-in admin user "Admin Fixer".
  ;0,A,"C:\Program Files (x86)\Samsung\Samsung Magician\SamsungMagician.exe","/AUTOHIDE"
-  0,U,"C:\Program Files\ESET\ESET NOD32 Antivirus\egui.exe","/hide /waitservice"
+  0,U,"C:\Program Files\Microsoft Security Client\msseces.exe","-hide -runkey"
+ ;0,U,"C:\Program Files\ESET\ESET NOD32 Antivirus\egui.exe","/hide /waitservice"
 	;Crashes modern games. Steam overlay not work properly in some games. :(
  ;0,A,"C:\Program Files\Fraps\fraps.exe"
  ;0,U,"C:\Program Files\Sandboxie\SbieCtrl.exe"
@@ -48,7 +49,7 @@
   0,A,"D:\SERGEY\Options\Program Files\MemInfo\meminfo.exe"
   0,A,"D:\SERGEY\Options\Program Files\OpenHardwareMonitor\OpenHardwareMonitor.exe"
   0,U,"D:\SERGEY\Options\Program Files\Volume2\Volume2.exe"
-  0,U,"C:\Users\Fixer\AppData\Local\Viber\Viber.exe","StartMinimized"
+ ;0,U,"C:\Users\Fixer\AppData\Local\Viber\Viber.exe","StartMinimized"
  ;0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
 	;HWiNFO add sensors value to OSD MSI Afterburner:
 		;Core 0 Frequency
