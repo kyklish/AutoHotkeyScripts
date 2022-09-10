@@ -61,7 +61,8 @@ CalculateTextField() {
 		MsgBox, The attempt to copy text onto the clipboard failed.
 		return
 	}
-	needleRegEx := "(?P<A>-?\d+(\.\d+)?)(?P<Op>[+\-*/])(?P<B>-?\d+(\.\d+)?)" ; '-' has special meaning inside a character class
+	; RegEx: '-' has special meaning inside a character class, escape it '\-'.
+	needleRegEx := "(?P<A>-?\d+(\.\d+)?)(?P<Op>[+\-*/])(?P<B>-?\d+(\.\d+)?)"
 	if (RegExMatch(Clipboard, needleRegEx, txt)) {
 		Switch txtOp {
 			Case "+": rs := txtA + txtB
@@ -70,9 +71,9 @@ CalculateTextField() {
 			Case "/": rs := txtA / txtB
 			Default: MsgBox, Wrong arithmetic operator.
 		}
-		rs := Format("{:.3f}", rs) ; Example: 1000.000
-		rs := RTrim(rs, "0") ; Trim zeros. Example: 1000.
-		rs := RTrim(rs, ".") ; After trimming zeros, trim possible dot. Example: 1000
+		rs := Format("{:.3f}", rs) ; Example: '1000.000'
+		rs := RTrim(rs, "0") ; Trim zeros. Example: '1000.'
+		rs := RTrim(rs, ".") ; After trimming zeros, trim possible dot. Example: '1000'
 		; ToolTip, %txtA% %txtOp% %txtB% `= %rs%
 		Clipboard := rs
 		Send +{Insert}
@@ -80,7 +81,13 @@ CalculateTextField() {
 }
 
 Press(X, Y) {
+	; Prevents the current thread from being interrupted by other threads.
 	Critical, On
+	; Long press on hotkey (during laser head moving) can produce warning window
+	; about too many hotkeys. Temprorary disable hotkey to prevent warning.
+	Hotkey, IfWinActive, ahk_group Bodor
+	Hotkey, %A_ThisHotkey%, , Off
+	; ------------Main-Work-----------------
 	MouseGetPos, _X, _Y
 	MouseMove, X, Y
 	Click Down
@@ -88,19 +95,21 @@ Press(X, Y) {
 		Sleep, 10
 	Click Up
 	MouseMove, _X, _Y
+	; --------------End--------------------
+	Hotkey, %A_ThisHotkey%, , On
 }
 
 #IfWinNotActive ahk_group Bodor
 F1:: ShowHelpWindow("
 (LTrim
-	All keys are Numpad!
+	All keys w/o modifiers are Numpad!
 	2, 4, 6, 8 -> Move laser head
 	5          -> Low/Rapid
 	1          -> Set Origin
 	7          -> Backward
 	9          -> Forward
 	3          -> Step/Jog
-	0          -> Set Origin
+	0          -> Go to Zero
 	!1         -> Nest Parts
 	!2         -> Nest Plates
 	!3         -> Nest Result
