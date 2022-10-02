@@ -48,6 +48,7 @@ return
 
 ; Simple calculation in text field, when user directly set XY and WH values of object.
 ; Do not use spaces between operands: '1+1' valid, '1 + 1' not valid.
+; [A](+-*/)[B]
 CalculateTextField() {
 	; BodorThinker3.0 override hotkeys very hard:
 	; 1. 'Ctrl+C' copy selected object, not selected text.
@@ -113,6 +114,6 @@ F1:: ShowHelpWindow("
 	!1         -> Nest Parts
 	!2         -> Nest Plates
 	!3         -> Nest Result
-	^Enter     -> Calculate text field
+	^Enter     -> Calculate text field: [A](+-*/)[B]
 	^BackSpace -> Clear text field
 )")
