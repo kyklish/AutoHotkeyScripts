@@ -84,8 +84,8 @@ WriteProcessorStateSetting(ByRef Index)
 	global ArrayCPUStateInPercent
 	global ArrayCPUFreq
 	CPUState := ArrayCPUStateInPercent[Index]
-	PowerWriteMaxProcessorStateValueIndex(CPUState, "AC")
-	;PowerWriteMaxProcessorStateValueIndex(CPUState, "DC")
+	PowerWriteMaxProcessorStateValueIndex(CPUState, "AC") ;Line
+	PowerWriteMaxProcessorStateValueIndex(CPUState, "DC") ;Battery
 	OSD(ArrayCPUFreq[Index] . "GHz")
 }
 ;-------------------------------------------------------------------------------------
