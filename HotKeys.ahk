@@ -258,7 +258,7 @@ Pause:: ShowHelpWindow("
      ^Z -> Restore recently closed tab
      F9 -> Previous Tab
     F10 -> Next Tab
-   +Del -> Delete main in Gmail and open next
+   +Del -> Delete mail in Gmail and open next
 AppsKey -> Middle Mouse Click
 [Explorer]
  BS -> Go back in file system hierarchy
