@@ -6,6 +6,11 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v1.2.5
+;  * Cosmetic re-arrange functions definition
+;  * Block input in DestroyBuilding() function
+;  * Align text in help message
+;  ! Fix wrong comments
 ; v1.2.4
 ;  + Add hotkey for UnitsByHealth military formation mode
 ;  * Rename 4Units to UnitsByType military formation mode
@@ -90,43 +95,43 @@ coords := ParseScriptForOverlay()
 helpText := "
 (
 BlockInput (to prevent mouse move interfere with user input) need admin rights!
-If script block input by mistake, press [Ctrl + Alt + Del] to unblock.
+    If script block input by mistake, press [Ctrl + Alt + Del] to unblock.
 
-                      [CIVILIAN]
-          J = Build        |           P = Select Warband
-          U = Cancel Order |           - = Select Idle Workers
-          = = Pause        |           ‘ = Select All Villagers
-          B = Diplomacy    |           [ = Select All Scouts
-          N = Rivalry      |           I = Select Next of Same Type
-          H = Lore         |      Delete = Destroy Building
-          , = Lore         |
+                              [CIVILIAN]
+                  J = Build        |           P = Select Warband
+                  U = Cancel Order |           - = Select Idle Workers
+                  = = Pause        |           ‘ = Select All Villagers
+                  B = Diplomacy    |           [ = Select All Scouts
+                  N = Rivalry      |           I = Select Next of Same Type
+                  H = Lore         |      Delete = Destroy Building
+                  , = Lore         |
 
-          [SELECT ALL]     |   [SELECT ALL EXCEPT ONE]
-          Q = Villager     |   Space + Q = Villager
-          W = Woodcutter   |   Space + W = Woodcutter
+                  [SELECT ALL]     |   [SELECT ALL EXCEPT ONE]
+                  Q = Villager     |   Space + Q = Villager
+                  W = Woodcutter   |   Space + W = Woodcutter
 
-                       [SCRIPT]
-         F1 = Show Help 1  |         F11 =  Reload Script
- Shift + F1 = Show Help 2  | LeftAlt + Z =  Reload Script
-        F10 = Show Help 1  | LeftAlt + X =    Exit Script
-Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
+                               [SCRIPT]
+                 F1 = Show Help 1  |         F11 =  Reload Script
+         Shift + F1 = Show Help 2  | LeftAlt + Z =  Reload Script
+                F10 = Show Help 1  | LeftAlt + X =    Exit Script
+        Shift + F10 = Show Help 2  | LeftAlt + C = Suspend Script
 
-                        [DEBUG]
-'Overlay' shows 'ImageSearch' and 'PixelGetColor' areas.
-Hotkeys not design to use, when 'Overlay' is on screen.
-'Slow Mode':
-    * decrease mouse move speed.
-    * increase sleep delay between game actions.
+                                [DEBUG]
+       'Overlay' shows 'ImageSearch' and 'PixelGetColor' search areas.
+        Hotkeys not designed to use, when 'Overlay' is on screen.
+       'Slow Mode':
+            * decrease mouse move speed.
+            * increase sleep delay between game actions.
 
-   Alt + F1 = Toggle 'Slow Mode'
-  Ctrl + F1 = Toggle 'Overlay'
-Shift + F11 = Toggle 'Send Mode'
+                    Alt + F1 = Toggle 'Slow Mode'
+                   Ctrl + F1 = Toggle 'Overlay'
+                 Shift + F11 = Toggle 'Send Mode'
 
-                      [MILITARY]
-AppsKey + RMB + Drag = Make Military Formation (UnitsByType)
-      J + RMB + Drag = Make Military Formation (UnitsByHealth)
+                              [MILITARY]
+        AppsKey + RMB + Drag = Make Military Formation (UnitsByType)
+              J + RMB + Drag = Make Military Formation (UnitsByHealth)
 
-              [MILITARY FORMATION HELPER]
+                      [MILITARY FORMATION HELPER]
 'Military Formation' has two modes:
     * UnitsByType move four unit's type: 'WarChief', 'Shield', 'Warrior', 'Axe'.
     * UnitsByHealth move Warband health units to front, wound units - back.
@@ -142,7 +147,7 @@ Select Warchief, bear, any big units and press [Ctrl + 0].
 ; Start game not in fullscreen to proper show help picture by [F1, Shift+F1] or [F10, Shift+F10]
 
 ; Hotkey combination A&B will screen A key
-; $ modifier = to not trigger hotkey itself
+; $ modifier = will not trigger hotkey itself
 ; ~ modifier = will not screen default action of key
 ; SC027 = ;
 ; SC028 = '
@@ -243,15 +248,15 @@ J & RButton Up::DragEnd()
 #If
 F1::ShowHelpImage("NorthgardHotKeys.png")
 +F1::ShowHelpText(helpText)
-<!z::Reload
-<!x::ExitApp
-<!c::
+<!Z::Reload
+<!X::ExitApp
+<!C::
 	Suspend
 	if (toggleSuspend := !toggleSuspend)
 		ShowToolTip("Script SUSPEND", 0, 0)
 	else
 		ShowToolTip()
-	return
+return
 
 #IfWinActive ahk_group Game
 ^F1::ToggleOverlay(coords)
@@ -423,16 +428,20 @@ DestroyBuilding()
 ; Image based function, cover all buildings
 DestroyBuilding()
 {
-	MouseGetPos, _x, _y
 	ImageSearch, x, y, 1185, 860, 1220, 930, NorthgardDestroy.png ; DestroyBuilding
 	if (ErrorLevel) {
 		if (isDebug)
 			ShowToolTip(A_ThisFunc "(NorthgardDestroy.png) - can't find image.", 0, 0)
 		return
 	}
+	Critical, On
+	BlockInput, On
+	MouseGetPos, _x, _y
 	Click(x, y, , dl)
 	Click(855, 560) ; Confirm [OK button]
 	MouseMove(_x, _y)
+	BlockInput, Off
+	Critical, Off
 }
 
 SelectAllCivUnits(unit)
@@ -750,17 +759,19 @@ DeselectUnitsByHpColor(hpColor)
 ;-------------------------------------------------------------
 
 ; How to use:
+; * Write [ImageSearch] or [PixelSearch] or [PixelGetColor] command and add comment after it.
+;		ImageSearch, x, y, 1, 1, 2, 2, %img% ; ThisCommentWillBeVisibleInOverlay
 ; * Parse script to find [ImageSearch] rectangles and [PixelGetColor] pixels with explicit parameters
 ;   (hardcoded numbers).
-;		coords := ParseImageSearchPixelScript()
+;		coords := ParseScriptForOverlay()
 ; * If parameters are implicit ([ImageSearch] or [PixelGetColor] are inside some function and parameters
 ;   for them passed as variables) register rectangle or pixel manually, for example before actual func call.
-;		RegisterRectangleToShow(coords, A_LineNumber, "comment", varX, varY) ; adds objects to [coords] variable
+;		AddAreaToOverlay(coords, A_LineNumber, "comment", varX, varY) ; adds objects to [coords] variable
 ;		GetSomePixelColor(color, varX, varY) ; any func
 ; * Draw rectangles.
-;		DrawRectangles(coords)
+;		DrawOverlay(coords)
 ; * Destroy rectangles.
-;		DestroyRectangles(coords)
+;		DestroyOverlay(coords)
 ; ! Rectangle consist of four lines. Each line is [Gui] window. Create all lines (not visible) for
 ;   all rectangles. Show all lines. Destroy all lines.
 
@@ -776,17 +787,17 @@ CreateMouseClickTransGui(id, color := "")
 	WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
 }
 
+CreateRectangle(id, color) {
+	; Create 4 rectangle lines
+	Loop, 4
+		CreateMouseClickTransGui("Rect" . A_Index . id, color)
+}
+
 CreateComment(id)
 {
 	CreateMouseClickTransGui("RectToolTip" . id)
 	Gui, RectToolTip%id%: Margin, 0, 0
 	Gui, RectToolTip%id%: Font, , Consolas
-}
-
-CreateRectangle(id, color) {
-	; Create 4 rectangle lines
-	Loop, 4
-		CreateMouseClickTransGui("Rect" . A_Index . id, color)
 }
 
 DrawRectangle(id, coord)
@@ -855,11 +866,20 @@ DestroyOverlay(coords)
 	}
 }
 
+ToggleOverlay(coords)
+{
+	static toggle
+	if (toggle := !toggle)
+		DrawOverlay(coords)
+	else
+		DestroyOverlay(coords)
+}
+
+; Parse script text to find [ImageSearch] and [PixelSearch] areas and [GetPixelColor] pixels for overlay
 ParseScriptForOverlay()
 {
-	; Parse script text to find [ImageSearch] areas and [GetPixelColor] pixels for overlay
 	coords := {} ; All found coordinates in script
-	; Sync radius value with [RegisterRectangleToShow()]
+	; Sync radius value with [AddAreaToOverlay()]
 	r := 2 ; Radius around pixel in [PixelGetColor] to show it on screen
 	Loop, Read, % A_ScriptName
 	{
@@ -882,19 +902,6 @@ ParseScriptForOverlay()
 			continue
 		}
 
-		; PixelGetColor, color, (1658), (400), RGB ; (comment)
-		;                       match1 match2           match3
-		if (RegExMatch(A_LoopReadLine, "PixelGetColor\s*,.+?,\s*(\d+)\s*,\s*(\d+)\s*,?[^;]*;?\s*(.*)?", match)) {
-			c.X1 := match1 - r
-			c.Y1 := match2 - r
-			c.X2 := match1 + r
-			c.Y2 := match2 + r
-			c.lineNumber := A_Index
-			c.comment := match3
-			coords.Push(c)
-			continue
-		}
-		
 		; PixelSearch, x, y, (860), (890), (1185), (1045), color, options ; (comment)
 		;                   match1 match2  match3  match4                      match5
 		if (RegExMatch(A_LoopReadLine, "PixelSearch\s*,.+?,.+?,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*[^;]*;?\s*(.*)?", match)) {
@@ -907,11 +914,24 @@ ParseScriptForOverlay()
 			coords.Push(c)
 			continue
 		}
+		
+		; PixelGetColor, color, (1658), (400), RGB ; (comment)
+		;                       match1 match2           match3
+		if (RegExMatch(A_LoopReadLine, "PixelGetColor\s*,.+?,\s*(\d+)\s*,\s*(\d+)\s*,?[^;]*;?\s*(.*)?", match)) {
+			c.X1 := match1 - r
+			c.Y1 := match2 - r
+			c.X2 := match1 + r
+			c.Y2 := match2 + r
+			c.lineNumber := A_Index
+			c.comment := match3
+			coords.Push(c)
+			continue
+		}
 	}
 	return coords
 }
 /*
-	; Test strings for RegExMatch() above in ParseImageSearchPixelScript()
+	; Test strings for RegExMatch() above in ParseScriptForOverlay()
 	;; PixelGetColor, color1, 20, 20, RGB ; Must be not visible comment
 	; PixelGetColor, color1, 20, 60, RGB ; comment
 	; PixelGetColor, color2, 20, 100, RGB
@@ -925,7 +945,7 @@ ParseScriptForOverlay()
 AddAreaToOverlay(ByRef coords, lineNumber, comment, x1, y1, x2 := "", y2 := "")
 {
 	c := {}
-	; Sync radius value with [ParseImageSearchPixelScript()]
+	; Sync radius value with [ParseScriptForOverlay()]
 	r := 2 ; Radius around pixel in [PixelGetColor] to show it on screen
 	if (x2 == "" and y2 == "") {
 		c.X1 := x1 - r
@@ -941,15 +961,6 @@ AddAreaToOverlay(ByRef coords, lineNumber, comment, x1, y1, x2 := "", y2 := "")
 	c.lineNumber := lineNumber
 	c.comment := comment
 	coords.Push(c)
-}
-
-ToggleOverlay(coords)
-{
-	static toggle
-	if (toggle := !toggle)
-		DrawOverlay(coords)
-	else
-		DestroyOverlay(coords)
 }
 
 ;-------------------------------------------------------------
