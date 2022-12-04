@@ -2,7 +2,8 @@
 #SingleInstance, Force
 SetWorkingDir %A_ScriptDir%
 
-oFolders := ["engines", "gearboxes", "suspensions", "trucks", "wheels", "winches"]
+; oFolders := ["daytimes", "engines", "gearboxes", "suspensions", "trucks", "wheels", "winches"]
+oFolders := ["R:\initial\[media]\classes", "R:\initial\[media]\_dlc\"]
 sBeginRegEx := "i)\b"
 sEndRegEx := "=""\K[^""]+(?="")"
 
@@ -22,19 +23,25 @@ Edit(sFilePath)
 	{
 		;Unlock
 		;sData := Replace(sData, "UnlockByExploration", "false")
-		;sData := Replace(sData, "UnlockByRank", 1)
+		;sData := Replace(sData, "UnlockByRank", "1")
 		;Winches
-		;sData := Replace(sData, "Length", 50)
-		;sData := Replace(sData, "StrengthMult", 2.0)
+		;sData := Replace(sData, "Length", "50")
+		;sData := Replace(sData, "StrengthMult", "2.0")
 		;sData := ReplaceDigitMul(sData, "Length", 4)
 		;sData := ReplaceDigitMul(sData, "StrengthMult", 1.5)
-		;sData := Replace(sData, "IsEngineIgnitionRequired", "false")
+		sData := Replace(sData, "IsEngineIgnitionRequired", "false")
 		;Trucks
 		;sData := ReplaceDigitMul(sData, "SteerSpeed", 2)
 		;sData := ReplaceDigitMul(sData, "BackSteerSpeed", 0)
-		;Unlock
-		sData := Replace(sData, "UnlockByExploration", "false")
-		sData := Replace(sData, "UnlockByRank", "1")
+		;sData := ReplaceDigitMul(sData, "Responsiveness", 1.0)
+		;Engines
+		;sData := ReplaceDigitMul(sData, "Torque", 1.5)
+		;Graphics
+		sData := Replace(sData, "BloomEnabled", "false")
+		sData := Replace(sData, "Fog Density", "0.0")
+		sData := Replace(sData, "SecondaryFog Density", "0.0")
+		;Camera
+		sData := Insert(sData, "<ModelBrand", "`n`tClipCamera=""false""") ;Allows camera to pass through objects, no camera jump in different directions.
 		
 		oFile := FileOpen(A_LoopFilePath, "w")
 		oFile.Write(sData)
@@ -43,14 +50,19 @@ Edit(sFilePath)
 }
 
 
+Insert(sData, sSearchText, sInsertText, iStartingPos := 1, iLimit := -1) { ;Insert text after [sSearchText]
+	return RegExReplace(sData, "i)" . sSearchText . "\b", sSearchText . " " . sInsertText, , iLimit, iStartingPos)
+}
+
+
 Replace(sData, sParamName, sNewVal, iStartingPos := 1, iLimit := -1) { ;Replace all occurrences in file
-	global sEndRegEx, sBeginRegEx
+	global sBeginRegEx, sEndRegEx
 	return RegExReplace(sData, sBeginRegEx . sParamName . sEndRegEx, sNewVal, , iLimit, iStartingPos)
 }
 
 
 ReplaceDigitMul(sData, sParamName, iMul) { ;Multiply each parsed value by iMul and write it back
-	global sEndRegEx, sBeginRegEx
+	global sBeginRegEx, sEndRegEx
 	iFoundPos := 1
 	Loop {
 		iFoundPos := RegExMatch(sData, sBeginRegEx . sParamName . sEndRegEx, sVal, iFoundPos)
