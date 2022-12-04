@@ -1,14 +1,15 @@
 ﻿;SnowRunner
 #NoEnv
 #SingleInstance, Force
+#UseHook
 
 GroupAdd, SpinTires, ahk_exe SnowRunner.exe
 
-if not WinExist("ahk_group SpinTires")
-	Run, "F:\GAMES\SnowRunner\en_us\Sources\Bin\SnowRunner.exe", F:\GAMES\SnowRunner\en_us\Sources\Bin
+; if not WinExist("ahk_group SpinTires")
+	; Run, com.epicgames.launcher://apps/2744acda6a2e493e9894b389b6564df7%3A022785974d3244dc805ea83e1c076158%3AMayflower?action=launch&silent=true
 
 
-SetKeyDelay, 100
+SetKeyDelay, 50 ;Влияет на переключение передач и на скорость поворота камеры
 iOffset := 18 ;Distance to move mouse cursor to shift gear inside game
 SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
 
@@ -17,52 +18,80 @@ oGearBox := GearBoxFactory(oStates)
 
 
 #IfWinActive ahk_group SpinTires
-2::Send, {w down} ;Движение (зажимает кнопку для автоматического движения). Нажать "w" для отжатия.
-3::Send, {s down}
-4::Refuel() ;Полностью заправить машину
-+4::Refuel(true) ;Полностью заправить машину и прицеп
-/*
-$m:: ;Открыть карту, предварительно отключив зажатые клавиши движения
-if (GetKeyState("w") or GetKeyState("s")) {
+2:: ;Движение (зажимает кнопку для автоматического движения). Нажать "w" для отжатия.
+	Send, {s up}
+	Send, {w down}
+	sPressed := false
+	wPressed := true
+return
+3::
+	Send, {w up}
+	Send, {s down}
+	sPressed := true
+	wPressed := false
+return
+ 4:: Refuel() ;Полностью заправить машину
++4:: Refuel(true) ;Полностью заправить машину и прицеп
+~Space:: ;Полная остановка при включении стояночного тормоза
+~M:: ;Открыть карту, предварительно отключив зажатые клавиши движения. ~ - when the hotkey fires, its key's native function will not be blocked (hidden from the system).
 	Send, {w up} ;Not worked if combined in one Send command!
 	Send, {s up}
-}
-Send, m
+	sPressed := false
+	wPressed := false
 return
-*/
-~m:: ;Открыть карту, предварительно отключив зажатые клавиши движения. ~ - when the hotkey fires, its key's native function will not be blocked (hidden from the system).
-Send, {w up} ;Not worked if combined in one Send command!
-Send, {s up}
+~S:: Send, {w up} ;Торможение во время зажатой кнопки W
+~S Up::
+	if (wPressed)
+		Send, {w down}
+	sPressed := false
 return
+~W:: Send, {s up} ;Торможение во время зажатой кнопки S
+~W Up::
+	if (sPressed)
+		Send, {s down}
+	wPressed := false
+return
+.:: ;Поворот камеры
+	While, GetKeyState(".", "P")
+		Send, {,}
+return
+,::
+	While, GetKeyState(",", "P")
+		Send, {.}
+return
+`;:: Send, {WheelUp}
+ /:: Send, {WheelDown}
 
-NumpadMult::bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
-Numpad0::oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
+
+NumpadMult:: bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
+   Numpad0:: oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
 
 #If WinActive("ahk_group SpinTires") and !bManualMod ;Автоматическое перемещение рычага КПП
-Numpad1::oGearBox.ShiftGear(1) ;Включить передачу в соответствии со схемой
-Numpad2::oGearBox.ShiftGear(2)
-Numpad3::oGearBox.ShiftGear(3)
-Numpad4::oGearBox.ShiftGear(4)
-Numpad5::oGearBox.ShiftGear(5)
-Numpad6::oGearBox.ShiftGear(6)
-Numpad7::oGearBox.ShiftGear(7)
-Numpad8::oGearBox.ShiftGear(8)
-Numpad9::oGearBox.ShiftGear(9)
+Numpad1:: oGearBox.ShiftGear(1) ;Включить передачу в соответствии со схемой
+Numpad2:: oGearBox.ShiftGear(2)
+Numpad3:: oGearBox.ShiftGear(3)
+Numpad4:: oGearBox.ShiftGear(4)
+Numpad5:: oGearBox.ShiftGear(5)
+Numpad6:: oGearBox.ShiftGear(6)
+Numpad7:: oGearBox.ShiftGear(7)
+Numpad8:: oGearBox.ShiftGear(8)
+Numpad9:: oGearBox.ShiftGear(9)
 
 #If WinActive("ahk_group SpinTires") and bManualMod ;Перемещение рычага КПП с помощью "крестовины"
-; Numpad4::ShiftGear("L")
-; Numpad6::ShiftGear("R")
-; Numpad8::ShiftGear("U")
-; Numpad2::ShiftGear("D")
-Numpad4::oGearBox.ShiftGearManual("L")
-Numpad6::oGearBox.ShiftGearManual("R")
-Numpad8::oGearBox.ShiftGearManual("U")
-Numpad2::oGearBox.ShiftGearManual("D")
+; Numpad4:: ShiftGear("L")
+; Numpad6:: ShiftGear("R")
+; Numpad8:: ShiftGear("U")
+; Numpad2:: ShiftGear("D")
+Numpad4:: oGearBox.ShiftGearManual("L")
+Numpad6:: oGearBox.ShiftGearManual("R")
+Numpad8:: oGearBox.ShiftGearManual("U")
+Numpad2:: oGearBox.ShiftGearManual("D")
 
 
 #IfWinNotActive ahk_group SpinTires
 F1:: ShowHelpWindow("
 (LTrim
+	Во время игры должна быть установлена ENG раскладка клавиатуры!!!
 	2          -> Зажать W, движение вперед (нажать W, для сброса).
 	3          -> Зажать S, движение назад (нажать S, для сброса).
 	4          -> Полностью заправить машину.
@@ -74,6 +103,8 @@ F1:: ShowHelpWindow("
 	Numpad8    -> Рычаг КПП вверх  (Ручное).
 	Numpad2    -> Рычаг КПП вниз   (Ручное).
 	M          -> Открыть карту, предварительно отключив зажатые клавиши движения.
+	, & .      -> Поворот камеры
+	; & /      -> Mouse Wheel Up & Down
 	Схема КПП:
 	7 8      + H
 	| |      | |
@@ -84,6 +115,7 @@ F1:: ShowHelpWindow("
 
 
 #IfWinActive
+!c::Suspend
 !z::Reload
 !x::ExitApp
 
@@ -103,7 +135,6 @@ ShiftGear(сDirection) {
 
 
 ShiftGearMouseMove(X, Y) {
-	
 	Send, {LShift down}
 	MouseMove, %X%, %Y%, , R
 	Send, {LShift up}
