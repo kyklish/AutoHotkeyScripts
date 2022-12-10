@@ -1,3 +1,6 @@
+*.ico binary
+*.jpg binary
+*.mp3 binary
 *.png binary
 *.rar binary
 *.wav binary
