@@ -11,7 +11,8 @@ if A_Args.Length() > 0
 	ExitApp
 }
 
-sendToShortcut := A_AppData . "\Microsoft\Windows\SendTo\" . RegExReplace(A_ScriptName, "\.(exe|ahk)$") . ".lnk"
+lnkName := StrReplace(RegExReplace(A_ScriptName, "\.(exe|ahk)$"), "_", " ")
+sendToShortcut := A_AppData . "\Microsoft\Windows\SendTo\" . lnkName . ".lnk"
 if (A_IsCompiled)
 	icon := A_ScriptFullPath
 else
@@ -23,7 +24,7 @@ Menu, Tray, Icon, %icon% ; this will not enable tray icon, but will be visible i
 Gui +AlwaysOnTop
 Gui Add, Picture, x8 y8 w64 h64 0x6, %icon%
 Gui Font, Bold
-Gui Add, Text, x80 y28 w180 h34 vFocusText, Steam Epic URL Converter`nv1.0.0
+Gui Add, Text, x80 y28 w180 h34 vFocusText, Steam Epic URL Converter`nv1.0.1
 Gui Add, Button, x8 y472 w345 h25 gCreateShortcutSendTo, Click to &add a shortcut to your "Send to..." menu
 Gui Add, Button, x8 y504 w345 h24 gDeleteShortcutSendTo, Click to &remove "Send to..." shortcut
 Gui Font ; set default font params
@@ -163,6 +164,7 @@ Steam Epic URL Converter
 ! bug fixed
 
 v1.0.1 - 2022-05-13
+    * Add underscore to script's file name.
 
 v1.0.0 - 2022-05-12
     + Initial release.
