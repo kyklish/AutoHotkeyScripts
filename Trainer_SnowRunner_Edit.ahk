@@ -7,6 +7,7 @@ oFolders := ["R:\initial\[media]\classes", "R:\initial\[media]\_dlc\"]
 sBeginRegEx := "i)\b"
 sEndRegEx := "=""\K[^""]+(?="")"
 
+oLogFile := FileOpen("R:\SnowRunner_Changed_Files.txt", "w")
 For i, sFolder in oFolders
 {
 	Loop, Files, % sFolder . "\*.xml", R
@@ -14,13 +15,15 @@ For i, sFolder in oFolders
 		Edit(A_LoopFilePath)
 	}
 }
+oLogFile.Clone()
 SoundBeep
-
 
 Edit(sFilePath)
 {
+	global oLogFile
 	FileRead, sData, %sFilePath%
 	{
+		sOldData := sData
 		;Unlock
 		;sData := Replace(sData, "UnlockByExploration", "false")
 		;sData := Replace(sData, "UnlockByRank", "1")
@@ -42,26 +45,32 @@ Edit(sFilePath)
 		sData := Replace(sData, "SecondaryFog Density", "0.0")
 		;Camera
 		sData := Insert(sData, "<ModelBrand", "`n`tClipCamera=""false""") ;Allows camera to pass through objects, no camera jump in different directions.
-		
+
 		oFile := FileOpen(A_LoopFilePath, "w")
 		oFile.Write(sData)
 		oFile.Close()
+
+		if (sOldData != sData)
+			oLogFile.Write(A_LoopFilePath)
 	}
 }
 
-
-Insert(sData, sSearchText, sInsertText, iStartingPos := 1, iLimit := -1) { ;Insert text after [sSearchText]
+;Insert text after [sSearchText]
+Insert(sData, sSearchText, sInsertText, iStartingPos := 1, iLimit := -1)
+{
 	return RegExReplace(sData, "i)" . sSearchText . "\b", sSearchText . " " . sInsertText, , iLimit, iStartingPos)
 }
 
-
-Replace(sData, sParamName, sNewVal, iStartingPos := 1, iLimit := -1) { ;Replace all occurrences in file
+;Replace all occurrences in file
+Replace(sData, sParamName, sNewVal, iStartingPos := 1, iLimit := -1)
+{
 	global sBeginRegEx, sEndRegEx
 	return RegExReplace(sData, sBeginRegEx . sParamName . sEndRegEx, sNewVal, , iLimit, iStartingPos)
 }
 
-
-ReplaceDigitMul(sData, sParamName, iMul) { ;Multiply each parsed value by iMul and write it back
+;Multiply each parsed value by iMul and write it back
+ReplaceDigitMul(sData, sParamName, iMul)
+{
 	global sBeginRegEx, sEndRegEx
 	iFoundPos := 1
 	Loop {
