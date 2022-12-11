@@ -2,6 +2,7 @@
 #NoEnv
 #SingleInstance, Force
 #UseHook
+SetBatchLines, -1
 
 GroupAdd, SpinTires, ahk_exe SnowRunner.exe
 
