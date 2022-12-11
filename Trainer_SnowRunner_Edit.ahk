@@ -1,13 +1,18 @@
 ﻿#NoEnv
 #SingleInstance, Force
-SetWorkingDir %A_ScriptDir%
+SetBatchLines, -1
+SetWorkingDir, R:\
 
-; oFolders := ["daytimes", "engines", "gearboxes", "suspensions", "trucks", "wheels", "winches"]
-oFolders := ["R:\initial\[media]\classes", "R:\initial\[media]\_dlc\"]
-sBeginRegEx := "i)\b"
-sEndRegEx := "=""\K[^""]+(?="")"
+;Unpack "SnowRunner\en_us\preload\paks\client\initial.pak" to "R:\initial"
+;Modified files will be created in "R:\initial_modified"
+;Original files are not touched, you can run script over and over with new values
 
-oLogFile := FileOpen("R:\SnowRunner_Changed_Files.txt", "w")
+oFolders := ["R:\initial\[media]\classes", "R:\initial\[media]\_dlc"]
+global sBeginRegEx := "i)\b"
+global sEndRegEx := "=""\K[^""]+(?="")"
+
+global oLogFile := FileOpen("R:\initial_modified_files.log", "w")
+
 For i, sFolder in oFolders
 {
 	Loop, Files, % sFolder . "\*.xml", R
@@ -15,63 +20,60 @@ For i, sFolder in oFolders
 		Edit(A_LoopFilePath)
 	}
 }
-oLogFile.Clone()
+
+oLogFile.Close()
 SoundBeep
 
 Edit(sFilePath)
 {
-	global oLogFile
 	FileRead, sData, %sFilePath%
-	{
-		sOldData := sData
-		;Unlock
-		;sData := Replace(sData, "UnlockByExploration", "false")
-		;sData := Replace(sData, "UnlockByRank", "1")
-		;Winches
-		;sData := Replace(sData, "Length", "50")
-		;sData := Replace(sData, "StrengthMult", "2.0")
-		;sData := ReplaceDigitMul(sData, "Length", 4)
-		;sData := ReplaceDigitMul(sData, "StrengthMult", 1.5)
-		sData := Replace(sData, "IsEngineIgnitionRequired", "false")
-		;Trucks
-		;sData := ReplaceDigitMul(sData, "SteerSpeed", 2)
-		;sData := ReplaceDigitMul(sData, "BackSteerSpeed", 0)
-		;sData := ReplaceDigitMul(sData, "Responsiveness", 1.0)
-		;Engines
-		;sData := ReplaceDigitMul(sData, "Torque", 1.5)
-		;Graphics
-		sData := Replace(sData, "BloomEnabled", "false")
-		sData := Replace(sData, "Fog Density", "0.0")
-		sData := Replace(sData, "SecondaryFog Density", "0.0")
-		;Camera
-		sData := Insert(sData, "<ModelBrand", "`n`tClipCamera=""false""") ;Allows camera to pass through objects, no camera jump in different directions.
+	sOriginalData := sData
 
-		oFile := FileOpen(A_LoopFilePath, "w")
-		oFile.Write(sData)
-		oFile.Close()
+	;UNLOCK ================================================================
+	;sData := Replace(sData, "UnlockByExploration", "false")
+	;sData := Replace(sData, "UnlockByRank", "1")
+	;WINCHES ===============================================================
+	;sData := Replace(sData, "Length", "50")
+	;sData := Replace(sData, "StrengthMult", "2.0")
+	;sData := ReplaceDigitMul(sData, "Length", 2)
+	;sData := ReplaceDigitMul(sData, "StrengthMult", 1.5)
+	sData := Replace(sData, "IsEngineIgnitionRequired", "false")
+	;TRUCKS ================================================================
+	;sData := ReplaceDigitMul(sData, "SteerSpeed", 2)
+	;sData := ReplaceDigitMul(sData, "BackSteerSpeed", 0)
+	;sData := ReplaceDigitMul(sData, "Responsiveness", 1.0)
+	;ENGINES ===============================================================
+	;sData := ReplaceDigitMul(sData, "Torque", 1.5)
+	;GRAPHICS ==============================================================
+	sData := Replace(sData, "BloomEnabled", "false")
+	sData := Replace(sData, "Fog Density", "0.0")
+	sData := Replace(sData, "SecondaryFog Density", "0.0")
+	;CAMERAS ===============================================================
+	sData := AllowCameraPassThroughObjects(sData) ;No camera jump.
+	sData := MoveCockpitCameraBackward(sData, 0.2)
+	;=======================================================================
 
-		if (sOldData != sData)
-			oLogFile.Write(A_LoopFilePath)
+	if (sOriginalData != sData) {
+		oLogFile.Write(sFilePath . "`n")
+		sModifiedFilePath := StrReplace(sFilePath, "\initial\", "\initial_modified\",, 1)
+		sModifiedFileDir := RegExReplace(sModifiedFilePath, "i)\\[^\\]+xml$") ;Cut file name
+		if not FileExist(sModifiedFileDir)
+			FileCreateDir, %sModifiedFileDir%
+		oModifiedFile := FileOpen(sModifiedFilePath, "w") ;[w]==[Overwrite existing file]
+		oModifiedFile.Write(sData)
+		oModifiedFile.Close()
 	}
-}
-
-;Insert text after [sSearchText]
-Insert(sData, sSearchText, sInsertText, iStartingPos := 1, iLimit := -1)
-{
-	return RegExReplace(sData, "i)" . sSearchText . "\b", sSearchText . " " . sInsertText, , iLimit, iStartingPos)
 }
 
 ;Replace all occurrences in file
 Replace(sData, sParamName, sNewVal, iStartingPos := 1, iLimit := -1)
 {
-	global sBeginRegEx, sEndRegEx
 	return RegExReplace(sData, sBeginRegEx . sParamName . sEndRegEx, sNewVal, , iLimit, iStartingPos)
 }
 
 ;Multiply each parsed value by iMul and write it back
 ReplaceDigitMul(sData, sParamName, iMul)
 {
-	global sBeginRegEx, sEndRegEx
 	iFoundPos := 1
 	Loop {
 		iFoundPos := RegExMatch(sData, sBeginRegEx . sParamName . sEndRegEx, sVal, iFoundPos)
@@ -97,4 +99,25 @@ ReplaceDigitMul(sData, sParamName, iMul)
 		iFoundPos += StrLen(sNewVal)
 	}
 	return sData
+}
+
+MoveCockpitCameraBackward(sData, fCameraOffset)
+{
+	sRegEx := sBeginRegEx . "ViewPos=""\(\K[^;]+(?=;)"
+	RegExMatch(sData, sRegEx, fCameraPosition)
+	if fCameraPosition is number
+	{
+		;Subtract to move camera backward
+		fCameraPosition -= fCameraOffset
+		fCameraPosition := Format("{:.3f}", fCameraPosition) ;Example: '1.250'
+		sData := RegExReplace(sData, sRegEx, fCameraPosition)
+	}
+	return sData
+}
+
+AllowCameraPassThroughObjects(sData)
+{
+	sSearchText := "<ModelBrand"
+	sInsertText := "`n`tClipCamera=""false""" ;Add new line: [ClipCamera="false"]
+	return RegExReplace(sData, "i)" . sSearchText . "\b", sSearchText . sInsertText)
 }
