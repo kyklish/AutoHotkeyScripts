@@ -9,7 +9,7 @@
 	GlobalSettingsLocation = %A_LineNumber%
 	;||||||||||||||||||||||||||||||||||| Misc. Global Script Settings |||||||||||||||||||||||||||||||||||
 	;----------------------------------------------------------------------------------------------------
-	DefaultDirs = %A_Desktop%|%A_ScriptDir%|%A_Temp%                                                        ; Pipe (|) delimited list of default directories to search if file not found in working directory
+	DefaultDirs = R:|%A_Desktop%|%A_ScriptDir%|%A_Temp%                                                     ; Pipe (|) delimited list of default directories to search if file not found in working directory
 	DefaultExts = png|bmp                                                                                   ; Pipe (|) delimited list of file extensions to try appending to %ImageFile% if it is still not found in %DefaultDirs%
 	GuiA = 97                                                                                               ; Gui numbers to use for gui elements
 	GuiB = 98                                                                                               ; (Two guis are needed)
@@ -1274,9 +1274,9 @@
 		TempFile = %A_Temp%\%A_ThisFunc%Temp.png ; Directory where a temporary imagefile will be created (ImageSearch only accepts an imagefile as input)
 		NewFilePlaceHolder = NewFile             ; The filename that will populate the field if none is provided. Omit the extension unless %DefaultExts% has also been omitted
 		PauseHotkey = ``                         ; Hotkey that pauses updating of the screen magnifier, allowing you to select a screenshot region and add options
-		SquareSize = 19                          ; Width and height of each magnifier color square, in pixels
-		SquaresWide = 22                         ; Width in color squares of the magnifier. Also signifies the width of the region to be magnified, in pixels
-		SquaresHigh = 18                         ; Same as above for height
+		SquareSize = 45                          ; Width and height of each magnifier color square, in pixels
+		SquaresWide = 10                         ; Width in color squares of the magnifier. Also signifies the width of the region to be magnified, in pixels
+		SquaresHigh = 10                         ; Same as above for height
 		SquareSpacing = 2                        ; Spacing between the color squares, in pixels
 		ControlHeight = 20                       ; Height of GUI elements, in pixels
 		Margins = 10                             ; Spacing between gui controls, in pixels
