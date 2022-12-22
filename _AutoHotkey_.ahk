@@ -25,6 +25,7 @@ Run, %A_ScriptDir%\CPU_Fan_On_Off.ahk
 Run, %A_ScriptDir%\CPU_Freq_Cores_Manager.ahk
 Run, %A_ScriptDir%\Esc_Close.ahk
 Run, %A_ScriptDir%\Explorer_Hotkeys.ahk
+Run, %A_ScriptDir%\Fix_Mouse_Double_Click.ahk
 ;Run, %A_ScriptDir%\Hide_Cursor_And_Block_Mouse_Move_GUI.ahk ; проблемы после использования скрипта, не работают нормально программы
 ;Run, %A_ScriptDir%\Hide_Cursor_And_Block_Mouse_Move_MouseMove.ahk
 Run, %A_ScriptDir%\HotKeys.ahk
