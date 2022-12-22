@@ -225,6 +225,8 @@ return
 #`::WinSet, AlwaysOnTop, Toggle, A
 #Insert::Run_AsAdmin("D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 0 t b 50")
 Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
+Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
+
 
 /*
 	!+t:: ;Hide/Show taskbar & Desktop icons
@@ -315,4 +317,5 @@ AppsKey -> Middle Mouse Click
   #Ins -> Toggle monitor brightness (0 ÷ 50)
     #`` -> Always On Top
    !+t -> Hide/Show taskbar (Disabled)
+!Shift -> Set English keyboard layout
 )")
