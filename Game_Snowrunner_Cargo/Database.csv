@@ -1,0 +1,23 @@
+;CSV v1.0
+;BUILDING TYPE,BuildingType1,...,BuildingTypeN
+BUILDING TYPE,0,Town Storage,Warehouse
+;CARGO TYPE,CargoType1,...,CargoTypeN
+CARGO TYPE,0,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumable,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
+;JOB TYPE,Region,JobType1,...,JobTypeN
+JOB TYPE,ALASKA,0,BLACK BIRD,GR ENTERPRISE,MORRISON MINING
+JOB TYPE,MICHIGAN,0,DYSON DIESEL,HUSKY FORWARDING,STEEL RIVER TOWNSHIP
+JOB TYPE,TAYMYR,0,TAIGA OIL,TRANSTAYMYR,VORONOE 12
+;REGION LIST,Region1,...,RegionN
+REGION LIST,MICHIGAN,ALASKA,TAYMYR,KOLA PENINSULA,YUKON,WISCONSIN,AMUR,DON,MAINE,TENNESSEE,GLADES
+;REGION,Region,Map1,Map2,Map3,Map4
+REGION,ALASKA,North Port,Mountain River,White Valley,Pedro Bay
+REGION,AMUR,Urska River,Cosmodrome,Northern Aegis Installation,Chernokamensk
+REGION,DON,Factory Grounds,Antonovskiy Nature Reserve
+REGION,GLADES,Crossroads,The Institute,Heartlands,HarvestCorp
+REGION,KOLA PENINSULA,Lake Kovd,Imandra
+REGION,MAINE,The Lowland,Yellowrock National Forest
+REGION,MICHIGAN,Black River,Smithville Dam,Island Lake,Drummond Island
+REGION,TAYMYR,Quarry,Drowned Lands,Zimnegorsk,Rift
+REGION,TENNESSEE,Burning Mill
+REGION,WISCONSIN,Black Badger Lake,Grainwoods River
+REGION,YUKON,Flooded Foothills,Big Salmon Peak
