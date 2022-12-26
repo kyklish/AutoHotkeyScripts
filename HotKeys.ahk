@@ -248,8 +248,8 @@ Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layou
 			;Control, Show,, SysListView321, ahk_class WorkerW
 	}
 	return
-
 */
+
 
 #IfWinActive ahk_group Desktop
 Pause:: ShowHelpWindow("
