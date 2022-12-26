@@ -1,13 +1,11 @@
 ﻿;SnowRunner
+#Warn
 #NoEnv
 #SingleInstance, Force
 #UseHook
 SetBatchLines, -1
 
 GroupAdd, SpinTires, ahk_exe SnowRunner.exe
-
-; if not WinExist("ahk_group SpinTires")
-	; Run, com.epicgames.launcher://apps/2744acda6a2e493e9894b389b6564df7%3A022785974d3244dc805ea83e1c076158%3AMayflower?action=launch&silent=true
 
 
 SetKeyDelay, 50 ;Влияет на переключение передач и на скорость поворота камеры
@@ -17,6 +15,7 @@ SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
 oStates := [] ;Service variable for script logic. Contains all possible Gear States. Only for debug purpose.
 oGearBox := GearBoxFactory(oStates)
 
+sPressed := wPressed := false
 
 #IfWinActive ahk_group SpinTires
 2:: ;Движение (зажимает кнопку для автоматического движения). Нажать "w" для отжатия.
@@ -30,6 +29,18 @@ return
 	Send, {s down}
 	sPressed := true
 	wPressed := false
+return
+RShift:: ;Временно отжать зажатую клавишу
+	if (wPressed)
+		Send, {w up}
+	if (sPressed)
+		Send, {s up}
+return
+RShift Up::
+	if (wPressed)
+		Send, {w down}
+	if (sPressed)
+		Send, {s down}
 return
  4:: Refuel() ;Полностью заправить машину
 +4:: Refuel(true) ;Полностью заправить машину и прицеп
@@ -92,9 +103,10 @@ Numpad2:: oGearBox.ShiftGearManual("D")
 #IfWinNotActive ahk_group SpinTires
 F1:: ShowHelpWindow("
 (LTrim
-	Во время игры должна быть установлена ENG раскладка клавиатуры!!!
-	2          -> Зажать W, движение вперед (нажать W, для сброса).
-	3          -> Зажать S, движение назад (нажать S, для сброса).
+	Eng keyboard language required during play!!!
+	2          -> Зажать W, движение вперед (нажать W, для отжатия).
+	3          -> Зажать S, движение назад (нажать S, для отжатия).
+	RShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
 	4          -> Полностью заправить машину.
 	Shift + 4  -> Полностью заправить машину + прицеп.
 	NumpadMult -> Переключить режим КПП: Автомат - Ручное.
