@@ -131,10 +131,10 @@ sPressed := wPressed := false
 !z::Reload
 !x::ExitApp
 
-ShiftGear(сDirection) {
+ShiftGear(cDirection) {
     global iOffset
 
-    Switch сDirection
+    Switch cDirection
     {
     Case "U": ShiftGearMouseMove(0, -iOffset)	;Up
     Case "D": ShiftGearMouseMove(0, iOffset)	;Down
