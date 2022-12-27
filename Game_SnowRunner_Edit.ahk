@@ -15,6 +15,7 @@ global oLogFile := FileOpen("R:\initial_modified_files.log", "w")
 
 For i, sFolder in oFolders
 {
+	OutputDebug, % sFolder
 	Loop, Files, % sFolder . "\*.xml", R
 	{
 		Edit(A_LoopFilePath)
