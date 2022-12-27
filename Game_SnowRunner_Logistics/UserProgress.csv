@@ -1,0 +1,13 @@
+;CSV v1.0
+;DEFAULT REGION,Region
+DEFAULT REGION,MICHIGAN
+;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
+JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Pipe Dream,1,0,490,93,Bricks,2,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Steel River Supplies,1,0,104,238,Consumables,2,Wooden Planks,2
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,1,0,190,306,Long Logs,3
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,1,0,263,451,Medium Logs,3
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,1,0,104,238,Medium Logs,3
+JOB,MICHIGAN,TASKS,Fallen Power Line,1,0,190,401,Concrete Blocks,2,Metal Beams,1
+JOB,MICHIGAN,TASKS,Old Bridge Reconstruction,0,1,110,415,Metal Beams,0,Wooden Planks,0
+JOB,MICHIGAN,TASKS,Riverside Repair,1,0,73,150,Service Spare Parts,2,Wooden Planks,2
+JOB,MICHIGAN,TASKS,Rockslide,1,0,145,135,Metal Beams,1,Service Spare Parts,1

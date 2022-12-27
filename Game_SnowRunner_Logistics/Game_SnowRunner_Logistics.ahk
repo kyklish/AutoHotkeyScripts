@@ -84,6 +84,10 @@ global sCargoCrgVarName := "JobCrgDetail"
 ; Save\restore "Show Buildings" checkbox value from "Main" window during temporary
 ;   modifications by child windows.
 global bPreDestinationShowBuildingsCheckbox := False
+global oPreDestinationSelectedCargoTypes := []
+; Flag shows, that we in destination mode for "Job" window. Show all jobs, when
+;   we point by mouse coordinate for building/job.
+global bShowAllJobs := False
 
 sHelpText := "
 (
@@ -112,6 +116,8 @@ Usage:
 
 Update:
 - You can add missed ""Jobs"" and ""Buildings"" via GUI.
+- In set Destination\Position mode you can click on cargo icon to get it's X:Y position
+    (to get same coordinates for same places: different jobs point out to same place)
 - All other stuff must be edited directly in """ oFileName.sDB """.
 
 Info:
@@ -141,16 +147,19 @@ RegionChanged() ; Populate [Main] GUI with data
 
 If (TEST_DATA) { ; Select all cargo types
     oSelectedCargoTypes := oDB.oCargoTypes
-    GuiControl, Main:, CargoTypes, % ArrayToCSV(oSelectedCargoTypes)
-    ShowCargoIcons(oSelectedCargoTypes) ; Changes default GUI!
+    GuiControl, Main:, CargoTypes, ALL
+    CargoIconsUpdate(oSelectedCargoTypes)
 }
 Return
 
-F1:: ShowHelpText(sHelpText)
 F2:: ToggleMainWindow()
+
+#IfWinActive ahk_group Script
+    F1:: ShowHelpText(sHelpText)
 
     !x:: Gosub MainGuiClose
     !z:: Gosub MainGuiReload
+#If
 
 ToggleMainWindow() {
     global sWinTitle
@@ -158,6 +167,7 @@ ToggleMainWindow() {
         Gui CargoIcons:Hide
         Gui Main:Hide
         ; WinMinimize %sWinTitle%
+        WinActivate ahk_group Game
     } Else {
         Gui Main:Show
         Gui CargoIcons:Show
@@ -187,10 +197,10 @@ CreateMainGui:
     Gui Add, Text, xs w40, Maps:
     Gui Add, Text,     x+m yp  w%WMN% Border vMapName1
     Gui Add, Text,     x+0 yp  wp     Border vMapName2
-    Gui Add, Checkbox, x+m yp   gShowBuildingsToggle vShowBuildings, &Show Buildings
+    Gui Add, Checkbox, x+m yp   gShowBuildings vShowBuildings, &Show Buildings
     Gui Add, Text,   xs+46 y+2 w%WMN% Border vMapName3
     Gui Add, Text,     x+0 yp  wp     Border vMapName4
-    Gui Add, Checkbox, x+m yp   gShowJobName         vShowJobName, Show Job Name
+    Gui Add, Checkbox, x+m yp   gShowJobName         vShowJobName, Show Job &Name
     ; AutoHotKey Help: "Window and Control Styles"
     ; +LV0x4000  == Show tooltips
     ; +LV0x10000 == Prevent flickering
@@ -232,11 +242,11 @@ Return
 
 ; Main:Picture - Find building under cursor, Show job's icons
 MapClick() {
+    GuiControl, Main:, ShowBuildings, 0 ; Uncheck "Show Buildings" checkbox
     oBuilding := oDB.GetBuildingUnderCursor(GetRegion())
     oSelectedCargoTypes := oBuilding.oCargoTypes
-    ShowCargoIcons(oSelectedCargoTypes) ; Changes default GUI!
     GuiControl, Main:, CargoTypes, % ArrayToCSV(oSelectedCargoTypes)
-    GuiControl, Main:, ShowBuildings, 0 ; Uncheck "Show Buildings" checkbox
+    CargoIconsUpdate(oSelectedCargoTypes)
 }
 
 ; Main:DropDownList - Update whole [Main] GUI, De-select building
@@ -263,12 +273,9 @@ RegionChanged() {
     LV_ReLoadJobs(sRegion)
 
     ; Reset values to default
-    oSelectedCargoTypes := []
     GuiControl,, CargoTypes
-    Gui CargoIcons:Destroy
-
-    If (GetShowBuildingsCheckbox())
-        ShowBuildingsToggle()
+    oSelectedCargoTypes := []
+    CargoIconsUpdate(oSelectedCargoTypes)
 }
 
 ; Main:ListView-Checkbox
@@ -331,7 +338,7 @@ JobToggle() {
             }
             LV_UpdateRow(A_EventInfo, oJob)
             LV_AutoWidth()
-            CargoIconsUpdate()
+            CargoIconsUpdate(oSelectedCargoTypes)
         }
     } Else If (A_GuiEvent == "K") { ; K == Pressed a key in ListView
         ; cKey := Chr(A_EventInfo) ; Only A-Z keys on most keyboard layouts.
@@ -351,7 +358,7 @@ JobToggle() {
                     ; for preventing infinite event's loop?
                     LV_UpdateRow(iRowNum, oJob)
                     LV_AutoWidth()
-                    CargoIconsUpdate()
+                    CargoIconsUpdate(oSelectedCargoTypes)
                 }
             }
         }
@@ -462,62 +469,61 @@ LV_UpdateRow(iRowNum, oJob) {
 ;===================== GUI: "Cargo Icons" Buildings ============================
 
 ; Main:Checkbox
-ShowBuildingsToggle() {
-    global iMainX, iMainY
-
-    If (GetShowBuildingsCheckbox()) {
-        oBuildings := oDB.GetBuildings(GetRegion())
-
-        ; GuiControl, Delete == Not yet implemented! This sub-command does not yet exist.
-        ; As a workaround destroy and recreate the entire window via Gui Destroy.
-        ; Lexikos Example (transparent overlay window above another window):
-        ; Added Styles
-        ;   WS_CHILD = 0x40000000 -- Must be added for correct child window behaviour.
-        ; Removed styles:
-        ;   WS_POPUP = 0x80000000 -- Must be removed for child windows.
-        ;   WS_CAPTION = 0xC00000 -- GUI behaves oddly if you use -Caption post-creation.
-        ; Gui CargoIcons:New, +0x40000000 -0x80C00000 +LastFound +OwnerMain
-        ; +E0x20 makes GUI mouse-click transparent.
-        Gui CargoIcons:New, -Caption +LastFound +OwnerMain +E0x20 ; New == Destroy existing [CargoIcons] window with [Jobs]
-        Gui Color, %sTransColor%
-        WinSet, TransColor, %sTransColor%
-        Gui Margin, 0, 0
-        Gui Font, c%sFontColor% s%iFontSizeCargo% w1000
-        For _, oBuilding in oBuildings {
-            iShowedIcons := 0
-            For sCargoType in oBuilding.oCargoTypes {
-                X := oBuilding.x
-                Y := oBuilding.y
-                X += iShowedIcons++ * iIconSize
-                Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize%, .\Cargo\%sCargoType%.png
-            }
-            X := oBuilding.x
-            Y += %iIconSize%
-            sType := oBuilding.sType
-            Gui Add, Text, x%X% y%Y%, %sType%
-        }
-        Gui Show, x%iMainX% y%iMainY% w%W% h1080 NA ; Shows the window without activating it.
-    } Else {
-        Gui CargoIcons:Destroy
-        ShowCargoIcons(oSelectedCargoTypes)
-    }
+ShowBuildings() {
+    CargoIconsUpdate(oSelectedCargoTypes)
 }
 
 ; Main:Checkbox
 ShowJobName() {
-    CargoIconsUpdate()
+    CargoIconsUpdate(oSelectedCargoTypes)
+}
+
+ShowBuildingsCargoIcons() {
+    global iMainX, iMainY
+    oBuildings := oDB.GetBuildings(GetRegion())
+
+    ; GuiControl, Delete == Not yet implemented! This sub-command does not yet exist.
+    ; As a workaround destroy and recreate the entire window via Gui Destroy.
+    ; Lexikos Example (transparent overlay window above another window):
+    ; Added Styles
+    ;   WS_CHILD = 0x40000000 -- Must be added for correct child window behaviour.
+    ; Removed styles:
+    ;   WS_POPUP = 0x80000000 -- Must be removed for child windows.
+    ;   WS_CAPTION = 0xC00000 -- GUI behaves oddly if you use -Caption post-creation.
+    ; Gui CargoIcons:New, +0x40000000 -0x80C00000 +LastFound +OwnerMain
+    ; +E0x20 makes GUI mouse-click transparent.
+    Gui CargoIcons:New, -Caption +LastFound +OwnerMain +E0x20 ; New == Destroy existing [CargoIcons] window with [Jobs]
+    Gui Color, %sTransColor%
+    WinSet, TransColor, %sTransColor%
+    Gui Margin, 0, 0
+    Gui Font, c%sFontColor% s%iFontSizeCargo% w1000
+    For _, oBuilding in oBuildings {
+        iShowedIcons := 0
+        For sCargoType in oBuilding.oCargoTypes {
+            X := oBuilding.x
+            Y := oBuilding.y
+            X += iShowedIcons++ * iIconSize
+            Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize%, .\Cargo\%sCargoType%.png
+        }
+        X := oBuilding.x
+        Y += %iIconSize%
+        sType := oBuilding.sType
+        Gui Add, Text, x%X% y%Y%, %sType%
+    }
+    Gui Show, x%iMainX% y%iMainY% w%W% h1080 NA ; Shows the window without activating it.
 }
 
 ;======================== GUI: "Cargo Icons" Jobs ==============================
 
-ShowCargoIcons(oCargoTypes) {
+; Show cargo icons from "Accepted" jobs
+ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
     If (!oCargoTypes.Count()) {
         Gui CargoIcons:Destroy
         Return
     }
 
     global iMainX, iMainY
-    oAcceptedJobs := oDB.GetAcceptedJobs(GetRegion())
+    oJobs := oDB.GetJobList(GetRegion(), bShowAllJobs) ; By default "Accepted" jobs only.
     sCargoTypesCSV := ArrayToCSV(oCargoTypes)
 
     ; GuiControl, Delete == Not yet implemented! This sub-command does not yet exist.
@@ -534,7 +540,7 @@ ShowCargoIcons(oCargoTypes) {
     WinSet, TransColor, %sTransColor%
     Gui Margin, 0, 0
     Gui Font, c%sFontColor% s%iFontSizeCargo% w1000
-    For _, oJob in oAcceptedJobs {
+    For _, oJob in oJobs {
         For _, oPosition in oJob.oPositions {
             X := oPosition.x
             Y := oPosition.y
@@ -590,17 +596,21 @@ CargoClick() {
     ;   1st column "Status" for us
     LV_UpdateRow(iRowNum, oJob)
     LV_AutoWidth()
-    CargoIconsUpdate()
+    CargoIconsUpdate(oSelectedCargoTypes)
 }
 
 ;================================ GUI: Code ====================================
 
 ; Show Job's or Building's Cargo Icons
-CargoIconsUpdate() {
+CargoIconsUpdate(oCargoTypes) {
+    _DefaultGui := A_DefaultGui
+
     If (GetShowBuildingsCheckbox())
-        ShowBuildingsToggle()
+        ShowBuildingsCargoIcons()
     Else
-        ShowCargoIcons(oSelectedCargoTypes)
+        ShowJobsCargoIcons(oCargoTypes, bShowAllJobs)
+
+    Gui %_DefaultGui%:Default
 }
 
 GetRegion() {
@@ -648,10 +658,7 @@ DestroyChildWindow(sGui) {
     sParentGUI := ShowParentWindow()
 
     If (sParentGUI == "Main") {
-        If (GetShowBuildingsCheckbox())
-            ShowBuildingsToggle()
-        Else
-            ShowCargoIcons(oSelectedCargoTypes)
+        CargoIconsUpdate(oSelectedCargoTypes)
         WinActivate %sWinTitle%
     } Else
         WinActivate Add %sParentGUI%
@@ -786,9 +793,23 @@ CreateAssocArray(oLinearArray) {
     Space::
     LButton::
         ; Lines order in this hotkey are very important! Got some "side" effects
-        MouseGetPos, _X, _Y,, sControlClassNN
-        GuiControlGet, sControlVarName, Main:Name, %sControlClassNN%
-        If sControlVarName not contains MapPicture
+        MouseGetPos, _X, _Y,, hWndControl, 3
+        GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
+        GuiControlGet, sCargoFileName, CargoIcons:, %hWndControl%
+        GuiControlGet, aJobPos, CargoIcons:Pos, %hWndControl%
+        ; ToolTip % ""
+        ;     . "hWndControl:" hWndControl "`n"
+        ;     . "sControlVarNameMap:" sControlVarNameMap "`n"
+        ;     . "sCargoFileName:" sCargoFileName "`n"
+        ;     . "_X:" aJobPosX "`n"
+        ;     . "_Y:" aJobPosY "`n"
+        ;     ,0,0,4
+        If sCargoFileName contains % ArrayToCSV(oDB.oCargoTypes)
+        {
+            ; Get position from cargo icon
+            _X := aJobPosX
+            _Y := aJobPosY
+        } Else If sControlVarNameMap not contains MapPicture
         {
             sTemp := sButtonResultControl
             ; Unlock [LButton] [Enter] [Space] to press [OK] button in popup window
@@ -852,6 +873,7 @@ ButtonDestination() {
     Gui Hide
     Gui Main:Show
     SaveMainGuiState()
+    bShowAllJobs := True ; Global flag to show all not completed jobs
     ShowCargoIconsDestinationMode(A_Gui)
     WinActivate %sWinTitle% ; "Heavy" command, put it below all GUI functions!
     ToolTipDestination(True)
@@ -881,20 +903,23 @@ ToolTipDestination(bShow) {
 }
 
 ShowCargoIconsDestinationMode(sParentGUI) {
+    oSelectedCargoTypes := oDB.oCargoTypes
+    GuiControl, Main:, CargoTypes, ALL
     ; In this case "Main,CargoIcons" windows are "Child", because
     ;   "Building,Job"[ButtonDestination] windows shows them on demand.
     ; Example: "Main,CargoIcons" -> "Building,Job"[ButtonDestination] -> "Main,CargoIcons"
     If (sParentGUI == "Building") {
         GuiControl, Main:, ShowBuildings, 1
-        ShowBuildingsToggle()
+        ShowBuildingsCargoIcons()
     }
     If (sParentGUI == "Job") {
         GuiControl, Main:, ShowBuildings, 0
-        ShowCargoIcons(oDB.oCargoTypes) ; Show all not complete jobs
+        ShowJobsCargoIcons(oSelectedCargoTypes, bShowAllJobs) ; Show all not completed jobs
     }
 }
 
 SaveMainGuiState() {
+    oPreDestinationSelectedCargoTypes := oSelectedCargoTypes
     bPreDestinationShowBuildingsCheckbox := GetShowBuildingsCheckbox()
     GuiControl, Main:Disable, Add &Building
     GuiControl, Main:Disable, Add &Job
@@ -902,10 +927,13 @@ SaveMainGuiState() {
     GuiControl, Main:Disable, Re&load
     GuiControl, Main:Disable, Region
     GuiControl, Main:Disable, Reset User Progress
-    GuiControl, Main:Disable, Show Job Name
+    ; GuiControl, Main:Disable, Show Job &Name
 }
 
 RestoreMainGuiState() {
+    bShowAllJobs := False
+    oSelectedCargoTypes := oPreDestinationSelectedCargoTypes
+    GuiControl, Main:, CargoTypes, % ArrayToCSV(oSelectedCargoTypes)
     GuiControl, Main:, ShowBuildings, %bPreDestinationShowBuildingsCheckbox%
     GuiControl, Main:Enable, Add &Building
     GuiControl, Main:Enable, Add &Job
@@ -913,7 +941,7 @@ RestoreMainGuiState() {
     GuiControl, Main:Enable, Re&load
     GuiControl, Main:Enable, Region
     GuiControl, Main:Enable, Reset User Progress
-    GuiControl, Main:Enable, Show Job Name
+    ; GuiControl, Main:Enable, Show Job &Name
 }
 
 ;========================== GUI: "Add Building" ================================
@@ -959,7 +987,7 @@ BuildingButtonSave() {
             MsgBox(A_Gui, "I", "Not Saved!`n`nNew building overlaps with another building.")
             Return
         }
-        oDB.AddBuilding(sRegion,oBuilding)
+        oDB.AddBuilding(sRegion, oBuilding)
         oDB.Save(oFileName)
     } Else {
         MsgBox(A_Gui, "I", "Not Saved!`n`nCargo is Empty`nPosition [X:Y] is Wrong")
@@ -980,7 +1008,7 @@ MainButtonAddJob:
     Gui Add, Text,, &Name:
     Gui Add, DropDownList, ym w454 vJobType, % "TASKS||" oDB.GetContractsInRegionDDL()
     Gui Add, Edit, w454 vJobName
-    Gui Add, Text, xm, Set [Destination] X:Y on map. Set corresponding [Cargo].
+    Gui Add, Text, xm, DESTINATION (X:Y).`t`tCARGO (CargoType1:Quantity1,CargoTypeN:QuantityN).
     Loop % iGuiRowNum {
         Gui Add, Button,    xm v%sDstBtnVarName%%A_Index% gButtonDestination Section, Destination
         Gui Add, Edit, w70  ys v%sDstBtnVarName%%A_Index%Edit Center ; Must fit this text: "0000:0000"
@@ -1167,6 +1195,9 @@ class Database
         , "ALASKA": []
         , "TAYMYR": [] }
     oBuildingTypes := { 0:""
+        , "Factory": ""
+        , "Farm": ""
+        , "Lumber Mill": ""
         , "Town Storage": ""
         , "Warehouse": "" }
     oCargoTypes := { 0:""
@@ -1176,11 +1207,13 @@ class Database
         , "Cement": ""
         , "Concrete Blocks": ""
         , "Concrete Slabs": ""
-        , "Consumable": ""
+        , "Consumables": ""
         , "Drilling Equipment": ""
         , "Drilling Spare Parts": ""
         , "Fuel": ""
         , "Large Pipe": ""
+        , "Long Logs": ""
+        , "Medium Logs": ""
         , "Medium Pipes": ""
         , "Metal Beams": ""
         , "Metal Rolls": ""
@@ -1298,6 +1331,8 @@ class Database
 
     AddBuilding(sRegion, oBuilding) {
         bDBModified := True
+        If (!this.oBuildings[sRegion])
+            this.oBuildings[sRegion] := []
         this.oBuildings[sRegion].Push(oBuilding)
     }
 
@@ -1360,12 +1395,13 @@ class Database
             , oPositions: oPositions }
     }
 
-    GetAcceptedJobs(sRegion) {
+    ; Get "Accepted" jobs in linear array, or all jobs in region
+    GetJobList(sRegion, bAllJobs := True) {
         oJobsByRegion := this.GetJobs(sRegion)
         oAcceptedJobs := []
         For _, oJobsByType in oJobsByRegion
             For _, oJob in oJobsByType
-                If (oJob.isAccepted)
+                If (oJob.isAccepted || bAllJobs)
                     oAcceptedJobs.Push(oJob)
         Return oAcceptedJobs
     }
