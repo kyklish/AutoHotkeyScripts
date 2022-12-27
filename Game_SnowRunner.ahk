@@ -17,6 +17,33 @@ oGearBox := GearBoxFactory(oStates)
 sPressed := wPressed := false
 
 #IfWinActive ahk_group SpinTires
+    F1:: ShowHelpWindow("
+    (LTrim
+        Eng keyboard language required during play!!!
+        2          -> Зажать W, движение вперед (нажать W, для отжатия).
+        3          -> Зажать S, движение назад (нажать S, для отжатия).
+        RShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
+        4          -> Полностью заправить машину.
+        Shift + 4  -> Полностью заправить машину + прицеп.
+        NumpadMult -> Переключить режим КПП: Автомат - Ручное.
+        Numpad0-9  -> Переключить КПП. (Автомат). Смотри скрипт.
+        Numpad4    -> Рычаг КПП влево  (Ручное).
+        Numpad6    -> Рычаг КПП вправо (Ручное).
+        Numpad8    -> Рычаг КПП вверх  (Ручное).
+        Numpad2    -> Рычаг КПП вниз   (Ручное).
+        M          -> Открыть карту, предварительно отключив зажатые клавиши движения.
+        , & .      -> Поворот камеры
+        ; & /      -> Mouse Wheel Up & Down
+        !c         -> Suspend
+        !z         -> Reload
+        !x         -> ExitApp
+        Схема КПП:
+        7 8      + H
+        | |      | |
+        4-5-6 -> L-A-N
+        | |      | |
+        1 2      - R
+    )")
     2:: ;Движение (зажимает кнопку для автоматического движения). Нажать "w" для отжатия.
         Send, {s up}
         Send, {w down}
@@ -96,35 +123,6 @@ sPressed := wPressed := false
     Numpad6:: oGearBox.ShiftGearManual("R")
     Numpad8:: oGearBox.ShiftGearManual("U")
     Numpad2:: oGearBox.ShiftGearManual("D")
-
-#IfWinNotActive ahk_group SpinTires
-    F1:: ShowHelpWindow("
-    (LTrim
-        Eng keyboard language required during play!!!
-        2          -> Зажать W, движение вперед (нажать W, для отжатия).
-        3          -> Зажать S, движение назад (нажать S, для отжатия).
-        RShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
-        4          -> Полностью заправить машину.
-        Shift + 4  -> Полностью заправить машину + прицеп.
-        NumpadMult -> Переключить режим КПП: Автомат - Ручное.
-        Numpad0-9  -> Переключить КПП. (Автомат). Смотри скрипт.
-        Numpad4    -> Рычаг КПП влево  (Ручное).
-        Numpad6    -> Рычаг КПП вправо (Ручное).
-        Numpad8    -> Рычаг КПП вверх  (Ручное).
-        Numpad2    -> Рычаг КПП вниз   (Ручное).
-        M          -> Открыть карту, предварительно отключив зажатые клавиши движения.
-        , & .      -> Поворот камеры
-        ; & /      -> Mouse Wheel Up & Down
-        !c         -> Suspend
-        !z         -> Reload
-        !x         -> ExitApp
-        Схема КПП:
-        7 8      + H
-        | |      | |
-        4-5-6 -> L-A-N
-        | |      | |
-        1 2      - R
-    )")
 
 #IfWinActive
 !c::Suspend
