@@ -20,9 +20,10 @@ sPressed := wPressed := false
     F1:: ShowHelpWindow("
     (LTrim
         Eng keyboard language required during play!!!
+        In game change [Clutch Pedal] to [R.Shift].
         2          -> Зажать W, движение вперед (нажать W, для отжатия).
         3          -> Зажать S, движение назад (нажать S, для отжатия).
-        RShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
+        LShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
         4          -> Полностью заправить машину.
         Shift + 4  -> Полностью заправить машину + прицеп.
         NumpadMult -> Переключить режим КПП: Автомат - Ручное.
@@ -56,13 +57,13 @@ sPressed := wPressed := false
         sPressed := true
         wPressed := false
     return
-    RShift:: ;Временно отжать зажатую клавишу
+    LShift:: ;Временно отжать зажатую клавишу
         if (wPressed)
             Send, {w up}
         if (sPressed)
             Send, {s up}
     return
-    RShift Up::
+    LShift Up::
     if (wPressed)
         Send, {w down}
     if (sPressed)
@@ -89,12 +90,12 @@ sPressed := wPressed := false
         Send, {s down}
     wPressed := false
     return
-    .:: ;Поворот камеры
-        While, GetKeyState(".", "P")
-            Send, {,}
-    return
-    ,::
+    ,:: ;Поворот камеры
     While, GetKeyState(",", "P")
+        Send, {,}
+    return
+    .::
+    While, GetKeyState(".", "P")
         Send, {.}
     return
     `;:: Send, {WheelUp}
