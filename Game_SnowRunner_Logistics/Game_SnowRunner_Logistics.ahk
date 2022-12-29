@@ -542,6 +542,7 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
     Gui Font, c%sFontColor% s%iFontSizeCargo% w1000
     For _, oJob in oJobs {
         For _, oPosition in oJob.oPositions {
+            bShowNames := False
             X := oPosition.x
             Y := oPosition.y
             iShowedIcons := 0
@@ -549,6 +550,7 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
                 If sCargoType in %sCargoTypesCSV%
                 {
                     If (iQuantity) {
+                        bShowNames := True
                         X += iShowedIcons++ * iIconSize
                         Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize% +HwndIconId gCargoClick, .\Cargo\%sCargoType%.png
                         Gui Add, Text, w%iIconSize% Center, %iQuantity%
@@ -559,7 +561,7 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
                     }
                 }
             }
-            If (GetShowJobNameCheckbox()) {
+            If (bShowNames && GetShowJobNameCheckbox()) {
                 iFontSizeJob := 8
                 X := oPosition.x
                 Y := oPosition.y - iFontSizeJob - Round(iFontSizeJob / 1.5)
