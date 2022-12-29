@@ -170,7 +170,11 @@ ToggleMainWindow() {
         WinActivate ahk_group Game
     } Else {
         Gui Main:Show
-        Gui CargoIcons:Show
+        ; Set the window to be the last found window for WinExist().
+        ; The window is not created if it does not already exist.
+        Gui CargoIcons:+LastFoundExist
+        If (WinExist())
+            Gui CargoIcons:Show
         WinActivate %sWinTitle%
         ; WinRestore %sWinTitle% ; Some graphic glitch on restore
     }
@@ -475,6 +479,7 @@ ShowBuildings() {
 
 ; Main:Checkbox
 ShowJobName() {
+    GuiControl, Main:, ShowBuildings, 0 ; Uncheck "Show Buildings" checkbox
     CargoIconsUpdate(oSelectedCargoTypes)
 }
 
