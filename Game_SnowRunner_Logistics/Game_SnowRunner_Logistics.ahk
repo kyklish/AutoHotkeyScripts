@@ -803,19 +803,15 @@ CreateAssocArray(oLinearArray) {
         MouseGetPos, _X, _Y,, hWndControl, 3
         GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
         GuiControlGet, sCargoFileName, CargoIcons:, %hWndControl%
-        GuiControlGet, aJobPos, CargoIcons:Pos, %hWndControl%
-        ; ToolTip % ""
-        ;     . "hWndControl:" hWndControl "`n"
-        ;     . "sControlVarNameMap:" sControlVarNameMap "`n"
-        ;     . "sCargoFileName:" sCargoFileName "`n"
-        ;     . "_X:" aJobPosX "`n"
-        ;     . "_Y:" aJobPosY "`n"
-        ;     ,0,0,4
+        GuiControlGet, aCargoIconPos, CargoIcons:Pos, %hWndControl%
+        sCargoFileName := SubStr(sCargoFileName, 9)
         If sCargoFileName contains % ArrayToCSV(oDB.oCargoTypes)
         {
             ; Get position from cargo icon
-            _X := aJobPosX
-            _Y := aJobPosY
+            _X := aCargoIconPosX
+            _Y := aCargoIconPosY
+            MouseMove, _X, _Y, 0
+            Sleep, 500
         } Else If sControlVarNameMap not contains MapPicture
         {
             sTemp := sButtonResultControl
@@ -895,6 +891,7 @@ ButtonDestinationFinish(sResultGui, sButtonResultControl, X, Y) {
 }
 
 ToolTipDestination(bShow) {
+    local
     If (bShow)
         SetTimer, DestinationToolTip, 100
     Else {
@@ -904,8 +901,28 @@ ToolTipDestination(bShow) {
     Return
 
     DestinationToolTip:
-        MouseGetPos, X, Y
-        ToolTip % X ":" Y "`nMove: Arrows`nSave: LMB or Space`nCancel: RMB or Esc"
+        ; MouseGetPos, X, Y
+        ; ToolTip % X ":" Y "`nMove: Arrows`nSave: LMB or Space`nCancel: RMB or Esc"
+        ; Return
+        MouseGetPos, X, Y,, hWndControl, 3
+        GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
+        GuiControlGet, sCargoFileName, CargoIcons:, %hWndControl%
+        ; "Pos" sub-command not work here!!! Why???
+        ; GuiControlGet, aCargoIconPos, CargoIcons:Pos, %hWndControl%
+        If (sCargoFileName || InStr(sControlVarNameMap, "MapPicture"))
+            sInfoMsg := ""
+                ; . "SnapPosition: " aCargoIconPosX ":" aCargoIconPosY "`n"
+                ; . "hWndControl: " hWndControl "`n"
+                . "sControlVarNameMap: " sControlVarNameMap "`n"
+                . "sCargoFileName: " SubStr(sCargoFileName, 9)
+        Else
+            sInfoMsg := "Wrong mouse position!"
+        ToolTip % ""
+            . X ":" Y "`n"
+            . "Move: Arrows`n"
+            . "Save: LMB or Space`n"
+            . "Cancel: RMB or Esc`n`n"
+            . sInfoMsg
     Return
 }
 
