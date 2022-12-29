@@ -191,16 +191,16 @@ CreateMainGui:
     Gui Add, Picture, wp   hp   ys gMapClick vMapPicture4
     Gui Margin, 6, 6
     Gui Add, Text, ym w40 Section, &Region:
-    Gui Add, DropDownList, ym w%WDDL% gRegionChanged vRegion, % oDB.GetRegionsDDL(sDefaultRegion)
+    Gui Add, DropDownList, ym  w%WDDL% gRegionChanged vRegion, % oDB.GetRegionsDDL(sDefaultRegion)
     Gui Add, Text,     ym, Cargo Types:
     Gui Add, Text, x+m ym w%WCT% 0x200       vCargoTypes ; 0x200 == "Single Line" option
     Gui Add, Text, xs w40, Maps:
     Gui Add, Text,     x+m yp  w%WMN% Border vMapName1
     Gui Add, Text,     x+0 yp  wp     Border vMapName2
-    Gui Add, Checkbox, x+m yp   gShowBuildings vShowBuildings, &Show Buildings
+    Gui Add, Checkbox, x+m yp gShowBuildings vShowBuildings, &Show Buildings
     Gui Add, Text,   xs+46 y+2 w%WMN% Border vMapName3
     Gui Add, Text,     x+0 yp  wp     Border vMapName4
-    Gui Add, Checkbox, x+m yp   gShowJobName         vShowJobName, Show Job &Name
+    Gui Add, Checkbox, x+m yp Checked gShowJobName vShowJobName, Show Job &Name
     ; AutoHotKey Help: "Window and Control Styles"
     ; +LV0x4000  == Show tooltips
     ; +LV0x10000 == Prevent flickering
