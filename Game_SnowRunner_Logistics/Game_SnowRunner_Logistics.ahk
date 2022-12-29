@@ -145,11 +145,8 @@ Else
 Gosub CreateMainGui
 RegionChanged() ; Populate [Main] GUI with data
 
-If (TEST_DATA) { ; Select all cargo types
-    oSelectedCargoTypes := oDB.oCargoTypes
-    GuiControl, Main:, CargoTypes, ALL
-    CargoIconsUpdate(oSelectedCargoTypes)
-}
+If (TEST_DATA)
+    Gosub MainButtonShowAllJobs
 Return
 
 F2:: ToggleMainWindow()
@@ -214,14 +211,14 @@ CreateMainGui:
     ;                 which greatly improves row-adding performance.
     ; Must be in sync with LV_Add() and JobToggle()!
     Gui Add, ListView, xs w%WLV% h975 +Report +Checked +Grid -Multi +LV0x4000 +LV0x10000 -LV0x10 +AltSubmit Count100 gJobToggle vJobListView, Status|Job Type|Job Name|Cargo
-    Gui Add, Button, Section, Add &Building
+    Gui Add, Text, Section, Default Region:
+    Gui Add, DropDownList, ys+1 w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
+    Gui Add, Button, ys, Show &All Jobs
+    Gui Add, Button, ys, Add &Building
     Gui Add, Button, ys, Add &Job
     Gui Add, Button, ys, Reset User Progress
     Gui Add, Button, ys gMainGuiReload, Re&load
     Gui Add, Button, ys gMainGuiClose, E&xit
-    Gui Add, Text, ys, Default Region:
-    Gui Add, DropDownList, ys w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
-    Gui Add, Text, ys, Press F1 for help.
     Gui Show, w%W% h1080, %sWinTitle%
     WinGetPos, iMainX, iMainY ; For child window with cargo icons
     ; Uni == Unidirectional sort. This prevents a second click on the same column
@@ -380,6 +377,12 @@ MainButtonResetUserProgress:
         FileDelete % oFileName.sUP
         Reload
     }
+Return
+
+MainButtonShowAllJobs:
+    oSelectedCargoTypes := oDB.oCargoTypes ; Select ALL cargo types
+    GuiControl, Main:, CargoTypes, ALL
+    CargoIconsUpdate(oSelectedCargoTypes)
 Return
 
 ;========================== GUI: "Main" ListView ===============================
@@ -1221,6 +1224,7 @@ class Database
     oBuildingTypes := { 0:""
         , "Factory": ""
         , "Farm": ""
+        , "Log Station": ""
         , "Lumber Mill": ""
         , "Town Storage": ""
         , "Warehouse": "" }
