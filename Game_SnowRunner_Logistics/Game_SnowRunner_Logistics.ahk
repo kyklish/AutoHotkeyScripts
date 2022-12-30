@@ -129,6 +129,7 @@ Info:
 
 Bugs:
 - Script can't handle very fast ""Region's"" switch.
+- Cargo icons with same position are overlapped (only one visible).
 )"
 
 ;============================= Initialization ==================================
@@ -553,19 +554,18 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
             bShowNames := False
             X := oPosition.x
             Y := oPosition.y
-            iShowedIcons := 0
             For sCargoType, iQuantity in oPosition.oCargo {
                 If sCargoType in %sCargoTypesCSV%
                 {
                     If (iQuantity) {
-                        bShowNames := True
-                        X += iShowedIcons++ * iIconSize
+                        bShowNames := True ; Show names, only when we show icons
                         Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize% +HwndIconId gCargoClick, .\Cargo\%sCargoType%.png
                         Gui Add, Text, w%iIconSize% Center, %iQuantity%
                         ; Save {IconId: Job, Cargo, Type} to know,
                         ; which cargo quantity decrement on mouse click and
                         ; which line in ListView modify with new quantity value
                         oJobsCargosOnScreen[iconId] := { oJob: oJob, oCargo: oPosition.oCargo, sCargoType: sCargoType }
+                        X += iIconSize
                     }
                 }
             }
