@@ -15,7 +15,7 @@ global oLogFile := FileOpen("R:\initial_modified_files.log", "w")
 
 For i, sFolder in oFolders
 {
-	OutputDebug, % sFolder
+	OutputDebug, % sFolder "`n"
 	Loop, Files, % sFolder . "\*.xml", R
 	{
 		Edit(A_LoopFilePath)
@@ -36,7 +36,7 @@ Edit(sFilePath)
 	;WINCHES ===============================================================
 	;sData := Replace(sData, "Length", "50")
 	;sData := Replace(sData, "StrengthMult", "2.0")
-	;sData := ReplaceDigitMul(sData, "Length", 2)
+	sData := ReplaceDigitMul(sData, "Length", 2)
 	;sData := ReplaceDigitMul(sData, "StrengthMult", 1.5)
 	sData := Replace(sData, "IsEngineIgnitionRequired", "false")
 	;TRUCKS ================================================================
