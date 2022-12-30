@@ -14,7 +14,7 @@ SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
 oStates := [] ;Service variable for script logic. Contains all possible Gear States. Only for debug purpose.
 oGearBox := GearBoxFactory(oStates)
 
-sPressed := wPressed := false
+sPressed := wPressed := bManualMod := false
 
 #IfWinActive ahk_group SpinTires
     F1:: ShowHelpWindow("
@@ -24,6 +24,7 @@ sPressed := wPressed := false
         2          -> Зажать W, движение вперед (нажать W, для отжатия).
         3          -> Зажать S, движение назад (нажать S, для отжатия).
         LShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
+        RCtrl      -> Mouse Right Click
         4          -> Полностью заправить машину.
         Shift + 4  -> Полностью заправить машину + прицеп.
         NumpadMult -> Переключить режим КПП: Автомат - Ручное.
@@ -100,6 +101,7 @@ sPressed := wPressed := false
     return
     `;:: Send, {WheelUp}
     /:: Send, {WheelDown}
+    RCtrl::Click Right
 
     NumpadMult:: bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
     Numpad0:: oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
@@ -126,9 +128,20 @@ sPressed := wPressed := false
     Numpad2:: oGearBox.ShiftGearManual("D")
 
 #IfWinActive
-!c::Suspend
 !z::Reload
 !x::ExitApp
+!c::
+    Suspend
+    SuspendToolTip()
+return
+
+SuspendToolTip() {
+    static bToggle := false
+    if (bToggle := !bToggle)
+        ToolTip, SUSPENDED, 0, 0
+    else
+        ToolTip
+}
 
 ShiftGear(cDirection) {
     global iOffset
@@ -276,6 +289,7 @@ class GearBox { ;Коробка передач
 
 Refuel(bRefuelWithTrailer := false) {
     Send, c
+    Sleep, 250
     FillFullTank()
     if (bRefuelWithTrailer) { ;Дополнительно заправить прицеп
         Send, e
