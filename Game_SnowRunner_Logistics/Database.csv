@@ -27,8 +27,11 @@ BUILDING,MICHIGAN,Lumber Mill,190,306,Wooden Planks
 BUILDING,MICHIGAN,Farm,263,451,Consumables
 BUILDING,MICHIGAN,Warehouse,475,335,Bricks,Concrete Blocks,Metal Beams,Service Spare Parts
 BUILDING,MICHIGAN,Log Station,366,166,Long Logs,Medium Logs
+BUILDING,MICHIGAN,Factory,490,94,Service Spare Parts
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
+JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Not A Drill,0,0,200,229,Metal Beams,2
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Pipe Dream,0,0,490,93,Bricks,2,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Wet Harvest,0,0,263,451,Bricks,2,Metal Beams,1,Wooden Planks,2
 JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Steel River Supplies,0,0,104,238,Consumables,2,Wooden Planks,2
 JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,0,0,190,306,Long Logs,3
 JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,0,0,263,451,Medium Logs,3

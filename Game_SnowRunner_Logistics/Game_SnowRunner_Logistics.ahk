@@ -951,9 +951,11 @@ SaveMainGuiState() {
     GuiControl, Main:Disable, Add &Building
     GuiControl, Main:Disable, Add &Job
     GuiControl, Main:Disable, E&xit
+    GuiControl, Main:Disable, DefaultRegion
     GuiControl, Main:Disable, Re&load
     GuiControl, Main:Disable, Region
     GuiControl, Main:Disable, Reset User Progress
+    GuiControl, Main:Disable, Show &All Jobs
     ; GuiControl, Main:Disable, Show Job &Name
 }
 
@@ -964,10 +966,12 @@ RestoreMainGuiState() {
     GuiControl, Main:, ShowBuildings, %bPreDestinationShowBuildingsCheckbox%
     GuiControl, Main:Enable, Add &Building
     GuiControl, Main:Enable, Add &Job
+    GuiControl, Main:Enable, DefaultRegion
     GuiControl, Main:Enable, E&xit
     GuiControl, Main:Enable, Re&load
     GuiControl, Main:Enable, Region
     GuiControl, Main:Enable, Reset User Progress
+    GuiControl, Main:Enable, Show &All Jobs
     ; GuiControl, Main:Enable, Show Job &Name
 }
 
