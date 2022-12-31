@@ -89,11 +89,12 @@ global oPreDestinationSelectedCargoTypes := []
 sHelpText := "
 (
 Hotkeys:
-       F1 -> Show help window.
-       F2 -> Show\Hide main window.
-        / -> Make selected job complete.
-  Alt + X ->   Exit Script.
-  Alt + Z -> Reload Script.
+     F1 -> Show help window.
+     F2 -> Show legend window.
+     F3 -> Show\Hide main window.
+      / -> Make selected job complete.
+Alt + X ->   Exit Script.
+Alt + Z -> Reload Script.
 
 Keywords:
 - ""Building"": cargo source (Town Storage, Warehouse, etc...).
@@ -123,7 +124,7 @@ Info:
 - Top left corner of cargo icon (or first cargo icon in group of icons) is X:Y
   coordinates of center of ""Building"" or ""Job"" saved in """ oFileName.sDB """.
 - Reset job: make it complete, then accept it.
-- ""Select All Cargo Types"" will show all accepted jobs.
+- Check ""Show All Jobs"" to show ALL jobs, uncheck - to show all accepted jobs.
 
 Bugs:
 - Script can't handle very fast ""Region's"" switch.
@@ -149,11 +150,11 @@ If (TEST_DATA) {
 }
 Return
 
-F2:: ToggleMainWindow()
+F3:: ToggleMainWindow()
 
 #IfWinActive ahk_group Script
     F1:: ShowHelpText(sHelpText)
-
+    F2:: ShowLegend()
     !x:: Gosub MainGuiClose
     !z:: Gosub MainGuiReload
 #If
@@ -211,15 +212,14 @@ CreateMainGui:
     ;               Allocate memory only once rather than each time a row is added,
     ;                 which greatly improves row-adding performance.
     ; Must be in sync with LV_Add() and JobToggle()!
-    Gui Add, ListView, xs w%WLV% h950 +Report +Checked +Grid -Multi +LV0x4000 +LV0x10000 -LV0x10 +AltSubmit Count100 gJobToggle vJobListView, Status|Job Type|Job Name|Cargo
+    Gui Add, ListView, xs w%WLV% h975 +Report +Checked +Grid -Multi +LV0x4000 +LV0x10000 -LV0x10 +AltSubmit Count100 gJobToggle vJobListView, Status|Job Type|Job Name|Cargo
     Gui Add, Button, Section, Add &Building
     Gui Add, Button, ys, Add &Job
-    Gui Add, Button, ys, Select All &Cargo Types
+    Gui Add, Button, ys, Reset User Progress
+    Gui Add, Button, ys gMainGuiReload, Re&load
+    Gui Add, Button, ys gMainGuiClose, E&xit
     Gui Add, Text,   ys, Default Region:
     Gui Add, DropDownList, ys+1 w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
-    Gui Add, Button, xs Section gMainGuiClose, E&xit
-    Gui Add, Button, ys gMainGuiReload, Re&load
-    Gui Add, Button, ys, Reset User Progress
     Gui Show, w%W% h1080, %sWinTitle%
     WinGetPos, iMainX, iMainY ; For child window with cargo icons
     ; Uni == Unidirectional sort. This prevents a second click on the same column
@@ -379,11 +379,6 @@ MainButtonResetUserProgress:
         FileDelete % oFileName.sUP
         Reload
     }
-Return
-
-MainButtonSelectAllCargoTypes:
-    GuiControl, Main:, ShowAllJobs, 0 ; Un-check
-    ShowAllJobs()
 Return
 
 ; Main:Checkbox
@@ -572,7 +567,7 @@ ShowJobsCargoIcons(oCargoTypes) {
                 {
                     If (iQuantity || bShowAllJobs) {
                         bShowNames := True ; Show names, only when we show icons
-                        Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize% +HwndIconId gCargoClick, .\Cargo\%sCargoType%.png
+                        Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize% +HwndIconId gCargoClick, % GetCargoFileName(sCargoType)
                         Gui Add, Text, w%iIconSize% Center, %iQuantity%
                         ; Save {IconId: Job, Cargo, Type, X, Y} to know,
                         ; which cargo quantity decrement on mouse click,
@@ -823,6 +818,10 @@ CreateAssocArray(oLinearArray) {
     Return obj
 }
 
+GetCargoFileName(sCargoType) {
+    Return ".\Cargo\" sCargoType ".png"
+}
+
 ;==================== GUI: "Add Building" & "Add Job" ==========================
 
 ; Button "Destination" in "Building" or "Job" window is clicked
@@ -990,7 +989,6 @@ SaveMainGuiState() {
     GuiControl, Main:Disable, Re&load
     GuiControl, Main:Disable, Region
     GuiControl, Main:Disable, Reset User Progress
-    GuiControl, Main:Disable, Select All &Cargo Types
     ; GuiControl, Main:Disable, Show &All Jobs
     ; GuiControl, Main:Disable, Show Job &Name
 }
@@ -1006,7 +1004,6 @@ RestoreMainGuiState() {
     GuiControl, Main:Enable, Re&load
     GuiControl, Main:Enable, Region
     GuiControl, Main:Enable, Reset User Progress
-    GuiControl, Main:Enable, Select All &Cargo Types
     ; GuiControl, Main:Enable, Show &All Jobs
     ; GuiControl, Main:Enable, Show Job &Name
 }
@@ -1226,13 +1223,34 @@ CreateMouseClickTransGui(id)
 ShowHelpText(sText)
 {
     static bToggle := False
+    sGui := "HelpText"
     If (bToggle := !bToggle) {
-        CreateMouseClickTransGui("HelpText")
-        Gui HelpText:Font, s14, Consolas
-        Gui HelpText:Add, Text,, % sText
-        Gui HelpText:Show, NoActivate
+        CreateMouseClickTransGui(sGui)
+        Gui Font, s14, Consolas
+        Gui Add, Text,, % sText
+        Gui Show, NoActivate
     } Else
-        Gui HelpText:Destroy
+        Gui %sGui%:Destroy
+}
+
+;============================== GUI: "Legend" ==================================
+
+ShowLegend() {
+    global iMainX, iMainY
+    static bToggle := False
+    sGui := "Legend"
+    If (bToggle := !bToggle) {
+        CreateMouseClickTransGui(sGui)
+        Gui Font, s14, Consolas
+        Gui Margin,, 0
+        For sCargoType in oDB.oCargoTypes {
+            Gui Add, Picture, x0 Section, % GetCargoFileName(sCargoType)
+            Gui Add, Text, ys, % sCargoType
+        }
+        X := iMainX + 1080
+        Gui Show, x%X% y0 NoActivate
+    } Else
+        Gui %sGui%:Destroy
 }
 
 ;================================ Database =====================================
