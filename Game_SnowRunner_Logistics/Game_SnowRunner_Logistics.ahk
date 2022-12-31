@@ -64,7 +64,7 @@ global bDBModified := False
 global oFileName := { sDB: "Database.csv", sUP: "UserProgress.csv" }
 ; Current cargo types in selected (clicked) building
 global oSelectedCargoTypes := []
-; Current jobs and cargos icons (linked to their job) showed on screen
+; Current jobs and their cargos icons with position showed on screen
 global oJobsCargosOnScreen := []
 ; GUI of parent windows "Building" and "Job", which used by child window "Cargo"
 ;   and button "Destination" logic to manipulate on them (hide, show).
@@ -129,7 +129,6 @@ Info:
 
 Bugs:
 - Script can't handle very fast ""Region's"" switch.
-- Cargo icons with same position are overlapped (only one visible).
 )"
 
 ;============================= Initialization ==================================
@@ -555,7 +554,9 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
     For _, oJob in oJobs {
         For _, oPosition in oJob.oPositions {
             bShowNames := False
-            X := oPosition.x
+            ; If we have icons on same position from other jobs, shift to the right
+            iIconsOnScreen := GetIconCountOnScreen(oPosition.x, oPosition.y)
+            X := oPosition.x + iIconSize * iIconsOnScreen
             Y := oPosition.y
             For sCargoType, iQuantity in oPosition.oCargo {
                 If sCargoType in %sCargoTypesCSV%
@@ -564,10 +565,16 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
                         bShowNames := True ; Show names, only when we show icons
                         Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize% +HwndIconId gCargoClick, .\Cargo\%sCargoType%.png
                         Gui Add, Text, w%iIconSize% Center, %iQuantity%
-                        ; Save {IconId: Job, Cargo, Type} to know,
-                        ; which cargo quantity decrement on mouse click and
+                        ; Save {IconId: Job, Cargo, Type, X, Y} to know,
+                        ; which cargo quantity decrement on mouse click,
                         ; which line in ListView modify with new quantity value
-                        oJobsCargosOnScreen[iconId] := { oJob: oJob, oCargo: oPosition.oCargo, sCargoType: sCargoType }
+                        ; where put icons from other jobs, if place not empty
+                        oJobsCargosOnScreen[iconId] := { 0:""
+                            , oJob: oJob
+                            , oCargo: oPosition.oCargo
+                            , sCargoType: sCargoType
+                            , x: oPosition.x
+                            , y: oPosition.y }
                         X += iIconSize
                     }
                 }
@@ -724,6 +731,14 @@ GetJobInfoMsg(sRegion, sType, sName) {
     sMsg .=     "  Type:`t" sType "`n"
     sMsg .=     "  Name:`t" sName
     Return sMsg
+}
+
+GetIconCountOnScreen(X, Y) {
+    iCount := 0
+    For _, oIcon in oJobsCargosOnScreen
+        If (oIcon.x == X && oIcon.y == Y)
+            iCount++
+    Return iCount
 }
 
 MsgBox(sGui, cType, sText) {
