@@ -383,6 +383,7 @@ Return
 MainButtonShowAllJobs:
     oSelectedCargoTypes := oDB.oCargoTypes ; Select ALL cargo types
     GuiControl, Main:, CargoTypes, ALL
+    GuiControl, Main:, ShowBuildings, 0
     CargoIconsUpdate(oSelectedCargoTypes)
 Return
 
@@ -489,6 +490,7 @@ ShowJobName() {
 
 ShowBuildingsCargoIcons() {
     global iMainX, iMainY
+    oJobsCargosOnScreen := []
     oBuildings := oDB.GetBuildings(GetRegion())
 
     ; GuiControl, Delete == Not yet implemented! This sub-command does not yet exist.
@@ -532,6 +534,7 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
     }
 
     global iMainX, iMainY
+    oJobsCargosOnScreen := []
     oJobs := oDB.GetJobList(GetRegion(), bShowAllJobs) ; By default "Accepted" jobs only.
     sCargoTypesCSV := ArrayToCSV(oCargoTypes)
 
