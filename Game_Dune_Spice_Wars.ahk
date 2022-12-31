@@ -81,7 +81,7 @@ BlockInput (to prevent mouse move interfere with user input) need admin rights!
                         [MILITARY FORMATION HELPER]
           Move 'Melee' units on START DOT and 'Ranged' units on END DOT.
 
-          'Melee' means all units assigned to in-game '1' hotkey.
+           'Melee' means all units assigned to in-game '1' hotkey.
           'Ranged' means all units assigned to in-game '2' hotkey.
 )"
 
