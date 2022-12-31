@@ -85,9 +85,6 @@ global sCargoCrgVarName := "JobCrgDetail"
 ;   modifications by child windows.
 global bPreDestinationShowBuildingsCheckbox := False
 global oPreDestinationSelectedCargoTypes := []
-; Flag shows, that we in destination mode for "Job" window. Show all jobs, when
-;   we point by mouse coordinate for building/job.
-global bShowAllJobs := False
 
 sHelpText := "
 (
@@ -126,6 +123,7 @@ Info:
 - Top left corner of cargo icon (or first cargo icon in group of icons) is X:Y
   coordinates of center of ""Building"" or ""Job"" saved in """ oFileName.sDB """.
 - Reset job: make it complete, then accept it.
+- ""Select All Cargo Types"" will show all accepted jobs.
 
 Bugs:
 - Script can't handle very fast ""Region's"" switch.
@@ -145,8 +143,10 @@ Else
 Gosub CreateMainGui
 RegionChanged() ; Populate [Main] GUI with data
 
-If (TEST_DATA)
-    Gosub MainButtonShowAllJobs
+If (TEST_DATA) {
+    GuiControl, Main:, ShowAllJobs, 1
+    ShowAllJobs()
+}
 Return
 
 F2:: ToggleMainWindow()
@@ -199,6 +199,7 @@ CreateMainGui:
     Gui Add, Text,     x+m yp  w%WMN% Border vMapName1
     Gui Add, Text,     x+0 yp  wp     Border vMapName2
     Gui Add, Checkbox, x+m yp gShowBuildings vShowBuildings, &Show Buildings
+    Gui Add, Checkbox, x+m yp gShowAllJobs   vShowAllJobs, Show &All Jobs
     Gui Add, Text,   xs+46 y+2 w%WMN% Border vMapName3
     Gui Add, Text,     x+0 yp  wp     Border vMapName4
     Gui Add, Checkbox, x+m yp Checked gShowJobName vShowJobName, Show Job &Name
@@ -210,15 +211,15 @@ CreateMainGui:
     ;               Allocate memory only once rather than each time a row is added,
     ;                 which greatly improves row-adding performance.
     ; Must be in sync with LV_Add() and JobToggle()!
-    Gui Add, ListView, xs w%WLV% h975 +Report +Checked +Grid -Multi +LV0x4000 +LV0x10000 -LV0x10 +AltSubmit Count100 gJobToggle vJobListView, Status|Job Type|Job Name|Cargo
-    Gui Add, Text, Section, Default Region:
-    Gui Add, DropDownList, ys+1 w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
-    Gui Add, Button, ys, Show &All Jobs
-    Gui Add, Button, ys, Add &Building
+    Gui Add, ListView, xs w%WLV% h950 +Report +Checked +Grid -Multi +LV0x4000 +LV0x10000 -LV0x10 +AltSubmit Count100 gJobToggle vJobListView, Status|Job Type|Job Name|Cargo
+    Gui Add, Button, Section, Add &Building
     Gui Add, Button, ys, Add &Job
-    Gui Add, Button, ys, Reset User Progress
+    Gui Add, Button, ys, Select All &Cargo Types
+    Gui Add, Text,   ys, Default Region:
+    Gui Add, DropDownList, ys+1 w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
+    Gui Add, Button, xs Section gMainGuiClose, E&xit
     Gui Add, Button, ys gMainGuiReload, Re&load
-    Gui Add, Button, ys gMainGuiClose, E&xit
+    Gui Add, Button, ys, Reset User Progress
     Gui Show, w%W% h1080, %sWinTitle%
     WinGetPos, iMainX, iMainY ; For child window with cargo icons
     ; Uni == Unidirectional sort. This prevents a second click on the same column
@@ -243,6 +244,7 @@ Return
 
 ; Main:Picture - Find building under cursor, Show job's icons
 MapClick() {
+    GuiControl, Main:, ShowAllJobs, 0 ; Un-check "Show All Jobs" checkbox
     GuiControl, Main:, ShowBuildings, 0 ; Uncheck "Show Buildings" checkbox
     oBuilding := oDB.GetBuildingUnderCursor(GetRegion())
     oSelectedCargoTypes := oBuilding.oCargoTypes
@@ -379,12 +381,29 @@ MainButtonResetUserProgress:
     }
 Return
 
-MainButtonShowAllJobs:
+MainButtonSelectAllCargoTypes:
+    GuiControl, Main:, ShowAllJobs, 0 ; Un-check
+    ShowAllJobs()
+Return
+
+; Main:Checkbox
+ShowAllJobs() {
     oSelectedCargoTypes := oDB.oCargoTypes ; Select ALL cargo types
     GuiControl, Main:, CargoTypes, ALL
     GuiControl, Main:, ShowBuildings, 0
     CargoIconsUpdate(oSelectedCargoTypes)
-Return
+}
+
+; Main:Checkbox
+ShowBuildings() {
+    CargoIconsUpdate(oSelectedCargoTypes)
+}
+
+; Main:Checkbox
+ShowJobName() {
+    GuiControl, Main:, ShowBuildings, 0 ; Uncheck "Show Buildings" checkbox
+    CargoIconsUpdate(oSelectedCargoTypes)
+}
 
 ;========================== GUI: "Main" ListView ===============================
 
@@ -476,17 +495,6 @@ LV_UpdateRow(iRowNum, oJob) {
 
 ;===================== GUI: "Cargo Icons" Buildings ============================
 
-; Main:Checkbox
-ShowBuildings() {
-    CargoIconsUpdate(oSelectedCargoTypes)
-}
-
-; Main:Checkbox
-ShowJobName() {
-    GuiControl, Main:, ShowBuildings, 0 ; Uncheck "Show Buildings" checkbox
-    CargoIconsUpdate(oSelectedCargoTypes)
-}
-
 ShowBuildingsCargoIcons() {
     global iMainX, iMainY
     oJobsCargosOnScreen := []
@@ -525,8 +533,8 @@ ShowBuildingsCargoIcons() {
 
 ;======================== GUI: "Cargo Icons" Jobs ==============================
 
-; Show cargo icons from "Accepted" jobs
-ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
+; Show cargo icons from "Accepted" jobs or ALL jobs
+ShowJobsCargoIcons(oCargoTypes) {
     If (!oCargoTypes.Count()) {
         Gui CargoIcons:Destroy
         Return
@@ -534,6 +542,7 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
 
     global iMainX, iMainY
     oJobsCargosOnScreen := []
+    bShowAllJobs := GetShowAllJobsCheckbox()
     oJobs := oDB.GetJobList(GetRegion(), bShowAllJobs) ; By default "Accepted" jobs only.
     sCargoTypesCSV := ArrayToCSV(oCargoTypes)
 
@@ -561,7 +570,7 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
             For sCargoType, iQuantity in oPosition.oCargo {
                 If sCargoType in %sCargoTypesCSV%
                 {
-                    If (iQuantity) {
+                    If (iQuantity || bShowAllJobs) {
                         bShowNames := True ; Show names, only when we show icons
                         Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize% +HwndIconId gCargoClick, .\Cargo\%sCargoType%.png
                         Gui Add, Text, w%iIconSize% Center, %iQuantity%
@@ -594,6 +603,8 @@ ShowJobsCargoIcons(oCargoTypes, bShowAllJobs := False) {
 
 ; CargoIcons:Picture - Decrement cargo quantity, Auto-complete job
 CargoClick() {
+    If (GetShowAllJobsCheckbox()) ; Prevent mouse click on icon, if we show ALL jobs icons
+        Return
     ; 1 == Determine OutputVarControl from topmost child window.
     ; 2 == Stores the control's HWND in OutputVarControl rather than the control's ClassNN.
     ; 3 == 1 + 2.
@@ -628,7 +639,7 @@ CargoIconsUpdate(oCargoTypes) {
     If (GetShowBuildingsCheckbox())
         ShowBuildingsCargoIcons()
     Else
-        ShowJobsCargoIcons(oCargoTypes, bShowAllJobs)
+        ShowJobsCargoIcons(oCargoTypes)
 
     Gui %_DefaultGui%:Default
 }
@@ -636,6 +647,11 @@ CargoIconsUpdate(oCargoTypes) {
 GetRegion() {
     GuiControlGet, Region, Main:
     Return Region
+}
+
+GetShowAllJobsCheckbox() {
+    GuiControlGet, ShowAllJobs, Main:
+    Return ShowAllJobs
 }
 
 GetShowBuildingsCheckbox() {
@@ -897,7 +913,7 @@ ButtonDestination() {
     Gui Hide
     Gui Main:Show
     SaveMainGuiState()
-    bShowAllJobs := True ; Global flag to show all not completed jobs
+    GuiControl, Main:, ShowAllJobs, 1 ; Check
     ShowCargoIconsDestinationMode(A_Gui)
     WinActivate %sWinTitle% ; "Heavy" command, put it below all GUI functions!
     ToolTipDestination(True)
@@ -907,6 +923,7 @@ ButtonDestination() {
 }
 
 ButtonDestinationFinish(sResultGui, sButtonResultControl, X, Y) {
+    GuiControl, Main:, bShowAllJobs, 0
     GuiControl, %sResultGui%:, %sButtonResultControl%Edit, %X%:%Y%
     ToolTipDestination(False)
 }
@@ -959,7 +976,7 @@ ShowCargoIconsDestinationMode(sParentGUI) {
     }
     If (sParentGUI == "Job") {
         GuiControl, Main:, ShowBuildings, 0
-        ShowJobsCargoIcons(oSelectedCargoTypes, bShowAllJobs) ; Show all not completed jobs
+        ShowJobsCargoIcons(oSelectedCargoTypes) ; Show all not completed jobs
     }
 }
 
@@ -973,12 +990,12 @@ SaveMainGuiState() {
     GuiControl, Main:Disable, Re&load
     GuiControl, Main:Disable, Region
     GuiControl, Main:Disable, Reset User Progress
-    GuiControl, Main:Disable, Show &All Jobs
+    GuiControl, Main:Disable, Select All &Cargo Types
+    ; GuiControl, Main:Disable, Show &All Jobs
     ; GuiControl, Main:Disable, Show Job &Name
 }
 
 RestoreMainGuiState() {
-    bShowAllJobs := False
     oSelectedCargoTypes := oPreDestinationSelectedCargoTypes
     GuiControl, Main:, CargoTypes, % ArrayToCSV(oSelectedCargoTypes)
     GuiControl, Main:, ShowBuildings, %bPreDestinationShowBuildingsCheckbox%
@@ -989,7 +1006,8 @@ RestoreMainGuiState() {
     GuiControl, Main:Enable, Re&load
     GuiControl, Main:Enable, Region
     GuiControl, Main:Enable, Reset User Progress
-    GuiControl, Main:Enable, Show &All Jobs
+    GuiControl, Main:Enable, Select All &Cargo Types
+    ; GuiControl, Main:Enable, Show &All Jobs
     ; GuiControl, Main:Enable, Show Job &Name
 }
 
