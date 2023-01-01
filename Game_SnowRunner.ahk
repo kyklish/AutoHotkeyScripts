@@ -7,8 +7,9 @@ SetBatchLines, -1
 
 GroupAdd, SpinTires, ahk_exe SnowRunner.exe
 
-iOffset := 18 ;Distance to move mouse cursor to shift gear inside game
+iOffset := 20 ;Distance to move mouse cursor to shift gear inside game
 SetKeyDelay, 50 ;Влияет на переключение передач и на скорость поворота камеры
+SetKeyDelay,, 100 ;Reliably key pressure detection by game
 SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
 
 oStates := [] ;Service variable for script logic. Contains all possible Gear States. Only for debug purpose.
@@ -21,21 +22,24 @@ sPressed := wPressed := bManualMod := false
     (LTrim
         Eng keyboard language required during play!!!
         In game change [Clutch Pedal] to [R.Shift].
+        Switch numeric keyboard to mouse move: camera, RMB, mouse wheel.
         2          -> Зажать W, движение вперед (нажать W, для отжатия).
         3          -> Зажать S, движение назад (нажать S, для отжатия).
         LShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
         RCtrl      -> Mouse Right Click
         4          -> Полностью заправить машину.
         Shift + 4  -> Полностью заправить машину + прицеп.
-        NumpadMult -> Переключить режим КПП: Автомат - Ручное.
-        Numpad0-9  -> Переключить КПП. (Автомат). Смотри скрипт.
+        Numpad*    -> Переключить режим КПП: Автомат - Ручное.
+        Numpad0    -> Сбросить состояние КПП в центральное положение.
+        Numpad1-9  -> Переключить КПП. (Автомат).
         Numpad4    -> Рычаг КПП влево  (Ручное).
         Numpad6    -> Рычаг КПП вправо (Ручное).
         Numpad8    -> Рычаг КПП вверх  (Ручное).
         Numpad2    -> Рычаг КПП вниз   (Ручное).
         M          -> Открыть карту, предварительно отключив зажатые клавиши движения.
-        , & .      -> Поворот камеры
-        ; & /      -> Mouse Wheel Up & Down
+        N          -> Пропустить ночь.
+        , and .    -> Поворот камеры
+        ; and /    -> Mouse Wheel Up, Mouse Wheel Down
         !c         -> Suspend
         !z         -> Reload
         !x         -> ExitApp
@@ -59,10 +63,8 @@ sPressed := wPressed := bManualMod := false
         wPressed := false
     return
     LShift:: ;Временно отжать зажатую клавишу
-        if (wPressed)
-            Send, {w up}
-        if (sPressed)
-            Send, {s up}
+        Send, {w up}
+        Send, {s up}
     return
     LShift Up::
     if (wPressed)
@@ -79,6 +81,12 @@ sPressed := wPressed := bManualMod := false
         sPressed := false
         wPressed := false
     return
+    N::
+        Gosub, ~M
+        Send, m   ; Show map
+        Send, ttt ; Time fast forward
+        Send, m   ; Close map
+    return
     ~S:: Send, {w up} ;Торможение во время зажатой кнопки W
     ~S Up::
     if (wPressed)
@@ -92,10 +100,12 @@ sPressed := wPressed := bManualMod := false
     wPressed := false
     return
     ,:: ;Поворот камеры
+    SetKeyDelay,, -1 ; Smooth camera movement
     While, GetKeyState(",", "P")
         Send, {,}
     return
     .::
+    SetKeyDelay,, -1
     While, GetKeyState(".", "P")
         Send, {.}
     return
@@ -131,14 +141,14 @@ sPressed := wPressed := bManualMod := false
 !z::Reload
 !x::ExitApp
 !c::
-    Suspend
+    Suspend ; Must be first command!
     SuspendToolTip()
 return
 
 SuspendToolTip() {
     static bToggle := false
     if (bToggle := !bToggle)
-        ToolTip, SUSPENDED, 0, 0
+        ToolTip, SnowRunner Helper SUSPENDED, 0, 0
     else
         ToolTip
 }
@@ -157,9 +167,11 @@ ShiftGear(cDirection) {
 }
 
 ShiftGearMouseMove(X, Y) {
-    Send, {LShift down}
+    ; Send, {LShift down}
+    Send, {RShift down}
     MouseMove, %X%, %Y%, , R
-    Send, {LShift up}
+    ; Send, {LShift up}
+    Send, {RShift up}
 }
 
 GearBoxFactory(ByRef oStates) {
@@ -300,6 +312,6 @@ Refuel(bRefuelWithTrailer := false) {
 
 FillFullTank() {
     Send, {f down}
-    Sleep, 1500
+    Sleep, 1750
     Send, {f up}
 }
