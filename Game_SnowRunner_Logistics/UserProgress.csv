@@ -2,12 +2,30 @@
 ;DEFAULT REGION,Region
 DEFAULT REGION,MICHIGAN
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
-JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Pipe Dream,1,0,490,93,Bricks,2,Metal Beams,1
-JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Steel River Supplies,1,0,104,238,Consumables,2,Wooden Planks,2
-JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,1,0,190,306,Long Logs,3
-JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,1,0,263,451,Medium Logs,3
-JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,1,0,104,238,Medium Logs,3
-JOB,MICHIGAN,TASKS,Fallen Power Line,1,0,190,401,Concrete Blocks,2,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Not A Drill,0,1,200,229,Metal Beams,0
+JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Pipe Dream,0,1,490,93,Bricks,0,Metal Beams,0
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Logs to the Workers!,1,0,670,210,Long Logs,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Logs to the Workers!,1,0,798,364,Long Logs,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Materials Order,1,0,1028,61,Concrete Slabs,2
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Materials Order,1,0,798,364,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Materials Order,1,0,1046,166,Consumables,2
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,The Essentials,1,0,799,102,Bricks,2,Fuel,2,Wooden Planks,2
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Wet Harvest,0,1,263,451,Bricks,0,Metal Beams,0,Wooden Planks,0
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Work For Old Sweet,1,0,798,364,Concrete Slabs,1,Service Spare Parts,2
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Steel River Supplies,0,1,104,238,Consumables,0,Wooden Planks,0
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,0,1,190,306,Long Logs,0
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,0,1,263,451,Medium Logs,0
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,0,1,104,238,Medium Logs,0
+JOB,MICHIGAN,TASKS,Fallen Power Line,0,1,190,401,Concrete Blocks,0,Metal Beams,0
+JOB,MICHIGAN,TASKS,Hungry Workers,1,0,670,210,Consumables,2
+JOB,MICHIGAN,TASKS,More Fuel,1,0,640,100,Fuel,2
+JOB,MICHIGAN,TASKS,Mountain Bridge,0,1,336,327,Concrete Blocks,0,Metal Beams,0
 JOB,MICHIGAN,TASKS,Old Bridge Reconstruction,0,1,110,415,Metal Beams,0,Wooden Planks,0
-JOB,MICHIGAN,TASKS,Riverside Repair,1,0,73,150,Service Spare Parts,2,Wooden Planks,2
-JOB,MICHIGAN,TASKS,Rockslide,1,0,145,135,Metal Beams,1,Service Spare Parts,1
+JOB,MICHIGAN,TASKS,Riverside Repair,0,1,73,150,Service Spare Parts,0,Wooden Planks,0
+JOB,MICHIGAN,TASKS,Road Block,0,1,309,255,Service Spare Parts,0
+JOB,MICHIGAN,TASKS,Rock On,0,1,935,55,Service Spare Parts,0
+JOB,MICHIGAN,TASKS,Rockslide,0,1,145,135,Metal Beams,0,Service Spare Parts,0
+JOB,MICHIGAN,TASKS,Solid Foundation,1,0,568,96,Concrete Slabs,1
+JOB,MICHIGAN,TASKS,Threatening Accident,1,0,1046,166,Oil Barrels,4
+JOB,MICHIGAN,TASKS,Well Well Well,1,0,762,29,Vehicle Spare Parts,1
+JOB,MICHIGAN,TASKS,Wooden Bridge,0,1,249,248,Wooden Planks,0

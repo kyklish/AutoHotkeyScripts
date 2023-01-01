@@ -1,0 +1,8 @@
+;CSV v1.0
+;DEFAULT REGION,Region
+DEFAULT REGION,MICHIGAN
+;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
+JOB,MICHIGAN,CONTRACTS: DYSON DIESEL,Job: Bricks + Metal Beams,1,0,900,50,Bricks,1,Metal Beams,1
+JOB,MICHIGAN,CONTRACTS: DYSON DIESEL,Job: Bricks + Metal Beams,1,0,950,50,Bricks,1,Metal Beams,10
+JOB,MICHIGAN,TASKS,Job: Bricks,0,1,0,0,Bricks,0
+JOB,MICHIGAN,TASKS,Job: Bricks,0,1,50,0,Bricks,0

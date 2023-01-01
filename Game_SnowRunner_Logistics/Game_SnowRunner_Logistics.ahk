@@ -167,6 +167,8 @@ F3:: ToggleMainWindow()
 ToggleMainWindow() {
     global sWinTitle
     If (WinActive("ahk_group Script")) {
+        Gui HelpText:Destroy
+        Gui Legend:Destroy
         Gui CargoIcons:Hide
         Gui Main:Hide
         ; WinMinimize %sWinTitle%
@@ -840,6 +842,7 @@ GetCargoFileName(sCargoType) {
     Enter::
     Space::
     LButton::
+        sControlVarNameMap := sCargoFileName := ""
         ; Lines order in this hotkey are very important! Got some "side" effects
         MouseGetPos, _X, _Y,, hWndControl, 3
         GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
@@ -946,6 +949,7 @@ ToolTipDestination(bShow) {
         ; MouseGetPos, X, Y
         ; ToolTip % X ":" Y "`nMove: Arrows`nSave: LMB or Space`nCancel: RMB or Esc"
         ; Return
+        sControlVarNameMap := sCargoFileName := ""
         MouseGetPos, X, Y,, hWndControl, 3
         GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
         GuiControlGet, sCargoFileName, CargoIcons:, %hWndControl%
@@ -1285,10 +1289,13 @@ class Database
         , "ALASKA": []
         , "TAYMYR": [] }
     oBuildingTypes := { 0:""
+        , "Drilling Site": ""
         , "Factory": ""
         , "Farm": ""
+        , "Fuel Station": ""
         , "Log Station": ""
         , "Lumber Mill": ""
+        , "Service Hub": ""
         , "Town Storage": ""
         , "Warehouse": "" }
     oCargoTypes := { 0:""
