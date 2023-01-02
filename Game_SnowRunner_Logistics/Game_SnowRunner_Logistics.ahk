@@ -564,7 +564,7 @@ ShowJobsCargoIcons(oCargoTypes) {
     Gui Font, c%sFontColor% s%iFontSizeCargo% w1000
     For _, oJob in oJobs {
         For _, oPosition in oJob.oPositions {
-            bShowNames := False
+            bShowName := False
             ; If we have icons on same position from other jobs, shift to the right
             iIconsOnScreen := GetIconCountOnScreen(oPosition.x, oPosition.y)
             X := oPosition.x + iIconSize * iIconsOnScreen
@@ -573,7 +573,7 @@ ShowJobsCargoIcons(oCargoTypes) {
                 If sCargoType in %sCargoTypesCSV%
                 {
                     If (iQuantity || bShowAllJobs) {
-                        bShowNames := True ; Show names, only when we show icons
+                        bShowName := True ; Show names, only when we show icons
                         Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize% +HwndIconId gCargoClick, % GetCargoFileName(sCargoType)
                         Gui Add, Text, w%iIconSize% Center, %iQuantity%
                         ; Save {IconId: Job, Cargo, Type, X, Y} to know,
@@ -590,9 +590,9 @@ ShowJobsCargoIcons(oCargoTypes) {
                     }
                 }
             }
-            If (bShowNames && GetShowJobNameCheckbox()) {
+            If (bShowName && GetShowJobNameCheckbox()) {
                 iFontSizeJob := 8
-                X := oPosition.x
+                X := oPosition.x + iIconSize * iIconsOnScreen
                 Y := oPosition.y - iFontSizeJob - Round(iFontSizeJob / 1.5)
                 Gui Font, s%iFontSizeJob% w1 q3 ; W == Boldness, Q3 == NONANTIALIASED_QUALITY
                 Gui Add, Text, x%X% y%Y%, % oJob.sName
@@ -1289,12 +1289,14 @@ class Database
         , "ALASKA": []
         , "TAYMYR": [] }
     oBuildingTypes := { 0:""
+        , "Abandoned Drilling Site": ""
         , "Drilling Site": ""
         , "Factory": ""
         , "Farm": ""
         , "Fuel Station": ""
         , "Log Station": ""
         , "Lumber Mill": ""
+        , "Quarry Loading Zone": ""
         , "Service Hub": ""
         , "Town Storage": ""
         , "Warehouse": "" }
