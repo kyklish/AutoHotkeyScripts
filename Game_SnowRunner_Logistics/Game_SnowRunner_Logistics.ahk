@@ -324,12 +324,19 @@ JobToggle() {
                     oJob.isCompleted := False
                 }
             }
+            bSkipCargoIconsUpdate := False
             If (InStr(LV_Status, "c", True)) { ; UnChecked
                 If (GetJobCargoCount(oJob) == 0) {
                     If (!oJob.isAccepted && oJob.isCompleted)
                         Return ; Nothing to change
                     oJob.isAccepted := False
                     oJob.isCompleted := True
+                    ; When we decrement job's cargo count to zero, CargoClick()
+                    ; will un-check row in ListView and code flow come here and
+                    ; we got "race condition" (who faster calls CargoIconsUpdate():
+                    ; here or in CargoClick() or interrupt in middle). This will
+                    ; show cargo icons twice on screen. So, not update here.
+                    bSkipCargoIconsUpdate := True
                 } Else {
                     If (!oJob.isAccepted && !oJob.isCompleted)
                         Return ; Nothing to change
@@ -348,6 +355,8 @@ JobToggle() {
             }
             LV_UpdateRow(A_EventInfo, oJob)
             LV_AutoWidth()
+            If (bSkipCargoIconsUpdate)
+                Return
             CargoIconsUpdate(oSelectedCargoTypes)
         }
     } Else If (A_GuiEvent == "K") { ; K == Pressed a key in ListView

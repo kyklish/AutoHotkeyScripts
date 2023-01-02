@@ -1,6 +1,6 @@
 ;CSV v1.0
 ;BUILDING TYPE,BuildingType1,...,BuildingTypeN
-BUILDING TYPE,0,Factory,Farm,Log Station,Lumber Mill,Town Storage,Warehouse
+BUILDING TYPE,0,Abandoned Drilling Site,Drilling Site,Factory,Farm,Fuel Station,Log Station,Lumber Mill,Quarry Loading Zone,Service Hub,Town Storage,Warehouse
 ;CARGO TYPE,CargoType1,...,CargoTypeN
 CARGO TYPE,0,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumables,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Long Logs,Medium Logs,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
 ;JOB TYPE,Region,JobType1,...,JobTypeN
