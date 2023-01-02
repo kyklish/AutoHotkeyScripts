@@ -83,6 +83,7 @@ sPressed := wPressed := bManualMod := false
     return
     N::
         Gosub, ~M
+        SetKeyDelay, 200
         Send, m   ; Show map
         Send, ttt ; Time fast forward
         Send, m   ; Close map
