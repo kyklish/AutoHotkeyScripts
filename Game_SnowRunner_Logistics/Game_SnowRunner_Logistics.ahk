@@ -530,15 +530,14 @@ ShowBuildingsCargoIcons(bMakeMouseClickTransparent := True) {
     Gui Margin, 0, 0
     Gui Font, c%sFontColor% s%iFontSizeCargo% w1000
     For _, oBuilding in oBuildings {
-        iShowedIcons := 0
-        For sCargoType in oBuilding.oCargoTypes {
         X := oBuilding.x
         Y := oBuilding.y
-            X += iShowedIcons++ * iIconSize
+        For sCargoType in oBuilding.oCargoTypes {
             Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize%, .\Cargo\%sCargoType%.png
+            X += iIconSize
         }
         X := oBuilding.x
-        Y += %iIconSize%
+        Y := oBuilding.y + iIconSize
         sType := oBuilding.sType
         Gui Add, Text, x%X% y%Y%, %sType%
     }
