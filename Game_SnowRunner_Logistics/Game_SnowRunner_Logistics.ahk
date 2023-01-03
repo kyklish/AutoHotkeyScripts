@@ -506,7 +506,7 @@ LV_UpdateRow(iRowNum, oJob) {
 
 ;===================== GUI: "Cargo Icons" Buildings ============================
 
-ShowBuildingsCargoIcons() {
+ShowBuildingsCargoIcons(bMakeMouseClickTransparent := True) {
     global iMainX, iMainY
     oJobsCargosOnScreen := []
     oBuildings := oDB.GetBuildings(GetRegion())
@@ -521,7 +521,10 @@ ShowBuildingsCargoIcons() {
     ;   WS_CAPTION = 0xC00000 -- GUI behaves oddly if you use -Caption post-creation.
     ; Gui CargoIcons:New, +0x40000000 -0x80C00000 +LastFound +OwnerMain
     ; +E0x20 makes GUI mouse-click transparent.
-    Gui CargoIcons:New, -Caption +LastFound +OwnerMain +E0x20 ; New == Destroy existing [CargoIcons] window with [Jobs]
+    Gui CargoIcons:New, -Caption +LastFound +OwnerMain ; New == Destroy existing [CargoIcons] window with [Jobs]
+    ; When we add destination to new job, allow click on building's cargo icon
+    If (bMakeMouseClickTransparent)
+        Gui +E0x20
     Gui Color, %sTransColor%
     WinSet, TransColor, %sTransColor%
     Gui Margin, 0, 0
@@ -529,8 +532,8 @@ ShowBuildingsCargoIcons() {
     For _, oBuilding in oBuildings {
         iShowedIcons := 0
         For sCargoType in oBuilding.oCargoTypes {
-            X := oBuilding.x
-            Y := oBuilding.y
+        X := oBuilding.x
+        Y := oBuilding.y
             X += iShowedIcons++ * iIconSize
             Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize%, .\Cargo\%sCargoType%.png
         }
@@ -853,7 +856,7 @@ GetCargoFileName(sCargoType) {
     LButton::
         sControlVarNameMap := sCargoFileName := ""
         ; Lines order in this hotkey are very important! Got some "side" effects
-        MouseGetPos, _X, _Y,, hWndControl, 3
+        MouseGetPos, _X, _Y,, hWndControl, 2
         GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
         GuiControlGet, sCargoFileName, CargoIcons:, %hWndControl%
         GuiControlGet, aCargoIconPos, CargoIcons:Pos, %hWndControl%
@@ -959,7 +962,7 @@ ToolTipDestination(bShow) {
         ; ToolTip % X ":" Y "`nMove: Arrows`nSave: LMB or Space`nCancel: RMB or Esc"
         ; Return
         sControlVarNameMap := sCargoFileName := ""
-        MouseGetPos, X, Y,, hWndControl, 3
+        MouseGetPos, X, Y,, hWndControl, 2
         GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
         GuiControlGet, sCargoFileName, CargoIcons:, %hWndControl%
         ; "Pos" sub-command not work here!!! Why???
@@ -989,7 +992,7 @@ ShowCargoIconsDestinationMode(sParentGUI) {
     ; Example: "Main,CargoIcons" -> "Building,Job"[ButtonDestination] -> "Main,CargoIcons"
     If (sParentGUI == "Building") {
         GuiControl, Main:, ShowBuildings, 1
-        ShowBuildingsCargoIcons()
+        ShowBuildingsCargoIcons(False)
     }
     If (sParentGUI == "Job") {
         GuiControl, Main:, ShowBuildings, 0
