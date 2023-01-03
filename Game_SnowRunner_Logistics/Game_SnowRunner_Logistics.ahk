@@ -1304,6 +1304,7 @@ class Database
         , "Farm": ""
         , "Fuel Station": ""
         , "Log Station": ""
+        , "Logistics Base": ""
         , "Lumber Mill": ""
         , "Quarry Loading Zone": ""
         , "Service Hub": ""

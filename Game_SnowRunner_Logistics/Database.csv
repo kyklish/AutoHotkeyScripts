@@ -1,6 +1,6 @@
 ;CSV v1.0
 ;BUILDING TYPE,BuildingType1,...,BuildingTypeN
-BUILDING TYPE,Abandoned Drilling Site,Drilling Site,Factory,Farm,Fuel Station,Log Station,Lumber Mill,Quarry Loading Zone,Service Hub,Town Storage,Warehouse
+BUILDING TYPE,Abandoned Drilling Site,Drilling Site,Factory,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Quarry Loading Zone,Service Hub,Town Storage,Warehouse
 ;CARGO TYPE,CargoType1,...,CargoTypeN
 CARGO TYPE,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumables,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Long Logs,Medium Logs,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
 ;JOB TYPE,Region,JobType1,...,JobTypeN
@@ -40,18 +40,38 @@ BUILDING,MICHIGAN,Log Station,290,717,Metal Beams,Wooden Planks
 BUILDING,MICHIGAN,Abandoned Drilling Site,466,742,Drilling Equipment
 BUILDING,MICHIGAN,Log Station,684,1008,Long Logs
 BUILDING,MICHIGAN,Quarry Loading Zone,798,364,Cargo Container
+BUILDING,MICHIGAN,Logistics Base,587,46,Drilling Spare Parts
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
+JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,0,1045,638,Drilling Equipment,1
+JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,0,506,912,Drilling Equipment,3
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Not A Drill,0,0,200,229,Metal Beams,2,Oil Rig Drill,1
+JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Out With The Old,0,0,670,210,Metal Beams,2,Oil Rig Drill,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Pipe Dream,0,0,490,93,Bricks,2,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Cement For The Region,0,0,666,1038,Cement,2
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Cement For The Region,0,0,395,906,Cement,2
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Cement For The Region,0,0,598,428,Cement,2
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Cement For The Region,0,0,104,238,Cement,2
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Fuel Order,0,0,598,428,Cargo Container,2
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Logs to the Workers!,0,0,670,210,Long Logs,1
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Logs to the Workers!,0,0,798,364,Long Logs,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Lumber Mill Revival,0,0,395,906,Concrete Blocks,2,Metal Beams,1
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Materials Order,0,0,1028,61,Concrete Slabs,2
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Materials Order,0,0,798,364,Metal Beams,1
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Materials Order,0,0,1046,166,Consumables,2
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Power Lines,0,0,405,804,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Power Lines,0,0,302,772,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Power Lines,0,0,166,733,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Super Order,0,0,30,225,Fuel,1,Vehicle Spare Parts,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Super Order,0,0,1045,638,Concrete Slabs,1,Metal Beams,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Super Order,0,0,290,717,Concrete Blocks,1,Consumables,1,Fuel,1
+JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Super Order,0,0,587,46,Consumables,1,Fuel,1,Service Spare Parts,1,Wooden Planks,1
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,The Essentials,0,0,799,102,Bricks,2,Fuel,2,Wooden Planks,2
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Wet Harvest,0,0,263,451,Bricks,2,Metal Beams,1,Wooden Planks,2
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Winter Stores,0,0,587,46,Vehicle Spare Parts,2
 JOB,MICHIGAN,CONTRACT: HUSKY FORWARDING,Work For Old Sweet,0,0,798,364,Concrete Slabs,1,Service Spare Parts,2
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Aid at the Island,0,0,630,586,Medium Logs,1
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Aid at the Island,0,0,710,842,Medium Logs,1
+JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Aid at the Island,0,0,985,827,Medium Logs,2
 JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Steel River Supplies,0,0,104,238,Consumables,2,Wooden Planks,2
 JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber at Arm's Reach,0,0,395,906,Long Logs,2,Medium Logs,3
 JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber at Arm's Reach,0,0,640,100,Medium Logs,1
