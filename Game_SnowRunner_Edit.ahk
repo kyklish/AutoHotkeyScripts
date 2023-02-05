@@ -57,7 +57,7 @@ Edit(sFilePath)
     sData := Replace(sData, "SecondaryFog Density", "0.0")
     ;CAMERAS ===============================================================
     sData := AllowCameraPassThroughObjects(sData) ; No camera jump.
-    sData := MoveCockpitCameraBackward(sData, 0.25) ; More then 0.25 will produce visual glitches on same trucks.
+    sData := MoveCockpitCameraBackward(sData, 0.25) ; More then 0.25 will produce visual glitches on some trucks.
     ;sData := ReplaceDigitMul(sData, "WindshieldDetailDensity", 0.1) ; Tiling of the detailed texture (one common texture for all trucks, chips on the windshield). By default: 0.4
 
     ; <Camera>
