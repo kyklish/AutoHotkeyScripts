@@ -1496,7 +1496,6 @@ class Database
             For sType, oJobsByType in oJobsByRegion
                 For sName, oJob in oJobsByType
                     this.AddJob(sRegion, oJob, True)
-        Return ; TODO DELETE ME bug in VS Code formatter
     }
 
     CreateJob(isAccepted, isCompleted, sJobType, sJobName, oPositions) {
@@ -1618,7 +1617,6 @@ class Database
             For _, oJobsByType in oJobsByRegion
                 For _, oJob in oJobsByType
                     this.SetJobCompletedIfNoCargo(oJob, sErrMsg)
-        ToolTip ; TODO DELETE ME bug in VS Code formatter
     }
 
     MarkModifiedJobs() {
@@ -1637,7 +1635,6 @@ class Database
                         oJob.isModified := True
                     }
                 }
-        ToolTip ; TODO DELETE ME bug in VS Code formatter
     }
 
     WarnNotAcceptedModifiedJob() {
@@ -1650,7 +1647,6 @@ class Database
                             MsgBox(A_Gui, "I", "Job from [" oFileName.sUP "] is modified but not accepted.`n`n"
                                 . GetJobInfoMsg(sRegion, sType, sName))
                     }
-        Return ; TODO DELETE ME bug in VS Code formatter
     }
 
     ReadCSV(sFileName) { ; Sync any changes with WriteCSV()
@@ -1771,7 +1767,6 @@ class Database
                                     . oPosition.x ","
                                     . oPosition.y ","
                                     . ArrayToCSV(oPosition.oCargo))
-            ToolTip ; TODO DELETE ME bug in VS Code formatter
         } Else { ; Database
             oFile.WriteLine(";BUILDING TYPE,BuildingType1,...,BuildingTypeN")
             oFile.WriteLine("BUILDING TYPE," ArrayToCSV(this.oBuildingTypes))
@@ -1810,7 +1805,6 @@ class Database
                                 . oPosition.y ","
                                 . ArrayToCSV(oPosition.oCargo))
                         }
-            ToolTip ; TODO DELETE ME bug in VS Code formatter
         }
         oFile.Close()
     }
