@@ -1,5 +1,4 @@
-﻿;SnowRunner
-#Warn
+﻿#Warn
 #NoEnv
 #SingleInstance, Force
 #UseHook
@@ -67,10 +66,10 @@ sPressed := wPressed := bManualMod := false
         Send, {s up}
     return
     LShift Up::
-    if (wPressed)
-        Send, {w down}
-    if (sPressed)
-        Send, {s down}
+        if (wPressed)
+            Send, {w down}
+        if (sPressed)
+            Send, {s down}
     return
     4:: Refuel() ;Полностью заправить машину
     +4:: Refuel(true) ;Полностью заправить машину и прицеп
@@ -90,25 +89,25 @@ sPressed := wPressed := bManualMod := false
     return
     ~S:: Send, {w up} ;Торможение во время зажатой кнопки W
     ~S Up::
-    if (wPressed)
-        Send, {w down}
-    sPressed := false
+        if (wPressed)
+            Send, {w down}
+        sPressed := false
     return
     ~W:: Send, {s up} ;Торможение во время зажатой кнопки S
     ~W Up::
-    if (sPressed)
-        Send, {s down}
-    wPressed := false
+        if (sPressed)
+            Send, {s down}
+        wPressed := false
     return
     ,:: ;Поворот камеры
-    SetKeyDelay,, -1 ; Smooth camera movement
-    While, GetKeyState(",", "P")
-        Send, {,}
+        SetKeyDelay,, -1 ; Smooth camera movement
+        While, GetKeyState(",", "P")
+            Send, {,}
     return
     .::
-    SetKeyDelay,, -1
-    While, GetKeyState(".", "P")
-        Send, {.}
+        SetKeyDelay,, -1
+        While, GetKeyState(".", "P")
+            Send, {.}
     return
     `;:: Send, {WheelUp}
     /:: Send, {WheelDown}
