@@ -171,7 +171,7 @@ ActiveControlIsOfClass(Class) {
 ;CTRL+ALT+SHIFT
 ;Empty Recycle Bin ;FileRecycleEmpty and "nircmd.exe emptybin" not work, if launched from another account!!!
 ^!+k::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "emptybin")
-^!+m::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\Procmon.exe") ;Process Monitor
+^!+m::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\Win7\Procmon.exe") ;Process Monitor
 ^!+p::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\procexp64.exe") ;Process Explorer
 ;Reboot ;AutoHotkey commands "Shutdown" not work, if launched from another account!!!
 ^!+r::
@@ -223,7 +223,7 @@ return
 #If
 !+Esc::Run_AsAdmin("C:\Windows\System32\resmon.exe") ;Resource Monitor
 #`::WinSet, AlwaysOnTop, Toggle, A
-#Insert::Run_AsAdmin("D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 0 t b 50")
+#Insert::Run_AsAdmin("D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 50 t b 0")
 Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 ;Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
 
