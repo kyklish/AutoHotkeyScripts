@@ -191,6 +191,11 @@ IfMsgBox, Yes
 return
 
 
+;WIN+ALT
+#!Down::WinRestore, A
+#!Up::WinMaximize, A
+
+
 ;WIN+CTRL+ALT
 #^!1::Run_AsUser("D:\SERGEY\Options\Program Files\1by1\1by1.exe", "/r")
 #^!2::Run_AsUser("D:\SERGEY\Options\Program Files\Download Master Portable\dmaster.exe")
@@ -295,6 +300,9 @@ AppsKey -> Middle Mouse Click
  ^!+R -> Reboot
  ^!+S -> Shutdown
  ^!+L -> Logoff
+[Win+Alt]
+ #!Down -> Restore Window Size
+ #!Up   -> Maximize Window Size
 [Win+Ctrl+Alt]
  #^!1 -> 1by1
  #^!2 -> Download Master
