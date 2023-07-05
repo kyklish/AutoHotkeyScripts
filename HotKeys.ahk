@@ -231,7 +231,7 @@ return
 #Insert::Run_AsAdmin("D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 50 t b 0")
 Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 ;Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
-
+!+F::Run_AsUser("ntfy.exe", "publish --quiet --title PC nokia_test_topic " . Clipboard, "", "Min")
 
 /*
 	!+t:: ;Hide/Show taskbar & Desktop icons
@@ -326,4 +326,5 @@ AppsKey -> Middle Mouse Click
     #`` -> Always On Top
    !+t -> Hide/Show taskbar (Disabled)
 !Shift -> Set English keyboard layout (Disabled)
+   !+F -> Send clipboard to ntfy.sh/nokia_test_topic
 )")
