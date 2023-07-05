@@ -4,8 +4,10 @@
 	Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
 	RunAs ; revert RunAs value
 	
-	WinWait, ahk_exe %sExePath%, , 1 ;0 = 0.5 seconds timeout
-	WinActivate, ahk_exe %sExePath%
+	if (sWinOptions != "Min") {
+		WinWait, ahk_exe %sExePath%, , 1 ;0 = 0.5 seconds timeout
+		WinActivate, ahk_exe %sExePath%
+	}
 	return iPID
 }
 
