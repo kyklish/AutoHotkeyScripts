@@ -17,3 +17,4 @@ Menu, Tray, Icon, D:\SERGEY\Options\Program Files\Opera\launcher.exe
 Menu, Tray, Icon
 
 FileCopyDir, %sOperaPath%, %sOperaRamPath%
+SoundBeepTwice()
