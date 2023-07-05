@@ -46,6 +46,20 @@ PowerWriteMaxProcessorStateValueIndex(ByRef Value, ByRef Mode)
 	}
 }
 ;-------------------------------------------------------------------------------------
+PowerWriteMinProcessorStateValueIndex(ByRef Value, ByRef Mode)
+{
+	global TARGET_SCHEME
+	if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
+	{
+		;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
+		;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
+		;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN %Value%,, Hide
+		;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
+		RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR PROCTHROTTLEMIN %Value%,, Hide
+		RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
+	}
+}
+;-------------------------------------------------------------------------------------
 PowerWriteCoreParkingMaxCoresValueIndex(ByRef Value, ByRef Mode)
 {
 	global TARGET_SCHEME
@@ -184,9 +198,28 @@ ToggleCPUParking() ;вкл/откл парковку ядер
 	}
 }
 ;-------------------------------------------------------------------------------------
+CPUCStateEnabled := true
+ToggleCPUCState() ;вкл/откл C-State процессора
+{
+	global CPUCStateEnabled
+	if (CPUCStateEnabled) {
+		CPUCStateEnabled := false
+		PowerWriteMinProcessorStateValueIndex(100, "AC")
+		;PowerWriteMinProcessorStateValueIndex(100, "DC")
+		OSD("C-State Disabled")
+	}
+	else {
+		CPUCStateEnabled := true
+		PowerWriteMinProcessorStateValueIndex(0, "AC")
+		;PowerWriteMinProcessorStateValueIndex(0, "DC")
+		OSD("C-State Enabled")
+	}
+}
+;-------------------------------------------------------------------------------------
 RestoreMaxFreqCores()
 {
 	global CPUParkingEnabled
+	global CPUCStateEnabled
 	global ArrayLenP
 	global ArrayLenC
 	global IndexP
@@ -197,6 +230,8 @@ RestoreMaxFreqCores()
 	WriteProcessorCoresSetting(ArrayLenC)
 	if(!CPUParkingEnabled)
 		ToggleCPUParking()
+	if(!CPUCStateEnabled)
+		ToggleCPUCState()
 }
 ;-------------------------------------------------------------------------------------
 SetActivePowerScheme(ByRef TARGET_SCHEME, ByRef Info)
@@ -209,6 +244,7 @@ ShowCustomFreqAHKInfo() ;показать текущие настройки пл
 {
 	global ArrayCPUFreq
 	global CPUParkingEnabled
+	global CPUCStateEnabled
 	global IndexP
 	global IndexC
 	text := ArrayCPUFreq[IndexP] . "GHz`n" . IndexC . " "  ;`n - new line
@@ -220,6 +256,10 @@ ShowCustomFreqAHKInfo() ;показать текущие настройки пл
 		text := text . "`nCore Parking Enabled"
 	else
 		text := text . "`nCore Parking Disabled"
+	if(CPUCStateEnabled)
+		text := text . "`nC-State Enabled"
+	else
+		text := text . "`nC-State Disabled"
 	OSD(text)
 	
 	;Or IF-ELSE, or this one line
@@ -262,6 +302,7 @@ NumpadDot & Numpad4:: SetCPUFreqInGHz(2.5)
 NumpadDot & Numpad5:: SetCPUFreqInGHz(3.0)
 NumpadDot & Numpad6:: ToggleCPUParking()
 NumpadDot & Numpad0:: ShowCustomFreqAHKInfo()
+NumpadDot & NumpadEnter:: ToggleCPUCState()
 ;~NumpadDot & Numpad0:: ShowCustomFreqAHKInfo() ;тильда для прозрачной работы клавиши, NumpadDot никогда не блокируется, одиночная клавиша NumpadDot срабатывает на нажатие, работает системное автоповторение при длительном нажатии, ниже приведен альтернативный вариант со своими недостатками
 
 $NumpadDot:: Send {NumpadDot} ;для прозрачной работы клавиши, иначе NumpadDot не будет работать как точка при наборе текста, NumpadDot блокируется при срабатывании комбинации клавиш, есть один минус - срабатывает только на отпускание клавиши, соответственно нет автоповторения при длительном нажатии
