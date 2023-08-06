@@ -33,7 +33,7 @@
     ;ScrollNavigator won't start with -AUTOSTART param.
  ;0,A,"C:\Program Files (x86)\ScrollNavigator\ScrollNavigator.exe","-WAITFORDATAPATH -AUTOSTART"
   0,A,"C:\Program Files (x86)\ScrollNavigator\ScrollNavigator.exe","-WAITFORDATAPATH",,"Min"
-  0,U,"C:\Program Files (x86)\Workrave\lib\Workrave.exe"
+ ;0,U,"C:\Program Files (x86)\Workrave\lib\Workrave.exe"
  ;0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
   0,U,"C:\Users\Fixer\AppData\Local\FluxSoftware\Flux\flux.exe","/noshow"
  ;0,U,"C:\Users\Fixer\AppData\Local\Viber\Viber.exe","StartMinimized"

@@ -2,7 +2,7 @@
 ;	первое значение - EXE
 ;	последующие - если у одного приложения есть несколько иконок, то это RegExp части строки,
 ;				  по которой находятся нужные иконки [текст ToolTip-а] (CaseSensitive по-умолчанию),
-;				  этот параметр можно опустить, если у приложения только одна иконка
+;				  этот параметр можно опустить, если в приложении только одна иконка
 ; Порядок строк в CSV файле определяет результирующий порядок иконок
 ; Сортировка вниз работает, даже если указаны одинаковые ToolTip-ы для поиска
 ; Сортировка вверх не сработает в этом случае, нужно указывать уникальный текст поиска
@@ -22,13 +22,13 @@
 ;-----------------
 ; CPU Fan Speed должен быть в конце, его иконка может не появиться
 "HWiNFO32.exe","PCH Temperature","CPU Fan"
-"Mahou.exe"
 "ScrollNavigator.exe"
-"Workrave.exe"
+;"Workrave.exe"
 ;-----------------
-"dexpot.exe","Dexpot - Virtual desktops"
 "ClickMonitorDDC.exe"
 "Volume2.exe"
+"dexpot.exe","Dexpot - Virtual desktops"
+"Mahou.exe"
 ;"GXStandard16in1.exe","16-in-One"
 ; Action Center не сразу появляется после старта Windows
 ;"explorer.exe","Action Center"
