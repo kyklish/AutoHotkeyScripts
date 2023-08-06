@@ -306,7 +306,8 @@ AppsKey -> Middle Mouse Click
 [Win+Ctrl+Alt]
  #^!1 -> 1by1
  #^!2 -> Download Master
- #^!3 -> uTorrent
+ #^!3 -> uTorrent 2.0.4
+ #^!4 -> uTorrent 3.5.5
  #^!0 -> Eject\Close CD tray
 [Win+Ctrl+Alt]
  #^!F1 -> SSD - BenQ
