@@ -233,6 +233,28 @@ Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 ;Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
 !+F::Run_AsUser("ntfy.exe", "publish --quiet --title PC nokia_test_topic " . Clipboard, "", "Min")
 
+
+; Slow Down Mouse
+; The first parameter is always 0x71 (SPI_SETMOUSESPEED).
+; The third parameter is the speed (range is 1-20, 10 is default).
+Browser_Home::
+DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 3, UInt, 0)
+KeyWait Browser_Home ; This prevents keyboard auto-repeat from doing the DllCall repeatedly.
+return
+Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, UInt, 0)
+
+
+; Scroll Without Activating
+WheelUp::
+WheelDown::
+CoordMode, Mouse, Screen
+MouseGetPos, x, y
+hWnd := DllCall("WindowFromPoint", "int", x, "int", y) ; Retrieves a handle to the window that contains the specified point.
+WHEEL_DELTA := 120 * (A_ThisHotkey = "WheelUp" ? 1 : -1)
+PostMessage, 0x20A, WHEEL_DELTA << 16, (y << 16) | (x & 0xFFFF), , ahk_id %hWnd% ; WM_MOUSEWHEEL
+return
+
+
 /*
 	!+t:: ;Hide/Show taskbar & Desktop icons
 	If (toggle := !toggle) {
@@ -320,12 +342,14 @@ AppsKey -> Middle Mouse Click
  #^!L -> Kill MPC-BE
  #^!M -> Monitor Off
 [Other]
-  Mail -> Sylpheed
- !+Esc -> Resource Monitor
-   ^+F -> Everything x64
-  #Ins -> Toggle monitor brightness (0 ÷ 50)
-    #`` -> Always On Top
-   !+t -> Hide/Show taskbar (Disabled)
-!Shift -> Set English keyboard layout (Disabled)
-   !+F -> Send clipboard to ntfy.sh/nokia_test_topic
+ Browser_Home -> Slow Down Mouse
+  Launch_Mail -> Sylpheed
+        !+Esc -> Resource Monitor
+          ^+F -> Everything x64
+         #Ins -> Toggle monitor brightness (0 ÷ 50)
+           #`` -> Always On Top
+          !+t -> Hide/Show taskbar (Disabled)
+       !Shift -> Set English keyboard layout (Disabled)
+          !+F -> Send clipboard to ntfy.sh/nokia_test_topic
+  Mouse Wheel -> Scroll Without Activating
 )")

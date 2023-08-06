@@ -20,17 +20,17 @@ Run, %A_ScriptDir%\AutoStartObjects.ahk
 Run, %A_ScriptDir%\Clock.ahk
 ;Run, %A_ScriptDir%\Change_Keyboard_Language_CTRL.ahk
 ;Run, %A_ScriptDir%\Change_Keyboard_Language_SHIFT.ahk
-Run, %A_ScriptDir%\Copy_Opera_To_RAM.ahk
+;Run, %A_ScriptDir%\Copy_Opera_To_RAM.ahk
 Run, %A_ScriptDir%\CPU_Fan_On_Off.ahk
 Run, %A_ScriptDir%\CPU_Freq_Cores_Manager.ahk
-Run, %A_ScriptDir%\Esc_Close.ahk
-Run, %A_ScriptDir%\Explorer_Hotkeys.ahk
+;Run, %A_ScriptDir%\Esc_Close.ahk
+;Run, %A_ScriptDir%\Explorer_Hotkeys.ahk
 ;Run, %A_ScriptDir%\Fix_Mouse_Double_Click.ahk
 ;Run, %A_ScriptDir%\Hide_Cursor_And_Block_Mouse_Move_GUI.ahk ; проблемы после использования скрипта, не работают нормально программы
 ;Run, %A_ScriptDir%\Hide_Cursor_And_Block_Mouse_Move_MouseMove.ahk
 Run, %A_ScriptDir%\HotKeys.ahk
-Run, %A_ScriptDir%\Scroll_Without_Activating.ahk
-Run, %A_ScriptDir%\Slow_Down_Mouse.ahk
+; Run, %A_ScriptDir%\Scroll_Without_Activating.ahk
+; Run, %A_ScriptDir%\Slow_Down_Mouse.ahk
 Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Organize.ahk") ;If run as admin - it hangs explorer.exe
 Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Click.ahk") ;If run as admin - it hangs explorer.exe
 Run, %A_ScriptDir%\Window_Manipulation.ahk
