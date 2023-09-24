@@ -2,22 +2,32 @@
 ;	первое значение - EXE
 ;	последующие - если у одного приложения есть несколько иконок, то это RegExp части строки,
 ;				  по которой находятся нужные иконки [текст ToolTip-а] (CaseSensitive по-умолчанию),
-;				  этот параметр можно опустить, если у приложения только одна иконка
+;				  этот параметр можно опустить, если в приложении только одна иконка
 ; Порядок строк в CSV файле определяет результирующий порядок иконок
 ; Сортировка вниз работает, даже если указаны одинаковые ToolTip-ы для поиска
 ; Сортировка вверх не сработает в этом случае, нужно указывать уникальный текст поиска
 ;
-; Этот файл для сортировки вверх (Move To Top) при ширине таскбара равному 5и иконок
+; Этот файл для сортировки вверх (Move To Top) при ширине таскбара равному 5ть иконок
 ;
-"explorer.exe","BenQ|Edifier|SAMSUNG","Fully charged|available","Network|Identifying|Not Connected|Unidentified network"
+;-----------------
+"explorer.exe","BenQ|Edifier|SAMSUNG|QCY","Fully charged|charging|remaining","Network|Identifying|Not Connected|Unidentified network|Nokia|Datagroup|ASUS"
 "BitMeter2.exe"
 "meminfo.exe"
+;-----------------
 "OpenHardwareMonitor.exe","GPU Core.*C","GPU Core.*MHz","CPU Package.*W","CPU Package.*C","CPU Core #1"
+;-----------------
 "OpenHardwareMonitor.exe","Crucial M500","Kingston UV400","Samsung SSD 860 EVO 500GB"
 "AIDA64.exe","Processes"
 "CUIT 2012.exe"
+;-----------------
 ; CPU Fan Speed должен быть в конце, его иконка может не появиться
 "HWiNFO32.exe","PCH Temperature","CPU Fan"
+"ScrollNavigator.exe"
+;"Workrave.exe"
+;-----------------
+"ClickMonitorDDC.exe"
+"Volume2.exe"
+"dexpot.exe","Dexpot - Virtual desktops"
 "Mahou.exe"
 ;"GXStandard16in1.exe","16-in-One"
 ; Action Center не сразу появляется после старта Windows
