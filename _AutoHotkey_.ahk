@@ -7,8 +7,8 @@ Menu, Tray, Icon ;Tray icon is disabled in _COMMON_SETTINGS_.ahk, here we enable
 ;so is not included in the array of command-line parameters, must use WinAPI.
 sFullCommandLine := DllCall("GetCommandLine", "str")
 if not RegExMatch(sFullCommandLine, "i) /restart(?!\S)") ;i) - case-insensitive [добавил сам]
-	;Sleep, 4000 ;Do not sleep, if script reloaded by "Reload" command.
-	Sleep, 15000 ;Do not sleep, if script reloaded by "Reload" command.
+	Sleep, 4000 ;Do not sleep, if script reloaded by "Reload" command.
+	;Sleep, 15000 ;Do not sleep, if script reloaded by "Reload" command.
 
 Reload_AsAdmin()
 
