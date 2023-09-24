@@ -55,7 +55,7 @@
     ;HWiNFO add sensors value to OSD MSI Afterburner:
         ;Core 0 Frequency
         ;CPU Fan speed
-    ;HWiNFO: OS crushed if launched without delay
+    ;HWiNFO: OS crashed if launched without delay
   7,A,"D:\SERGEY\Options\Program Files\HWiNFO32\HWiNFO32.exe"
   7,A,"D:\SERGEY\Options\Program Files\BAT\Windows_Firewall_Control.bat",,,"Hide"
     ;AIDA64 add sensors value to OSD MSI Afterburner:
