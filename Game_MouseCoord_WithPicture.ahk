@@ -83,7 +83,7 @@ GetData()
 	global mX, mY, mColor
 	MouseGetPos, mX, mY
 	PixelGetColor, mColor, %mX%, %mY%, RGB
-	ToolTip % mX ", " mY ", " mColor
+	ToolTip % "X:" mX ", Y:" mY ", RGB:" mColor
 }
 
 GetProcessName()
