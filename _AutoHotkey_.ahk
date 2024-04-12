@@ -52,6 +52,7 @@ CloseAllScripts()
 	;----Exclude section
 	WinGet, pid_studio, PID, AHK Studio
 	WinGet, pid_esc_close, PID, Esc Close ;this was for separate program "Esc Close" (compiled AHK script)
+	WinGet, pid_gridy, PID, Gridy ;this was for separate program "Gridy" (compiled AHK script)
 	WinGet, pid_splat, PID, Splat
 	pid_this := DllCall("GetCurrentProcessId") ;не закрыть самого себя
 	;----End exclude Section
@@ -60,7 +61,7 @@ CloseAllScripts()
 	Loop %instances% ;%instances% returns number of elements in pseudo-array "instances"
 	{
 		WinGet, pid, PID, % "ahk_id " instances%A_Index% ;доступ к элементам массива по индексу, WinGet возвращает псевдо-массив! ; The built-in variable A_Index contains the number of the current loop iteration
-		if((pid <> pid_this) and (pid <> pid_studio) and (pid <> pid_esc_close) and (pid <> pid_splat)) ;не закрывать нужные скрипты
+		if((pid <> pid_this) and (pid <> pid_studio) and (pid <> pid_esc_close)and (pid <> pid_gridy) and (pid <> pid_splat)) ;не закрывать нужные скрипты
 			WinClose % "ahk_id " instances%A_Index%
 	}
 }
