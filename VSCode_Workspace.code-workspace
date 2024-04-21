@@ -3,5 +3,24 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "AutoHotkey Debug (Zero-PlusPlus)",
+				"type": "autohotkey",
+				"request": "launch",
+				"program": "${file}",
+				"args": []
+			},
+			{
+				"type": "ahk",
+				"request": "launch",
+				"name": "AutoHotkey v1 Debugger (AHK++)",
+				"program": "",
+				"stopOnEntry": true
+			}
+		]
+	}
 }
