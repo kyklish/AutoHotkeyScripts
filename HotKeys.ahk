@@ -223,15 +223,15 @@ return
 #^!m::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "monitor off")
 
 
-#IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search
+#IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
 ^+f::Run_AsUser("D:\SERGEY\Options\Program Files\Everything x64\Everything.exe")
+!+f::Run_AsUser("ntfy.exe", "publish --quiet --title PC nokia_test_topic " . Clipboard, "", "Min")
 #If
 !+Esc::Run_AsAdmin("C:\Windows\System32\resmon.exe") ;Resource Monitor
 #`::WinSet, AlwaysOnTop, Toggle, A
 #Insert::Run_AsAdmin("D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 50 t b 0")
 Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 ;Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
-!+F::Run_AsUser("ntfy.exe", "publish --quiet --title PC nokia_test_topic " . Clipboard, "", "Min")
 
 
 ; Slow Down Mouse
