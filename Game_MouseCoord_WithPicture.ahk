@@ -38,8 +38,8 @@ Numpad0 Up::
 
 ScrollLock:: ToggleTooltip()
 
-^Numpad5:: FindClick(">" GetProcessName())
-Numpad5:: FastStoneCaptureScreenShot()
+Numpad5:: FindClick(">" GetProcessName())
+^Numpad5:: FastStoneCaptureScreenShot()
 
 ; Make ScreenShot, Crop by ImageMagick, Save with X_Y in file name
 FastStoneCaptureScreenShot()
