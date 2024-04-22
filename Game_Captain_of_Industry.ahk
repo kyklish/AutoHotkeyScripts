@@ -7,6 +7,9 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.0.1
+;  * Change main hotkey to [K]
+;  + New hotkey to suspend script
 ; v2.0.0
 ;  * Search methods
 ; v1.0.0
@@ -32,15 +35,16 @@ SetKeyDelay, -1, 25
 helpText := "
 (
       B -> Quick UPGRADE any VEHICLE.
+Alt + C -> Suspend Script.
 Alt + Z -> Reload Script.
       X -> Exit Script.
 
 Usage:
     - open VEHICLES MANAGEMENT window.
     - point mouse cursor on VEHICLE icon.
-    - press hotkey (default [B]) to upgrade vehicle.
+    - press hotkey (default [K]) to upgrade vehicle.
     - wait until VEHICLES MANAGEMENT window opens again.
-    - press hotkey (default [B]) to upgrade next vehicle, repeat.
+    - press hotkey (default [K]) to upgrade next vehicle, repeat.
 
 Tips:
     - make the camera view from above (top view) so there is less miss-clicks
@@ -88,10 +92,11 @@ if (!IsDebugScript()) ; On Debug reload script will break debugging
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
 #IfWinActive ahk_group Game ; <==== Main hotkeys.
-    B:: ClickVehicleOrderIcon("Upgrade", dlOperation, dlCameraMove)
-    +B:: ClickVehicleOrderIcon("Delete", dlOperation, dlCameraMove)
+    K:: ClickVehicleOrderIcon("Upgrade", dlOperation, dlCameraMove)
+    +K:: ClickVehicleOrderIcon("Delete", dlOperation, dlCameraMove)
 #If
 F1:: ShowHelpWindow(helpText)
+!C:: Suspend
 !Z:: Reload
 !X:: ExitApp
 
