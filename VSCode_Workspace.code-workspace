@@ -22,5 +22,8 @@
 				"stopOnEntry": true
 			}
 		]
+	},
+	"settings": {
+		"editor.detectIndentation": false
 	}
 }
