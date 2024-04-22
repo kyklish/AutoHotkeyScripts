@@ -1,5 +1,5 @@
 ; Captain of Industry Helper
-; Supported User Interface Scale 80 or 100% [uiScale] variable
+; Tested User Interface Scale 80, 100, 120% [uiScale] variable
 
 ; Changelog
 ;  + added
