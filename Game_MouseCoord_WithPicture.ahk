@@ -123,7 +123,8 @@ StartDrawRect()
             MouseGetPos, X2CL, Y2CL
             JEE_ClientToScreen(WinExist("A"), X2CL, Y2CL, X2SC, Y2SC)
             DrawRectangle(X1SC, Y1SC, X2SC, Y2SC, id)
-            ToolTip, % "X1:" X1CL " Y1:" Y1CL " X2:" X2CL " Y2:" Y2CL
+            ; ToolTip, % "X1:" X1CL " Y1:" Y1CL " X2:" X2CL " Y2:" Y2CL
+            ToolTip, % "X1:" X1CL " Y1:" Y1CL " X2:" X2CL " Y2:" Y2CL " W: " X2CL - X1CL " H: " Y2CL - Y1CL
             if (LButton_Held == false)
                 break
         }
