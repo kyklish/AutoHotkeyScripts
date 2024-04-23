@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.2.1
+;  * Help text
 ; v2.2.0
 ;  + Add Copy/PasteEdit/PasteSave blueprint description
 ; v2.1.0
@@ -41,12 +43,16 @@ SetKeyDelay, -1, 25
 
 helpText := "
 (
-      , -> Quick DELETE any VEHICLE.
-      . -> Quick UPGRADE any VEHICLE.
-      Q -> Quick EXPLORE on WORLD MAP.
-Alt + C -> Suspend Script.
-Alt + Z -> Reload Script.
-      X -> Exit Script.
+       , -> VEHICLE: quick DELETE.
+       . -> VEHICLE: quick UPGRADE.
+       / -> WORLD MAP: quick EXPLORE.
+       ; -> BLUEPRINT: save position of DESCRIPTION BUTTON.
+       ' -> BLUEPRINT: copy description text.
+       \ -> BLUEPRINT: paste description text and save it.
+Ctrl + \ -> BLUEPRINT: paste description text.
+ Alt + C -> Suspend Script.
+ Alt + Z -> Reload Script.
+       X -> Exit Script.
 
 Usage (DELETE/UPGRADE VEHICLE):
     - open VEHICLES MANAGEMENT window.
@@ -56,8 +62,13 @@ Usage (DELETE/UPGRADE VEHICLE):
     - press hotkey to upgrade next vehicle, repeat.
 
 Usage (EXPLORE):
-    - WORLD MAP must be closed
-    - press hotkey
+    - WORLD MAP must be closed.
+    - press hotkey.
+
+Usage (BLUEPRINT):
+    - put mouse cursor on DESCRIPTION BUTTON and press hotkey to save it's
+      position.
+    - put mouse cursor over desired blueprint and press desired hotkey.
 
 Tips:
     - make the camera view from above (top view) so there is less miss-clicks
@@ -66,11 +77,6 @@ Tips:
     - increase delay between manipulations [dlOperation] and [dlCameraMove] for
       better reliability.
     - reload the script to remove tooltip with error.
-
-Pitfalls:
-    - UPGRADE icon in VEHICLE window changes it's colors and shape when VEHICLE
-      assigned to building. It's difficult to make picture that match all icon's
-      variants.
 
 Set proper User Interface Scale ratio to [uiScale] variable, default 100%.
 BlockInput (to prevent mouse move interfere with user input) needs admin rights.
