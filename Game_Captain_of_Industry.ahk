@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.2.0
+;  + Add Copy/PasteEdit/PasteSave blueprint description
 ; v2.1.0
 ;  + Add world map exploration
 ;  * Change hotkeys
@@ -109,6 +111,10 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     ,:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind( "Delete", dlOperation, dlCameraMove))
     .:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind("Upgrade", dlOperation, dlCameraMove))
     /:: MakeManipulation(Func("ExploreUnknownLocation").Bind(dlOperation))
+    `;:: MouseGetPos, xBtn, yBtn ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
+    ':: MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
+    \:: MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
+    +\:: MakeManipulation(Func("BlueprintDescription").Bind("PasteEdit", xBtn, yBtn, dlOperation))
 #If
 F1:: ShowHelpWindow(helpText)
 !C:: Suspend
@@ -172,6 +178,33 @@ ExploreUnknownLocation(dlOperation, clSz)
     Click(x + oULI.x, y - oULI.y, , dlOperation) ; Click EXPLORE button
     Send("Esc", dlOperation) ; Close UNKNOWN LOCATION window
     Send("Tab") ; Close WORLD MAP
+}
+
+BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
+{
+    if (!xBtn or !yBtn) {
+        MsgBox % "Unknown position of the DESCRIPTION BUTTON in BLUEPRINTS window.`n`nLook help [F1]."
+        Return
+    }
+    Click( , , , dlOperation) ; Click on blueprint under cursor
+    Click(xBtn, yBtn, , dlOperation) ; Click DESCRIPTION button
+    Click(clSz.w / 2, clSz.h / 2, , dlOperation) ; Click in the center of the screen
+    SendRaw("^a", dlOperation) ; Select all
+    Switch operation {
+    Case "Copy":
+        SendRaw("^c", dlOperation) ; Copy
+        Send("Esc") ; Close UPDATE DESCRIPTION window
+    Case "PasteEdit": ; Do not close window, user will edit text
+        SendRaw("^v") ; Paste
+    Case "PasteSave":
+        SendRaw("^v", dlOperation) ; Paste
+        ; Find top left corner of APPLY CHANGES button
+        ImageSearch(x, y, "CaptainOfIndustryApplyButton.png", clSz)
+        ; Click APPLY CHANGES button
+        Click(x + 10, y + 10, , dlOperation) ; Add offset of image size (10x10)
+    Default:
+        MsgBox % A_ThisFunc "() - No such operation for blueprint: " operation
+    }
 }
 
 ;-------------------------------------------------------------
