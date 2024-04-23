@@ -222,13 +222,27 @@ return
 #^!l::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
 #^!m::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "monitor off")
 
+; Window Style Manipulation
+#`::WinSet, AlwaysOnTop, Toggle, A
+!`::
+    Borderless() {
+        static bToggle
+        WinExist("A") ; set Last Found Window
+        if (bToggle := !bToggle)
+            WinSet, Style, -0xC40000 ; WS_BORDER + WS_DLGFRAME + WS_SIZEBOX
+        else
+            WinSet, Style, +0xC40000
+        WinMinimize ; Force redraw (fix aesthetical issues).
+        WinRestore
+        WinActivate
+    }
+
 
 #IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
 ^+f::Run_AsUser("D:\SERGEY\Options\Program Files\Everything x64\Everything.exe")
 !+f::Run_AsUser("ntfy.exe", "publish --quiet --title PC nokia_test_topic " . Clipboard, "", "Min")
 #If
 !+Esc::Run_AsAdmin("C:\Windows\System32\resmon.exe") ;Resource Monitor
-#`::WinSet, AlwaysOnTop, Toggle, A
 #Insert::Run_AsAdmin("D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 50 t b 0")
 Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
 ;Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
@@ -341,13 +355,15 @@ AppsKey -> Middle Mouse Click
  #^!K -> Kill MPC-HC
  #^!L -> Kill MPC-BE
  #^!M -> Monitor Off
+[Window Style Manipulation]
+ #`` -> Always On Top
+ !`` -> Borderless
 [Other]
  Browser_Home -> Slow Down Mouse
   Launch_Mail -> Sylpheed
         !+Esc -> Resource Monitor
           ^+F -> Everything x64
          #Ins -> Toggle monitor brightness (0 ÷ 50)
-           #`` -> Always On Top
           !+t -> Hide/Show taskbar (Disabled)
        !Shift -> Set English keyboard layout (Disabled)
           !+F -> Send clipboard to ntfy.sh/nokia_test_topic
