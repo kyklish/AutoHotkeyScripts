@@ -1,5 +1,7 @@
 ; Captain of Industry Helper
 ; Tested User Interface Scale 80, 100, 120% [uiScale] variable
+; UI very unstable, icons changes their shape and color!!!
+; Use ImageSearch and PixelSearch as your last tool!!!
 
 ; Changelog
 ;  + added
@@ -7,8 +9,11 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.1.0
+;  + Add world map exploration
+;  * Change hotkeys
 ; v2.0.1
-;  * Change main hotkey to [K]
+;  * Change hotkey
 ;  + New hotkey to suspend script
 ; v2.0.0
 ;  * Search methods
@@ -34,17 +39,23 @@ SetKeyDelay, -1, 25
 
 helpText := "
 (
-      B -> Quick UPGRADE any VEHICLE.
+      , -> Quick DELETE any VEHICLE.
+      . -> Quick UPGRADE any VEHICLE.
+      Q -> Quick EXPLORE on WORLD MAP.
 Alt + C -> Suspend Script.
 Alt + Z -> Reload Script.
       X -> Exit Script.
 
-Usage:
+Usage (DELETE/UPGRADE VEHICLE):
     - open VEHICLES MANAGEMENT window.
     - point mouse cursor on VEHICLE icon.
-    - press hotkey (default [K]) to upgrade vehicle.
+    - press hotkey to upgrade vehicle.
     - wait until VEHICLES MANAGEMENT window opens again.
-    - press hotkey (default [K]) to upgrade next vehicle, repeat.
+    - press hotkey to upgrade next vehicle, repeat.
+
+Usage (EXPLORE):
+    - WORLD MAP must be closed
+    - press hotkey
 
 Tips:
     - make the camera view from above (top view) so there is less miss-clicks
@@ -68,16 +79,15 @@ moves it.
 
 ;@AHK++AlignAssignmentOn
 global bSendInput := true
-global oClientPos := {}  ; Game's window client position
-uiScale           :=  80 ; User Interface Scale [tested 80%, 100%, 120%]
+uiScale           := 80 ; User Interface Scale [tested 80%, 100%, 120%]
 dlOperation       := 300 ; Delay between operations: open window, click, etc
 dlCameraMove      := 500 ; Delay to wait camera movement to VEHICLE
 ;@AHK++AlignAssignmentOff
 
-; VEHICLE MANAGEMENT icon: absolute coordinates
-global oVM  := { 0:0
+; VEHICLE MANAGEMENT ICON (near HEALTH and UNITY icons): absolute coordinates
+global oVMI  := { 0:0
     , x: 245 * uiScale // 100
-    , y:  45 * uiScale // 100}
+    , y:  45 * uiScale // 100 }
 ; VEHICLE WINDOW ORDERS ICONS COL (39x39): relative to bottom left corner of VEHICLE WINDOW
 global oOIC := { 0:0
     , xDelete:   39 * uiScale // 100
@@ -85,6 +95,10 @@ global oOIC := { 0:0
 ; VEHICLE WINDOW ORDERS ICONS ROW (39x39): relative to bottom left corner of VEHICLE WINDOW
 global oOIR := { 0:0
     , y: 114 * uiScale // 100 }
+; UNKNOWN LOCATION EXPLORE BUTTON: relative to bottom left corner of UNKNOWN LOCATION WINDOW
+global oULI  := { 0:0
+    , x: 123 * uiScale // 100
+    , y:  26 * uiScale // 100 }
 
 if (!IsDebugScript()) ; On Debug reload script will break debugging
     Reload_AsAdmin() ; For BlockInput we need admin rights
@@ -92,32 +106,43 @@ if (!IsDebugScript()) ; On Debug reload script will break debugging
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
 #IfWinActive ahk_group Game ; <==== Main hotkeys.
-    K:: ClickVehicleOrderIcon("Upgrade", dlOperation, dlCameraMove)
-    +K:: ClickVehicleOrderIcon("Delete", dlOperation, dlCameraMove)
+    ; TODO Manually save position of description button in blueprints to automate copy.
+    ,:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind( "Delete", dlOperation, dlCameraMove))
+    .:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind("Upgrade", dlOperation, dlCameraMove))
+    /:: MakeManipulation(Func("ExploreUnknownLocation").Bind(dlOperation))
 #If
 F1:: ShowHelpWindow(helpText)
 !C:: Suspend
 !Z:: Reload
 !X:: ExitApp
 
-ClickVehicleOrderIcon(order, dlOperation, dlCameraMove)
+MakeManipulation(oBoundFunc)
 {
-    hWnd := WinExist("ahk_group Game")
-    oClientPos := WinGetClientPos(hWnd)
+    clSz := WinGetClientSize()
 
     Critical, On
+    KeyWait, %A_ThisHotkey%
     BlockInput, On
-    ; Save position of VEHICLE icon in VEHICLES MANAGEMENT window
     MouseGetPos, _x, _y
+
+    %oBoundFunc%(clSz)
+    ; oBoundFunc.Call(clSZ)
+
+    MouseMove, % _x, % _y
+    BlockInput, Off
+    Critical, Off
+}
+
+ClickVehicleOrderIcon(order, dlOperation, dlCameraMove, clSz)
+{
     ; Click VEHICLE icon in VEHICLES MANAGEMENT window and wait for camera movement
     Click(_x, _y, , dlOperation)
-    Send("Esc") ; Close VEHICLES MANAGEMENT window
-    Sleep, % dlCameraMove
+    Send("Esc", dlCameraMove) ; Close VEHICLES MANAGEMENT window
     ; Click on VEHICLE in the center of the screen: opens VEHICLE window
-    Click(oClientPos.w / 2, oClientPos.h / 2, , dlOperation)
+    Click(clSz.w / 2, clSz.h / 2, , dlOperation)
     ; Find bottom left corner of VEHICLE window
     ; 2 shades of variation. Using black color in images like alpha channel.
-    SearchImage(x, y, "*2 *TransBlack CaptainOfIndustryBottomLine.png")
+    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryBottomLine.png", clSz)
     Switch order {
     Case "Upgrade":
         ; Click UPGRADE icon in VEHICLE window
@@ -129,19 +154,30 @@ ClickVehicleOrderIcon(order, dlOperation, dlCameraMove)
         MsgBox % "No such order for vehicle: " order
     }
     ; Open VEHICLES MANAGEMENT window: returns to start position
-    Click(oVM.x, oVM.y, , dlOperation)
-    ; Restore position on VEHICLE icon in VEHICLES MANAGEMENT window
-    MouseMove, % _x, % _y
-
-    BlockInput, Off
-    Critical, Off
+    Click(oVMI.x, oVMI.y, , dlOperation)
 }
 
-SearchImage(ByRef x, ByRef y, imageName)
+ExploreUnknownLocation(dlOperation, clSz)
 {
-    ImageSearch, x, y, 0, 0, % oClientPos.w, % oClientPos.h, % imageName
-    if (ErrorLevel)
-        ToolTip, % A_ThisFunc . "() - can't find image: " . imageName, 0, 0
+    Send("Tab", dlOperation) ; Open WORLD MAP and zoom out
+    Send("Click WheelDown 15", dlOperation) ; Minimum 10 notches to zoom out WORLD MAP
+    ; Find and click on UNKNOWN LOCATION ICON
+    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryUnknownLocationIcon.png", clSz)
+    Click(x, y, , dlOperation)
+    ; Find bottom left corner of UNKNOWN LOCATION window
+    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryBottomLine.png", clSz)
+    Click(x + oULI.x, y - oULI.y, , dlOperation) ; Click EXPLORE button
+    Send("Esc", dlOperation) ; Close UNKNOWN LOCATION window
+    Send("Tab") ; Close WORLD MAP
+}
+
+ImageSearch(ByRef x, ByRef y, imageFile, wndSize)
+{
+    ImageSearch, x, y, 0, 0, % wndSize.w, % wndSize.h, % imageFile
+    if (ErrorLevel) {
+        ToolTip, % A_ThisFunc . "() - can't find image: " . imageFile, 0, 0
+        SoundBeep
+    }
 }
 
 Click(x := "", y := "", whichButton := "", delay := -1)
@@ -178,6 +214,13 @@ WinGetClientPos(hWnd)
     Win_Client_W := NumGet(&RECT, 8, "Int")
     Win_Client_H := NumGet(&RECT, 12, "Int")
     Return { x: Win_Client_X, y: Win_Client_Y, w: Win_Client_W, h: Win_Client_H }
+}
+
+WinGetClientSize()
+{
+    hWnd := WinExist("ahk_group Game")
+    oClientPos := WinGetClientPos(hWnd)
+    Return { w: oClientPos.w, h: oClientPos.h }
 }
 
 ShowHelpWindow(ByRef str := "")
