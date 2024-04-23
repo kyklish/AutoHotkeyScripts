@@ -106,7 +106,6 @@ if (!IsDebugScript()) ; On Debug reload script will break debugging
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
 #IfWinActive ahk_group Game ; <==== Main hotkeys.
-    ; TODO Manually save position of description button in blueprints to automate copy.
     ,:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind( "Delete", dlOperation, dlCameraMove))
     .:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind("Upgrade", dlOperation, dlCameraMove))
     /:: MakeManipulation(Func("ExploreUnknownLocation").Bind(dlOperation))
@@ -115,6 +114,10 @@ F1:: ShowHelpWindow(helpText)
 !C:: Suspend
 !Z:: Reload
 !X:: ExitApp
+
+;-------------------------------------------------------------
+;------------------------- GAME CODE -------------------------
+;-------------------------------------------------------------
 
 MakeManipulation(oBoundFunc)
 {
@@ -151,7 +154,7 @@ ClickVehicleOrderIcon(order, dlOperation, dlCameraMove, clSz)
         ; Click DELETE icon in VEHICLE window
         Click(x + oOIC.xDelete, y - oOIR.y, , dlOperation)
     Default:
-        MsgBox % "No such order for vehicle: " order
+        MsgBox % A_ThisFunc "() - No such order for vehicle: " order
     }
     ; Open VEHICLES MANAGEMENT window: returns to start position
     Click(oVMI.x, oVMI.y, , dlOperation)
@@ -170,6 +173,10 @@ ExploreUnknownLocation(dlOperation, clSz)
     Send("Esc", dlOperation) ; Close UNKNOWN LOCATION window
     Send("Tab") ; Close WORLD MAP
 }
+
+;-------------------------------------------------------------
+;----------------------- GENERAL CODE ------------------------
+;-------------------------------------------------------------
 
 ImageSearch(ByRef x, ByRef y, imageFile, wndSize)
 {
@@ -200,6 +207,16 @@ Send(key, delay := -1)
         SendInput, {%key%}
     else
         SendEvent, {%key%}
+    if (delay != -1)
+        Sleep, %delay%
+}
+
+SendRaw(string, delay := -1)
+{
+    if (bSendInput)
+        SendInput, %string%
+    else
+        SendEvent, %string%
     if (delay != -1)
         Sleep, %delay%
 }
