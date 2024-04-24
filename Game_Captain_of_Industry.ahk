@@ -9,6 +9,10 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.2.2
+;  + New hotkey to unblock mouse input
+;  * Change hotkeys
+;  * Don't block keyboard input, only mouse
 ; v2.2.1
 ;  * Help text
 ; v2.2.0
@@ -43,16 +47,19 @@ SetKeyDelay, -1, 25
 
 helpText := "
 (
-       , -> VEHICLE: quick DELETE.
-       . -> VEHICLE: quick UPGRADE.
-       / -> WORLD MAP: quick EXPLORE.
-       ; -> BLUEPRINT: save position of DESCRIPTION BUTTON.
-       ' -> BLUEPRINT: copy description text.
-       \ -> BLUEPRINT: paste description text and save it.
-Ctrl + \ -> BLUEPRINT: paste description text.
- Alt + C -> Suspend Script.
- Alt + Z -> Reload Script.
-       X -> Exit Script.
+Set your [User Interface Scale] ratio to [uiScale] variable, default 100%.
+
+        , -> VEHICLE:   quick DELETE.
+        . -> VEHICLE:   quick UPGRADE.
+        / -> WORLD MAP: quick EXPLORE.
+        ; -> BLUEPRINT:  copy description text.
+        ' -> BLUEPRINT: paste description text.
+        \ -> BLUEPRINT: paste description text and save it.
+Shift + \ -> BLUEPRINT: save position of DESCRIPTION BUTTON.
+Shift + / -> Unblock mouse input (if it was blocked by mistake).
+  Alt + S -> Suspend Script.
+  Alt + Z ->  Reload Script.
+  Alt + X ->    Exit Script.
 
 Usage (DELETE/UPGRADE VEHICLE):
     - open VEHICLES MANAGEMENT window.
@@ -77,17 +84,11 @@ Tips:
     - increase delay between manipulations [dlOperation] and [dlCameraMove] for
       better reliability.
     - reload the script to remove tooltip with error.
-
-Set proper User Interface Scale ratio to [uiScale] variable, default 100%.
-BlockInput (to prevent mouse move interfere with user input) needs admin rights.
-If the script blocks input by mistake, press [Ctrl + Alt + Del] to unblock.
-You can run script without admin rights, but then don't move mouse, while script
-moves it.
 )"
 
 ;@AHK++AlignAssignmentOn
 global bSendInput := true
-uiScale           := 80 ; User Interface Scale [tested 80%, 100%, 120%]
+uiScale           := 100 ; User Interface Scale [tested 80%, 100%, 120%]
 dlOperation       := 300 ; Delay between operations: open window, click, etc
 dlCameraMove      := 500 ; Delay to wait camera movement to VEHICLE
 ;@AHK++AlignAssignmentOff
@@ -108,22 +109,20 @@ global oULI  := { 0:0
     , x: 123 * uiScale // 100
     , y:  26 * uiScale // 100 }
 
-if (!IsDebugScript()) ; On Debug reload script will break debugging
-    Reload_AsAdmin() ; For BlockInput we need admin rights
-
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
 #IfWinActive ahk_group Game ; <==== Main hotkeys.
     ,:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind( "Delete", dlOperation, dlCameraMove))
     .:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind("Upgrade", dlOperation, dlCameraMove))
     /:: MakeManipulation(Func("ExploreUnknownLocation").Bind(dlOperation))
-    `;:: MouseGetPos, xBtn, yBtn ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
-    ':: MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
-    \:: MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
-    +\:: MakeManipulation(Func("BlueprintDescription").Bind("PasteEdit", xBtn, yBtn, dlOperation))
+    SC027:: MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
+    SC028:: MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
+    SC02B:: MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
+    +\:: MouseGetPos, xBtn, yBtn ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
+    +/:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
+    F1:: ShowHelpWindow(helpText)
 #If
-F1:: ShowHelpWindow(helpText)
-!C:: Suspend
+!S:: Suspend
 !Z:: Reload
 !X:: ExitApp
 
@@ -133,18 +132,26 @@ F1:: ShowHelpWindow(helpText)
 
 MakeManipulation(oBoundFunc)
 {
+    ; On [BlockInput On] you need wait, until user releases all modifier's keys
+    ; or they become "stuck down". Example:
+    ;   ^!p::
+    ;   KeyWait Control  ; Wait for the key to be released.
+    ;       Use one KeyWait for each of the hotkey's modifiers.
+    ;   KeyWait Alt
+    ;   BlockInput On
+    ; MORE PROBLEMS WITH IT
+
     clSz := WinGetClientSize()
 
     Critical, On
-    KeyWait, %A_ThisHotkey%
-    BlockInput, On
+    BlockInput, MouseMove
     MouseGetPos, _x, _y
 
     %oBoundFunc%(clSz)
     ; oBoundFunc.Call(clSZ)
 
     MouseMove, % _x, % _y
-    BlockInput, Off
+    BlockInput, MouseMoveOff
     Critical, Off
 }
 
@@ -188,8 +195,9 @@ ExploreUnknownLocation(dlOperation, clSz)
 
 BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
 {
+    ToolTip
     if (!xBtn or !yBtn) {
-        MsgBox % "Unknown position of the DESCRIPTION BUTTON in BLUEPRINTS window.`n`nLook help [F1]."
+        ToolTip, % "Unknown position of the DESCRIPTION BUTTON in BLUEPRINTS window.`n`nLook help [F1] for hotkey."
         Return
     }
     Click( , , , dlOperation) ; Click on blueprint under cursor
@@ -200,7 +208,7 @@ BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
     Case "Copy":
         SendRaw("^c", dlOperation) ; Copy
         Send("Esc") ; Close UPDATE DESCRIPTION window
-    Case "PasteEdit": ; Do not close window, user will edit text
+    Case "Paste": ; Do not close window, user will edit text
         SendRaw("^v") ; Paste
     Case "PasteSave":
         SendRaw("^v", dlOperation) ; Paste
@@ -209,7 +217,7 @@ BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
         ; Click APPLY CHANGES button
         Click(x + 10, y + 10, , dlOperation) ; Add offset of image size (10x10)
     Default:
-        MsgBox % A_ThisFunc "() - No such operation for blueprint: " operation
+        ToolTip, % A_ThisFunc "() - No such operation for blueprint: " operation
     }
 }
 
@@ -294,13 +302,4 @@ ShowHelpWindow(ByRef str := "")
     }
     else
         Progress, Off
-}
-
-IsDebugScript()
-{
-    FullCmdLine := DllCall("GetCommandLine", "Str")
-    if(RegExMatch(FullCmdLine, "i)/debug"))
-        Return true
-    else
-        Return false
 }
