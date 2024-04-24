@@ -9,6 +9,15 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.3.1
+;  * Make global hotkey to unblock mouse
+; v2.3.0
+;  + Explore location with enemy
+;  * Change hotkeys
+; v2.2.3
+;  + New hotkey for help text
+;  * Help text
+;  ! Fix not working hotkeys
 ; v2.2.2
 ;  + New hotkey to unblock mouse input
 ;  * Change hotkeys
@@ -47,50 +56,57 @@ SetKeyDelay, -1, 25
 
 helpText := "
 (
-Set your [User Interface Scale] ratio to [uiScale] variable, default 100%.
+Set your [User Interface Scale] ratio to [uiScale] variable, default 100%!
 
-        , -> VEHICLE:   quick DELETE.
-        . -> VEHICLE:   quick UPGRADE.
-        / -> WORLD MAP: quick EXPLORE.
-        ; -> BLUEPRINT:  copy description text.
-        ' -> BLUEPRINT: paste description text.
-        \ -> BLUEPRINT: paste description text and save it.
-Shift + \ -> BLUEPRINT: save position of DESCRIPTION BUTTON.
-Shift + / -> Unblock mouse input (if it was blocked by mistake).
-  Alt + S -> Suspend Script.
-  Alt + Z ->  Reload Script.
-  Alt + X ->    Exit Script.
+          F1 -> Show help (when game not on screen).
+   Ctrl + F1 -> Show help.
+          F7 -> WORLD MAP: quick EXPLORE unknown location.
+          F8 -> WORLD MAP: quick EXPLORE location with enemy.
+          F9 -> VEHICLE:   quick DELETE.
+         F10 -> VEHICLE:   quick UPGRADE.
+     Alt + C -> BLUEPRINT:  copy description text.
+     Alt + V -> BLUEPRINT: paste description text and save it.
+     Alt + B -> BLUEPRINT: paste description text.
+         F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON.
+Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
+     Alt + S -> Suspend Script (disable all hotkeys).
+     Alt + Z ->  Reload Script.
+     Alt + X ->    Exit Script.
 
-Usage (DELETE/UPGRADE VEHICLE):
+Usage VEHICLE DELETE/UPGRADE:
+    - maximum zoom in for better performance.
+    - tilt camera to top view (vehicle will be placed in the center of screen).
     - open VEHICLES MANAGEMENT window.
     - point mouse cursor on VEHICLE icon.
-    - press hotkey to upgrade vehicle.
+    - press hotkey to upgrade/delete vehicle.
     - wait until VEHICLES MANAGEMENT window opens again.
-    - press hotkey to upgrade next vehicle, repeat.
+    - press hotkey to upgrade/delete next vehicle, repeat.
 
-Usage (EXPLORE):
+Usage WORLD MAP EXPLORE/BATTLE:
     - WORLD MAP must be closed.
-    - press hotkey.
+    - press hotkey to explore/battle.
 
-Usage (BLUEPRINT):
+Usage BLUEPRINT COPY/PASTE:
     - put mouse cursor on DESCRIPTION BUTTON and press hotkey to save it's
-      position.
+      position (it has different position for FILE and FOLDER!).
     - put mouse cursor over desired blueprint and press desired hotkey.
 
 Tips:
     - make the camera view from above (top view) so there is less miss-clicks
       at the vehicles. When the camera is looking at an angle, the car may be
-      hidden behind a building.
+      hidden behind a building or just have offset on big camera angles.
     - increase delay between manipulations [dlOperation] and [dlCameraMove] for
       better reliability.
     - reload the script to remove tooltip with error.
 )"
 
 ;@AHK++AlignAssignmentOn
-global bSendInput := true
 uiScale           := 100 ; User Interface Scale [tested 80%, 100%, 120%]
 dlOperation       := 300 ; Delay between operations: open window, click, etc
 dlCameraMove      := 500 ; Delay to wait camera movement to VEHICLE
+global bSendInput := true
+xBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
+yBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
 ;@AHK++AlignAssignmentOff
 
 ; VEHICLE MANAGEMENT ICON (near HEALTH and UNITY icons): absolute coordinates
@@ -111,17 +127,20 @@ global oULI  := { 0:0
 
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
-#IfWinActive ahk_group Game ; <==== Main hotkeys.
-    ,:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind( "Delete", dlOperation, dlCameraMove))
-    .:: MakeManipulation(Func("ClickVehicleOrderIcon").Bind("Upgrade", dlOperation, dlCameraMove))
-    /:: MakeManipulation(Func("ExploreUnknownLocation").Bind(dlOperation))
-    SC027:: MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
-    SC028:: MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
-    SC02B:: MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
-    +\:: MouseGetPos, xBtn, yBtn ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
-    +/:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
+#IfWinActive, ahk_group Game ; <==== Main hotkeys.
+    F7::  MakeManipulation(Func("ExploreLocation").Bind("Unknown", dlOperation))
+    F8::  MakeManipulation(Func("ExploreLocation").Bind("Enemy", dlOperation))
+    F9::  MakeManipulation(Func("VehicleOrder").Bind( "Delete", dlOperation, dlCameraMove))
+    F10:: MakeManipulation(Func("VehicleOrder").Bind("Upgrade", dlOperation, dlCameraMove))
+    !C::  MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
+    !V::  MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
+    !B::  MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
+    F12:: DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
+#IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
 #If
+^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
+^F1:: ShowHelpWindow(helpText)
 !S:: Suspend
 !Z:: Reload
 !X:: ExitApp
@@ -141,6 +160,7 @@ MakeManipulation(oBoundFunc)
     ;   BlockInput On
     ; MORE PROBLEMS WITH IT
 
+    ToolTip ; Hide tooltip after ImageSearch() error
     clSz := WinGetClientSize()
 
     Critical, On
@@ -155,7 +175,7 @@ MakeManipulation(oBoundFunc)
     Critical, Off
 }
 
-ClickVehicleOrderIcon(order, dlOperation, dlCameraMove, clSz)
+VehicleOrder(order, dlOperation, dlCameraMove, clSz)
 {
     ; Click VEHICLE icon in VEHICLES MANAGEMENT window and wait for camera movement
     Click(_x, _y, , dlOperation)
@@ -165,6 +185,8 @@ ClickVehicleOrderIcon(order, dlOperation, dlCameraMove, clSz)
     ; Find bottom left corner of VEHICLE window
     ; 2 shades of variation. Using black color in images like alpha channel.
     ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryBottomLine.png", clSz)
+    if (ErrorLevel)
+        Return
     Switch order {
     Case "Upgrade":
         ; Click UPGRADE icon in VEHICLE window
@@ -179,25 +201,35 @@ ClickVehicleOrderIcon(order, dlOperation, dlCameraMove, clSz)
     Click(oVMI.x, oVMI.y, , dlOperation)
 }
 
-ExploreUnknownLocation(dlOperation, clSz)
+ExploreLocation(operation, dlOperation, clSz)
 {
     Send("Tab", dlOperation) ; Open WORLD MAP and zoom out
     Send("Click WheelDown 15", dlOperation) ; Minimum 10 notches to zoom out WORLD MAP
-    ; Find and click on UNKNOWN LOCATION ICON
-    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryUnknownLocationIcon.png", clSz)
+    ; Find and click on LOCATION ICON
+    Switch operation {
+    Case "Enemy":
+        ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLocationWithEnemyIcon.png", clSz)
+    Case "Unknown":
+        ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryUnknownLocationIcon.png", clSz)
+    Default:
+        ToolTip, % A_ThisFunc "() - No such operation: " operation
+    }
+    if (ErrorLevel)
+        Return
     Click(x, y, , dlOperation)
-    ; Find bottom left corner of UNKNOWN LOCATION window
+    ; Find bottom left corner of LOCATION window
     ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryBottomLine.png", clSz)
-    Click(x + oULI.x, y - oULI.y, , dlOperation) ; Click EXPLORE button
-    Send("Esc", dlOperation) ; Close UNKNOWN LOCATION window
+    if (ErrorLevel)
+        Return
+    Click(x + oULI.x, y - oULI.y, , dlOperation) ; Click EXPLORE/BATTLE button
+    Send("Esc", dlOperation) ; Close LOCATION window
     Send("Tab") ; Close WORLD MAP
 }
 
 BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
 {
-    ToolTip
     if (!xBtn or !yBtn) {
-        ToolTip, % "Unknown position of the DESCRIPTION BUTTON in BLUEPRINTS window.`n`nLook help [F1] for hotkey."
+        ToolTip, % "Unknown position of the DESCRIPTION BUTTON in BLUEPRINTS window.`n`nLook help [Ctrl + F1] for usage."
         Return
     }
     Click( , , , dlOperation) ; Click on blueprint under cursor
@@ -214,11 +246,19 @@ BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
         SendRaw("^v", dlOperation) ; Paste
         ; Find top left corner of APPLY CHANGES button
         ImageSearch(x, y, "CaptainOfIndustryApplyButton.png", clSz)
+        if (ErrorLevel)
+            Return
         ; Click APPLY CHANGES button
         Click(x + 10, y + 10, , dlOperation) ; Add offset of image size (10x10)
     Default:
-        ToolTip, % A_ThisFunc "() - No such operation for blueprint: " operation
+        ToolTip, % A_ThisFunc "() - No such operation: " operation
     }
+}
+
+DscrBtnSavePos(ByRef xBtn, ByRef yBtn)
+{
+    ToolTip ; Hide tooltip [if it was showed by BlueprintDescription()]
+    MouseGetPos, xBtn, yBtn
 }
 
 ;-------------------------------------------------------------
