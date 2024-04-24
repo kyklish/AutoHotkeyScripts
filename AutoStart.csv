@@ -52,7 +52,8 @@
   0,A,"D:\SERGEY\Options\Program Files\MemInfo\meminfo.exe"
   0,U,"D:\SERGEY\Options\Program Files\NegativeScreen\NegativeScreen.exe"
   0,A,"D:\SERGEY\Options\Program Files\OpenHardwareMonitor\OpenHardwareMonitor.exe"
-  0,U,"D:\SERGEY\Options\Program Files\Virtual Magnifying Glass\magnifier.exe"
+    ; Magnifying Glass capture Ctrl + Alt combination. Other programs can't call their own Ctrl + Alt combinations.
+ ;0,U,"D:\SERGEY\Options\Program Files\Virtual Magnifying Glass\magnifier.exe"
   0,U,"D:\SERGEY\Options\Program Files\Volume2\Volume2.exe"
     ;HWiNFO add sensors value to OSD MSI Afterburner:
         ;Core 0 Frequency
