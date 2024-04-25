@@ -144,27 +144,27 @@ overlay := new SearchOverlay()
 ; ~ modifier = will not screen default action of key
 
 #IfWinActive ahk_group Game
-; Modifier key ("CapsLock" in this hotkey) of RButton (RightMouseButton) must be in sync with [modifierKey] variable
-; It implements "cancel formation" logic in CalculateDots() when user release [modifierKey]
-global modifierKey := "CapsLock"
-CapsLock & RButton::DragBegin()
-CapsLock & RButton Up::DragEnd()
+    ; Modifier key ("CapsLock" in this hotkey) of RButton (RightMouseButton) must be in sync with [modifierKey] variable
+    ; It implements "cancel formation" logic in CalculateDots() when user release [modifierKey]
+    global modifierKey := "CapsLock"
+    CapsLock & RButton::DragBegin()
+    CapsLock & RButton Up::DragEnd()
 
-;-------------------------------------------------------------
-;--------------------- CIVILIAN HOTKEYS ----------------------
-;-------------------------------------------------------------
+    ;---------------------------------------------------------
+    ;----------------- CIVILIAN HOTKEYS ----------------------
+    ;---------------------------------------------------------
 
-C::DeployIdleHarvester()
-V::ResolveInvestigatedPOI()
-B::TradeRequest()
+    C::DeployIdleHarvester()
+    V::ResolveInvestigatedPOI()
+    B::TradeRequest()
 
-;-------------------------------------------------------------
-;---------------------- GENERAL HOTKEYS ----------------------
-;-------------------------------------------------------------
+    ;---------------------------------------------------------
+    ;------------------ GENERAL HOTKEYS ----------------------
+    ;---------------------------------------------------------
 
-^F1::overlay.ToggleOverlay()
-!F1::ToggleSlowMode()
-+F1::ToggleSendMode()
+    ^F1::overlay.ToggleOverlay()
+    !F1::ToggleSlowMode()
+    +F1::ToggleSendMode()
 
 #If
 ^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
