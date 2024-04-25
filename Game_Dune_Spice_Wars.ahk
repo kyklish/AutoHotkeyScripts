@@ -6,6 +6,9 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v1.0.1
+;  * Block only mouse input (no need for admin rights)
+;  * Suspend hotkey
 ; v1.0.0
 ;  + Initial release
 
@@ -42,47 +45,47 @@ global dlSlow := 500 ; sleep delay to wait some game reaction on 'Slow Mode'
 
 global isDebug = IsDebugScript()
 
-if (!isDebug) ; on Debug reload script will break debugging
-    Reload_AsAdmin() ; for BlockInput we need admin rights
+; if (!isDebug) ; on Debug reload script will break debugging
+;     Reload_AsAdmin() ; for [BlockInput, On] we need admin rights
 
 GroupAdd, Game, ahk_exe D4X.exe
 
 helpText := "
 (
-BlockInput (to prevent mouse move interfere with user input) need admin rights!
-    If script block input by mistake, press [Ctrl + Alt + Del] to unblock.
+If script blocks mouse input by mistake, press [Ctrl + Enter] to unblock.
 
-                                [CIVILIAN]
-                       Not work, when icon is shaking
-                        C = Deploy Idle Harvester
-                        V = Resolve Investigated POI
-                        B = Trade Request
+                            [CIVILIAN]
+                   Not work, when icon is shaking
+                    C = Deploy Idle Harvester
+                    V = Resolve Investigated POI
+                    B = Trade Request
 
-                                 [SCRIPT]
-                                 F1 = Show Help
-                        LeftAlt + Z =  Reload Script
-                        LeftAlt + X =    Exit Script
-                        LeftAlt + C = Suspend Script
+                             [SCRIPT]
+                   Ctrl + Enter = Unblock mouse input
+                             F1 = Show Help
+                    LeftAlt + Z =  Reload Script
+                    LeftAlt + X =    Exit Script
+                    LeftAlt + S = Suspend Script
 
-                                  [DEBUG]
-            'Overlay' shows 'ImageSearch' and 'PixelGetColor' areas.
-             Hotkeys not designed to use, when 'Overlay' is on screen.
-            'Slow Mode':
-                * decrease mouse move speed.
-                * increase sleep delay between game actions.
+                              [DEBUG]
+        'Overlay' shows 'ImageSearch' and 'PixelGetColor' areas.
+         Hotkeys not designed to use, when 'Overlay' is on screen.
+        'Slow Mode':
+            * decrease mouse move speed.
+            * increase sleep delay between game actions.
 
-                           Alt + F1 = Toggle 'Slow Mode'
-                          Ctrl + F1 = Toggle 'Overlay'
-                         Shift + F1 = Toggle 'Send Mode'
+                       Alt + F1 = Toggle 'Slow Mode'
+                      Ctrl + F1 = Toggle 'Overlay'
+                     Shift + F1 = Toggle 'Send Mode'
 
-                                [MILITARY]
-          CapsLock + RMB + Drag = Make Military Formation (UnitsByType)
+                            [MILITARY]
+      CapsLock + RMB + Drag = Make Military Formation (UnitsByType)
 
-                        [MILITARY FORMATION HELPER]
-          Move 'Melee' units on START DOT and 'Ranged' units on END DOT.
+                    [MILITARY FORMATION HELPER]
+      Move 'Melee' units on START DOT and 'Ranged' units on END DOT.
 
-           'Melee' means all units assigned to in-game '1' hotkey.
-          'Ranged' means all units assigned to in-game '2' hotkey.
+       'Melee' means all units assigned to in-game '1' hotkey.
+      'Ranged' means all units assigned to in-game '2' hotkey.
 )"
 
 ;-------------------------------------------------------------
@@ -164,10 +167,11 @@ B::TradeRequest()
 +F1::ToggleSendMode()
 
 #If
+^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
 F1::ShowHelpText(helpText)
 <!Z::Reload
 <!X::ExitApp
-<!C::
+<!S::
     Suspend
     if (toggleSuspend := !toggleSuspend)
         ShowToolTip("Script SUSPEND", 0, 0)
@@ -188,12 +192,12 @@ DeployIdleHarvester()
         return
     }
     Critical, On
-    BlockInput, On
+    BlockInput, MouseMove
     MouseGetPos, _x, _y
     Click(x + 10, y + 10, , dl) ; click in icon's center (add offset)
     Click(425, 990) ; Press [Deploy] button
     MouseMove(_x, _y)
-    BlockInput, Off
+    BlockInput, MouseMoveOff
     Critical, Off
 }
 
@@ -206,13 +210,13 @@ ResolveInvestigatedPOI()
         return
     }
     Critical, On
-    BlockInput, On
+    BlockInput, MouseMove
     MouseGetPos, _x, _y
     Click(x + 10, y + 10, , dl) ; click in icon's center (add offset)
     Click(255, 1005) ; Press  left [Resolve] button
     Click(565, 1005) ; Press right [Resolve] button
     MouseMove(_x, _y)
-    BlockInput, Off
+    BlockInput, MouseMoveOff
     Critical, Off
 }
 
@@ -225,11 +229,11 @@ TradeRequest()
         return
     }
     Critical, On
-    BlockInput, On
+    BlockInput, MouseMove
     MouseGetPos, _x, _y
     Click(x + 10, y + 10, , dl) ; click in icon's center (add offset)
     MouseMove(_x, _y)
-    BlockInput, Off
+    BlockInput, MouseMoveOff
     Critical, Off
 }
 
@@ -288,7 +292,7 @@ DragEnd()
     SetTimer, CalculateDots, Off
     if (hypotenuse != -1) { ; "cancel formation" logic, see comments in CalculateDots()
         Critical, On
-        BlockInput, On
+        BlockInput, MouseMove
         Click(x1, y1) ; deselect all (units, buildings, menu, etc...)
         ; "GUI Point" loop A_Index for dotX[] and dotY[] arrays
         Loop, % dotNum {
@@ -304,7 +308,7 @@ DragEnd()
         }
         MouseMove(x1, y1) ; restore mouse cursor original position
         SendEvent, ^a ; [Ctrl+A] select all visible units on screen
-        BlockInput, Off
+        BlockInput, MouseMoveOff
         Critical, Off
         ; Send {%modifierKey% Up} ; Possibly prevents "stuck down" modifier key (read BlockInput in AutoHotKey.chm).
     }
