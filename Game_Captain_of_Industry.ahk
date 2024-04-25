@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.3.2
+;  + Tooltip on script's suspend
 ; v2.3.1
 ;  * Make global hotkey to unblock mouse
 ; v2.3.0
@@ -141,9 +143,15 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
 #If
 ^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
 ^F1:: ShowHelpWindow(helpText)
-!S:: Suspend
 !Z:: Reload
 !X:: ExitApp
+!S::
+    Suspend
+    if (toggleSuspend := !toggleSuspend)
+        ToolTip, % "Script SUSPEND", 0, 0
+    else
+        ToolTip
+return
 
 ;-------------------------------------------------------------
 ;------------------------- GAME CODE -------------------------
