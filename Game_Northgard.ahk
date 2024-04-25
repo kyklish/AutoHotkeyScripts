@@ -6,6 +6,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v1.2.7
+;  + Add hotkey to unblock mouse input
 ; v1.2.6
 ;  * Block only mouse input (no need for admin rights)
 ;  * Suspend hotkey
@@ -117,6 +119,7 @@ helpText := "
          Shift + F1 = Show Help 2  | LeftAlt + Z =  Reload Script
                 F10 = Show Help 1  | LeftAlt + X =    Exit Script
         Shift + F10 = Show Help 2  | LeftAlt + S = Suspend Script
+                      Ctrl + Enter = Unblock mouse input
 
                                 [DEBUG]
        'Overlay' shows 'ImageSearch' and 'PixelGetColor' search areas.
@@ -248,6 +251,7 @@ CreateDots()
 ;---------------------- GENERAL HOTKEYS ----------------------
 ;-------------------------------------------------------------
 
+^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
 F1::ShowHelpImage("NorthgardHotKeys.png")
 +F1::ShowHelpText(helpText)
 <!Z::Reload
