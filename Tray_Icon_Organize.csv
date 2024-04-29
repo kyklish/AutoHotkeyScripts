@@ -26,7 +26,7 @@
 "ClickMonitorDDC.exe"
 "Volume2.exe"
 ;-----------------
-"dexpot.exe","Dexpot - Virtual desktops"
+;"dexpot.exe","Dexpot - Virtual desktops"
 "Mahou.exe"
 ;"GXStandard16in1.exe","16-in-One"
 ; Action Center не сразу появляется после старта Windows
