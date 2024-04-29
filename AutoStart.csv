@@ -23,7 +23,7 @@
     ;Windows Gadgets - self restore in autostart registry key
  ;0,U,"C:\Program Files\Windows Sidebar\sidebar.exe","/autoRun"
     ;Dexpot is have same functionality as AutoSizer.
- ;0,U,"C:\Program Files (x86)\AutoSizer\AutoSizer.exe"
+  0,U,"C:\Program Files (x86)\AutoSizer\AutoSizer.exe"
  ;0,U,"C:\Program Files (x86)\Codebox\BitMeter\BitMeter2.exe"
  ;0,U,"C:\Program Files (x86)\Dropbox\Client\Dropbox.exe"
  ;0,A,"C:\Program Files (x86)\KillSoft\HKM\hkm.exe"
@@ -50,7 +50,7 @@
   0,U,"D:\SERGEY\Options\Program Files\Gridy\Gridy.exe"
   0,U,"D:\SERGEY\Options\Program Files\Mahou\Mahou.exe"
   0,A,"D:\SERGEY\Options\Program Files\MemInfo\meminfo.exe"
-  0,U,"D:\SERGEY\Options\Program Files\NegativeScreen\NegativeScreen.exe"
+ ;0,U,"D:\SERGEY\Options\Program Files\NegativeScreen\NegativeScreen.exe"
   0,A,"D:\SERGEY\Options\Program Files\OpenHardwareMonitor\OpenHardwareMonitor.exe"
     ; Magnifying Glass capture Ctrl + Alt combination. Other programs can't call their own Ctrl + Alt combinations.
  ;0,U,"D:\SERGEY\Options\Program Files\Virtual Magnifying Glass\magnifier.exe"
