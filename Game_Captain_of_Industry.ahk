@@ -9,6 +9,9 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.5.1
+;  ! Copy blueprint description
+;  ! Stop on defeat battle result
 ; v2.5.0
 ;  + Explore unknown location with green icon
 ; v2.4.0
@@ -222,7 +225,7 @@ BattleCloseVictoryResult(dlOperation, clSz)
 {
     ImageSearch(x, y, "CaptainOfIndustryBattleDefeat.png", clSz, false)
     if (!ErrorLevel) ; Defeat result was found
-        Return := true
+        Return true
     ImageSearch(x, y, "CaptainOfIndustryBattleVictory.png", clSz, false)
     if (!ErrorLevel) ; Victory result was found
         Click(x + oBB.x, y + oBB.y, , dlOperation) ; Click BACK button
@@ -268,7 +271,13 @@ BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
         Return
     }
     Click( , , , dlOperation) ; Click on blueprint under cursor
-    Click(xBtn, yBtn, , dlOperation) ; Click DESCRIPTION button
+    ; Move mouse to DESCRIPTION button and wait. Why? Because if description
+    ; tooltip from BLUEPRINT covers DESCRIPTION button [Click()] function moves
+    ; cursor instantly and clicks on tooltip instead of button! So MOVE, WAIT
+    ; tooltip from description to disappear, CLICK on button. This scenario is
+    ; for COPY operation.
+    MouseMove(xBtn, yBtn, dlOperation) ; Move to DESCRIPTION button
+    Click( , , , dlOperation) ; Click DESCRIPTION button
     Click(clSz.w / 2, clSz.h / 2, , dlOperation) ; Click in the center of the screen
     SendRaw("^a", dlOperation) ; Select all
     Switch operation {
@@ -321,6 +330,12 @@ Click(x := "", y := "", whichButton := "", delay := -1)
         SendEvent, {Click %x% %y% %whichButton%}
     if (delay != -1)
         Sleep, %delay%
+}
+
+MouseMove(xBtn, yBtn, delay)
+{
+    MouseMove, %xBtn%, %yBtn%
+    Sleep, %delay%
 }
 
 Send(key, delay := -1)
