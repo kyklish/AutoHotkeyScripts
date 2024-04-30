@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.5.0
+;  + Explore unknown location with green icon
 ; v2.4.0
 ;  + Close battle result on victory before exploration
 ; v2.3.2
@@ -64,7 +66,7 @@ Set your [User Interface Scale] ratio to [uiScale] variable, default 100%!
 
           F1 -> Show help (when game not on screen).
    Ctrl + F1 -> Show help.
-          F7 -> WORLD MAP: quick EXPLORE unknown location.
+          F7 -> WORLD MAP: quick EXPLORE unknown location (grey, then green).
           F8 -> WORLD MAP: quick EXPLORE location with enemy.
           F9 -> VEHICLE:   quick DELETE.
          F10 -> VEHICLE:   quick UPGRADE.
@@ -241,7 +243,9 @@ ExploreLocation(operation, dlOperation, clSz)
     Case "Enemy":
         ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLocationWithEnemyIcon.png", clSz)
     Case "Unknown":
-        ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLocationUnknownIcon.png", clSz)
+        ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLocationUnknownIconGrey.png", clSz, false)
+        if (ErrorLevel) ; There are no grey unknown locations, search green
+            ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLocationUnknownIconGreen.png", clSz)
     Default:
         ToolTip, % A_ThisFunc "() - No such operation: " operation
     }
