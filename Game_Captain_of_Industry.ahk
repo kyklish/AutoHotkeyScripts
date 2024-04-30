@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.4.0
+;  + Close battle result on victory before exploration
 ; v2.3.2
 ;  + Tooltip on script's suspend
 ; v2.3.1
@@ -86,7 +88,8 @@ Usage VEHICLE DELETE/UPGRADE:
 
 Usage WORLD MAP EXPLORE/BATTLE:
     - WORLD MAP must be closed.
-    - press hotkey to explore/battle.
+    - press hotkey to explore/battle (automatically close victory result before
+      explore/battle).
 
 Usage BLUEPRINT COPY/PASTE:
     - put mouse cursor on DESCRIPTION BUTTON and press hotkey to save it's
@@ -122,10 +125,14 @@ global oOIC := { 0:0
 ; VEHICLE WINDOW ORDERS ICONS ROW (39x39): relative to bottom left corner of VEHICLE WINDOW
 global oOIR := { 0:0
     , y: 114 * uiScale // 100 }
-; UNKNOWN LOCATION EXPLORE BUTTON: relative to bottom left corner of UNKNOWN LOCATION WINDOW
-global oULI  := { 0:0
+; EXPLORE/BATTLE BUTTON: relative to bottom left corner of UNKNOWN LOCATION WINDOW and BATTLE WINDOW
+global oEBB  := { 0:0
     , x: 123 * uiScale // 100
     , y:  26 * uiScale // 100 }
+; BACK BUTTON: relative to top left corner of GREEN or RED line in BATTLE RESULT WINDOW
+global oBB  := { 0:0
+    , x: 200 * uiScale // 100
+    , y: 160 * uiScale // 100 }
 
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
@@ -209,16 +216,32 @@ VehicleOrder(order, dlOperation, dlCameraMove, clSz)
     Click(oVMI.x, oVMI.y, , dlOperation)
 }
 
+BattleCloseVictoryResult(dlOperation, clSz)
+{
+    ImageSearch(x, y, "CaptainOfIndustryBattleDefeat.png", clSz, false)
+    if (!ErrorLevel) ; Defeat result was found
+        Return := true
+    ImageSearch(x, y, "CaptainOfIndustryBattleVictory.png", clSz, false)
+    if (!ErrorLevel) ; Victory result was found
+        Click(x + oBB.x, y + oBB.y, , dlOperation) ; Click BACK button
+}
+
 ExploreLocation(operation, dlOperation, clSz)
 {
-    Send("Tab", dlOperation) ; Open WORLD MAP and zoom out
+    Send("Tab", dlOperation) ; Open WORLD MAP
+    bDefeat := BattleCloseVictoryResult(dlOperation, clSz)
+    if (bDefeat)
+        ; Exit immediately and do nothing.
+        ; User must see defeat result or he/she will endlessly send ship into
+        ; battle without knowing, that his/her ship can't win.
+        Return
     Send("Click WheelDown 15", dlOperation) ; Minimum 10 notches to zoom out WORLD MAP
     ; Find and click on LOCATION ICON
     Switch operation {
     Case "Enemy":
         ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLocationWithEnemyIcon.png", clSz)
     Case "Unknown":
-        ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryUnknownLocationIcon.png", clSz)
+        ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLocationUnknownIcon.png", clSz)
     Default:
         ToolTip, % A_ThisFunc "() - No such operation: " operation
     }
@@ -229,7 +252,7 @@ ExploreLocation(operation, dlOperation, clSz)
     ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryBottomLine.png", clSz)
     if (ErrorLevel)
         Return
-    Click(x + oULI.x, y - oULI.y, , dlOperation) ; Click EXPLORE/BATTLE button
+    Click(x + oEBB.x, y - oEBB.y, , dlOperation) ; Click EXPLORE/BATTLE button
     Send("Esc", dlOperation) ; Close LOCATION window
     Send("Tab") ; Close WORLD MAP
 }
@@ -273,10 +296,10 @@ DscrBtnSavePos(ByRef xBtn, ByRef yBtn)
 ;----------------------- GENERAL CODE ------------------------
 ;-------------------------------------------------------------
 
-ImageSearch(ByRef x, ByRef y, imageFile, wndSize)
+ImageSearch(ByRef x, ByRef y, imageFile, wndSize, bShowError := true)
 {
     ImageSearch, x, y, 0, 0, % wndSize.w, % wndSize.h, % imageFile
-    if (ErrorLevel) {
+    if (ErrorLevel && bShowError) {
         ToolTip, % A_ThisFunc . "() - can't find image: " . imageFile, 0, 0
         SoundBeep
     }
