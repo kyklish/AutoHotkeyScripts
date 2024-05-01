@@ -322,7 +322,7 @@ Click(x := "", y := "", whichButton := "", delay := -1)
 {
     if ((x and !y) or (!x and y)) {
         ToolTip, % A_ThisFunc "(X, Y) - undefined X or Y parameter", 0, 0
-        return
+        Return
     }
     if (bSendInput)
         SendInput, {Click %x% %y% %whichButton%}
@@ -332,10 +332,15 @@ Click(x := "", y := "", whichButton := "", delay := -1)
         Sleep, %delay%
 }
 
-MouseMove(xBtn, yBtn, delay)
+MouseMove(x := "", y := "", delay := -1)
 {
-    MouseMove, %xBtn%, %yBtn%
-    Sleep, %delay%
+    if (!x or !y) {
+        ToolTip, % A_ThisFunc "(X, Y) - undefined X or Y parameter", 0, 0
+        Return
+    }
+    MouseMove, %x%, %y%
+    if (delay != -1)
+        Sleep, %delay%
 }
 
 Send(key, delay := -1)
