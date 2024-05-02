@@ -9,6 +9,9 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.5.2
+;  * Smaller location icons
+;  ! Fix green location not explored
 ; v2.5.1
 ;  ! Copy blueprint description
 ;  ! Stop on defeat battle result
