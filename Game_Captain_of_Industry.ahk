@@ -9,6 +9,10 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.6.0
+;  + New hotkey to show vehicles management window
+;  + New hotkey to show statistics
+;  + New hotkey to delete/upgrade vehicle on mine control tower
 ; v2.5.2
 ;  * Smaller location icons
 ;  ! Fix green location not explored
@@ -68,30 +72,54 @@ SetKeyDelay, -1, 25
 
 helpText := "
 (
-Set your [User Interface Scale] ratio to [uiScale] variable, default 100%!
+Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%)!
 
           F1 -> Show help (when game not on screen).
-   Ctrl + F1 -> Show help.
-          F7 -> WORLD MAP: quick EXPLORE unknown location (grey, then green).
+   Ctrl + F1 -> Show help (in-game).
+          F7 -> WORLD MAP: quick EXPLORE unknown location (first GREY then GREEN).
           F8 -> WORLD MAP: quick EXPLORE location with enemy.
           F9 -> VEHICLE:   quick DELETE.
          F10 -> VEHICLE:   quick UPGRADE.
+ Shift +  F9 -> VEHICLE (MINE CONTROL TOWER): quick DELETE
+ Shift + F10 -> VEHICLE (MINE CONTROL TOWER): quick UPGRADE
      Alt + C -> BLUEPRINT:  copy description text.
      Alt + V -> BLUEPRINT: paste description text and save it.
      Alt + B -> BLUEPRINT: paste description text.
          F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON.
+   Space + Q -> Show VEHICLES MANAGEMENT window.
+   Space + W -> Show STATISTICS window for product under cursor.
 Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
      Alt + S -> Suspend Script (disable all hotkeys).
      Alt + Z ->  Reload Script.
      Alt + X ->    Exit Script.
 
+Useful tips:
+    - maximum zoom in for better performance when using VEHICLES DELETE/UPGRADE.
+    - tilt camera to top view (the script assumes that vehicle/building will be
+      placed in the center of the screen when camera moves to it) to prevent
+      miss-clicks at the vehicle/building. When the camera is looking at an
+      angle, vehicle may be hidden behind a building or have an offset in up
+      direction on big camera angles.
+    - increase delay between manipulations [dlOperation] and [dlCameraMove] for
+      better reliability.
+    - reload the script to remove tooltip with error.
+
 Usage VEHICLE DELETE/UPGRADE:
-    - maximum zoom in for better performance.
-    - tilt camera to top view (vehicle will be placed in the center of screen).
+    - set game on pause
     - open VEHICLES MANAGEMENT window.
     - point mouse cursor on VEHICLE icon.
     - press hotkey to upgrade/delete vehicle.
     - wait until VEHICLES MANAGEMENT window opens again.
+    - press hotkey to upgrade/delete next vehicle, repeat.
+
+Usage VEHICLE DELETE/UPGRADE (MINE CONTROL TOWER):
+    - set game on pause
+    - place MINE CONTROL TOWER or ANY BUILDING with vehicles icons in the center
+      of the screen and SAVE CAMERA POSITION 1 with hotkey [4].
+    - open MINE CONTROL TOWER or ANY BUILDING window by click on it.
+    - point mouse cursor on VEHICLE icon.
+    - press hotkey to upgrade/delete vehicle.
+    - wait until MINE CONTROL TOWER or ANY BUILDING window opens again.
     - press hotkey to upgrade/delete next vehicle, repeat.
 
 Usage WORLD MAP EXPLORE/BATTLE:
@@ -103,14 +131,6 @@ Usage BLUEPRINT COPY/PASTE:
     - put mouse cursor on DESCRIPTION BUTTON and press hotkey to save it's
       position (it has different position for FILE and FOLDER!).
     - put mouse cursor over desired blueprint and press desired hotkey.
-
-Tips:
-    - make the camera view from above (top view) so there is less miss-clicks
-      at the vehicles. When the camera is looking at an angle, the car may be
-      hidden behind a building or just have offset on big camera angles.
-    - increase delay between manipulations [dlOperation] and [dlCameraMove] for
-      better reliability.
-    - reload the script to remove tooltip with error.
 )"
 
 ;@AHK++AlignAssignmentOn
@@ -145,14 +165,19 @@ global oBB  := { 0:0
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
 #IfWinActive, ahk_group Game ; <==== Main hotkeys.
-    F7::  MakeManipulation(Func("ExploreLocation").Bind("Unknown", dlOperation))
-    F8::  MakeManipulation(Func("ExploreLocation").Bind("Enemy", dlOperation))
-    F9::  MakeManipulation(Func("VehicleOrder").Bind( "Delete", dlOperation, dlCameraMove))
-    F10:: MakeManipulation(Func("VehicleOrder").Bind("Upgrade", dlOperation, dlCameraMove))
-    !C::  MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
-    !V::  MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
-    !B::  MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
-    F12:: DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
+    $Space:: Send("Space") ; Unblock modifier [Space] key
+    Space & Q::   MakeManipulation(Func("VehicleManagement").Bind(dlOperation)) ; Show VEHICLES MANAGEMENT window
+    Space & E::   MakeManipulation(Func("Statistics").Bind(dlOperation)) ; Show STATISTICS window
+    F7::   MakeManipulation(Func("ExploreLocation").Bind("Unknown", dlOperation))
+    F8::   MakeManipulation(Func("ExploreLocation").Bind("Enemy", dlOperation))
+    F9::   MakeManipulation(Func("VehicleOrder").Bind( "Delete", "VehiclesManagement", dlOperation, dlCameraMove))
+    F10::  MakeManipulation(Func("VehicleOrder").Bind("Upgrade", "VehiclesManagement", dlOperation, dlCameraMove))
+    +F9::  MakeManipulation(Func("VehicleOrder").Bind( "Delete", "CameraPosition1", dlOperation, dlCameraMove))
+    +F10:: MakeManipulation(Func("VehicleOrder").Bind("Upgrade", "CameraPosition1", dlOperation, dlCameraMove))
+    !C::   MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
+    !V::   MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
+    !B::   MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
+    F12::  DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
 #If
@@ -198,11 +223,33 @@ MakeManipulation(oBoundFunc)
     Critical, Off
 }
 
-VehicleOrder(order, dlOperation, dlCameraMove, clSz)
+Statistics(dlOperation, clSz)
 {
-    ; Click VEHICLE icon in VEHICLES MANAGEMENT window and wait for camera movement
-    Click(_x, _y, , dlOperation)
-    Send("Esc", dlCameraMove) ; Close VEHICLES MANAGEMENT window
+    Click( , , "Right", dlOperation) ; Click on product under cursor to show RECIPES
+    Sleep, % dlOperation / 2 ; Sometime RECIPES windows lags, add additional delay
+    ImageSearch(x, y, "CaptainOfIndustryStatisticsButton.png", clSz) ; Search STATISTICS icon
+    if (ErrorLevel)
+        Return
+    ; Click on STATISTICS icon
+    Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
+}
+
+VehicleManagement(dlOperation, clSz)
+{
+    ; Delay important here! Game read cursor position with delay. If it moves
+    ; instantly, game accept click and after delay read position which will be
+    ; restored instantly.
+    Click(oVMI.x, oVMI.y, , dlOperation) ; Show VEHICLES MANAGEMENT window
+}
+
+VehicleOrder(order, window, dlOperation, dlCameraMove, clSz)
+{
+    ; Click VEHICLE icon under cursor in VEHICLES MANAGEMENT window or
+    ; MINE CONTROL TOWER window
+    Click(, , , dlOperation)
+    ; Close VEHICLES MANAGEMENT window or MINE CONTROL TOWER window and wait for
+    ; camera movement
+    Send("Esc", dlCameraMove)
     ; Click on VEHICLE in the center of the screen: opens VEHICLE window
     Click(clSz.w / 2, clSz.h / 2, , dlOperation)
     ; Find bottom left corner of VEHICLE window
@@ -220,8 +267,18 @@ VehicleOrder(order, dlOperation, dlCameraMove, clSz)
     Default:
         MsgBox % A_ThisFunc "() - No such order for vehicle: " order
     }
-    ; Open VEHICLES MANAGEMENT window: returns to start position
-    Click(oVMI.x, oVMI.y, , dlOperation)
+    ; Return to start position
+    Switch window {
+    Case "VehiclesManagement":
+        ; Open VEHICLES MANAGEMENT window
+        Click(oVMI.x, oVMI.y, , dlOperation)
+    Case "CameraPosition1":
+        Send("4", dlCameraMove) ; Jump to saved CAMERA POSITION 1 (Hotkey [4])
+        ; Click on building in the center of the screen
+        Click(clSz.w / 2, clSz.h / 2, , dlOperation)
+    Default:
+        MsgBox % A_ThisFunc "() - No such window with vehicles: " window
+    }
 }
 
 BattleCloseVictoryResult(dlOperation, clSz)
@@ -296,7 +353,7 @@ BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
         if (ErrorLevel)
             Return
         ; Click APPLY CHANGES button
-        Click(x + 10, y + 10, , dlOperation) ; Add offset of image size (10x10)
+        Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
     Default:
         ToolTip, % A_ThisFunc "() - No such operation: " operation
     }
@@ -388,15 +445,16 @@ WinGetClientSize()
 ShowHelpWindow(ByRef str := "")
 {
     static bToggle
-    iCharWidth := 9 ;ширина символа по умолчанию
-    iPadding := 10 ;отступ текста от края окна, которое делает AutoHotkey
+    ; iCharWidth := 9 ; char width by default
+    iCharWidth := 7 ; char width [fs10]
+    iPadding := 10 ; text margin from the edge of the window
 
     if (bToggle := !bToggle) {
         Loop, Parse, str, `n, `r
             if (width < StrLen(A_LoopField))
                 width := StrLen(A_LoopField)
         width := width * iCharWidth + 2 * iPadding
-        Progress, zh0 b2 c0 w%width%, %str%, , , Consolas
+        Progress, fs10 zh0 b2 c0 w%width%, %str%, , , Consolas
     }
     else
         Progress, Off
