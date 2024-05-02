@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.6.1
+;  ! Fix typo in help message
 ; v2.6.0
 ;  + New hotkey to show vehicles management window
 ;  + New hotkey to show statistics
@@ -115,7 +117,7 @@ Usage VEHICLE DELETE/UPGRADE:
 Usage VEHICLE DELETE/UPGRADE (MINE CONTROL TOWER):
     - set game on pause
     - place MINE CONTROL TOWER or ANY BUILDING with vehicles icons in the center
-      of the screen and SAVE CAMERA POSITION 1 with hotkey [4].
+      of the screen and SAVE CAMERA POSITION 1 with hotkey [Ctrl + 4].
     - open MINE CONTROL TOWER or ANY BUILDING window by click on it.
     - point mouse cursor on VEHICLE icon.
     - press hotkey to upgrade/delete vehicle.
