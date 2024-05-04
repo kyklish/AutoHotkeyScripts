@@ -9,6 +9,11 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.6.2
+;  + New hotkey to send vehicle near mine control tower
+;  ! Statistics window was not open when recipes window was scrolled down
+;  ! Wrong hotkey in help text
+;  ! Not reliable click on vehicle order icon
 ; v2.6.1
 ;  ! Fix typo in help message
 ; v2.6.0
@@ -69,7 +74,7 @@ CoordMode,   Mouse, Client
 CoordMode, ToolTip, Client
 
 SetDefaultMouseSpeed, 0
-SetMouseDelay, -1
+SetMouseDelay, 25
 SetKeyDelay, -1, 25
 
 helpText := "
@@ -84,16 +89,27 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
          F10 -> VEHICLE:   quick UPGRADE.
  Shift +  F9 -> VEHICLE (MINE CONTROL TOWER): quick DELETE
  Shift + F10 -> VEHICLE (MINE CONTROL TOWER): quick UPGRADE
+ Shift + F11 -> VEHICLE (MINE CONTROL TOWER): quick NAVIGATE
      Alt + C -> BLUEPRINT:  copy description text.
      Alt + V -> BLUEPRINT: paste description text and save it.
      Alt + B -> BLUEPRINT: paste description text.
          F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON.
    Space + Q -> Show VEHICLES MANAGEMENT window.
-   Space + W -> Show STATISTICS window for product under cursor.
+   Space + W -> Show RECIPES window.
+   Space + E -> Show STATISTICS window for product under cursor.
 Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
      Alt + S -> Suspend Script (disable all hotkeys).
      Alt + Z ->  Reload Script.
      Alt + X ->    Exit Script.
+
+Quick VEHICLE NAVIGATE with MINE CONTROL TOWER: if there no mining all TRUCKs
+    gather up near MINE CONTROL TOWER and EXCAVATORs stay inside MANAGED AREA,
+    so they stay in mine (quarry). To move them back to MINE CONTROL TOWER you
+    need EDIT AREA: place new MANAGED AREA near MINE CONTROL TOWER. Then make
+    mining designations and again EDIT AREA to begin deeper mining. Instead you
+    can navigate your EXCAVATORS to left side of MINE CONTROL TOWER and begin
+    design you next deeper mining. EXCAVATORs will not start mining until they
+    reach their destination.
 
 Useful tips:
     - maximum zoom in for better performance when using VEHICLES DELETE/UPGRADE.
@@ -114,15 +130,15 @@ Usage VEHICLE DELETE/UPGRADE:
     - wait until VEHICLES MANAGEMENT window opens again.
     - press hotkey to upgrade/delete next vehicle, repeat.
 
-Usage VEHICLE DELETE/UPGRADE (MINE CONTROL TOWER):
+Usage VEHICLE DELETE/UPGRADE/NAVIGATE (MINE CONTROL TOWER):
     - set game on pause
     - place MINE CONTROL TOWER or ANY BUILDING with vehicles icons in the center
       of the screen and SAVE CAMERA POSITION 1 with hotkey [Ctrl + 4].
     - open MINE CONTROL TOWER or ANY BUILDING window by click on it.
     - point mouse cursor on VEHICLE icon.
-    - press hotkey to upgrade/delete vehicle.
+    - press hotkey to upgrade/delete/navigate vehicle.
     - wait until MINE CONTROL TOWER or ANY BUILDING window opens again.
-    - press hotkey to upgrade/delete next vehicle, repeat.
+    - press hotkey to upgrade/delete/navigate next vehicle, repeat.
 
 Usage WORLD MAP EXPLORE/BATTLE:
     - WORLD MAP must be closed.
@@ -150,8 +166,10 @@ global oVMI  := { 0:0
     , y:  45 * uiScale // 100 }
 ; VEHICLE WINDOW ORDERS ICONS COL (39x39): relative to bottom left corner of VEHICLE WINDOW
 global oOIC := { 0:0
-    , xDelete:   39 * uiScale // 100
-    , xUpgrade: 189 * uiScale // 100 }
+    , xDelete:    39 * uiScale // 100
+    , xRecover:   89 * uiScale // 100
+    , xNavigate: 139 * uiScale // 100
+    , xUpgrade:  189 * uiScale // 100 }
 ; VEHICLE WINDOW ORDERS ICONS ROW (39x39): relative to bottom left corner of VEHICLE WINDOW
 global oOIR := { 0:0
     , y: 114 * uiScale // 100 }
@@ -168,14 +186,16 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
 
 #IfWinActive, ahk_group Game ; <==== Main hotkeys.
     $Space:: Send("Space") ; Unblock modifier [Space] key
-    Space & Q::   MakeManipulation(Func("VehicleManagement").Bind(dlOperation)) ; Show VEHICLES MANAGEMENT window
-    Space & E::   MakeManipulation(Func("Statistics").Bind(dlOperation)) ; Show STATISTICS window
+    Space & Q:: MakeManipulation(Func("VehicleManagement").Bind(dlOperation)) ; Show VEHICLES MANAGEMENT window
+    Space & W:: Send("o") ; Open RECIPES window
+    Space & E:: MakeManipulation(Func("Statistics").Bind(dlOperation)) ; Show STATISTICS window
     F7::   MakeManipulation(Func("ExploreLocation").Bind("Unknown", dlOperation))
     F8::   MakeManipulation(Func("ExploreLocation").Bind("Enemy", dlOperation))
     F9::   MakeManipulation(Func("VehicleOrder").Bind( "Delete", "VehiclesManagement", dlOperation, dlCameraMove))
     F10::  MakeManipulation(Func("VehicleOrder").Bind("Upgrade", "VehiclesManagement", dlOperation, dlCameraMove))
-    +F9::  MakeManipulation(Func("VehicleOrder").Bind( "Delete", "CameraPosition1", dlOperation, dlCameraMove))
-    +F10:: MakeManipulation(Func("VehicleOrder").Bind("Upgrade", "CameraPosition1", dlOperation, dlCameraMove))
+    +F9::  MakeManipulation(Func("VehicleOrder").Bind(  "Delete", "CameraPosition1", dlOperation, dlCameraMove))
+    +F10:: MakeManipulation(Func("VehicleOrder").Bind( "Upgrade", "CameraPosition1", dlOperation, dlCameraMove))
+    +F11:: MakeManipulation(Func("VehicleOrder").Bind("Navigate", "CameraPosition1", dlOperation, dlCameraMove))
     !C::   MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
     !V::   MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
     !B::   MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
@@ -228,10 +248,19 @@ MakeManipulation(oBoundFunc)
 Statistics(dlOperation, clSz)
 {
     Click( , , "Right", dlOperation) ; Click on product under cursor to show RECIPES
-    Sleep, % dlOperation / 2 ; Sometime RECIPES windows lags, add additional delay
-    ImageSearch(x, y, "CaptainOfIndustryStatisticsButton.png", clSz) ; Search STATISTICS icon
-    if (ErrorLevel)
-        Return
+    ImageSearch(x, y, "CaptainOfIndustryStatisticsButton.png", clSz, false) ; Search STATISTICS icon
+    if (ErrorLevel) {
+        ; RECIPES window lags or was scrolled down before, STATISTICS icon not
+        ; visible.
+        ; Mouse [WheelUp] command will be received by window under cursor, so
+        ; move cursor to the center of the screen with delay.
+        ; Delay will handle the case of a lagged window.
+        MouseMove(clSz.w / 2, clSz.h / 2, dlOperation)
+        Send("Click WheelUp 50", dlOperation) ; Minimum 30 notches to scroll RECIPES window
+        ImageSearch(x, y, "CaptainOfIndustryStatisticsButton.png", clSz) ; Search STATISTICS icon
+        if (ErrorLevel)
+            Return
+    }
     ; Click on STATISTICS icon
     Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
 }
@@ -263,6 +292,12 @@ VehicleOrder(order, window, dlOperation, dlCameraMove, clSz)
     Case "Upgrade":
         ; Click UPGRADE icon in VEHICLE window
         Click(x + oOIC.xUpgrade, y - oOIR.y, , dlOperation)
+    Case "Recover":
+        ; Click RECOVER icon in VEHICLE window
+        Click(x + oOIC.xRecover, y - oOIR.y, , dlOperation)
+    Case "Navigate":
+        ; Click NAVIGATE icon in VEHICLE window
+        Click(x + oOIC.xNavigate, y - oOIR.y, , dlOperation)
     Case "Delete":
         ; Click DELETE icon in VEHICLE window
         Click(x + oOIC.xDelete, y - oOIR.y, , dlOperation)
@@ -276,6 +311,9 @@ VehicleOrder(order, window, dlOperation, dlCameraMove, clSz)
         Click(oVMI.x, oVMI.y, , dlOperation)
     Case "CameraPosition1":
         Send("4", dlCameraMove) ; Jump to saved CAMERA POSITION 1 (Hotkey [4])
+        if (order == "Navigate") { ; Click to the left of the building
+            Click(clSz.w / 4, clSz.h / 2, , dlOperation)
+        }
         ; Click on building in the center of the screen
         Click(clSz.w / 2, clSz.h / 2, , dlOperation)
     Default:
