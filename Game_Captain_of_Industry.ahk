@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.8.0
+;  + New hotkey to quick delete storage with product under cursor
 ; v2.7.0
 ;  - Delete/upgrade/navigate vehicle on mine control tower (not working) because
 ;    building always points out to first vehicle, not cycle them like vehicle
@@ -98,6 +100,7 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
    Space + Q -> Show VEHICLES MANAGEMENT window.
    Space + W -> Show RECIPES window.
    Space + E -> Show STATISTICS window for product under cursor.
+ Shift + Del -> Quick delete storage with product (empty with Unity) under cursor.
 Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
      Alt + S -> Suspend Script (disable all hotkeys).
      Alt + Z ->  Reload Script.
@@ -131,6 +134,12 @@ Usage BLUEPRINT COPY/PASTE:
     - put mouse cursor on DESCRIPTION BUTTON and press hotkey to save it's
       position (it has different position for FILE and FOLDER!).
     - put mouse cursor over desired blueprint and press desired hotkey.
+
+Usage STORAGE WITH PRODUCT DELETE:
+    - using DEMOLISH tool mark storages to delete.
+    - point mouse cursor on storage building.
+    - press hotkey to quickly remove product with UNITY.
+    - repeat on next storage.
 )"
 
 ;@AHK++AlignAssignmentOn
@@ -178,6 +187,7 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !C::        MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
     !V::        MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
     !B::        MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
+    +Del::      MakeManipulation(Func("StorageWithProductDelete").Bind(dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
@@ -372,6 +382,21 @@ DscrBtnSavePos(ByRef xBtn, ByRef yBtn)
 {
     ToolTip ; Hide tooltip [if it was showed by BlueprintDescription()]
     MouseGetPos, xBtn, yBtn
+}
+
+StorageWithProductDelete(dlOperation, clSz)
+{
+    ; When you try delete storage with product it will not deconstruct, but
+    ; instead it queue deconstruction and remove assigned product (which enable
+    ; QUICK REMOVE button) additionally set KEEP EMPTY status.
+    Click( , , , dlOperation) ; Click building under cursor to open it's window
+    ; Search top left corner of the first black button (it will be QUICK REMOVE with Unity)
+    ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", clSz)
+    if (ErrorLevel)
+        Return
+    ; Click on QUICK REMOVE button
+    Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
+    Send("Esc") ; Close window
 }
 
 ;-------------------------------------------------------------
