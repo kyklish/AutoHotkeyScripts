@@ -227,7 +227,9 @@ MakeManipulation(oBoundFunc)
 Statistics(dlOperation, clSz)
 {
     Click( , , "Right", dlOperation) ; Click on product under cursor to show RECIPES
-    ImageSearch(x, y, "CaptainOfIndustryStatisticsButton.png", clSz, false) ; Search STATISTICS icon
+    ; Search top left corner of the STATISTICS button (disable error, because
+    ; button may be not visible)
+    ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", clSz, false)
     if (ErrorLevel) {
         ; RECIPES window lags or was scrolled down before, STATISTICS icon not
         ; visible.
@@ -236,11 +238,12 @@ Statistics(dlOperation, clSz)
         ; Delay will handle the case of a lagged window.
         MouseMove(clSz.w / 2, clSz.h / 2, dlOperation)
         Send("Click WheelUp 50", dlOperation) ; Minimum 30 notches to scroll RECIPES window
-        ImageSearch(x, y, "CaptainOfIndustryStatisticsButton.png", clSz) ; Search STATISTICS icon
+        ; Search top left corner of the STATISTICS button
+        ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", clSz)
         if (ErrorLevel)
             Return
     }
-    ; Click on STATISTICS icon
+    ; Click on STATISTICS button
     Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
 }
 
@@ -256,7 +259,7 @@ VehicleOrder(order, dlOperation, dlCameraMove, clSz)
 {
     ; Click VEHICLE icon under cursor in VEHICLES MANAGEMENT window or
     ; MINE CONTROL TOWER window
-    Click(, , , dlOperation)
+    Click( , , , dlOperation)
     ; Close VEHICLES MANAGEMENT window or MINE CONTROL TOWER window and wait for
     ; camera movement
     Send("Esc", dlCameraMove)
@@ -264,7 +267,7 @@ VehicleOrder(order, dlOperation, dlCameraMove, clSz)
     Click(clSz.w / 2, clSz.h / 2, , dlOperation)
     ; Find bottom left corner of VEHICLE window
     ; 2 shades of variation. Using black color in images like alpha channel.
-    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryBottomLine.png", clSz)
+    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLineBottom.png", clSz)
     if (ErrorLevel)
         Return
     Switch order {
@@ -322,7 +325,7 @@ ExploreLocation(operation, dlOperation, clSz)
         Return
     Click(x, y, , dlOperation)
     ; Find bottom left corner of LOCATION window
-    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryBottomLine.png", clSz)
+    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLineBottom.png", clSz)
     if (ErrorLevel)
         Return
     Click(x + oEBB.x, y - oEBB.y, , dlOperation) ; Click EXPLORE/BATTLE button
@@ -354,8 +357,8 @@ BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
         SendRaw("^v") ; Paste
     Case "PasteSave":
         SendRaw("^v", dlOperation) ; Paste
-        ; Find top left corner of APPLY CHANGES button
-        ImageSearch(x, y, "CaptainOfIndustryApplyButton.png", clSz)
+        ; Search top left corner of APPLY CHANGES button
+        ImageSearch(x, y, "CaptainOfIndustryButtonYellow.png", clSz)
         if (ErrorLevel)
             Return
         ; Click APPLY CHANGES button
