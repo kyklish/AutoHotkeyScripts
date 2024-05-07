@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.9.0
+;  + New hotkeys to cycle left/right on on/auto/off import/export buttons in buildings
 ; v2.8.0
 ;  + New hotkey to quick delete storage with product under cursor
 ; v2.7.0
@@ -100,7 +102,9 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
    Space + Q -> Show VEHICLES MANAGEMENT window.
    Space + W -> Show RECIPES window.
    Space + E -> Show STATISTICS window for product under cursor.
- Shift + Del -> Quick delete storage with product (empty with Unity) under cursor.
+ Shift + Del -> STORAGE: quick delete product using Unity.
+   Shift + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).
+   Shift + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).
 Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
      Alt + S -> Suspend Script (disable all hotkeys).
      Alt + Z ->  Reload Script.
@@ -136,10 +140,13 @@ Usage BLUEPRINT COPY/PASTE:
     - put mouse cursor over desired blueprint and press desired hotkey.
 
 Usage STORAGE WITH PRODUCT DELETE:
-    - using DEMOLISH tool mark storages to delete.
+    - using DEMOLISH tool mark storages to delete (activates QUICK REMOVE button).
     - point mouse cursor on storage building.
     - press hotkey to quickly remove product with UNITY.
-    - repeat on next storage.
+
+Usage BUILDING ON/OFF IMPORT/EXPORT:
+    - point mouse cursor on building.
+    - press hotkey to quickly cycle between ON/AUTO/OFF buttons.
 )"
 
 ;@AHK++AlignAssignmentOn
@@ -188,6 +195,8 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !V::        MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
     !B::        MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
     +Del::      MakeManipulation(Func("StorageWithProductDelete").Bind(dlOperation))
+    +-::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Left", dlOperation))
+    ++::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Right", dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
@@ -396,6 +405,50 @@ StorageWithProductDelete(dlOperation, clSz)
         Return
     ; Click on QUICK REMOVE button
     Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
+    Send("Esc") ; Close window
+}
+
+BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
+{
+    ; There are two ON/OFF buttons combinations: one for IMPORT and second for
+    ; EXPORT. Use recursive call to search second one and exit if it was not found.
+    ; Do not click on recursive call, it useless and adds delay.
+    if (!bRecursiveCall)
+        Click( , , , dlOperation) ; Click building under cursor to open it's window
+    Switch direction {
+    Case "Left":
+        ; Around buttons ON/AUTO/OFF may be black line, but on scaling UI to 80%
+        ; it may disappear, so use black color as alpha channel.
+        ; Search grey/red combination of the ON/OFF BUTTONS (storage)
+        ImageSearch(x, y, "*TransBlack CaptainOfIndustryButtonOnOffRed.png", clSz, false)
+        if (ErrorLevel) {
+            ; Search combination of the ON/AUTO BUTTONS (building)
+            ImageSearch(x, y, "*TransBlack CaptainOfIndustryButtonOnOffAutoL.png", clSz, false)
+            if (ErrorLevel)
+                Return
+        }
+        ; Click on ON or AUTO BUTTON to cycle left
+        ; Left side of picture, so don't need offset for X
+        Click(x, y + 4, , dlOperation) ; Add offset equal to image height (4)
+        if (!bRecursiveCall)
+            BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, true)
+    Case "Right":
+        ; Search green/grey combination of the ON/OFF BUTTONS (storage)
+        ImageSearch(x, y, "*TransBlack CaptainOfIndustryButtonOnOffGreen.png", clSz, false)
+        if (ErrorLevel) {
+            ; Search combination of the AUTO/OFF BUTTONS (building)
+            ImageSearch(x, y, "*TransBlack CaptainOfIndustryButtonOnOffAutoR.png", clSz, false)
+            if (ErrorLevel)
+                Return
+        }
+        ; Click on AUTO or OFF BUTTON to cycle right
+        ; Right side of picture, add offset to X and Y
+        Click(x + 9, y + 4, , dlOperation) ; Add offset equal to image size (9x4)
+        if (!bRecursiveCall)
+            BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, true)
+    Default:
+        ToolTip, % A_ThisFunc "() - No such operation: " operation
+    }
     Send("Esc") ; Close window
 }
 
