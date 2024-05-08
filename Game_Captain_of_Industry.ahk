@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.10.1
+;  * Help text
 ; v2.10.0
 ;  + New hotkey to toggle alerts empty/full in storages
 ; v2.9.0
@@ -93,10 +95,10 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
 
           F1 -> Show help (when game not on screen).
    Ctrl + F1 -> Show help (in-game).
-          F7 -> WORLD MAP: quick EXPLORE unknown location (first GREY then GREEN).
-          F8 -> WORLD MAP: quick EXPLORE location with enemy.
-          F9 -> VEHICLE:   quick DELETE.
-         F10 -> VEHICLE:   quick UPGRADE.
+          F7 -> WORLD MAP: EXPLORE unknown location (first GREY then GREEN).
+          F8 -> WORLD MAP: EXPLORE location with enemy.
+          F9 -> VEHICLE:   DELETE.
+         F10 -> VEHICLE:   UPGRADE.
      Alt + C -> BLUEPRINT:  copy description text.
      Alt + V -> BLUEPRINT: paste description text and save it.
      Alt + B -> BLUEPRINT: paste description text.
@@ -104,7 +106,7 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
    Space + Q -> Show VEHICLES MANAGEMENT window.
    Space + W -> Show RECIPES window.
    Space + E -> Show STATISTICS window for product under cursor.
- Shift + Del -> STORAGE: quick delete product using Unity.
+ Shift + Del -> STORAGE: delete product using Unity.
     Ctrl + - -> STORAGE: toggle NOTIFY IF EMPTY alert.
     Ctrl + = -> STORAGE: toggle NOTIFY IF FULL alert.
    Shift + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).
@@ -138,23 +140,23 @@ Usage WORLD MAP EXPLORE/BATTLE:
     - press hotkey to explore/battle (automatically close victory result before
       explore/battle).
 
-Usage BLUEPRINT COPY/PASTE:
+Usage BLUEPRINT DESCRIPTION COPY/PASTE:
     - put mouse cursor on DESCRIPTION BUTTON and press hotkey to save it's
       position (it has different position for FILE and FOLDER!).
     - put mouse cursor over desired blueprint and press desired hotkey.
 
 Usage STORAGE WITH PRODUCT DELETE:
     - using DEMOLISH tool mark storages to delete (activates QUICK REMOVE button).
-    - point mouse cursor on storage building.
-    - press hotkey to quickly remove product with UNITY.
+    - point mouse cursor on storage.
+    - press hotkey to remove product with UNITY.
 
 Usage STORAGE TOGGLE NOTIFY IF:
-    - point mouse cursor on storage building.
-    - press hotkey to quickly toggle ALERT.
+    - point mouse cursor on storage.
+    - press hotkey to toggle ALERT.
 
 Usage BUILDING ON/OFF IMPORT/EXPORT:
     - point mouse cursor on building.
-    - press hotkey to quickly cycle between ON/AUTO/OFF buttons.
+    - press hotkey to cycle between ON/AUTO/OFF buttons.
 )"
 
 ;@AHK++AlignAssignmentOn
