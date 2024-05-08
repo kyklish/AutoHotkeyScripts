@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.10.0
+;  + New hotkey to toggle alerts empty/full in storages
 ; v2.9.0
 ;  + New hotkeys to cycle left/right on on/auto/off import/export buttons in buildings
 ; v2.8.0
@@ -103,6 +105,8 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
    Space + W -> Show RECIPES window.
    Space + E -> Show STATISTICS window for product under cursor.
  Shift + Del -> STORAGE: quick delete product using Unity.
+    Ctrl + - -> STORAGE: toggle NOTIFY IF EMPTY alert.
+    Ctrl + = -> STORAGE: toggle NOTIFY IF FULL alert.
    Shift + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).
    Shift + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).
 Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
@@ -144,6 +148,10 @@ Usage STORAGE WITH PRODUCT DELETE:
     - point mouse cursor on storage building.
     - press hotkey to quickly remove product with UNITY.
 
+Usage STORAGE TOGGLE NOTIFY IF:
+    - point mouse cursor on storage building.
+    - press hotkey to quickly toggle ALERT.
+
 Usage BUILDING ON/OFF IMPORT/EXPORT:
     - point mouse cursor on building.
     - press hotkey to quickly cycle between ON/AUTO/OFF buttons.
@@ -179,6 +187,11 @@ global oEBB  := { 0:0
 global oBB  := { 0:0
     , x: 200 * uiScale // 100
     , y: 160 * uiScale // 100 }
+; EMPTY/FULL NOTIFY BUTTONS: relative to top left corner of ALERTS button in STORAGE WINDOW
+global oNB  := { 0:0
+    , x:      115 * uiScale // 100
+    , yEmpty:  50 * uiScale // 100
+    , yFull:   87 * uiScale // 100 }
 
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
@@ -194,9 +207,11 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !C::        MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
     !V::        MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
     !B::        MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
-    +Del::      MakeManipulation(Func("StorageWithProductDelete").Bind(dlOperation))
+    +Del::      MakeManipulation(Func("Storage").Bind("DeleteProductWithUnity", dlOperation))
+    ^-::        MakeManipulation(Func("Storage").Bind("ToggleAlertEmpty", dlOperation))
+    ^=::        MakeManipulation(Func("Storage").Bind("ToggleAlertFull", dlOperation))
     +-::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Left", dlOperation))
-    ++::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Right", dlOperation))
+    +=::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Right", dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
@@ -263,7 +278,7 @@ Statistics(dlOperation, clSz)
             Return
     }
     ; Click on STATISTICS button
-    Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
+    Click(x + 8, y + 8, , dlOperation) ; Add offset equal to image size (8x8)
 }
 
 VehicleManagement(dlOperation, clSz)
@@ -393,18 +408,29 @@ DscrBtnSavePos(ByRef xBtn, ByRef yBtn)
     MouseGetPos, xBtn, yBtn
 }
 
-StorageWithProductDelete(dlOperation, clSz)
+Storage(operation, dlOperation, clSz)
 {
     ; When you try delete storage with product it will not deconstruct, but
     ; instead it queue deconstruction and remove assigned product (which enable
-    ; QUICK REMOVE button) additionally set KEEP EMPTY status.
+    ; QUICK REMOVE button, it will be first) additionally set KEEP EMPTY status.
+    ; If you use it on working storage first button will be ALERTS.
     Click( , , , dlOperation) ; Click building under cursor to open it's window
-    ; Search top left corner of the first black button (it will be QUICK REMOVE with Unity)
+    ; Search top left corner of the first black button
+    ; It will be QUICK REMOVE / ALERTS button
     ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", clSz)
     if (ErrorLevel)
         Return
-    ; Click on QUICK REMOVE button
-    Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
+    ; Click on QUICK REMOVE / ALERTS button
+    Click(x + 8, y + 8, , dlOperation) ; Add offset equal to image size (8x8)
+    Switch operation {
+    Case "ToggleAlertEmpty":
+        Click(x + oNB.x, y + oNB.yEmpty, , dlOperation)
+    Case "ToggleAlertFull":
+        Click(x + oNB.x, y + oNB.yFull, , dlOperation)
+    Case "DeleteProductWithUnity": ; Do nothing! We already clicked QUICK REMOVE
+    Default:
+        ToolTip, % A_ThisFunc "() - No such operation: " operation
+    }
     Send("Esc") ; Close window
 }
 
@@ -425,7 +451,7 @@ BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
             ; Search combination of the ON/AUTO BUTTONS (building)
             ImageSearch(x, y, "*TransBlack CaptainOfIndustryButtonOnOffAutoL.png", clSz, false)
             if (ErrorLevel)
-                Return
+                Goto, CloseWindow
         }
         ; Click on ON or AUTO BUTTON to cycle left
         ; Left side of picture, so don't need offset for X
@@ -439,7 +465,7 @@ BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
             ; Search combination of the AUTO/OFF BUTTONS (building)
             ImageSearch(x, y, "*TransBlack CaptainOfIndustryButtonOnOffAutoR.png", clSz, false)
             if (ErrorLevel)
-                Return
+                Goto, CloseWindow
         }
         ; Click on AUTO or OFF BUTTON to cycle right
         ; Right side of picture, add offset to X and Y
@@ -449,6 +475,7 @@ BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
     Default:
         ToolTip, % A_ThisFunc "() - No such operation: " operation
     }
+    CloseWindow:
     Send("Esc") ; Close window
 }
 
