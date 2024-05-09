@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.11.0
+;  + New hotkeys to set priority for building/storage
 ; v2.10.1
 ;  * Help text
 ; v2.10.0
@@ -93,28 +95,30 @@ helpText := "
 (
 Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%)!
 
-          F1 -> Show help (when game not on screen).
-   Ctrl + F1 -> Show help (in-game).
-          F7 -> WORLD MAP: EXPLORE unknown location (first GREY then GREEN).
-          F8 -> WORLD MAP: EXPLORE location with enemy.
-          F9 -> VEHICLE:   DELETE.
-         F10 -> VEHICLE:   UPGRADE.
-     Alt + C -> BLUEPRINT:  copy description text.
-     Alt + V -> BLUEPRINT: paste description text and save it.
-     Alt + B -> BLUEPRINT: paste description text.
-         F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON.
-   Space + Q -> Show VEHICLES MANAGEMENT window.
-   Space + W -> Show RECIPES window.
-   Space + E -> Show STATISTICS window for product under cursor.
- Shift + Del -> STORAGE: delete product using Unity.
-    Ctrl + - -> STORAGE: toggle NOTIFY IF EMPTY alert.
-    Ctrl + = -> STORAGE: toggle NOTIFY IF FULL alert.
-   Shift + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).
-   Shift + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).
-Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
-     Alt + S -> Suspend Script (disable all hotkeys).
-     Alt + Z ->  Reload Script.
-     Alt + X ->    Exit Script.
+             F1 -> Show help (when game not on screen).
+      Ctrl + F1 -> Show help (in-game).
+             F7 -> WORLD MAP: EXPLORE unknown location (first GREY then GREEN).
+             F8 -> WORLD MAP: EXPLORE location with enemy.
+             F9 -> VEHICLE:   DELETE.
+            F10 -> VEHICLE:   UPGRADE.
+        Alt + C -> BLUEPRINT:  copy description text.
+        Alt + V -> BLUEPRINT: paste description text and save it.
+        Alt + B -> BLUEPRINT: paste description text.
+            F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON.
+      Space + Q -> Show VEHICLES MANAGEMENT window.
+      Space + W -> Show RECIPES window.
+      Space + E -> Show STATISTICS window for product under cursor.
+    Shift + Del -> STORAGE: delete product using Unity.
+       Ctrl + - -> STORAGE: toggle NOTIFY IF EMPTY alert.
+       Ctrl + = -> STORAGE: toggle NOTIFY IF FULL alert.
+      Shift + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).
+      Shift + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).
+Shift + [1-9,0] -> BUILDING/STORAGE: set priority 1-10
+    Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15
+   Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
+        Alt + S -> Suspend Script (disable all hotkeys).
+        Alt + Z ->  Reload Script.
+        Alt + X ->    Exit Script.
 
 Useful tips:
     - maximum zoom in for better performance when using VEHICLES DELETE/UPGRADE.
@@ -157,6 +161,10 @@ Usage STORAGE TOGGLE NOTIFY IF:
 Usage BUILDING ON/OFF IMPORT/EXPORT:
     - point mouse cursor on building.
     - press hotkey to cycle between ON/AUTO/OFF buttons.
+
+Usage BUILDING/STORAGE PRIORITY:
+    - point mouse cursor on building/storage.
+    - press hotkey to set desired priority.
 )"
 
 ;@AHK++AlignAssignmentOn
@@ -169,7 +177,7 @@ yBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
 ;@AHK++AlignAssignmentOff
 
 ; VEHICLE MANAGEMENT ICON (near HEALTH and UNITY icons): absolute coordinates
-global oVMI  := { 0:0
+global oVMI := { 0:0
     , x: 245 * uiScale // 100
     , y:  45 * uiScale // 100 }
 ; VEHICLE WINDOW ORDERS ICONS COL (39x39): relative to bottom left corner of VEHICLE WINDOW
@@ -182,18 +190,27 @@ global oOIC := { 0:0
 global oOIR := { 0:0
     , y: 114 * uiScale // 100 }
 ; EXPLORE/BATTLE BUTTON: relative to bottom left corner of UNKNOWN LOCATION WINDOW and BATTLE WINDOW
-global oEBB  := { 0:0
+global oEBB := { 0:0
     , x: 123 * uiScale // 100
     , y:  26 * uiScale // 100 }
 ; BACK BUTTON: relative to top left corner of GREEN or RED line in BATTLE RESULT WINDOW
-global oBB  := { 0:0
+global oBB := { 0:0
     , x: 200 * uiScale // 100
     , y: 160 * uiScale // 100 }
 ; EMPTY/FULL NOTIFY BUTTONS: relative to top left corner of ALERTS button in STORAGE WINDOW
-global oNB  := { 0:0
+global oNB := { 0:0
     , x:      115 * uiScale // 100
     , yEmpty:  50 * uiScale // 100
     , yFull:   87 * uiScale // 100 }
+; PRIORITY DROP DOWN LIST: relative to top left corner of BUILDING/STORAGE WINDOW (exclude title bar)
+global oPDDL := { 0:0
+    , x: 545 * uiScale // 100
+    , yBuilding: 60 * uiScale // 100
+    , yStorage: 170 * uiScale // 100
+    ; Distance between DDL button and P1 element is [27], but make it smaller,
+    ; because last element P15 is hidden on 1/3 (window has scroll area)
+    , yOffsetP1: 22 * uiScale // 100
+    , yStep: 20 * uiScale // 100 } ; Distance between P(N) and P(N+1) elements in list
 
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
@@ -215,6 +232,21 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     +-::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Left", dlOperation))
     +=::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Right", dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
+    +1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
+    +2::
+    +3::
+    +4::
+    +5::
+    +6::
+    +7::
+    +8::
+    +9::
+    +0::
+    !1::
+    !2::
+    !3::
+    !4::
+    !5::         MakeManipulation(Func("Priority").Bind(A_ThisHotkey, dlOperation))
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
 #If
@@ -481,6 +513,59 @@ BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
     Send("Esc") ; Close window
 }
 
+Priority(hotkey, dlOperation, clSz)
+{
+    ; Calculate priority from hotkey
+    modifier := SubStr(hotkey, 1, 1)
+    if modifier not in +,!
+    {
+        ToolTip, % A_ThisFunc . "() - modifier is not [+] or [!]: " . modifier, 0, 0
+        return
+    }
+    number := SubStr(hotkey, 2, 1)
+    if number is not digit
+    {
+        ToolTip, % A_ThisFunc . "() - number is not digit: " . number, 0, 0
+        return
+    }
+    if (number == 0)
+        priority := 10
+    else
+        if (modifier == "!")
+            priority := 10 + number
+        else
+            priority := number
+
+    Click( , , , dlOperation) ; Click building under cursor to open it's window
+    ; Search top left corner of the BUILDING/STORAGE window
+    ImageSearch(x, y, "CaptainOfIndustryWindowSquareTop.png", clSz)
+    if (ErrorLevel)
+        Return
+
+    ; Identify: is it BUILDING or STORAGE?
+    yOffset := oPDDL.yBuilding
+    ; Search top left corner of the IDLE/PAUSED/WORKING status
+    ; (present only in BUILDING window)
+    ImageSearch(_, _, "CaptainOfIndustryBuildingStatusIdle.png", clSz, false)
+    if (ErrorLevel) {
+        ; PAUSED status has different color then IMPORT OFF button.
+        ImageSearch(_, _, "CaptainOfIndustryBuildingStatusPaused.png", clSz, false)
+        if (ErrorLevel) {
+            ; This search may be false positive on IMPORT ON/OFF buttons! Make
+            ; image long enough to detect only WORKING status and not ON button!
+            ImageSearch(_, _, "CaptainOfIndustryBuildingStatusWorking.png", clSz, false)
+            if (ErrorLevel) ; this is not BUILDING, it's STORAGE
+                yOffset := oPDDL.yStorage
+        }
+    }
+
+    ; Click on PRIORITY drop down list to open it
+    Click(x + oPDDL.x, y + yOffset, , dlOperation)
+    ; Click on exact PRIORITY value
+    Click(x + oPDDL.x, y + yOffset + oPDDL.yOffsetP1 + oPDDL.yStep * (priority - 1), , dlOperation)
+    Send("Esc") ; Close window
+}
+
 ;-------------------------------------------------------------
 ;----------------------- GENERAL CODE ------------------------
 ;-------------------------------------------------------------
@@ -570,7 +655,7 @@ ShowHelpWindow(ByRef str := "")
             if (width < StrLen(A_LoopField))
                 width := StrLen(A_LoopField)
         width := width * iCharWidth + 2 * iPadding
-        Progress, fs10 zh0 b2 c0 w%width%, %str%, , , Consolas
+        Progress, fs9 zh0 b2 c0 w%width%, %str%, , , Consolas
     }
     else
         Progress, Off
