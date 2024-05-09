@@ -303,7 +303,7 @@ VehicleOrder(order, dlOperation, dlCameraMove, clSz)
     Click(clSz.w / 2, clSz.h / 2, , dlOperation)
     ; Find bottom left corner of VEHICLE window
     ; 2 shades of variation. Using black color in images like alpha channel.
-    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLineBottom.png", clSz)
+    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryWindowLineBottom.png", clSz)
     if (ErrorLevel)
         Return
     Switch order {
@@ -328,10 +328,10 @@ VehicleOrder(order, dlOperation, dlCameraMove, clSz)
 
 BattleCloseVictoryResult(dlOperation, clSz)
 {
-    ImageSearch(x, y, "CaptainOfIndustryBattleDefeat.png", clSz, false)
+    ImageSearch(x, y, "CaptainOfIndustryButtonDefeat.png", clSz, false)
     if (!ErrorLevel) ; Defeat result was found
         Return true
-    ImageSearch(x, y, "CaptainOfIndustryBattleVictory.png", clSz, false)
+    ImageSearch(x, y, "CaptainOfIndustryButtonVictory.png", clSz, false)
     if (!ErrorLevel) ; Victory result was found
         Click(x + oBB.x, y + oBB.y, , dlOperation) ; Click BACK button
 }
@@ -361,7 +361,7 @@ ExploreLocation(operation, dlOperation, clSz)
         Return
     Click(x, y, , dlOperation)
     ; Find bottom left corner of LOCATION window
-    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryLineBottom.png", clSz)
+    ImageSearch(x, y, "*2 *TransBlack CaptainOfIndustryWindowLineBottom.png", clSz)
     if (ErrorLevel)
         Return
     Click(x + oEBB.x, y - oEBB.y, , dlOperation) ; Click EXPLORE/BATTLE button
