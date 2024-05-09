@@ -14,7 +14,7 @@
 ; v2.10.1
 ;  * Help text
 ; v2.10.0
-;  + New hotkey to toggle alerts empty/full in storages
+;  + New hotkeys to toggle alerts empty/full in storages
 ; v2.9.0
 ;  + New hotkeys to cycle left/right on on/auto/off import/export buttons in buildings
 ; v2.8.0
@@ -484,8 +484,10 @@ BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
         if (ErrorLevel) {
             ; Search combination of the ON/AUTO BUTTONS (building)
             ImageSearch(x, y, "*TransBlack CaptainOfIndustryButtonOnOffAutoL.png", clSz, false)
-            if (ErrorLevel)
-                Goto, CloseWindow
+            if (ErrorLevel) {
+                Send("Esc") ; Close window
+                Return
+            }
         }
         ; Click on ON or AUTO BUTTON to cycle left
         ; Left side of picture, so don't need offset for X
@@ -498,8 +500,10 @@ BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
         if (ErrorLevel) {
             ; Search combination of the AUTO/OFF BUTTONS (building)
             ImageSearch(x, y, "*TransBlack CaptainOfIndustryButtonOnOffAutoR.png", clSz, false)
-            if (ErrorLevel)
-                Goto, CloseWindow
+            if (ErrorLevel) {
+                Send("Esc") ; Close window
+                Return
+            }
         }
         ; Click on AUTO or OFF BUTTON to cycle right
         ; Right side of picture, add offset to X and Y
@@ -509,7 +513,6 @@ BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
     Default:
         ToolTip, % A_ThisFunc "() - No such operation: " operation
     }
-    CloseWindow:
     Send("Esc") ; Close window
 }
 
@@ -579,6 +582,12 @@ ImageSearch(ByRef x, ByRef y, imageFile, wndSize, bShowError := true)
     }
 }
 
+Sleep(delay)
+{
+    if (delay != -1)
+        Sleep, %delay%
+}
+
 Click(x := "", y := "", whichButton := "", delay := -1)
 {
     if ((x and !y) or (!x and y)) {
@@ -589,8 +598,7 @@ Click(x := "", y := "", whichButton := "", delay := -1)
         SendInput, {Click %x% %y% %whichButton%}
     else
         SendEvent, {Click %x% %y% %whichButton%}
-    if (delay != -1)
-        Sleep, %delay%
+    Sleep(delay)
 }
 
 MouseMove(x := "", y := "", delay := -1)
@@ -600,8 +608,7 @@ MouseMove(x := "", y := "", delay := -1)
         Return
     }
     MouseMove, %x%, %y%
-    if (delay != -1)
-        Sleep, %delay%
+    Sleep(delay)
 }
 
 Send(key, delay := -1)
@@ -610,8 +617,7 @@ Send(key, delay := -1)
         SendInput, {%key%}
     else
         SendEvent, {%key%}
-    if (delay != -1)
-        Sleep, %delay%
+    Sleep(delay)
 }
 
 SendRaw(string, delay := -1)
@@ -620,8 +626,7 @@ SendRaw(string, delay := -1)
         SendInput, %string%
     else
         SendEvent, %string%
-    if (delay != -1)
-        Sleep, %delay%
+    Sleep(delay)
 }
 
 WinGetClientPos(hWnd)
