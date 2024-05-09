@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.12.0
+;  + New hotkeys for storage: stored product keep empty/full, reset
 ; v2.11.0
 ;  + New hotkeys to set priority for building/storage
 ; v2.10.1
@@ -115,6 +117,9 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
       Shift + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).
 Shift + [1-9,0] -> BUILDING/STORAGE: set priority 1-10
     Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15
+        Alt + - -> STORAGE: stored product keep empty
+        Alt + = -> STORAGE: stored product keep full
+Alt + BackSpace -> STORAGE: stored product reset
    Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
         Alt + S -> Suspend Script (disable all hotkeys).
         Alt + Z ->  Reload Script.
@@ -153,6 +158,10 @@ Usage STORAGE WITH PRODUCT DELETE:
     - using DEMOLISH tool mark storages to delete (activates QUICK REMOVE button).
     - point mouse cursor on storage.
     - press hotkey to remove product with UNITY.
+
+Usage STORAGE STORED PRODUCT EMPTY/FULL/RESET:
+    - point mouse cursor on storage.
+    - press hotkey to change desired stored product quantity.
 
 Usage STORAGE TOGGLE NOTIFY IF:
     - point mouse cursor on storage.
@@ -211,6 +220,8 @@ global oPDDL := { 0:0
     ; because last element P15 is hidden on 1/3 (window has scroll area)
     , yOffsetP1: 22 * uiScale // 100
     , yStep: 20 * uiScale // 100 } ; Distance between P(N) and P(N+1) elements in list
+; STORAGE STORED PRODUCT KEEP FULL/EMPTY SLIDER ICON: relative to top left corner of green/red line above icon
+global yStoredProduct := 45 * uiScale // 100
 
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
@@ -231,6 +242,9 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     ^=::        MakeManipulation(Func("Storage").Bind("ToggleAlertFull", dlOperation))
     +-::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Left", dlOperation))
     +=::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Right", dlOperation))
+    !-::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepEmpty", dlOperation))
+    !=::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepFull", dlOperation))
+    !BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
     +1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
     +2::
@@ -468,6 +482,46 @@ Storage(operation, dlOperation, clSz)
     Send("Esc") ; Close window
 }
 
+StorageStoredProduct(operation, dlOperation, clSz)
+{
+    Click( , , , dlOperation) ; Click building under cursor to open it's window
+    Switch operation {
+    Case "KeepEmpty":
+        MoveStorageSlider("Green", "Left", clSz, dlOperation)
+        MoveStorageSlider("Red", "Left", clSz, dlOperation)
+    Case "KeepFull":
+        MoveStorageSlider("Red", "Right", clSz, dlOperation)
+        MoveStorageSlider("Green", "Right", clSz, dlOperation)
+    Case "Reset":
+        MoveStorageSlider("Green", "Left", clSz, dlOperation, false)
+        MoveStorageSlider("Red", "Right", clSz, dlOperation, false)
+    Default:
+        ToolTip, % A_ThisFunc "() - No such operation: " operation
+    }
+    Send("Esc") ; Close window
+}
+
+MoveStorageSlider(color, operation, clSz, dlOperation, bShowError := true)
+{
+    if color not in Green,Red
+    {
+        ToolTip, % A_ThisFunc "() - Color must be [Green/Red]: " color
+        Return
+    }
+    ; Search top left corner of slider's green/red vertical line
+    ImageSearch(x, y, "CaptainOfIndustryStorageLine" . color . ".png", clSz, bShowError)
+    if (ErrorLevel)
+        Return
+    Switch operation {
+    Case "Left":
+        MouseLeftClickDrag(x, y + yStoredProduct, 0, dlOperation)
+    Case "Right":
+        MouseLeftClickDrag(x, y + yStoredProduct, clSz.w, dlOperation)
+    Default:
+        ToolTip, % A_ThisFunc "() - No such operation: " operation
+    }
+}
+
 BuildingCycleOnAutoOffBtn(direction, dlOperation, clSz, bRecursiveCall := false)
 {
     ; There are two ON/OFF buttons combinations: one for IMPORT and second for
@@ -601,6 +655,12 @@ Click(x := "", y := "", whichButton := "", delay := -1)
     Sleep(delay)
 }
 
+MouseLeftClickDrag(X1, Y1, X2, delay := -1)
+{
+    MouseClickDrag, Left, % X1, % Y1, % X2, % Y1
+    Sleep(delay)
+}
+
 MouseMove(x := "", y := "", delay := -1)
 {
     if (!x or !y) {
@@ -652,7 +712,7 @@ ShowHelpWindow(ByRef str := "")
 {
     static bToggle
     ; iCharWidth := 9 ; char width by default
-    iCharWidth := 7 ; char width [fs10]
+    iCharWidth := 6 ; char width [fs8]
     iPadding := 10 ; text margin from the edge of the window
 
     if (bToggle := !bToggle) {
@@ -660,7 +720,7 @@ ShowHelpWindow(ByRef str := "")
             if (width < StrLen(A_LoopField))
                 width := StrLen(A_LoopField)
         width := width * iCharWidth + 2 * iPadding
-        Progress, fs9 zh0 b2 c0 w%width%, %str%, , , Consolas
+        Progress, fs8 zh0 b2 c0 w%width%, %str%, , , Consolas
     }
     else
         Progress, Off
