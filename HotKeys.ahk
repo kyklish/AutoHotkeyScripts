@@ -224,6 +224,7 @@ return
 
 ; Window Style Manipulation
 #`::WinSet, AlwaysOnTop, Toggle, A
+#IfWinNotActive, ahk_exe explorer.exe ; Desktop is borderless folder!!! You can add border by mistake!!!
 !`::
     Borderless() {
         static bToggle
@@ -236,7 +237,7 @@ return
         WinRestore
         WinActivate
     }
-
+#If
 
 #IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
 ^+f::Run_AsUser("D:\SERGEY\Options\Program Files\Everything x64\Everything.exe")
