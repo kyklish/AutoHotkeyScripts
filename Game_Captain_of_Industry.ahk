@@ -9,6 +9,9 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.12.1
+;  + New hotkey for construction priority
+;  * Change hotkeys for priority
 ; v2.12.0
 ;  + New hotkeys for storage: stored product keep empty/full, reset
 ; v2.11.0
@@ -117,6 +120,7 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
       Shift + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).
 Shift + [1-9,0] -> BUILDING/STORAGE: set priority 1-10
     Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15
+       Ctrl + `` -> CONSTRUCTION: set highest priority
         Alt + - -> STORAGE: stored product keep empty
         Alt + = -> STORAGE: stored product keep full
 Alt + BackSpace -> STORAGE: stored product reset
@@ -171,7 +175,7 @@ Usage BUILDING ON/OFF IMPORT/EXPORT:
     - point mouse cursor on building.
     - press hotkey to cycle between ON/AUTO/OFF buttons.
 
-Usage BUILDING/STORAGE PRIORITY:
+Usage BUILDING/STORAGE/CONSTRUCTION PRIORITY:
     - point mouse cursor on building/storage.
     - press hotkey to set desired priority.
 )"
@@ -211,11 +215,12 @@ global oNB := { 0:0
     , x:      115 * uiScale // 100
     , yEmpty:  50 * uiScale // 100
     , yFull:   87 * uiScale // 100 }
-; PRIORITY DROP DOWN LIST: relative to top left corner of BUILDING/STORAGE WINDOW (exclude title bar)
+; PRIORITY DROP DOWN LIST:
 global oPDDL := { 0:0
-    , x: 545 * uiScale // 100
-    , yBuilding: 60 * uiScale // 100
-    , yStorage: 170 * uiScale // 100
+    , xBuilding: 60 * uiScale // 100 ; relative to priority icon (up arrow in white circle)
+    , yBuilding:  5 * uiScale // 100 ; relative to priority icon (up arrow in white circle)
+    , xStorage: 545 * uiScale // 100 ; relative to top left corner of window (exclude title bar)
+    , yStorage: 170 * uiScale // 100 ; relative to top left corner of window (exclude title bar)
     ; Distance between DDL button and P1 element is [27], but make it smaller,
     ; because last element P15 is hidden on 1/3 (window has scroll area)
     , yOffsetP1: 22 * uiScale // 100
@@ -246,21 +251,22 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !=::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepFull", dlOperation))
     !BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
-    +1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
-    +2::
-    +3::
-    +4::
-    +5::
-    +6::
-    +7::
-    +8::
-    +9::
-    +0::
+    #1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
+    #2::
+    #3::
+    #4::
+    #5::
+    #6::
+    #7::
+    #8::
+    #9::
+    #0::
     !1::
     !2::
     !3::
     !4::
     !5::         MakeManipulation(Func("Priority").Bind(A_ThisHotkey, dlOperation))
+    ^`::         MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
 #If
@@ -574,9 +580,9 @@ Priority(hotkey, dlOperation, clSz)
 {
     ; Calculate priority from hotkey
     modifier := SubStr(hotkey, 1, 1)
-    if modifier not in +,!
+    if modifier not in #,!
     {
-        ToolTip, % A_ThisFunc . "() - modifier is not [+] or [!]: " . modifier, 0, 0
+        ToolTip, % A_ThisFunc . "() - modifier is not [#] or [!]: " . modifier, 0, 0
         return
     }
     number := SubStr(hotkey, 2, 1)
@@ -594,13 +600,9 @@ Priority(hotkey, dlOperation, clSz)
             priority := number
 
     Click( , , , dlOperation) ; Click building under cursor to open it's window
-    ; Search top left corner of the BUILDING/STORAGE window
-    ImageSearch(x, y, "CaptainOfIndustryWindowSquareTop.png", clSz)
-    if (ErrorLevel)
-        Return
 
     ; Identify: is it BUILDING or STORAGE?
-    yOffset := oPDDL.yBuilding
+    isStorage := false
     ; Search top left corner of the IDLE/PAUSED/WORKING status
     ; (present only in BUILDING window)
     ImageSearch(_, _, "CaptainOfIndustryBuildingStatusIdle.png", clSz, false)
@@ -612,14 +614,39 @@ Priority(hotkey, dlOperation, clSz)
             ; image long enough to detect only WORKING status and not ON button!
             ImageSearch(_, _, "CaptainOfIndustryBuildingStatusWorking.png", clSz, false)
             if (ErrorLevel) ; this is not BUILDING, it's STORAGE
-                yOffset := oPDDL.yStorage
+                isStorage := true
         }
     }
 
+    if (isStorage) {
+        ; Search top left corner of the STORAGE window
+        ImageSearch(x, y, "CaptainOfIndustryWindowSquareTop.png", clSz)
+        if (ErrorLevel)
+            Return
+    } else {
+        ; Search PRIORITY ICON in the BUILDING window
+        ImageSearch(x, y, "*10 *TransBlack CaptainOfIndustryBuildingPriorityIcon.png", clSz)
+        if (ErrorLevel)
+            Return
+    }
+
+    xOffset := isStorage ? oPDDL.xStorage : oPDDL.xBuilding
+    yOffset := isStorage ? oPDDL.yStorage : oPDDL.yBuilding
     ; Click on PRIORITY drop down list to open it
-    Click(x + oPDDL.x, y + yOffset, , dlOperation)
+    Click(x + xOffset, y + yOffset, , dlOperation)
     ; Click on exact PRIORITY value
-    Click(x + oPDDL.x, y + yOffset + oPDDL.yOffsetP1 + oPDDL.yStep * (priority - 1), , dlOperation)
+    Click(x + xOffset, y + yOffset + oPDDL.yOffsetP1 + oPDDL.yStep * (priority - 1), , dlOperation)
+    Send("Esc") ; Close window
+}
+
+PriorityConstruction(dlOperation, clSz)
+{
+    Click( , , , dlOperation) ; Click building under cursor to open it's window
+    ; Search PRIORITY ICON in the BUILDING window
+    ImageSearch(x, y, "*20 *TransBlack CaptainOfIndustryConstructionPriorityIcon.png", clSz)
+    if (ErrorLevel)
+        Return
+    Click(x + 6, y + 4, , dlOperation) ; image size (13x8)
     Send("Esc") ; Close window
 }
 
