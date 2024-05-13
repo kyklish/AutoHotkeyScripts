@@ -9,6 +9,9 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.12.2
+;  * Change hotkeys for construction priority
+;  ! Don't show excess errors on image search
 ; v2.12.1
 ;  + New hotkey for construction priority
 ;  * Change hotkeys for priority
@@ -118,9 +121,9 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
        Ctrl + = -> STORAGE: toggle NOTIFY IF FULL alert.
       Shift + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).
       Shift + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).
-Shift + [1-9,0] -> BUILDING/STORAGE: set priority 1-10
+        Win + `` -> CONSTRUCTION: set highest priority
+  Win + [1-9,0] -> BUILDING/STORAGE: set priority 1-10
     Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15
-       Ctrl + `` -> CONSTRUCTION: set highest priority
         Alt + - -> STORAGE: stored product keep empty
         Alt + = -> STORAGE: stored product keep full
 Alt + BackSpace -> STORAGE: stored product reset
@@ -251,6 +254,7 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !=::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepFull", dlOperation))
     !BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
+    #`::        MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
     #1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
     #2::
     #3::
@@ -265,8 +269,7 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !2::
     !3::
     !4::
-    !5::         MakeManipulation(Func("Priority").Bind(A_ThisHotkey, dlOperation))
-    ^`::         MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
+    !5::        MakeManipulation(Func("Priority").Bind(A_ThisHotkey, dlOperation))
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
 #If
@@ -493,10 +496,10 @@ StorageStoredProduct(operation, dlOperation, clSz)
     Click( , , , dlOperation) ; Click building under cursor to open it's window
     Switch operation {
     Case "KeepEmpty":
-        MoveStorageSlider("Green", "Left", clSz, dlOperation)
+        MoveStorageSlider("Green", "Left", clSz, dlOperation, false)
         MoveStorageSlider("Red", "Left", clSz, dlOperation)
     Case "KeepFull":
-        MoveStorageSlider("Red", "Right", clSz, dlOperation)
+        MoveStorageSlider("Red", "Right", clSz, dlOperation, false)
         MoveStorageSlider("Green", "Right", clSz, dlOperation)
     Case "Reset":
         MoveStorageSlider("Green", "Left", clSz, dlOperation, false)
