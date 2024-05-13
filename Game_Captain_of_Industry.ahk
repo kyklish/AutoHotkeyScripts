@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.12.3
+;  ! Fix not reliable slider move in storages
 ; v2.12.2
 ;  * Change hotkeys for construction priority
 ;  ! Don't show excess errors on image search
@@ -187,6 +189,7 @@ Usage BUILDING/STORAGE/CONSTRUCTION PRIORITY:
 uiScale           := 100 ; User Interface Scale [tested 80%, 100%, 120%]
 dlOperation       := 300 ; Delay between operations: open window, click, etc
 dlCameraMove      := 500 ; Delay to wait camera movement to VEHICLE
+xDragDistance     := 500 ; Mouse move distance during Click&Drag manipulation
 global bSendInput := true
 xBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
 yBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
@@ -512,6 +515,7 @@ StorageStoredProduct(operation, dlOperation, clSz)
 
 MoveStorageSlider(color, operation, clSz, dlOperation, bShowError := true)
 {
+    global xDragDistance
     if color not in Green,Red
     {
         ToolTip, % A_ThisFunc "() - Color must be [Green/Red]: " color
@@ -523,9 +527,9 @@ MoveStorageSlider(color, operation, clSz, dlOperation, bShowError := true)
         Return
     Switch operation {
     Case "Left":
-        MouseLeftClickDrag(x, y + yStoredProduct, 0, dlOperation)
+        MouseLeftClickDrag(x, y + yStoredProduct, x - xDragDistance, dlOperation)
     Case "Right":
-        MouseLeftClickDrag(x, y + yStoredProduct, clSz.w, dlOperation)
+        MouseLeftClickDrag(x, y + yStoredProduct, x + xDragDistance, dlOperation)
     Default:
         ToolTip, % A_ThisFunc "() - No such operation: " operation
     }
@@ -687,6 +691,7 @@ Click(x := "", y := "", whichButton := "", delay := -1)
 
 MouseLeftClickDrag(X1, Y1, X2, delay := -1)
 {
+    Send("Click " X1 " " Y1 " Down") ; Fixes not reliable Mouse-Click-Drag in this game!
     MouseClickDrag, Left, % X1, % Y1, % X2, % Y1
     Sleep(delay)
 }
