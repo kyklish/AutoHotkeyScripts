@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.13.0
+;  + New hotkey to make window borderless
 ; v2.12.3
 ;  ! Fix not reliable slider move in storages
 ; v2.12.2
@@ -129,6 +131,7 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
         Alt + - -> STORAGE: stored product keep empty
         Alt + = -> STORAGE: stored product keep full
 Alt + BackSpace -> STORAGE: stored product reset
+        Alt + `` -> GAME: make game's window borderless
    Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
         Alt + S -> Suspend Script (disable all hotkeys).
         Alt + Z ->  Reload Script.
@@ -258,6 +261,7 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
     #`::        MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
+    !`::        Borderless("ahk_group Game")
     #1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
     #2::
     #3::
@@ -655,6 +659,18 @@ PriorityConstruction(dlOperation, clSz)
         Return
     Click(x + 6, y + 4, , dlOperation) ; image size (13x8)
     Send("Esc") ; Close window
+}
+
+Borderless(WinTitle) {
+    static bToggle
+    WinExist(WinTitle) ; set Last Found Window
+    if (bToggle := !bToggle)
+        WinSet, Style, -0xC40000 ; WS_BORDER + WS_DLGFRAME + WS_SIZEBOX
+    else
+        WinSet, Style, +0xC40000
+    WinMinimize ; Force redraw (fix aesthetical issues).
+    WinRestore
+    WinActivate
 }
 
 ;-------------------------------------------------------------
