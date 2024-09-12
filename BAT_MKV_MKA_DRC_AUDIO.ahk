@@ -39,7 +39,7 @@ CreateBAT(oFileNames, iThreads) {
     oFile := FileOpen("MKV.BAT", "w")
     oFile.Write(GetMkvCmd(oFileNames[0]))
     oFile.Close()
-    oFile := FileOpen("AUDIO_ALL_THREADS.BAT", "w")
+    oFile := FileOpen("ALL_AUDIO_THREADS.BAT", "w")
     oFile.Write(GetThreadCmd())
     oFile.Close()
 }
