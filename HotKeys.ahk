@@ -40,6 +40,17 @@ if (ErrorLevel) {
 Clipboard := "https://www.youtube.com/results?search_query=" . StrReplace(Clipboard, A_Space, "+")
 GoSub, ^b
 return
+^q:: ; Ctrl+Q - поиск в RuTracker выделенного текста
+Clipboard := "" ; Empty the clipboard
+SendEvent, ^{vk43} ; Ctrl+C
+ClipWait, 2
+if (ErrorLevel) {
+    MsgBox, The attempt to copy text onto the clipboard failed.
+    return
+}
+Clipboard := "t " . Clipboard
+GoSub, ^b
+return
 F9:: SendEvent, ^+{Tab} ; Prev Tab
 F10:: SendEvent, ^{Tab} ; Next Tab
 AppsKey:: Click, Middle
@@ -221,6 +232,7 @@ return
 #^!k::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
 #^!l::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
 #^!m::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "monitor off")
+#^!o::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe") ;PSKill Opera
 
 ; Window Style Manipulation
 #`::WinSet, AlwaysOnTop, Toggle, A
@@ -299,6 +311,7 @@ Pause:: ShowHelpWindow("
 [Browser]
      ^B -> Paste clipboard and Go
      ^D -> Search in YouTube selected text
+     ^Q -> Search in RuTracker selected text
      ^Z -> Restore recently closed tab
      F9 -> Previous Tab
     F10 -> Next Tab
@@ -356,6 +369,7 @@ AppsKey -> Middle Mouse Click
  #^!K -> Kill MPC-HC
  #^!L -> Kill MPC-BE
  #^!M -> Monitor Off
+ #^!O -> Kill Opera
 [Window Style Manipulation]
  #`` -> Always On Top
  !`` -> Borderless
