@@ -36,7 +36,7 @@ CreateBAT(oFileNames, iThreads) {
             oFile.Close()
         }
     }
-    oFile := FileOpen("MKV.BAT", "w")
+    oFile := FileOpen("MUX_MKV.BAT", "w")
     oFile.Write(GetMkvCmd(oFileNames[0]))
     oFile.Close()
     oFile := FileOpen("DEL_MKA_VIDEO.BAT", "w")
