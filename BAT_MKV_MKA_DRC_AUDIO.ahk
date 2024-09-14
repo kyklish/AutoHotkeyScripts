@@ -39,6 +39,9 @@ CreateBAT(oFileNames, iThreads) {
     oFile := FileOpen("MKV.BAT", "w")
     oFile.Write(GetMkvCmd(oFileNames[0]))
     oFile.Close()
+    oFile := FileOpen("DEL_MKA_VIDEO.BAT", "w")
+    oFile.Write(GetDelCmd(oFileNames[0]))
+    oFile.Close()
     oFile := FileOpen("ALL_AUDIO_THREADS.BAT", "w")
     oFile.Write(GetThreadCmd())
     oFile.Close()
@@ -96,6 +99,17 @@ GetThreadCmd() {
     sCmd := ""
     sCmd := "@ECHO OFF`n"
     sCmd := "FOR %%F IN (""AUDIO*.BAT"") DO START CMD /C ""%%F""`n"
+    Return sCmd
+}
+
+GetDelCmd(oFileNames) {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CHOICE /M ""Delete source files?""`n"
+    sCmd .= "IF %ERRORLEVEL%==1 GOTO :DELETE_SOURCE ELSE GOTO :EOF`n`n"
+    sCmd .= ":DELETE_SOURCE`n"
+    For _, oFileName in oFileNames
+        sCmd .= "DEL """ oFileName["path"] """ ""MKA\" oFileName["mka"] """`n"
     Return sCmd
 }
 
