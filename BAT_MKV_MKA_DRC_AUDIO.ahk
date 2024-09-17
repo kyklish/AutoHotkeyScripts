@@ -1,6 +1,6 @@
-; BAT_MKV_MKA_DRC_AUDIO[1 ... 9].ahk - set audio stream number in script's name,
-; no need to edit script for different video files, just rename it or leave it
-; blank to use internal variable value.
+; BAT_MKV_MKA_DRC[2 ... 4]_AUDIO[1 ... 9].ahk - set audio stream number and DRC
+; ratio in script's name (no need to edit script) or leave it blank to use
+; internal variable value.
 
 ; Create BAT files with FFMPEG commands to create MKA files with DRC.
 ; FFMPEG is single-thread software, create multiple BAT files for multi-threading.
@@ -27,11 +27,17 @@ iDrcRatio := 2
 ; [1 ... N] - number of BAT files for manual multi-threading
 iThreads := 4
 
-; Get audio stream number from file name (no need to edit script every time)
-RegExMatch(A_ScriptName, "AUDIO(?P<Id>\d)\.ahk", iAudio)
+; Get audio stream id from file name (no need to edit script every time)
+RegExMatch(A_ScriptName, "AUDIO(?P<Id>\d)", iAudio)
 If iAudioId is Integer
     If (iAudioId > 0)
         iAudioStream := iAudioId - 1
+
+; Get DRC ratio value from file name (no need to edit script every time)
+RegExMatch(A_ScriptName, "DRC(?P<Value>\d)", iDrc)
+If iDrcValue is Integer
+    If (2 <= iDrcValue && iDrcValue <= 4)
+        iDrcRatio := iDrcValue
 
 oFileNames := GetVideoFileNames(["*.avi", "*.mkv"], iDrcRatio, iThreads)
 CreateBAT(oFileNames, iThreads)
