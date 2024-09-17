@@ -49,7 +49,7 @@ CreateBAT(oFileNames, iThreads) {
     oFile := FileOpen("MUX_MKV.BAT", "w")
     oFile.Write(GetMkvCmd(oFileNames[0]))
     oFile.Close()
-    oFile := FileOpen("DEL_MKA_VIDEO.BAT", "w")
+    oFile := FileOpen("DEL_SOURCE_FILES.CMD", "w")
     oFile.Write(GetDelCmd(oFileNames[0]))
     oFile.Close()
     oFile := FileOpen("ALL_AUDIO_THREADS.BAT", "w")
@@ -112,6 +112,17 @@ GetThreadCmd() {
     Return sCmd
 }
 
+; GetDelCmd(oFileNames) {
+;     sCmd := ""
+;     sCmd .= "@ECHO OFF`n"
+;     sCmd .= "CHOICE /M ""Delete source files?""`n"
+;     sCmd .= "IF %ERRORLEVEL%==1 GOTO :DELETE_SOURCE ELSE GOTO :EOF`n`n"
+;     sCmd .= ":DELETE_SOURCE`n"
+;     For _, oFileName in oFileNames
+;         sCmd .= "DEL """ oFileName["path"] """ ""MKA\" oFileName["mka"] """`n"
+;     Return sCmd
+; }
+
 GetDelCmd(oFileNames) {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
@@ -119,7 +130,16 @@ GetDelCmd(oFileNames) {
     sCmd .= "IF %ERRORLEVEL%==1 GOTO :DELETE_SOURCE ELSE GOTO :EOF`n`n"
     sCmd .= ":DELETE_SOURCE`n"
     For _, oFileName in oFileNames
-        sCmd .= "DEL """ oFileName["path"] """ ""MKA\" oFileName["mka"] """`n"
+        sCmd .= "DEL """ oFileName["path"] """`n"
+    sCmd .= "MOVE MKV\*.mkv`n"
+    sCmd .= "RMDIR MKV`n"
+    Loop, Files, *, D
+        sCmd .= "RMDIR /S /Q """ A_LoopFileName """`n"
+    sCmd .= "DEL /F /Q *.ahk`n"
+    sCmd .= "DEL /F /Q *.ass`n"
+    sCmd .= "DEL /F /Q *.srt`n"
+    sCmd .= "DEL /F /Q *.bat`n"
+    sCmd .= "DEL /F /Q *.cmd`n"
     Return sCmd
 }
 
