@@ -82,7 +82,7 @@ GetMkvCmd(oFileNames) {
                     sLng := "ukr"
                 If (InStr(A_LoopFileName, ".eng." sExt) || InStr(A_LoopFileDir, "eng"))
                     sLng := "eng"
-                If (InStr(A_LoopFileName, ".forced." sExt))
+                If (InStr(A_LoopFileName, ".forc." sExt) || InStr(A_LoopFileName, ".forced." sExt))
                     bForced := true
                 If (bForced)
                     sCmd .= " ^`n    --language 0:rus --track-name 0:""Forced"" """ A_LoopFilePath """"
@@ -98,7 +98,7 @@ GetMkvCmd(oFileNames) {
 GetThreadCmd() {
     sCmd := ""
     sCmd := "@ECHO OFF`n"
-    sCmd := "FOR %%F IN (""AUDIO*.BAT"") DO START CMD /C ""%%F""`n"
+    sCmd := "FOR %%F IN (""AUDIO*_RATIO*_THREAD*.BAT"") DO START CMD /C ""%%F""`n"
     Return sCmd
 }
 
