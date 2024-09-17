@@ -1,4 +1,4 @@
-; BAT_MKV_MKA_DRC_AUDIO[1 ... N].ahk - set audio stream number in script's name,
+; BAT_MKV_MKA_DRC_AUDIO[1 ... 9].ahk - set audio stream number in script's name,
 ; no need to edit script for different video files, just rename it or leave it
 ; blank to use internal variable value.
 
@@ -20,7 +20,7 @@
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 
-; [0 ... N] - audio stream to convert with DRC
+; [0 ... N] - audio stream id to convert with DRC (zero based numeration!)
 iAudioStream := 0
 ; [2 ... 4] - DRC ratio above 4 has no audible difference
 iDrcRatio := 2
@@ -140,6 +140,7 @@ GetDelCmd(oFileNames) {
     sCmd .= "DEL /F /Q *.srt`n"
     sCmd .= "DEL /F /Q *.bat`n"
     sCmd .= "DEL /F /Q *.cmd`n"
+    ; Delete CMD script LAST!!! (Script deletes himself)
     Return sCmd
 }
 
