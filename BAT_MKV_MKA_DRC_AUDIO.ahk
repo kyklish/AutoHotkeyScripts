@@ -40,7 +40,8 @@ If iDrcValue is Integer
         iDrcRatio := iDrcValue
 
 oFileNames := GetVideoFileNames(["*.avi", "*.mkv"], iDrcRatio, iThreads)
-CreateBAT(oFileNames, iThreads)
+If (oFileNames[0].Count() > 0)
+    CreateBAT(oFileNames, iThreads)
 ExitApp
 
 CreateBAT(oFileNames, iThreads) {
