@@ -48,19 +48,20 @@ CreateBAT(oFileNames, iThreads) {
     global iAudioStream, iDrcRatio
     Loop % iThreads {
         If (oFileNames[A_Index].Count()) {
-            oFile := FileOpen("AUDIO" iAudioStream + 1 "_RATIO0" iDrcRatio "_THREAD" A_Index ".BAT", "w")
+            oFile := FileOpen("!.AUDIO" iAudioStream + 1 "_DRC" iDrcRatio "_THREAD" A_Index ".BAT", "w")
             oFile.Write(GetMkaCmd(oFileNames[A_Index], iAudioStream, iDrcRatio))
             oFile.Close()
         }
     }
-    oFile := FileOpen("MUX_MKV.BAT", "w")
+    oFile := FileOpen("1.RUN_ALL_AUDIO_THREADS.BAT", "w")
+    oFile.Write(GetThreadCmd())
+    oFile.Close()
+    oFile := FileOpen("2.MUX_MKV.BAT", "w")
     oFile.Write(GetMkvCmd(oFileNames[0]))
     oFile.Close()
-    oFile := FileOpen("DEL_SOURCE_FILES.CMD", "w")
+    ; Use CMD extension to make it unique, we will use it to delete this file last
+    oFile := FileOpen("3.DEL_SOURCE_FILES.CMD", "w")
     oFile.Write(GetDelCmd(oFileNames[0]))
-    oFile.Close()
-    oFile := FileOpen("ALL_AUDIO_THREADS.BAT", "w")
-    oFile.Write(GetThreadCmd())
     oFile.Close()
 }
 
@@ -115,7 +116,7 @@ GetMkvCmd(oFileNames) {
 GetThreadCmd() {
     sCmd := ""
     sCmd := "@ECHO OFF`n"
-    sCmd := "FOR %%F IN (""AUDIO*_RATIO*_THREAD*.BAT"") DO START CMD /C ""%%F""`n"
+    sCmd := "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.BAT"") DO START CMD /C ""%%F""`n"
     Return sCmd
 }
 
@@ -159,7 +160,7 @@ GetVideoFileNames(oFilePatterns, iDrcRatio, iThreads) {
         Loop, Files, %sFilePattern%
         {
             sName := SubStr(A_LoopFileName, 1, -4) ; File name without extension
-            sSuffix := "DRC_RATIO0" iDrcRatio "_UPWARD"
+            sSuffix := "DRC" iDrcRatio "_UPWARD"
             oFileElement := { 0:""
                 ; , "ext": A_LoopFileExt
                 , "mka": sName "." sSuffix ".mka"
