@@ -140,9 +140,10 @@ GetDelCmd(oFileNames) {
     For _, oFileName in oFileNames
         sCmd .= "DEL """ oFileName["path"] """`n"
     sCmd .= "MOVE MKV\*.mkv`n"
-    sCmd .= "RMDIR MKV`n"
+    sCmd .= "RMDIR MKV`n" ; No /S /Q, because MKV must be empty already!
+    sCmd .= "RMDIR /S /Q MKA`n"
     Loop, Files, *, D
-        sCmd .= "RMDIR /S /Q """ A_LoopFileName """`n"
+        sCmd .= "RMDIR /S /Q """ A_LoopFileName """`n" ; Folders with subs
     sCmd .= "DEL /F /Q *.ahk`n"
     sCmd .= "DEL /F /Q *.ass`n"
     sCmd .= "DEL /F /Q *.srt`n"
