@@ -408,6 +408,7 @@ ExploreLocation(operation, dlOperation, clSz)
         ; battle without knowing, that his/her ship can't win.
         Return
     Send("Click WheelDown 15", dlOperation) ; Minimum 10 notches to zoom out WORLD MAP
+    Sleep, % dlOperation ; Wait for full zoom out
     ; Find and click on LOCATION ICON
     Switch operation {
     Case "Enemy":
