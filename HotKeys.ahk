@@ -198,7 +198,11 @@ return
 ^!+l:: ;Logoff
 MsgBox, % 4 + 256,, Log off?
 IfMsgBox, Yes
+{
+	if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+		PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
 	Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "exitwin logoff")
+}
 return
 
 
