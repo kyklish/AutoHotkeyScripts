@@ -11,7 +11,6 @@ g_bSkipDelay := false
 ;Note that /restart is a built-in switch (applied to AutoHotkey.exe, not to the script),
 ;so is not included in the array of command-line parameters, must use WinAPI.
 sFullCommandLine := DllCall("GetCommandLine", "str")
-MsgBox % sFullCommandLine
 if not RegExMatch(sFullCommandLine, "i) /restart(?!\S)") { ;i) - case-insensitive [добавил сам]
     ;First launch of script (manual or on Windows' start)
     Hotkey, Esc, CancelAutoStart ;Here we can change [g_bAutoStart] value.
@@ -36,9 +35,8 @@ else
 ; else
 ;     FileAppend, , %g_sFileNameSkipDelayTag% ;Create empty TAG file
 
-; MsgBox % A_Args.Length()
-for n, sParam in A_Args {
-    MsgBox % sParam
+for i, sParam in A_Args {
+    ; MsgBox % sParam
     if (sParam == "/restart")
         continue
     else if (sParam == "-SkipDelay")
@@ -125,7 +123,7 @@ CancelAutoStart()
 CloseAutoStartPrograms()
 {
     global g_AutoStartScriptPath
-    Run, "%A_AhkPath%" "%g_AutoStartScriptPath%" -QuitProgram
-    Sleep, 10000
-    Run, "%A_AhkPath%" "%g_AutoStartScriptPath%" -KillProgram
+    RunWait, "%A_AhkPath%" "%g_AutoStartScriptPath%" -QuitProgram
+    Sleep, 1000
+    RunWait, "%A_AhkPath%" "%g_AutoStartScriptPath%" -KillProgram
 }
