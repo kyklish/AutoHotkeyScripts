@@ -243,8 +243,11 @@ class Manager
 	
 	Start()
 	{
+		global g_bSkipDelay
 		this.MakeProcList()
 		for i, oProc in this.oProcList {
+			if (g_bSkipDelay)
+				oProc.iDelay := 0
 			if (oProc.iDelay && !oProc.Exist()) {
 				maxProgress := oProc.iDelay
 				SplitPath, % oProc.sExeName, , , , exeName
@@ -297,6 +300,28 @@ oMgr.Start()
 !x::ExitApp
 */
 
+; Menu, Tray, Icon
+g_bSkipDelay := false
+g_bQuitProgram := false
+g_bKillProgram := false
+if (A_Args.Length() > 1) {
+    MsgBox % A_ScriptName ": requires 0 or 1 parameter, but it received " A_Args.Length() "."
+    ExitApp
+} else if (A_Args.Length() == 1) {
+    for n, sParam in A_Args {
+        MsgBox % sParam
+        if (sParam == "-SkipDelay")
+            g_bSkipDelay := true
+        else if (sParam == "-QuitProgram")
+            g_bQuitProgram := true
+        else if (sParam == "-KillProgram")
+            g_bKillProgram := true
+        else {
+            MsgBox % A_ScriptName ": wrong parameter " sParam "."
+            ExitApp
+        }
+    }
+}
 
 sDataFile := "AutoStart.csv"
 oMgr := new Manager(new DataFromFile(sDataFile), new ParserCSV())
@@ -321,7 +346,7 @@ ExitApp
 ;CopySettingsInRegistry(false)
 
 
-;CrystalDiskInfo gadget read data from User registry, but application run under built-in Admin,
-;so make regular copy of data from Admin to User.
+;CrystalDiskInfo gadget read data from User registry, but application runs under
+;   built-in Admin, so make regular copy of data from Admin to User.
 ;CrystalDiskInfo := Func("CopyRegKey").Bind(false, "Crystal Dew World")
 ;SetTimer, % CrystalDiskInfo, % 5 * 60 * 1000 ; "CrystalDiskInfo" auto refresh period I set to 5 min, so here too.
