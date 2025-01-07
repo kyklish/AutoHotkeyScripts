@@ -7,33 +7,33 @@
 ;~ - when the hotkey fires, its key's native function will not be blocked (hidden from the system)
 ;-------------------------------------------------------------------------------------
 ~LShift:: ;to russian layout
-startLShift := A_TickCount
-Input last_key, L1 V, {RShift}
+    startLShift := A_TickCount
+    Input last_key, L1 V, {RShift}
 return
 ;-------------------------------------------------------------------------------------
 ~LShift UP::
-endLShift := A_TickCount
-elapsed_LShift := endLShift - startLShift
-if (not last_key and elapsed_LShift < 300) {
-	PostMessage 0x50, 0, 0x4190419,, A	; Change layout to Russian
-}
-Send {RShift} ; To end Input after LShift keydown
-last_key =
+    endLShift := A_TickCount
+    elapsed_LShift := endLShift - startLShift
+    if (not last_key and elapsed_LShift < 300) {
+        PostMessage 0x50, 0, 0x4190419,, A ; Change layout to Russian
+    }
+    Send {RShift} ; To end Input after LShift keydown
+    last_key =
 return
 ;-------------------------------------------------------------------------------------
 ~RShift:: ;to english layout
-startRShift := A_TickCount
-Input last_key, L1 V, {LShift}
+    startRShift := A_TickCount
+    Input last_key, L1 V, {LShift}
 return
 ;-------------------------------------------------------------------------------------
 ~RShift UP::
-endRShift := A_TickCount
-elapsed_RShift := endRShift - startRShift
-if (not last_key and elapsed_RShift < 300) {
-	PostMessage 0x50, 0, 0x4090409,, A	; Change layout to English
-}
-Send {LShift}	; To end Input after RShift keydown
-last_key =
+    endRShift := A_TickCount
+    elapsed_RShift := endRShift - startRShift
+    if (not last_key and elapsed_RShift < 300) {
+        PostMessage 0x50, 0, 0x4090409,, A ; Change layout to English
+    }
+    Send {LShift} ; To end Input after RShift keydown
+    last_key =
 return
 ;-------------------------------------------------------------------------------------
 ;Предположил нажимаете LShift (левый Shift) сразу в переменную startLShift заносится временная метка.
