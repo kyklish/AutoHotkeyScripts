@@ -32,7 +32,8 @@ class Process
 {
     iDelay := 0
     bAdmin := false
-    sExeName := ""
+    sExeName := "" ;Name with extension with optional path
+    sFileName := "" ;Name with extension without path
     sParams := ""
     sWorkingDir := ""
     sWinOptions := ""
@@ -47,6 +48,7 @@ class Process
         this.iDelay := oProcParams.iDelay
         this.bAdmin := oProcParams.bAdmin
         this.sExeName := oProcParams.sExeName
+        this.sFileName := oProcParams.sFileName
         this.sParams := oProcParams.sParams
         this.sWorkingDir := oProcParams.sWorkingDir
         this.sWinOptions := oProcParams.sWinOptions
@@ -64,10 +66,21 @@ class Process
         }
     }
 
+    Stop()
+    {
+        if (this.Exist())
+            Run % "TASKKILL /IM """ this.sFileName """", , Hide
+    }
+
+    Kill()
+    {
+        if (this.Exist())
+            Run % "TASKKILL /F /IM """ this.sFileName """", , Hide
+    }
+
     Exist()
     {
-        SplitPath, % this.sExeName, sFileName
-        Process, Exist, % sFileName	;Sets ErrorLevel to the Process ID (PID) if a matching process exists, or 0 otherwise.
+        Process, Exist, % this.sFileName    ;Sets ErrorLevel to the Process ID (PID) if a matching process exists, or 0 otherwise.
         return ErrorLevel
     }
 }
@@ -146,6 +159,8 @@ class ParserCSV extends Parser
         oProcParams.sParams := oCSV[4]
         oProcParams.sWorkingDir := oCSV[5]
         oProcParams.sWinOptions := oCSV[6]
+        SplitPath, % oProcParams.sExeName, sFileName
+        oProcParams.sFileName := sFileName
         if (oProcParams.sExeName = "")
             throw Exception("Empty sExeName")
         if (oProcParams.sWinOptions != "" && oProcParams.sWinOptions != "Max" && oProcParams.sWinOptions != "Min" && oProcParams.sWinOptions != "Hide")
@@ -269,6 +284,22 @@ class Manager
         Progress, % ++barPosition ;not understand how this variable stay available here, because it's local variable in method Manager.Start()
         return ;I suggest this code runs in Manager.Start() scope view, which stay alive due to Sleep in method Process.Start()
     }
+
+    Stop()
+    {
+        this.MakeProcList()
+        for i, oProc in this.oProcList
+            oProc.Stop()
+        return
+    }
+
+    Kill()
+    {
+        this.MakeProcList()
+        for i, oProc in this.oProcList
+            oProc.Kill()
+        return
+    }
 }
 
 ;CSV Example:
@@ -277,23 +308,22 @@ class Manager
 ;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]"
 ;NO ANY SPACES BEFORE AND AFTER COMMA
 ;Comments must starts from new line and begins with ";"
-/*
-Menu, Tray, Icon
-sDataString =
-(
- ;comment
- ;	0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
- ;	2,A,"cmd.exe","/c dir & pause",   ,"Hide"
-	5,U,"calc.exe","first ""second param with spaces""",        ,"Min"
-	7,A,"D:\SERGEY\Options\Program Files\BAT\Windows Firewall Control.bat", , ,"Hide"
-;	10,U,"notepad.exe",    ,   ,"Max"
-)
-oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
-oMgr.Start()
 
-!z::Reload
-!x::ExitApp
-*/
+; Menu, Tray, Icon
+; sDataString =
+; (
+;     ;comment
+;     ;0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
+;     ;2,A,"cmd.exe","/c dir & pause",   ,"Hide"
+;     5,U,"calc.exe","first ""second param with spaces""",        ,"Min"
+;     ;7,A,"D:\SERGEY\Options\Program Files\BAT\Windows Firewall Control.bat", , ,"Hide"
+;     10,U,"notepad.exe",    ,   ,"Max"
+; )
+; oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
+; oMgr.Start()
+
+; !z::Reload
+; !x::ExitApp
 
 ; Menu, Tray, Icon
 g_bSkipDelay := false
@@ -303,8 +333,8 @@ if (A_Args.Length() > 1) {
     MsgBox % A_ScriptName ": requires 0 or 1 parameter, but it received " A_Args.Length() "."
     ExitApp
 } else if (A_Args.Length() == 1) {
-    for n, sParam in A_Args {
-        MsgBox % sParam
+    for i, sParam in A_Args {
+        ; MsgBox % sParam
         if (sParam == "-SkipDelay")
             g_bSkipDelay := true
         else if (sParam == "-QuitProgram")
@@ -320,21 +350,37 @@ if (A_Args.Length() > 1) {
 
 sDataFile := "AutoStart.csv"
 oMgr := new Manager(new DataFromFile(sDataFile), new ParserCSV())
-oMgr.Start()
+if (g_bQuitProgram || g_bKillProgram) {
+    ;Stop tray icon organizing before stopping/killing apps
+    if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+        PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    ; Sleep, 250
+    if (g_bQuitProgram)
+        oMgr.Stop()
+    if (g_bKillProgram)
+        oMgr.Kill()
+    ;Clean tray icons without app's process
+    if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+        PostMessage, 0x5557, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+}
+else {
+    oMgr.Start()
 
-;TODO Change to WinWait!
-Sleep, 3000 ; Wait icon from last program AND wait starting Tray_Icon_Organize.ahk script on RELOAD all scripts
+    ;TODO Change to WinWait!
+    Sleep, 3000 ; Wait icon from last program AND wait starting Tray_Icon_Organize.ahk script on RELOAD all scripts
 
-if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
-    PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+        PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
 
-;if WinExist("Minimize_Discord.ahk ahk_class AutoHotkey")
-;	PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    ; if WinExist("Minimize_Discord.ahk ahk_class AutoHotkey")
+    ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
 
-;if WinExist("_AutoHotkey_.ahk ahk_class AutoHotkey")
-;	PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    ; if WinExist("_AutoHotkey_.ahk ahk_class AutoHotkey")
+    ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+}
 
 Sleep, 1000
+SoundBeep
 ExitApp
 
 ;CopySettingsInRegistry(true)
