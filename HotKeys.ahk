@@ -169,36 +169,36 @@ ActiveControlIsOfClass(Class) {
 ;Win+Fxx
 #F1::Run_AsUser(A_ComSpec)
 #F2::Run_AsAdmin(A_ComSpec)
-;#F2::Run_AsUser("D:\SERGEY\Options\Program Files\BAT\Browser\Opera.bat")
-;#F3::Run_AsUser("D:\SERGEY\Options\Program Files\BAT\Browser\Chrome.bat")
-;#F4::Run_AsUser("D:\SERGEY\Options\Program Files\BAT\Browser\Firefox.bat")
-;#F5::Run_AsUser("D:\SERGEY\Options\Program Files\SimpleDLNA\SimpleDLNA.exe")
-;#F11::Run_ScriptAsUser("D:\SERGEY\Options\Program Files\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\MyTheme.theme")
-;#F12::Run_ScriptAsUser("D:\SERGEY\Options\Program Files\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\win7msa.theme")
-#F11::Run, D:\SERGEY\Options\Program Files\Winaero Theme Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\MyTheme.theme"
-#F12::Run, D:\SERGEY\Options\Program Files\Winaero Theme Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\win7msa.theme"
+;#F2::Run_AsUser("D:\PORTABLE\_BAT_\Browser\Opera.bat")
+;#F3::Run_AsUser("D:\PORTABLE\_BAT_\Browser\Chrome.bat")
+;#F4::Run_AsUser("D:\PORTABLE\_BAT_\Browser\Firefox.bat")
+;#F5::Run_AsUser("D:\PORTABLE\SimpleDLNA\SimpleDLNA.exe")
+;#F11::Run_ScriptAsUser("D:\PORTABLE\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\MyTheme.theme")
+;#F12::Run_ScriptAsUser("D:\PORTABLE\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\win7msa.theme")
+#F11::Run, D:\PORTABLE\Winaero_Theme_Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\MyTheme.theme"
+#F12::Run, D:\PORTABLE\Winaero_Theme_Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\win7msa.theme"
 
 
 ;CTRL+ALT+SHIFT
 ;Empty Recycle Bin ;FileRecycleEmpty and "nircmd.exe emptybin" not work, if launched from another account!!!
-^!+k::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "emptybin")
-^!+m::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\Win7\Procmon.exe") ;Process Monitor
-^!+p::Run_AsAdmin("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\procexp64.exe") ;Process Explorer
+^!+k::Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "emptybin")
+^!+m::Run_AsAdmin("D:\PORTABLE\NirLauncher\Sysinternals\Win7\Procmon.exe") ;Process Monitor
+^!+p::Run_AsAdmin("D:\PORTABLE\NirLauncher\Sysinternals\procexp64.exe") ;Process Explorer
 ;Reboot ;AutoHotkey commands "Shutdown" not work, if launched from another account!!!
 ^!+r::
 if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
 	PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "exitwin reboot") ;there is "force" parameter can be used
+Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "exitwin reboot") ;there is "force" parameter can be used
 return
 ^!+s::
 if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
 	PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "exitwin shutdown") ;Shutdown
+Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "exitwin shutdown") ;Shutdown
 return
 ^!+l:: ;Logoff
 MsgBox, % 4 + 256,, Log off?
 IfMsgBox, Yes
-	Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "exitwin logoff")
+	Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "exitwin logoff")
 return
 
 
@@ -208,10 +208,10 @@ return
 
 
 ;WIN+CTRL+ALT
-#^!1::Run_AsUser("D:\SERGEY\Options\Program Files\1by1\1by1.exe", "/r")
-#^!2::Run_AsUser("D:\SERGEY\Options\Program Files\Download Master Portable\dmaster.exe")
-#^!3::Run_AsUser("D:\SERGEY\Options\Program Files\uTorrent\2.0.4\utorrent.exe", "/RECOVER /NOINSTALL")
-#^!4::Run_AsUser("D:\SERGEY\Options\Program Files\uTorrent\3.5.5\uTorrent.exe", "/RECOVER /NOINSTALL")
+#^!1::Run_AsUser("D:\PORTABLE\1by1\1by1.exe", "/r")
+#^!2::Run_AsUser("D:\PORTABLE\Download Master Portable\dmaster.exe")
+#^!3::Run_AsUser("D:\PORTABLE\uTorrent\2.0.4\utorrent.exe", "/RECOVER /NOINSTALL")
+#^!4::Run_AsUser("D:\PORTABLE\uTorrent\3.5.5\uTorrent.exe", "/RECOVER /NOINSTALL")
 #^!0:: ;Eject\Close CD tray.
 Drive, Eject
 if (A_TimeSinceThisHotkey < 1000) ;If the command completed quickly, the tray was probably already ejected. ; Adjust this time if needed.
@@ -221,18 +221,18 @@ return
 
 ;WIN+CTRL+ALT
 ;SSD - Visible - 1:BenQ - 2:Edifier - 3:TV
-#^!F1::Run_AsUser("D:\SERGEY\Options\Program Files\SSD (Set Sound Device)\SSD.exe", "1")
-#^!F2::Run_AsUser("D:\SERGEY\Options\Program Files\SSD (Set Sound Device)\SSD.exe", "2")
-#^!F3::Run_AsUser("D:\SERGEY\Options\Program Files\SSD (Set Sound Device)\SSD.exe", "3")
+#^!F1::Run_AsUser("D:\PORTABLE\SSD_(Set_Sound_Device)\SSD.exe", "1")
+#^!F2::Run_AsUser("D:\PORTABLE\SSD_(Set_Sound_Device)\SSD.exe", "2")
+#^!F3::Run_AsUser("D:\PORTABLE\SSD_(Set_Sound_Device)\SSD.exe", "3")
 #^!F4::WinClose, A ;Force close active window
 
 
 ;WIN+CTRL+ALT
 #^!f::Run_AsUser("C:\Users\Fixer\AppData\Local\FluxSoftware\Flux\flux.exe", "/noshow")
-#^!k::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
-#^!l::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
-#^!m::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe", "monitor off")
-#^!o::Run_AsUser("D:\SERGEY\Options\Program Files\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe") ;PSKill Opera
+#^!k::Run_AsUser("D:\PORTABLE\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
+#^!l::Run_AsUser("D:\PORTABLE\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
+#^!m::Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "monitor off")
+#^!o::Run_AsUser("D:\PORTABLE\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe") ;PSKill Opera
 
 ; Window Style Manipulation
 #`::WinSet, AlwaysOnTop, Toggle, A
@@ -252,12 +252,12 @@ return
 #If
 
 #IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
-^+f::Run_AsUser("D:\SERGEY\Options\Program Files\Everything x64\Everything.exe")
+^+f::Run_AsUser("D:\PORTABLE\Everything_x64\Everything.exe")
 !+f::Run_AsUser("ntfy.exe", "publish --quiet --title PC nokia_test_topic " . Clipboard, "", "Min")
 #If
 !+Esc::Run_AsAdmin("C:\Windows\System32\resmon.exe") ;Resource Monitor
-#Insert::Run_AsAdmin("D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 50 t b 0")
-Launch_Mail::Run_AsUser("D:\SERGEY\Options\Program Files\Sylpheed\sylpheed.exe")
+#Insert::Run_AsAdmin("D:\PORTABLE\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 50 t b 0")
+Launch_Mail::Run_AsUser("D:\PORTABLE\Sylpheed\sylpheed.exe")
 ;Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
 
 

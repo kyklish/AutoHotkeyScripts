@@ -10,7 +10,7 @@
     ;Set Balanced Power Plan
   0,U,"powercfg","-setactive 381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
     ;Executes a command of Command-Prompt (Console Window) without displaying anything on the screen.
- ;0,U,"D:\SERGEY\Options\Program Files\NirLauncher\NirSoft\nircmd.exe","execmd powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
+ ;0,U,"D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe","execmd powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
   0,A,"C:\Program Files\CEZEO software\SsdReady\SsdReady.exe"
  ;0,U,"C:\Program Files\ESET\ESET NOD32 Antivirus\egui.exe","/hide /waitservice"
     ;Crashes modern games. Steam overlay not work properly in some games. :(
@@ -37,29 +37,29 @@
  ;0,U,"C:\Users\Fixer\AppData\Local\Discord\Update.exe","--processStart Discord.exe --process-start-args --start-minimized"
   0,U,"C:\Users\Fixer\AppData\Local\FluxSoftware\Flux\flux.exe","/noshow"
  ;0,U,"C:\Users\Fixer\AppData\Local\Viber\Viber.exe","StartMinimized"
- ;0,U,"D:\SERGEY\Options\Program Files\7+ Taskbar Tweaker\7+ Taskbar Tweaker.exe","-hidewnd"
-  0,U,"D:\SERGEY\Options\Program Files\7+ Taskbar Tweaker\bin\64\7+ Taskbar Tweaker.ex2","-hidewnd"
-  0,U,"D:\SERGEY\Options\Program Files\BAT\Android_Studio.bat",,,"Hide"
-  0,U,"D:\SERGEY\Options\Program Files\BitMeter\BitMeter2.exe","-D ""D:\SERGEY\Options\Program Files\BitMeter\Settings\"""
-  0,U,"D:\SERGEY\Options\Program Files\Clipdiary\clipdiary-portable.exe","--portable"
-  0,A,"D:\SERGEY\Options\Program Files\ClickMonitorDDC\ClickMonitorDDC.exe"
-  0,A,"D:\SERGEY\Options\Program Files\CrystalDiskInfo\DiskInfoX64.exe","/Startup"
-  0,U,"D:\SERGEY\Options\Program Files\CUIT\CUIT 2012.exe"
- ;0,U,"D:\SERGEY\Options\Program Files\Dexpot\dexpot.exe"
-  0,U,"D:\SERGEY\Options\Program Files\Everything x64\Everything.exe","-startup"
-  0,U,"D:\SERGEY\Options\Program Files\Gridy\Gridy.exe"
-  0,U,"D:\SERGEY\Options\Program Files\Mahou\Mahou.exe"
-  0,A,"D:\SERGEY\Options\Program Files\MemInfo\meminfo.exe"
- ;0,U,"D:\SERGEY\Options\Program Files\NegativeScreen\NegativeScreen.exe"
-  0,A,"D:\SERGEY\Options\Program Files\OpenHardwareMonitor\OpenHardwareMonitor.exe"
+ ;0,U,"D:\PORTABLE\7+_Taskbar_Tweaker\7+ Taskbar Tweaker.exe","-hidewnd"
+  0,U,"D:\PORTABLE\7+_Taskbar_Tweaker\bin\64\7+ Taskbar Tweaker.ex2","-hidewnd"
+  0,U,"D:\PORTABLE\_BAT_\Android_Studio.bat",,,"Hide"
+  0,U,"D:\PORTABLE\BitMeter\BitMeter2.exe","-D ""D:\PORTABLE\BitMeter\Settings\"""
+  0,U,"D:\PORTABLE\Clipdiary\clipdiary-portable.exe","--portable"
+  0,A,"D:\PORTABLE\ClickMonitorDDC\ClickMonitorDDC.exe"
+  0,A,"D:\PORTABLE\CrystalDiskInfo\DiskInfoX64.exe","/Startup"
+  0,U,"D:\PORTABLE\CUIT\CUIT 2012.exe"
+ ;0,U,"D:\PORTABLE\Dexpot\dexpot.exe"
+  0,U,"D:\PORTABLE\Everything_x64\Everything.exe","-startup"
+  0,U,"D:\PORTABLE\Gridy\Gridy.exe"
+  0,U,"D:\PORTABLE\Mahou\Mahou.exe"
+  0,A,"D:\PORTABLE\MemInfo\meminfo.exe"
+ ;0,U,"D:\PORTABLE\NegativeScreen\NegativeScreen.exe"
+  0,A,"D:\PORTABLE\OpenHardwareMonitor\OpenHardwareMonitor.exe"
     ; Magnifying Glass capture Ctrl + Alt combination. Other programs can't call their own Ctrl + Alt combinations.
- ;0,U,"D:\SERGEY\Options\Program Files\Virtual Magnifying Glass\magnifier.exe"
-  0,U,"D:\SERGEY\Options\Program Files\Volume2\Volume2.exe"
+ ;0,U,"D:\PORTABLE\Virtual_Magnifying_Glass\magnifier.exe"
+  0,U,"D:\PORTABLE\Volume2\Volume2.exe"
     ;HWiNFO add sensors value to OSD MSI Afterburner:
         ;CPU Fan speed
     ;HWiNFO: OS crashed if launched without delay
-  7,A,"D:\SERGEY\Options\Program Files\HWiNFO32\HWiNFO32.exe"
-  7,A,"D:\SERGEY\Options\Program Files\BAT\Windows_Firewall_Control.bat",,,"Hide"
+  7,A,"D:\PORTABLE\HWiNFO32\HWiNFO32.exe"
+  7,A,"D:\PORTABLE\_BAT_\Windows_Firewall_Control.bat",,,"Hide"
     ;AIDA64 add sensors value to OSD MSI Afterburner:
         ;Time
         ;Desktop Resolution
@@ -67,6 +67,6 @@
         ;Battery Level
         ;Battery Power Load
         ;Battery Input
- 15,A,"D:\SERGEY\Options\Program Files\AIDA64\AIDA64.exe"
+ 15,A,"D:\PORTABLE\AIDA64\AIDA64.exe"
  25,A,"C:\Program Files (x86)\SpeedFan\SpeedFan.exe","/NOPCISCAN /NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
 ;25,U,"C:\Program Files (x86)\GXStandard16-in-1\GXStandard16in1.exe","Minimum"
