@@ -3,13 +3,12 @@
 ; С админ правами вешает Explorer!!!
 Reload_AsUser()
 
-
 ; Передвигаем иконки в трее, согласно содержимому CSV файла
 ; Формат CSV файла:
-;	первое значение - EXE
-;	последующие - если у одного приложения есть несколько иконок, то это RegExp части строки,
-;				  по которой находятся нужные иконки [текст ToolTip-а] (CaseSensitive по-умолчанию),
-;				  этот параметр можно опустить, если у приложения только одна иконка
+;   первое значение - EXE
+;   последующие - если у одного приложения есть несколько иконок, то это RegExp части строки,
+;                 по которой находятся нужные иконки [текст ToolTip-а] (CaseSensitive по-умолчанию),
+;                 этот параметр можно опустить, если у приложения только одна иконка
 ; Порядок строк в CSV файле определяет результирующий порядок иконок
 ; Сортировка вниз работает, даже если указаны одинаковые ToolTip-ы для поиска
 ; Сортировка вверх не сработает в этом случае, нужно указывать уникальный текст поиска
@@ -20,15 +19,18 @@ iUpdatePeriod := 2000 ; период автосортировки
 
 OnMessage(0x5555, "MsgMonitor") ; Wait message from AutoStartObjects.ahk script (autostart complete, start sorting)
 OnMessage(0x5556, "MsgMonitor") ; Wait message from HotKeys.ahk script (PC shutdown or reboot, stop sorting)
+OnMessage(0x5557, "MsgMonitor") ; Wait message from HotKeys.ahk script (PC shutdown or reboot, stop sorting)
 
 MsgMonitor(wParam, lParam, msg) ; Returning from this function quickly is often important
-{	; Heavy job don't work here, because script didn't respond to windows messages here
-	global iUpdatePeriod
-	switch msg
-	{
-		case 0x5555: SetTimer, SortIconsUp, %iUpdatePeriod%
-		case 0x5556: SetTimer, SortIconsUp, Off
-	}
+{
+    ; Heavy job don't work here, because script didn't respond to windows messages here
+    global iUpdatePeriod
+    switch msg
+    {
+    case 0x5555: SetTimer, SortIconsUp, %iUpdatePeriod%
+    case 0x5556: SetTimer, SortIconsUp, Off
+    case 0x5557: SetTimer, CleanIcons
+    }
 }
 
 ;Sleep % 4*60*1000 ;иконка ОС "Action Center" (белый флажок) появляются через минуты 3, поэтому такая большая задержка
@@ -40,212 +42,211 @@ MsgMonitor(wParam, lParam, msg) ; Returning from this function quickly is often 
 #!c:: TrayIcon_SortUp(csvFile)
 #!b:: ShowTrayInfo()
 
-
-SortIconsUp:
-;iIcons := TrayIcon_GetInfo().Count() ; не трогает иконки аварийно упавших приложений
-iIcons := TrayIcon_GetValidCount() ; убирает иконки упавших приложений
-if (iIcons != iIconsPrev) {
-	TrayIcon_SortUp(csvFile)
-	iIconsPrev := iIcons
-}
+CleanIcons:
+    SetTimer,, Off
+    TrayIcon_GetValidCount() ; убирает иконки упавших приложений
+    ; TrayIcon_GetValidCount(true) ; убирает иконки упавших приложений агрессивно
 return
 
+SortIconsUp:
+    ;iIcons := TrayIcon_GetInfo().Count() ; не трогает иконки аварийно упавших приложений
+    iIcons := TrayIcon_GetValidCount() ; убирает иконки упавших приложений
+    if (iIcons != iIconsPrev) {
+        TrayIcon_SortUp(csvFile)
+        iIconsPrev := iIcons
+    }
+return
 
 ; считаем количество иконок для которых существует процесс, попутно удаляя иконки, для которых не существует процесса породившего их
-TrayIcon_GetValidCount()
+TrayIcon_GetValidCount(bForceDeleteNotValidIcons := false)
 {
-	iIcons := 0
-	oIcons := TrayIcon_GetInfo()
-	
-	Loop, % oIcons.MaxIndex()
-	{
-		if (!oIcons[A_Index].Process)
-			;TrayIcon_Delete(...) - удаляет иконки по жесткому, после этого иконки вновь могут не появиться (MPC-HC иконки LAV декодеров)
-			;TrayIcon_Delete(oIcons[A_Index].idx)
-			TrayIcon_Remove(oIcons[A_Index].hWnd, oIcons[A_Index].uID)
-		else
-			iIcons++
-	}
-	
-	return iIcons
-}
+    iIcons := 0
+    oIcons := TrayIcon_GetInfo()
 
+    Loop, % oIcons.MaxIndex()
+    {
+        if (!oIcons[A_Index].Process) {
+            if (bForceDeleteNotValidIcons)
+                ;TrayIcon_Delete(...) - удаляет иконки по жесткому, после этого иконки вновь могут не появиться (MPC-HC иконки LAV декодеров)
+                TrayIcon_Delete(oIcons[A_Index].idx)
+            else
+                TrayIcon_Remove(oIcons[A_Index].hWnd, oIcons[A_Index].uID)
+        } else
+            iIcons++
+    }
+
+    return iIcons
+}
 
 ; сортируем и перемещаем вниз иконки
 TrayIcon_SortDown(sFilePath)
 {
-	Loop, Read, %sFilePath%
-	{
-		sStr := Trim(A_LoopReadLine)
-		if (SubStr(sStr, 1, 1) = ";" or sStr = "")
-			Continue
-		ParseString(sStr, sExeName, oToolTip)
-		TrayIcon_MoveToEnd(sExeName, oToolTip)
-	}
-	TrayIcon_ShowError()
+    Loop, Read, %sFilePath%
+    {
+        sStr := Trim(A_LoopReadLine)
+        if (SubStr(sStr, 1, 1) = ";" or sStr = "")
+            Continue
+        ParseString(sStr, sExeName, oToolTip)
+        TrayIcon_MoveToEnd(sExeName, oToolTip)
+    }
+    TrayIcon_ShowError()
 }
-
 
 ; сортируем и перемещаем вверх иконки
 TrayIcon_SortUp(sFilePath)
 {
-	sFile := []
-	Loop, Read, %sFilePath%
-	{
-		sStr := Trim(A_LoopReadLine)
-		if (SubStr(sStr, 1, 1) = ";" or sStr = "")
-			Continue
-		sFile.InsertAt(1, sStr)
-	}
-	Loop, % sFile.MaxIndex()
-	{
-		ParseString(sFile[A_Index], sExeName, oToolTip)
-		TrayIcon_MoveToTop(sExeName, oToolTip)
-	}
-	TrayIcon_ShowError()
+    sFile := []
+    Loop, Read, %sFilePath%
+    {
+        sStr := Trim(A_LoopReadLine)
+        if (SubStr(sStr, 1, 1) = ";" or sStr = "")
+            Continue
+        sFile.InsertAt(1, sStr)
+    }
+    Loop, % sFile.MaxIndex()
+    {
+        ParseString(sFile[A_Index], sExeName, oToolTip)
+        TrayIcon_MoveToTop(sExeName, oToolTip)
+    }
+    TrayIcon_ShowError()
 }
-
 
 ; выделяем EXE и ToolTip Needle из строки sStr
 ParseString(sStr, ByRef sExeName, ByRef oToolTip)
 {
-	oToolTip := []
-	sExeName := ""
-	Loop, Parse, sStr, csv
-	{
-		if (A_Index == 1) {
-			sExeName := A_LoopField
-		} else {
-			oToolTip.Push(A_LoopField)
-		}
-	}
+    oToolTip := []
+    sExeName := ""
+    Loop, Parse, sStr, csv
+    {
+        if (A_Index == 1) {
+            sExeName := A_LoopField
+        } else {
+            oToolTip.Push(A_LoopField)
+        }
+    }
 }
 
-/*
 ; показать сообщение на экране
-	TrayIcon_ShowError(sExeName, sToolTip)
-	{
-		sMsg =
-	(LTrim
-	Can't find this tray icon:
-	ExeName: %sExeName%
-	SearchToolTipNeedle: %sToolTip%
-	)
-		SoundBeepTwice()
-		ToolTip(sMsg, 2000, true)
-	}
-*/
+; TrayIcon_ShowError(sExeName, sToolTip)
+; {
+;     sMsg =
+;     (LTrim
+;         Can't find this tray icon:
+;         ExeName: %sExeName%
+;         SearchToolTipNeedle: %sToolTip%
+;     )
+;     ; SoundBeepTwice()
+;     SoundBeep
+;     ToolTip(sMsg, 2000, true)
+; }
 
 ; собрать все ошибки и за один раз показать сообщение на экране
 TrayIcon_ShowError(sExeName := "", sToolTip := "")
 {
-	static sList := []
-	if (sExeName) {
-		sList.Push({ExeName: sExeName, ToolTip: sToolTip})
-	}
-	else {
-		if (sList.MaxIndex()) { ;if not empty
-			sMsg := "Can't find this tray icons:"
-			Loop	% sList.maxIndex()
-			{
-				sMsg .= "`n" sList[A_Index].ExeName
-				if (sList[A_Index].ToolTip)
-					 sMsg .= " - " sList[A_Index].ToolTip
-			}
-			sList := []
-			SoundBeepTwice()
-			ToolTip(sMsg, 4000, true, 0, 0)
-		}
-	}
+    static sList := []
+    if (sExeName) {
+        sList.Push({ExeName: sExeName, ToolTip: sToolTip})
+    }
+    else {
+        if (sList.MaxIndex()) { ;if not empty
+            sMsg := "Can't find this tray icons:"
+            Loop	% sList.maxIndex()
+            {
+                sMsg .= "`n" sList[A_Index].ExeName
+                if (sList[A_Index].ToolTip)
+                    sMsg .= " - " sList[A_Index].ToolTip
+            }
+            sList := []
+            ; SoundBeepTwice()
+            SoundBeep
+            ToolTip(sMsg, 4000, true, 0, 0)
+        }
+    }
 }
-
 
 ; перемещаем иконки одного приложения вниз
 TrayIcon_MoveToEnd(sExeName, oToolTip := "")
 {
-	idxNew := 255 ; 65535 works too
-	Loop
-	{
-		idxOld := TrayIcon_GetIdx(sExeName, oToolTip[A_Index])
-		if (idxOld == -1) {
-			TrayIcon_ShowError(sExeName, oToolTip[A_Index])
-		} else {
-			TrayIcon_Move(idxOld, idxNew)
-		}
-	} Until !(A_Index < oToolTip.MaxIndex()) ; условие в Loop---Until работает наоборот!!!
+    idxNew := 255 ; 65535 works too
+    Loop
+    {
+        idxOld := TrayIcon_GetIdx(sExeName, oToolTip[A_Index])
+        if (idxOld == -1) {
+            TrayIcon_ShowError(sExeName, oToolTip[A_Index])
+        } else {
+            TrayIcon_Move(idxOld, idxNew)
+        }
+    } Until !(A_Index < oToolTip.MaxIndex()) ; условие в Loop---Until работает наоборот!!!
 }
-
 
 ; перемещаем иконки одного приложения вверх
 TrayIcon_MoveToTop(sExeName, oToolTip := "")
 {
-	idxNew := 0
-	maxIndex := oToolTip.MaxIndex() + 1
-	Loop
-	{
-		idxOld := TrayIcon_GetIdx(sExeName, oToolTip[maxIndex - A_Index])
-		if (idxOld == -1) {
-			TrayIcon_ShowError(sExeName, oToolTip[maxIndex - A_Index])
-		} else {
-			TrayIcon_Move(idxOld, idxNew)
-		}
-	} Until !(A_Index < oToolTip.MaxIndex())
+    idxNew := 0
+    maxIndex := oToolTip.MaxIndex() + 1
+    Loop
+    {
+        idxOld := TrayIcon_GetIdx(sExeName, oToolTip[maxIndex - A_Index])
+        if (idxOld == -1) {
+            TrayIcon_ShowError(sExeName, oToolTip[maxIndex - A_Index])
+        } else {
+            TrayIcon_Move(idxOld, idxNew)
+        }
+    } Until !(A_Index < oToolTip.MaxIndex())
 }
-
 
 ; ищем порядковый номер иконки определенного процесса и определенного текста в трее (нумерация начинается с 0)
 TrayIcon_GetIdx(sExeName, sToolTip := "")
 {
-	idx := -1 ; -1 is error value
-	if WinExist("ahk_exe " sExeName) {
-		oIcons := TrayIcon_GetInfo(sExeName)
-		Loop
-		{
-		;if (InStr(oIcons[A_Index].tooltip, sToolTip, true)) {
-			if (RegExMatch(oIcons[A_Index].tooltip, sToolTip)) {
-				idx := oIcons[A_Index].idx
-				break ; нашли первое совпадение, выходим из цикла
-			}
-		} Until !(A_Index < oIcons.MaxIndex())
-	}
-	return idx
+    idx := -1 ; -1 is error value
+    if WinExist("ahk_exe " sExeName) {
+        oIcons := TrayIcon_GetInfo(sExeName)
+        Loop
+        {
+            ;if (InStr(oIcons[A_Index].tooltip, sToolTip, true)) {
+            if (RegExMatch(oIcons[A_Index].tooltip, sToolTip)) {
+                idx := oIcons[A_Index].idx
+                break ; нашли первое совпадение, выходим из цикла
+            }
+        } Until !(A_Index < oIcons.MaxIndex())
+    }
+    return idx
 }
 
-
-; показать всю инфу по иконкам в трее
+; показать всю информацию по иконкам в трее
 ShowTrayInfo()
 {
-	; Removes previously created GUI
-	Gui Destroy
-	
-	; Create a ListView to display the list of info gathered
-	Gui Add, ListView, Grid r42 w900 Sort, idx|Process|Tooltip|Visible|Handle|IDcmd|msgID|uID|Class
-	
-	; Get all of the icons in the system tray using Sean's TrayIcon library
-	oIcons := TrayIcon_GetInfo()
-	
-	; Loop through the info we obtained and add it to the ListView
-	Loop, % oIcons.MaxIndex()
-	{
-		proc  := oIcons[A_Index].Process
-		ttip  := oIcons[A_Index].tooltip
-		tray  := oIcons[A_Index].Tray
-		hWnd  := oIcons[A_Index].hWnd
-		idx   := oIcons[A_Index].idx
-		IDcmd := oIcons[A_Index].IDcmd
-		msg   := oIcons[A_Index].msgID
-		uID   := oIcons[A_Index].uID
-		class := oIcons[A_Index].Class
-		
-		vis := (tray == "Shell_TrayWnd") ? "Yes" : "No"
-		
-		LV_Add(, idx, proc, ttip, vis, hWnd, IDcmd, msg, uID, Class)
-	}
-	
-	LV_ModifyCol()
-	LV_ModifyCol(1, "Integer Sort")
-	Loop, 4
-		LV_ModifyCol(A_Index + 4, "Integer")
-	
-	Gui Show, Center, System Tray Icons
+    ; Removes previously created GUI
+    Gui Destroy
+
+    ; Create a ListView to display the list of info gathered
+    Gui Add, ListView, Grid r42 w900 Sort, idx|Process|Tooltip|Visible|Handle|IDcmd|msgID|uID|Class
+
+    ; Get all of the icons in the system tray using Sean's TrayIcon library
+    oIcons := TrayIcon_GetInfo()
+
+    ; Loop through the info we obtained and add it to the ListView
+    Loop, % oIcons.MaxIndex()
+    {
+        proc  := oIcons[A_Index].Process
+        ttip  := oIcons[A_Index].tooltip
+        tray  := oIcons[A_Index].Tray
+        hWnd  := oIcons[A_Index].hWnd
+        idx   := oIcons[A_Index].idx
+        IDcmd := oIcons[A_Index].IDcmd
+        msg   := oIcons[A_Index].msgID
+        uID   := oIcons[A_Index].uID
+        class := oIcons[A_Index].Class
+
+        vis := (tray == "Shell_TrayWnd") ? "Yes" : "No"
+
+        LV_Add(, idx, proc, ttip, vis, hWnd, IDcmd, msg, uID, Class)
+    }
+
+    LV_ModifyCol()
+    LV_ModifyCol(1, "Integer Sort")
+    Loop, 4
+        LV_ModifyCol(A_Index + 4, "Integer")
+
+    Gui Show, Center, System Tray Icons
 }
