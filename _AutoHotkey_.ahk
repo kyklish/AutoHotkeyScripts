@@ -15,10 +15,9 @@ if not RegExMatch(sFullCommandLine, "i) /restart(?!\S)") { ;i) - case-insensitiv
     ;First launch of script (manual or on Windows' start)
     Hotkey, Esc, CancelAutoStart ;Here we can change [g_bAutoStart] value.
     SoundBeep
-    UpdateToolTip() ; Count down each second and show it in tooltip.
+    ShowToolTip() ; Count down each second and show it in tooltip.
     Sleep, % g_iToolTipShowTime ;Do not sleep, if script reloaded by "Reload" command.
     Hotkey, Esc, Off
-    ToolTip
 }
 
 ;Add /restart parameter to simulate Reload command behaviour.
@@ -118,6 +117,7 @@ CancelAutoStart()
 {
     global g_bAutoStart
     g_bAutoStart := false
+    SetTimer, ShowToolTip, Off
     ToolTip
     SoundBeep
 }
@@ -130,13 +130,15 @@ CloseAutoStartPrograms()
     RunWait, "%A_AhkPath%" "%g_AutoStartScriptPath%" -KillProgram
 }
 
-UpdateToolTip()
+ShowToolTip()
 {
     global g_iToolTipShowTime
     static iElapsedTime := 0
     iTimeLeft := (g_iToolTipShowTime - iElapsedTime) // 1000
     ToolTip, Press ESC to cancel autostart: %iTimeLeft% sec., 0, 0
     iElapsedTime += 1000
-    if (iElapsedTime != g_iToolTipShowTime)
-        SetTimer, UpdateToolTip, -1000
+    if (iElapsedTime > g_iToolTipShowTime)
+        ToolTip
+    else
+        SetTimer, ShowToolTip, -1000
 }
