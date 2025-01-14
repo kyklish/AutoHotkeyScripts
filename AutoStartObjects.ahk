@@ -302,29 +302,6 @@ class Manager
     }
 }
 
-;CSV Example:
-;"first field",SecondField,"the word ""special"" is quoted literally",,"last field, has literal comma"
-;CSV Format:
-;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]"
-;NO ANY SPACES BEFORE AND AFTER COMMA
-;Comments must starts from new line and begins with ";"
-
-; Menu, Tray, Icon
-; sDataString =
-; (
-;     ;comment
-;     ;0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
-;     ;2,A,"cmd.exe","/c dir & pause",   ,"Hide"
-;     5,U,"calc.exe","first ""second param with spaces""",        ,"Min"
-;     ;7,A,"D:\SERGEY\Options\Program Files\BAT\Windows Firewall Control.bat", , ,"Hide"
-;     10,U,"notepad.exe",    ,   ,"Max"
-; )
-; oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
-; oMgr.Start()
-
-; !z::Reload
-; !x::ExitApp
-
 ; Menu, Tray, Icon
 g_bSkipDelay := false
 g_bQuitProgram := false
@@ -348,40 +325,69 @@ if (A_Args.Length() > 1) {
     }
 }
 
-sDataFile := "AutoStart.csv"
-oMgr := new Manager(new DataFromFile(sDataFile), new ParserCSV())
-if (g_bQuitProgram || g_bKillProgram) {
-    ;Stop tray icon organizing before stopping/killing apps
-    if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
-        PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-    ; Sleep, 250
-    if (g_bQuitProgram)
-        oMgr.Stop()
-    if (g_bKillProgram)
-        oMgr.Kill()
-    ;Clean tray icons without app's process
-    if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
-        PostMessage, 0x5557, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-}
-else {
+;-------------------------------------------------------------------------------
+; g_Debug := true
+;-------------------------------------------------------------------------------
+
+if (g_Debug) {
+    ;CSV Example:
+    ;"first field",SecondField,"the word ""special"" is quoted literally",,"last field, has literal comma"
+    ;CSV Format:
+    ;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]"
+    ;NO ANY SPACES BEFORE AND AFTER COMMA
+    ;Comments must starts from new line and begins with ";"
+
+    Menu, Tray, Icon
+    sDataString =
+(
+    ;comment
+    ; 0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
+    ; 2,A,"cmd.exe","/c dir & pause",,"Hide"
+    5,U,"calc.exe","first ""second param with spaces""",,"Min"
+    ; 7,A,"D:\SERGEY\Options\Program Files\BAT\Windows Firewall Control.bat",,,"Hide"
+    10,U,"notepad.exe"
+)
+    oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
     oMgr.Start()
 
-    ;TODO Change to WinWait!
-    Sleep, 3000 ; Wait icon from last program AND wait starting Tray_Icon_Organize.ahk script on RELOAD all scripts
+    !z:: Reload
+    !x:: ExitApp
+} else {
+    sDataFile := "AutoStart.csv"
+    oMgr := new Manager(new DataFromFile(sDataFile), new ParserCSV())
+    if (g_bQuitProgram || g_bKillProgram) {
+        ;Stop tray icon organizing before stopping/killing apps
+        if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+            PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+        ; Sleep, 250
+        if (g_bQuitProgram)
+            oMgr.Stop()
+        if (g_bKillProgram)
+            oMgr.Kill()
+        ;Clean tray icons without app's process
+        if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+            PostMessage, 0x5557, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    }
+    else {
+        oMgr.Start()
 
-    if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
-        PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+        ;TODO Change to WinWait!
+        Sleep, 3000 ; Wait icon from last program AND wait starting Tray_Icon_Organize.ahk script on RELOAD all scripts
 
-    ; if WinExist("Minimize_Discord.ahk ahk_class AutoHotkey")
-    ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+        if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+            PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
 
-    ; if WinExist("_AutoHotkey_.ahk ahk_class AutoHotkey")
-    ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+        ; if WinExist("Minimize_Discord.ahk ahk_class AutoHotkey")
+        ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+
+        ; if WinExist("_AutoHotkey_.ahk ahk_class AutoHotkey")
+        ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    }
+
+    Sleep, 1000
+    SoundBeep
+    ExitApp
 }
-
-Sleep, 1000
-SoundBeep
-ExitApp
 
 ;CopySettingsInRegistry(true)
 ;CopySettingsInRegistry(false)
