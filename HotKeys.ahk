@@ -213,7 +213,7 @@ return
 
 ;WIN+CTRL+ALT
 #^!1::Run_AsUser("D:\PORTABLE\1by1\1by1.exe", "/r")
-#^!2::Run_AsUser("D:\PORTABLE\Download Master Portable\dmaster.exe")
+#^!2::Run_AsUser("D:\PORTABLE\Download_Master\dmaster.exe")
 #^!3::Run_AsUser("D:\PORTABLE\uTorrent\2.0.4\utorrent.exe", "/RECOVER /NOINSTALL")
 #^!4::Run_AsUser("D:\PORTABLE\uTorrent\3.5.5\uTorrent.exe", "/RECOVER /NOINSTALL")
 #^!0:: ;Eject\Close CD tray.
