@@ -3,6 +3,7 @@ Menu, Tray, Icon ;Tray icon is disabled in _COMMON_SETTINGS_.ahk, here we enable
 
 g_bAutoStart := true
 g_bSkipDelay := false
+g_iToolTipShowTime := 4000 ; in seconds
 
 ;Without delay, immediately after Windows starts, RunAs command in Reload_AsAdmin()
 ;   function crashes this script with error "Service is already started".
@@ -14,8 +15,8 @@ if not RegExMatch(sFullCommandLine, "i) /restart(?!\S)") { ;i) - case-insensitiv
     ;First launch of script (manual or on Windows' start)
     Hotkey, Esc, CancelAutoStart ;Here we can change [g_bAutoStart] value.
     SoundBeep
-    ToolTip, Press ESC to cancel autostart., 0, 0
-    Sleep, 4000 ;Do not sleep, if script reloaded by "Reload" command.
+    UpdateToolTip() ; Count down each second and show it in tooltip.
+    Sleep, % g_iToolTipShowTime ;Do not sleep, if script reloaded by "Reload" command.
     Hotkey, Esc, Off
     ToolTip
 }
@@ -127,4 +128,15 @@ CloseAutoStartPrograms()
     RunWait, "%A_AhkPath%" "%g_AutoStartScriptPath%" -QuitProgram
     Sleep, 1000
     RunWait, "%A_AhkPath%" "%g_AutoStartScriptPath%" -KillProgram
+}
+
+UpdateToolTip()
+{
+    global g_iToolTipShowTime
+    static iElapsedTime := 0
+    iTimeLeft := (g_iToolTipShowTime - iElapsedTime) // 1000
+    ToolTip, Press ESC to cancel autostart: %iTimeLeft% sec., 0, 0
+    iElapsedTime += 1000
+    if (iElapsedTime != g_iToolTipShowTime)
+        SetTimer, UpdateToolTip, -1000
 }
