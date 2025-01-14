@@ -1,7 +1,6 @@
 ﻿#Include <_COMMON_SETTINGS_>
 Menu, Tray, Icon ;Tray icon is disabled in _COMMON_SETTINGS_.ahk, here we enable it back.
 
-; g_sFileNameSkipDelayTag := A_Temp "\AutoStart_SkipDelay_TAG.ahk"
 g_bAutoStart := true
 g_bSkipDelay := false
 
@@ -27,9 +26,11 @@ if (!g_bAutoStart)
 else
     Reload_AsAdmin("/restart")
 
+;If TEMP directory cleared on PC's shutdown you can use this method.
 ;On first launch (manual or on Windows' start) there are no TAG file in TEMP directory.
 ;Run startup programs with delayed start. Then create empty TAG file in TEMP directory.
 ;On script's reload check TAG file and run programs without delay.
+; g_sFileNameSkipDelayTag := A_Temp "\AutoStart_SkipDelay_TAG.ahk"
 ; if (FileExist(g_sFileNameSkipDelayTag))
 ;     g_bSkipDelay := true
 ; else
