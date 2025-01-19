@@ -1,6 +1,8 @@
 ﻿#Include <_COMMON_SETTINGS_>
 
-;-------------------------------------------------------------------------------------
+; Some programs don't work like it should after this script's usage.
+
+;-------------------------------------------------------------------------------
 ScrollLock:: ;Hide cursor only in current window
 if (HideCursor := !HideCursor) {
 	MouseGetPos, , , hwnd
@@ -12,4 +14,4 @@ if (HideCursor := !HideCursor) {
 	DllCall("ShowCursor", Int,1)
 }
 Return
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------

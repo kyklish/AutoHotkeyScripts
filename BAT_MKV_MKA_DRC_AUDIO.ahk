@@ -1,4 +1,4 @@
-; BAT_MKV_MKA_DRC[2 ... 4]_AUDIO[1 ... 9].ahk - set audio stream number and DRC
+﻿; BAT_MKV_MKA_DRC[2 ... 4]_AUDIO[1 ... 9].ahk - set audio stream number and DRC
 ; ratio in script's name (no need to edit script) or leave it blank to use
 ; internal variable value.
 

@@ -1,5 +1,7 @@
 ﻿#Include <_COMMON_SETTINGS_>
 
+;Windows 11 has this feature built-in! This script breaks it!
+
 ;Scroll window without activating.
 ;SendMessage - waits respond [slow]. PostMessage - does not wait anything [fast].
 ;PostMessage doesn't work with remote desktop client, use SendMessage.

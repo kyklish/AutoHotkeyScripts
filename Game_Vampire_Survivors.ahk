@@ -1,4 +1,4 @@
-#Warn
+﻿#Warn
 #NoEnv
 #SingleInstance, Force
 SetBatchLines, -1

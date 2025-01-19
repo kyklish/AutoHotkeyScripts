@@ -1,4 +1,4 @@
-; Captain of Industry Helper
+﻿; Captain of Industry Helper
 ; Tested User Interface Scale 80, 100, 120% [uiScale] variable
 ; UI very unstable, icons changes their shape and color!!!
 ; Use ImageSearch and PixelSearch as your last tool!!!
