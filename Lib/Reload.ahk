@@ -9,7 +9,7 @@ if not A_IsAdmin
 Reload_AsAdmin(sParams := "")
 {
     if (!A_IsAdmin) {
-        Run_AsAdmin(A_AhkPath, """" A_ScriptFullPath """ " sParams)
+        Run_ScriptAsAdmin(A_ScriptFullPath, sParams)
         ExitApp
     }
 }
@@ -17,7 +17,7 @@ Reload_AsAdmin(sParams := "")
 Reload_AsUser(sParams := "")
 {
     if (A_IsAdmin) {
-        Run_AsUser(A_AhkPath, """" A_ScriptFullPath """ " sParams)
+        Run_ScriptAsUser(A_ScriptFullPath, sParams)
         ExitApp
     }
 }

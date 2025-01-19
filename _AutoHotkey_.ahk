@@ -11,7 +11,8 @@ g_iToolTipShowTime := 4000 ; in seconds
 ;Note that /restart is a built-in switch (applied to AutoHotkey.exe, not to the script),
 ;so is not included in the array of command-line parameters, must use WinAPI.
 sFullCommandLine := DllCall("GetCommandLine", "str")
-if not RegExMatch(sFullCommandLine, "i) /restart(?!\S)") { ;i) - case-insensitive [добавил сам]
+bRestart := RegExMatch(sFullCommandLine, "i) /restart(?!\S)") ;i) - case-insensitive [добавил сам]
+if (!bRestart) {
     ;First launch of script (manual or on Windows' start)
     Hotkey, Esc, CancelAutoStart ;Here we can change [g_bAutoStart] value.
     SoundBeep
@@ -20,11 +21,13 @@ if not RegExMatch(sFullCommandLine, "i) /restart(?!\S)") { ;i) - case-insensitiv
     Hotkey, Esc, Off
 }
 
-;Add /restart parameter to simulate Reload command behaviour.
-if (!g_bAutoStart)
-    Reload_AsAdmin("/restart -SkipAutoStart")
-else
+;We need this construction to preserve params, when elevate script's rights
+;If script is already elevated, Reload_As...() will do nothing
+;Add [/restart] parameter to simulate Reload command behaviour.
+if (g_bAutoStart)
     Reload_AsAdmin("/restart")
+else
+    Reload_AsAdmin("/restart -SkipAutoStart")
 
 ;If TEMP directory cleared on PC's shutdown you can use this method.
 ;On first launch (manual or on Windows' start) there are no TAG file in TEMP directory.
@@ -52,28 +55,23 @@ for i, sParam in A_Args {
 
 ;-------------------------------------------------------------------------------------
 
-g_AutoStartScriptPath := A_ScriptDir "\AutoStartObjects.ahk"
+;TODO always start AutoStartObjects.ahk, pass param to skip autostart, but allow bypassed apps (SpeedFan, f.lux, WFC)
+g_AutoStartScriptPath := "AutoStartObjects.ahk"
 if (g_bAutoStart)
     if (g_bSkipDelay)
-        Run, "%A_AhkPath%" "%g_AutoStartScriptPath%" -SkipDelay
+        Run, "%g_AutoStartScriptPath%" -SkipDelay
     else
-        Run, %g_AutoStartScriptPath%
-Run, %A_ScriptDir%\Auto_ReName_MHTMLtoMHT.ahk
-Run, %A_ScriptDir%\Clock.ahk
-;Run, %A_ScriptDir%\Change_Keyboard_Language_CTRL.ahk
-;Run, %A_ScriptDir%\Change_Keyboard_Language_SHIFT.ahk
-;Run, %A_ScriptDir%\Copy_Opera_To_RAM.ahk
-Run, %A_ScriptDir%\CPU_Fan_On_Off.ahk
-Run, %A_ScriptDir%\CPU_Freq_Cores_Manager.ahk
-;Run, %A_ScriptDir%\Esc_Close.ahk
-;Run, %A_ScriptDir%\Fix_Mouse_Double_Click.ahk
-;Run, %A_ScriptDir%\Hide_Cursor_And_Block_Mouse_Move_GUI.ahk ; проблемы после использования скрипта, не работают нормально программы
-;Run, %A_ScriptDir%\Hide_Cursor_And_Block_Mouse_Move_MouseMove.ahk
-Run, %A_ScriptDir%\HotKeys.ahk
-; Run, %A_ScriptDir%\Scroll_Without_Activating.ahk
+        Run, "%g_AutoStartScriptPath%"
+Run_ScriptAsUser(A_ScriptDir "\Auto_ReName_MHTMLtoMHT.ahk")
+Run_ScriptAsUser(A_ScriptDir "\Clock.ahk")
+; Run, "Copy_Opera_To_RAM.ahk"
+Run, "CPU_Fan_On_Off.ahk"
+Run, "CPU_Freq_Cores_Manager.ahk"
+; Run, "Esc_Close.ahk"
+Run, "HotKeys.ahk"
 Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Organize.ahk") ;If run as admin - it hangs explorer.exe
 Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Click.ahk") ;If run as admin - it hangs explorer.exe
-Run, %A_ScriptDir%\Window_Manipulation.ahk
+Run, "Window_Manipulation.ahk"
 
 ;-------------------------------------------------------------------------------------
 ^#!x:: ;Ctrl + Win + Alt + X close "AutoStart" programs

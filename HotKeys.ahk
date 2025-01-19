@@ -175,8 +175,8 @@ ActiveControlIsOfClass(Class) {
 ;#F5::Run_AsUser("D:\PORTABLE\SimpleDLNA\SimpleDLNA.exe")
 ;#F11::Run_ScriptAsUser("D:\PORTABLE\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\MyTheme.theme")
 ;#F12::Run_ScriptAsUser("D:\PORTABLE\AutoHotkey\Scripts\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\win7msa.theme")
-#F11::Run, D:\PORTABLE\Winaero_Theme_Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\MyTheme.theme"
-#F12::Run, D:\PORTABLE\Winaero_Theme_Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\win7msa.theme"
+;#F11::Run, D:\PORTABLE\Winaero_Theme_Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\MyTheme.theme"
+;#F12::Run, D:\PORTABLE\Winaero_Theme_Switcher\ThemeSwitcher.exe "C:\Users\Fixer\AppData\Local\Microsoft\Windows\Themes\win7msa.theme"
 
 
 ;CTRL+ALT+SHIFT
@@ -232,11 +232,13 @@ return
 
 
 ;WIN+CTRL+ALT
-#^!f::Run_AsUser("C:\Users\Fixer\AppData\Local\FluxSoftware\Flux\flux.exe", "/noshow")
+#^!f::Run_AsUser("D:\PORTABLE\Flux\flux.exe", "/noshow")
 #^!k::Run_AsUser("D:\PORTABLE\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
 #^!l::Run_AsUser("D:\PORTABLE\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
 #^!m::Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "monitor off")
 #^!o::Run_AsUser("D:\PORTABLE\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe") ;PSKill Opera
+;TODO force it to always start, even when user choose cancel autostart
+#^!s::Run_AsAdmin("D:\PORTABLE\SpeedFan\SpeedFan.exe", "/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C")
 
 ; Window Style Manipulation
 #`::WinSet, AlwaysOnTop, Toggle, A
@@ -256,7 +258,7 @@ return
 #If
 
 #IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
-^+f::Run_AsUser("D:\PORTABLE\Everything_x64\Everything.exe")
+^+f::Run_AsUser("D:\PORTABLE\Everything\Everything.exe")
 !+f::Run_AsUser("ntfy.exe", "publish --quiet --title PC nokia_test_topic " . Clipboard, "", "Min")
 #If
 !+Esc::Run_AsAdmin("C:\Windows\System32\resmon.exe") ;Resource Monitor
@@ -276,14 +278,17 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
 
 
 ; Scroll Without Activating
+; Windows 11 has built-in support of this feature. This code not work on Win11!
+/*
 WheelUp::
 WheelDown::
-CoordMode, Mouse, Screen
-MouseGetPos, x, y
-hWnd := DllCall("WindowFromPoint", "int", x, "int", y) ; Retrieves a handle to the window that contains the specified point.
-WHEEL_DELTA := 120 * (A_ThisHotkey = "WheelUp" ? 1 : -1)
-PostMessage, 0x20A, WHEEL_DELTA << 16, (y << 16) | (x & 0xFFFF), , ahk_id %hWnd% ; WM_MOUSEWHEEL
+    CoordMode, Mouse, Screen
+    MouseGetPos, x, y
+    hWnd := DllCall("WindowFromPoint", "int", x, "int", y) ; Retrieves a handle to the window that contains the specified point.
+    WHEEL_DELTA := 120 * (A_ThisHotkey = "WheelUp" ? 1 : -1)
+    PostMessage, 0x20A, WHEEL_DELTA << 16, (y << 16) | (x & 0xFFFF), , ahk_id %hWnd% ; WM_MOUSEWHEEL
 return
+*/
 
 
 /*
@@ -345,8 +350,8 @@ AppsKey -> Middle Mouse Click
 [Win+Fxx]
   #F1 -> CMD User
   #F2 -> CMD Admin
- #F11 -> Set Dark Windows Theme
- #F12 -> Set White Windows Theme
+ #F11 -> Set Dark Windows Theme (Disabled)
+ #F12 -> Set White Windows Theme (Disabled)
 [Ctrl+Alt+Shift]
  ^!+K -> Empty Recycle Bin
  ^!+M -> Process Monitor
