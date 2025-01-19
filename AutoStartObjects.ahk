@@ -302,6 +302,10 @@ class Manager
     }
 }
 
+;------------------------------------------------------------------------------;
+;--------------------------------START SCRIPT----------------------------------;
+;------------------------------------------------------------------------------;
+
 ; Menu, Tray, Icon
 g_bSkipDelay := false
 g_bQuitProgram := false
@@ -357,9 +361,10 @@ if (g_Debug) {
     oMgr := new Manager(new DataFromFile(sDataFile), new ParserCSV())
     if (g_bQuitProgram || g_bKillProgram) {
         ;Stop tray icon organizing before stopping/killing apps
-        if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+        if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey") {
             PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-        ; Sleep, 250
+            Sleep, 250
+        }
         if (g_bQuitProgram)
             oMgr.Stop()
         if (g_bKillProgram)
@@ -367,8 +372,7 @@ if (g_Debug) {
         ;Clean tray icons without app's process
         if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
             PostMessage, 0x5557, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-    }
-    else {
+    } else {
         oMgr.Start()
 
         ;TODO Change to WinWait!
