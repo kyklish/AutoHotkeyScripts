@@ -61,8 +61,13 @@ class Process
         ;и предыдущего приложений. Это удобно, когда нужно перезапустить приложение из автозагрузки:
         ;закрыли приложение и перезапустили скрипт.
         if (!this.Exist()) {
-            Sleep % this.iDelay "000"
-            Run_As(this.bAdmin, this.sExeName, this.sParams, this.sWorkingDir, this.sWinOptions)
+            if (FileExist(this.sExeName)) {
+                Sleep % this.iDelay "000"
+                Run_As(this.bAdmin, this.sExeName, this.sParams, this.sWorkingDir, this.sWinOptions)
+            } else {
+                ToolTip % "File not found:`n" this.sExeName
+                Sleep % 250
+            }
         }
     }
 
