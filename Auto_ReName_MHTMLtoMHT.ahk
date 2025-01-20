@@ -7,6 +7,8 @@
 oTargetDir := []
 oTargetDir.Push("R:")
 oTargetDir.Push("F:\GAMES\ПАПА")
+oTargetDir.Push("C:\Users\Fixer\Documents\")
+oTargetDir.Push("C:\Users\Fixer\Downloads")
 
 iPeriod := 1000
 
