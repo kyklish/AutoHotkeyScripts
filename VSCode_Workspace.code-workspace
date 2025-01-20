@@ -12,14 +12,15 @@
 				"type": "autohotkey",
 				"request": "launch",
 				"program": "${file}",
+                "stopOnEntry": false,
 				"args": []
 			},
 			{
+                "name": "AutoHotkey v1 Debugger (AHK++)",
 				"type": "ahk",
 				"request": "launch",
-				"name": "AutoHotkey v1 Debugger (AHK++)",
-				"program": "",
-				"stopOnEntry": true
+				"program": "${file}",
+				"stopOnEntry": false
 			}
 		]
 	},
