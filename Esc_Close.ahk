@@ -36,6 +36,22 @@ $~`:: ; поменял на эту клавишу, т.к. Esc часто исп�
     }
 return
 ;-------------------------------------------------------------------------------------
+; Modified version: Alt+F4
+KeyEsc:
+    SetTimer, KeyEsc, off
+    if (esc_presses = 1) { ; The key was pressed once.
+        ; ничего не делаем, т.к. Esc уже отослана сразу при срабатывании горячей клавиши
+        ;Send {Escape down}{Escape up}
+    } else
+        if (esc_presses = 2) { ; The key was pressed twice.
+            Send, !{F4} ; Alt+F4
+        }
+    ; Regardless of which action above was triggered, reset the count to prepare for the next series of presses:
+    esc_presses = 0
+return
+;-------------------------------------------------------------------------------------
+; Original version: Ctrl+F4 and Alt+F4
+/*
 KeyEsc:
     SetTimer, KeyEsc, off
     if (esc_presses = 1) { ; The key was pressed once.
@@ -51,3 +67,5 @@ KeyEsc:
     ; Regardless of which action above was triggered, reset the count to prepare for the next series of presses:
     esc_presses = 0
 return
+*/
+;-------------------------------------------------------------------------------------
