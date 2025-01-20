@@ -44,9 +44,9 @@
   0,A,"%SOFT%\SsdReady\SsdReady.exe"
   0,A,"%SOFT_BAT%\Windows_Firewall_Control.bat"
 ;================================== Win7 =======================================
-  0,U,"%SOFT_BAT%\Power_Plan_Set_Active.bat","381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
+ ;0,U,"%SOFT_BAT%\Power_Plan_Set_Active.bat","381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
     ;HWiNFO: OS crashed if launched without delay
-  7,A,"%SOFT_BAT%\Windows_Firewall_Control.bat",,,"Hide"
+ ;7,A,"%SOFT_BAT%\Windows_Firewall_Control.bat",,,"Hide"
  ;7,A,"%SOFT%\HWiNFO\HWiNFO64.exe"
 ;15,A,"%SOFT%\AIDA64\AIDA64.exe"
 ;25,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
