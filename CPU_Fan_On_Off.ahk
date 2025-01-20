@@ -1,71 +1,62 @@
-﻿#Include <_COMMON_SETTINGS_>
+﻿; SpeedFan CPU Fan On\Off
 
-;!!!!!!!!!!!!!!!!!!!!!!
-;номера форм ввода TRxSpinEditX могут изменяться после переустановки и перезагрузки Windows
+; Changelog
+;  + added
+;  * changed
+;  - deleted
+;  ! bug fixed
+;
+; v2.0.0
+;  + Initial release (Mouse Click)
 
-;из-за специфики приложения SpeedFan этими командами невозможно добиться надежного вызова окна и его исчезновения в трей
-;WinHide -> WinShow
-;WinMinimize -> WinRestore
-;WinMaximize -> WinRestore
-;but you can use in cross way :)
-;поэтому приходится использовать TrayIcon_Button(), она работает только из под ограниченных прав, иначе вешает эксплорер
-;но все последующие команды нужно выполнять с админ правами
+#Include <_COMMON_SETTINGS_>
 
-#SingleInstance Off
-;CoordMode, Pixel, Client
-;SetControlDelay, 1000
+CoordMode, Mouse, Screen
+SendMode, Event
+SetDefaultMouseSpeed, 0
 
-;delayBeforeShowWindow := 0
-delayBeforeHideWindow := 1500
+; Номера полей ввода TRxSpinEditX могут изменяться после переустановки и
+;   перезагрузки Windows. Используем первое найденное поле. Если вентиляторов
+;   несколько, в программе переместить нужный на поле с меньшим номером!
+
+; Если SpeedFan запускается свернутым в трей, то поля для скорости вентиляторов
+;   не инициализированы до первого полноценного отображения окна (вручную).
+;   Любые команды AHK восстанавливают окно, без этих полей!
+; WinMinimize - does not minimize to tray! leaves small window!
+; WinRestore & WinClose - window OK (no edit field BAD)
+;    WinShow & WinHide  - window OK (no edit field BAD)
+
+; TrayIcon_Button(), работает только из под ограниченных прав. От админа вешает
+;   эксплорер. Все последующие команды нужно выполнять с админ правами.
+; TrayIcon библиотека не работает в Win11.
+
+; Восстанавливает и сворачиваем окно программы из меню в трее с помощью мышки.
+
+Reload_AsAdmin()
+
 checkboxColor := 0x20A040 ; RGB цвет зеленой галочки чекбокса
 
-Main()
+;If you change modifier keys, change KeyWait before BlockInput accordingly!
+#IfWinExist, ahk_exe SpeedFan.exe
+    +^F5:: Manipulate("StartFan")
+    +^F6:: Manipulate("StopFan")
+    +^F7:: Manipulate("StartStopFan")
+#If
 
 ;===============================================================================
 
-Main() {
-    if (A_IsAdmin) {
-        WinExist("SpeedFan") ; setting The "Last Found" Window for all others commands
-        HotKey, IfWinExist, SpeedFan
-        HotKey, +^F5, HotKey_StartFan
-        HotKey, +^F6, HotKey_StopFan
-        HotKey, +^F7, HotKey_StartStopFan
-    } else {
-        if (A_Args.Length() == 0) {
-            Reload_AsAdmin()
-        } else {
-            if (A_Args.Length() == 1) {
-                sParam := A_Args[1]
-                if (sParam = "unhide") {
-                    ; TrayIcon_Functions work only in user mode!!! with admin rights it's hangs Explorer.exe!!!
-                    TrayIcon_Button("speedfan.exe", "L", true) ; double click tray icon of SpeedFan
-                } else {
-                    MsgBox, Wrong parameter "%sParam%", must be "UnHide".
-                    ExitApp, 1
-                }
-            } else {
-                MsgBox, Must be one parameter, when run with restricted rights.
-                ExitApp, 1
-            }
-        }
-        ExitApp
-    }
+Manipulate(Func) {
+    WinMinimizeAll
+    WinExist("ahk_exe SpeedFan.exe") ; Set Last Found Window
+    WinRestore()
+    %Func%()
+    ; Sleep, 1000
+    WinMinimize()
+    WinMinimizeAllUndo
 }
 
 ;===============================================================================
-
-WinActivate()
-{
-    timeout := 1 ;seconds
-    WinActivate
-    WinWaitActive, , , %timeout%
-    if (ErrorLevel)
-        MsgBox, %A_ThisFunc%: WinWaitActive - command timed out in %timeout% seconds.
-    return ErrorLevel
-}
-
-;===============================================================================
-
+/*
 SearchImage(path)
 {
     ImageSearch, , , 295, 85, 325, 115, %A_ScriptDir%\%path%
@@ -75,7 +66,7 @@ SearchImage(path)
         SoundBeepTwice()
     return ErrorLevel
 }
-
+*/
 ;===============================================================================
 
 SearchPixel(colorID, soundOnMatch := false)
@@ -95,17 +86,6 @@ ToggleCheckbox(name)
     Control, Check, , %name% ;UnCheck не работает для SpeedFan!!! только Check
     if (ErrorLevel)
         MsgBox, %A_ThisFunc%: CheckBox - Can't toggle "%name%".
-    return ErrorLevel
-}
-
-;===============================================================================
-
-MinimizeWindow()
-{
-    name := "TJvXPButton2"
-    ControlClick, %name%
-    if (ErrorLevel)
-        MsgBox, %A_ThisFunc%: Button - Can't click "Minimize" button "%name%".
     return ErrorLevel
 }
 
@@ -143,7 +123,8 @@ FindVisibleControl(name, ByRef index)
 
 StartFan() ;CPU_Fan_On
 {
-    global delayBeforeHideWindow, checkboxColor
+    SetKeyDelay, -1
+    global checkboxColor
     if (!WinActivate())
         ;if (!SearchImage("SpeedFanCheckedBox.png")) ;проверяем сброшен или нет чекбокс
         if (!SearchPixel(checkboxColor)) ;пиксель галочки чекбокса найден
@@ -153,31 +134,29 @@ StartFan() ;CPU_Fan_On
                     ControlSend, TRxSpinEdit%index%, {End}{Backspace 3}{Numpad1}{Numpad0 2}
                     Sleep, 3500
                     ControlSend, TRxSpinEdit%index%, {Left}{Backspace 2}{Numpad3}
-                    Sleep, %delayBeforeHideWindow%
                 }
-    MinimizeWindow()
 }
 
 ;===============================================================================
 
 StopFan() ;CPU_Fan_Off
 {
-    global delayBeforeHideWindow, checkboxColor
+    global checkboxColor
     if (!WinActivate())
         ;хотел сделать проверку чекбокса правильно, но она не работает :(, вместо этого проверяем по картинке чекбокса
         ;ControlGet, IsAutomaticFanSpeedEnabled, Checked, , TJvXPCheckbox1 ;не работает для SpeedFan!!!
         ;if (!SearchImage("SpeedFanUnCheckedBox.png")) ;галочка сброшена
         if (SearchPixel(checkboxColor, true) = 1) ;пиксель галочки чекбокса не найден
             if (!ToggleCheckbox("TJvXPCheckbox1")) ;включаем автоматический регулятор
-                Sleep, %delayBeforeHideWindow%
-    MinimizeWindow()
+                return
 }
 
 ;===============================================================================
 
 StartStopFan() ;CPU_Fan_On then CPU_Fan_Off for HWiNFO32 if it not show "CPU Fan RPM" icon
 {
-    global delayBeforeHideWindow, checkboxColor
+    SetKeyDelay, -1
+    global checkboxColor
     if (!WinActivate())
         if (!SearchPixel(checkboxColor)) ;пиксель галочки чекбокса найден
             if (!ToggleCheckbox("TJvXPCheckbox1")) ;меняем на противоположное значение чекбокс автоматического регулятора скорости вентилятора (выключаем его)
@@ -185,48 +164,89 @@ StartStopFan() ;CPU_Fan_On then CPU_Fan_Off for HWiNFO32 if it not show "CPU Fan
                     ControlSend, TRxSpinEdit%index%, {End}{Backspace 3}{Numpad1}{Numpad0 2}
                     Sleep, 1000
                     if (!ToggleCheckbox("TJvXPCheckbox1")) ;включаем автоматический регулятор
-                        Sleep, %delayBeforeHideWindow%
+                        return
                 }
-    MinimizeWindow()
 }
 
 ;===============================================================================
 
-HotKey_StartFan()
+WinActivate()
 {
-    WinMinimizeAll ;WinMinimizeAll() <-- this func add delay before UnHide window
-    if (!Run_WaitScriptAsUser(A_ScriptFullPath, "UnHide"))
-        StartFan()
-    WinMinimizeAllUndo
+    timeout := 1 ;seconds
+    WinActivate
+    WinWaitActive, , , %timeout%
+    if (ErrorLevel)
+        MsgBox, %A_ThisFunc%: WinWaitActive - command timed out in %timeout% seconds.
+    return ErrorLevel
 }
 
 ;===============================================================================
 
-HotKey_StopFan()
+; WinMinimize()
+; {
+;     name := "TJvXPButton2"
+;     ControlClick, %name%
+;     if (ErrorLevel)
+;         MsgBox, %A_ThisFunc%: Button - Can't click "Minimize" button "%name%".
+;     return ErrorLevel
+; }
+
+WinMinimize()
 {
-    WinMinimizeAll ;WinMinimizeAll()
-    if (!Run_WaitScriptAsUser(A_ScriptFullPath, "UnHide"))
-        StopFan()
-    WinMinimizeAllUndo
+    TrayIconMenuClick(2)
 }
 
 ;===============================================================================
 
-HotKey_StartStopFan()
+; WinRestore()
+; {
+;     sImageFile := A_ScriptDir "\SpeedFanIconSearch.png"
+;     CoordMode, Pixel, Screen
+;     MouseGetPos, _x, _y
+;     ImageSearch, x, y, 0, 0, A_ScreenWidth, A_ScreenHeight, % sImageFile
+;     if (ErrorLevel = 2)
+;         MsgBox, %A_ThisFunc%: ImageSearch - Fail to open the image file "%sImageFile%"`nOr a badly formatted option.
+;     else if (ErrorLevel = 1) ;Didn't find image in the specified region
+;         MsgBox, Can't find SpeedFan icon in tray.
+;     Click, %x% %y% 2
+;     MouseMove, %_x%, %_y%
+;     CoordMode, Pixel, Client
+; }
+
+WinRestore()
 {
-    WinMinimizeAll ;WinMinimizeAll()
-    if (!Run_WaitScriptAsUser(A_ScriptFullPath, "UnHide"))
-        StartStopFan()
-    WinMinimizeAllUndo
+    TrayIconMenuClick(1)
 }
 
 ;===============================================================================
-/*
-WinMinimizeAll()
+
+TrayIconMenuClick(idx)
 {
-    global delayBeforeShowWindow
-    WinMinimizeAll
-    Sleep %delayBeforeShowWindow%
+    ; idx = Menu Item
+    ;   1 = Restore
+    ;   2 = Minimize
+    ;   3 = Exit
+    SetKeyDelay, 100
+    CoordMode, Pixel, Screen
+    MouseGetPos, _x, _y
+    
+    sImageFile := A_ScriptDir "\SpeedFanIconSearch.png"
+    ImageSearch, x, y, 0, 0, A_ScreenWidth, A_ScreenHeight, % sImageFile
+    if (ErrorLevel = 2)
+        MsgBox, %A_ThisFunc%: ImageSearch - Fail to open the image file "%sImageFile%"`nOr a badly formatted option.
+    else if (ErrorLevel = 1) ;Didn't find image in the specified region
+        MsgBox, Can't find SpeedFan icon in tray.
+    
+    KeyWait Control
+    KeyWait Shift
+    BlockInput, On
+    Click, %x% %y% Right
+    Sleep, 250
+    Send, {Down %idx%}{Enter}
+    BlockInput, Off
+    
+    MouseMove, %_x%, %_y%
+    CoordMode, Pixel, Client
 }
-*/
+
 ;===============================================================================
