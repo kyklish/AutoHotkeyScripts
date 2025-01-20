@@ -182,8 +182,8 @@ ActiveControlIsOfClass(Class) {
 ;CTRL+ALT+SHIFT
 ;Empty Recycle Bin ;FileRecycleEmpty and "nircmd.exe emptybin" not work, if launched from another account!!!
 ^!+k::Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "emptybin")
-^!+m::Run_AsAdmin("D:\PORTABLE\NirLauncher\Sysinternals\Win7\Procmon.exe") ;Process Monitor
-^!+p::Run_AsAdmin("D:\PORTABLE\NirLauncher\Sysinternals\procexp64.exe") ;Process Explorer
+^!+m::Run_AsAdmin("D:\PORTABLE\NirLauncher\Sysinternals\ProcMon64.exe") ;Process Monitor
+^!+p::Run_AsAdmin("D:\PORTABLE\NirLauncher\Sysinternals\ProcExp64.exe") ;Process Explorer
 ;Reboot ;AutoHotkey commands "Shutdown" not work, if launched from another account!!!
 ^!+r::
 if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
@@ -228,7 +228,7 @@ return
 #^!F1::Run_AsUser("D:\PORTABLE\SSD_(Set_Sound_Device)\SSD.exe", "1")
 #^!F2::Run_AsUser("D:\PORTABLE\SSD_(Set_Sound_Device)\SSD.exe", "2")
 #^!F3::Run_AsUser("D:\PORTABLE\SSD_(Set_Sound_Device)\SSD.exe", "3")
-#^!F4::WinClose, A ;Force close active window
+#^!F4::WinKill, A ;Force close active window (kill its process)
 
 
 ;WIN+CTRL+ALT
