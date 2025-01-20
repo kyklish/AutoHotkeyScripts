@@ -38,6 +38,8 @@
     ;SpeedFan: CPU + GPU temperature
         ;/NOPCISCAN = disable PCI Express scan [GPU]
         ;/DONVIDIAI2C = get all info about nVidia GPU (including voltage)
+    ;SpeedFan: DO NOT start minimized (if bring window from tray via AHK command)
+        ;on window's show from AHK edit fields of fan speed not initialized
   0,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
   0,A,"%SOFT%\SsdReady\SsdReady.exe"
   0,A,"%SOFT_BAT%\Windows_Firewall_Control.bat"
