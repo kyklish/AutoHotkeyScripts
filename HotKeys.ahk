@@ -185,26 +185,27 @@ ActiveControlIsOfClass(Class) {
 ^!+m::Run_AsAdmin("D:\PORTABLE\NirLauncher\Sysinternals\ProcMon64.exe") ;Process Monitor
 ^!+p::Run_AsAdmin("D:\PORTABLE\NirLauncher\Sysinternals\ProcExp64.exe") ;Process Explorer
 ;Reboot ;AutoHotkey commands "Shutdown" not work, if launched from another account!!!
+/*
 ^!+r::
 if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
-	PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
 Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "exitwin reboot") ;there is "force" parameter can be used
 return
 ^!+s::
 if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
-	PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
 Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "exitwin shutdown") ;Shutdown
 return
 ^!+l:: ;Logoff
 MsgBox, % 4 + 256,, Log off?
 IfMsgBox, Yes
 {
-	if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
-		PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-	Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "exitwin logoff")
+    if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+        PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+    Run_AsUser("D:\PORTABLE\NirLauncher\NirSoft\nircmd.exe", "exitwin logoff")
 }
 return
-
+*/
 
 ;WIN+ALT
 #!Down::WinRestore, A
@@ -350,15 +351,15 @@ AppsKey -> Middle Mouse Click
 [Win+Fxx]
   #F1 -> CMD User
   #F2 -> CMD Admin
- #F11 -> Set Dark Windows Theme (Disabled)
+ #F11 -> Set  Dark Windows Theme (Disabled)
  #F12 -> Set White Windows Theme (Disabled)
 [Ctrl+Alt+Shift]
  ^!+K -> Empty Recycle Bin
  ^!+M -> Process Monitor
  ^!+P -> Process Explorer
- ^!+R -> Reboot
- ^!+S -> Shutdown
- ^!+L -> Logoff
+ ^!+R -> Reboot   (_AutoHotkey_)
+ ^!+S -> Shutdown (_AutoHotkey_)
+ ^!+L -> Logoff   (_AutoHotkey_)
 [Win+Alt]
  #!Down -> Restore Window Size
  #!Up   -> Maximize Window Size

@@ -77,23 +77,6 @@ if (A_OSVersion = "WIN_7") {
 Run, "Window_Manipulation.ahk"
 
 ;-------------------------------------------------------------------------------
-^#!x:: ;Ctrl + Win + Alt + X close "AutoStart" programs
-    CloseAutoStartPrograms()
-Return
-;-------------------------------------------------------------------------------
-#!x:: ;Win + Alt + X close all scripts and NOT exit
-    CloseAllScripts()
-Return
-;-------------------------------------------------------------------------------
-#!z:: ;Win + Alt + Z reload all scripts
-    CloseAllScripts()
-    ;This not work, because we already with admin rights here!
-    ; Reload_AsAdmin("/restart -SkipDelay")
-    ;Simulate Reload command by running this script again and exit.
-    ; Run, "%A_AhkPath%" /force "%A_ScriptFullPath%" /restart -SkipDelay
-    Run, "%A_ScriptFullPath%" /restart -SkipDelay
-ExitApp
-;-------------------------------------------------------------------------------
 
 CloseAllScripts()
 {
@@ -143,3 +126,30 @@ ShowToolTip()
     else
         SetTimer, ShowToolTip, -1000
 }
+
+;-------------------------------------------------------------------------------
+^!+l:: ;Logoff
+    MsgBox, % 4 + 256,, Log off?
+    IfMsgBox, Yes
+        Shutdown, 0 ;Logoff
+Return
+^!+r:: Shutdown, 6 ;Reboot
+^!+s:: Shutdown, 1 ;Shutdown
+;-------------------------------------------------------------------------------
+^#!x:: ;Ctrl + Win + Alt + X close "AutoStart" programs
+    CloseAutoStartPrograms()
+Return
+;-------------------------------------------------------------------------------
+#!x:: ;Win + Alt + X close all scripts and NOT exit
+    CloseAllScripts()
+Return
+;-------------------------------------------------------------------------------
+#!z:: ;Win + Alt + Z reload all scripts
+    CloseAllScripts()
+    ;This not work, because we already with admin rights here!
+    ; Reload_AsAdmin("/restart -SkipDelay")
+    ;Simulate Reload command by running this script again and exit.
+    ; Run, "%A_AhkPath%" /force "%A_ScriptFullPath%" /restart -SkipDelay
+    Run, "%A_ScriptFullPath%" /restart -SkipDelay
+ExitApp
+;-------------------------------------------------------------------------------
