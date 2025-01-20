@@ -64,13 +64,16 @@ if (g_bAutoStart)
         Run, "%g_AutoStartScriptPath%"
 Run_ScriptAsUser(A_ScriptDir "\Auto_ReName_MHTMLtoMHT.ahk")
 Run_ScriptAsUser(A_ScriptDir "\Clock.ahk")
-; Run, "Copy_Opera_To_RAM.ahk"
 Run, "CPU_Fan_On_Off.ahk"
 Run, "CPU_Freq_Cores_Manager.ahk"
-; Run, "Esc_Close.ahk"
+Run, "Esc_Close.ahk"
 Run, "HotKeys.ahk"
-Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Organize.ahk") ;If run as admin - it hangs explorer.exe
-Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Click.ahk") ;If run as admin - it hangs explorer.exe
+if (A_OSVersion = "WIN_7") {
+    ; Win11 changed tray structure to XML UI, no toolbars.
+    ; Old approach to tray manipulation not work (uses toolbars)!
+    Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Organize.ahk") ;If run as admin - it hangs explorer.exe
+    Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Click.ahk") ;If run as admin - it hangs explorer.exe
+}
 Run, "Window_Manipulation.ahk"
 
 ;-------------------------------------------------------------------------------
@@ -88,7 +91,7 @@ Return
     ; Reload_AsAdmin("/restart -SkipDelay")
     ;Simulate Reload command by running this script again and exit.
     ; Run, "%A_AhkPath%" /force "%A_ScriptFullPath%" /restart -SkipDelay
-    Run, "%A_AhkPath%" "%A_ScriptFullPath%" /restart -SkipDelay
+    Run, "%A_ScriptFullPath%" /restart -SkipDelay
 ExitApp
 ;-------------------------------------------------------------------------------
 
@@ -123,9 +126,9 @@ CancelAutoStart()
 CloseAutoStartPrograms()
 {
     global g_AutoStartScriptPath
-    RunWait, "%A_AhkPath%" "%g_AutoStartScriptPath%" -QuitProgram
+    RunWait, "%g_AutoStartScriptPath%" -QuitProgram
     Sleep, 1000
-    RunWait, "%A_AhkPath%" "%g_AutoStartScriptPath%" -KillProgram
+    RunWait, "%g_AutoStartScriptPath%" -KillProgram
 }
 
 ShowToolTip()
