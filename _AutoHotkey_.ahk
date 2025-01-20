@@ -53,7 +53,7 @@ for i, sParam in A_Args {
     }
 }
 
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 ;TODO always start AutoStartObjects.ahk, pass param to skip autostart, but allow bypassed apps (SpeedFan, f.lux, WFC)
 g_AutoStartScriptPath := "AutoStartObjects.ahk"
@@ -73,15 +73,15 @@ Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Organize.ahk") ;If run as admin - it ha
 Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Click.ahk") ;If run as admin - it hangs explorer.exe
 Run, "Window_Manipulation.ahk"
 
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ^#!x:: ;Ctrl + Win + Alt + X close "AutoStart" programs
     CloseAutoStartPrograms()
 Return
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 #!x:: ;Win + Alt + X close all scripts and NOT exit
     CloseAllScripts()
 Return
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 #!z:: ;Win + Alt + Z reload all scripts
     CloseAllScripts()
     ;This not work, because we already with admin rights here!
@@ -90,7 +90,7 @@ Return
     ; Run, "%A_AhkPath%" /force "%A_ScriptFullPath%" /restart -SkipDelay
     Run, "%A_AhkPath%" "%A_ScriptFullPath%" /restart -SkipDelay
 ExitApp
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 CloseAllScripts()
 {
