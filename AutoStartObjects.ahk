@@ -378,14 +378,15 @@ if (g_Debug) {
     } else {
         oMgr.Start()
 
-        ;TODO Change to WinWait!
-        Sleep, 3000 ; Wait icon from last program AND wait starting Tray_Icon_Organize.ahk script on RELOAD all scripts
+        if (A_OSVersion = "WIN_7") {
+            ;TODO Change to WinWait!
+            Sleep, 3000 ; Wait icon from last program AND wait starting Tray_Icon_Organize.ahk script on RELOAD all scripts
+            if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+                PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+        }
 
-        if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
-            PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-
-        ; if WinExist("Minimize_Discord.ahk ahk_class AutoHotkey")
-        ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
+        ; Run_ScriptAsAdmin(A_ScriptDir "\AutoStart_Minimize_Discord.ahk")
+        ; Run_ScriptAsAdmin(A_ScriptDir "\AutoStart_Minimize_SpeedFan.ahk")
 
         ; if WinExist("_AutoHotkey_.ahk ahk_class AutoHotkey")
         ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
