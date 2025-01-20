@@ -12,6 +12,7 @@ DetectHiddenWindows On
 ;SetWinDelay 0 ;Sets the delay that will occur after each windowing command (WinActivate ...). -//- If unset, the default delay is 100.
 SetKeyDelay -1 ;Sets the delay that will occur after each keystroke sent by Send and ControlSend. -//- The default delay for the traditional SendEvent mode is 10. For SendPlay mode, the default delay is -1. The default PressDuration (below) is -1 for both modes.
 SetMouseDelay -1 ;Sets the delay that will occur after each mouse movement or click. -//- The default delay is 10.
+; SetDefaultMouseSpeed, 0 ;Sets the mouse speed that will be used if unspecified in Click, MouseMove, MouseClick, and MouseClickDrag. The default mouse speed is 2. Maximum = 100.
 SetBatchLines -1 ;Determines how fast a script will run (affects CPU utilization). Use -1 to never sleep (run at maximum speed). See Help.
 
 #NoTrayIcon
