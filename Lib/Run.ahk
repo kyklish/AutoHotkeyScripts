@@ -22,7 +22,7 @@
 ; SOLUTION: use AdvancedRun from NirSoft to drop elevation.
 ;   Script(User [Elevated]) ==> AdvancedRun(User [Elevated]) ==> App(User [NOT Elevated]) is OK
 
-RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "")
+RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWait := false)
 {
     ;=============================== CONFIG ====================================
 
@@ -41,17 +41,27 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "")
     sParams := ExpandEnvVars(sParams)
     if (bBuiltInAdmin) {  ; Built-in Administrator variant
         RunAs, % oCrd.sLogin, % oCrd.sPassword
-        Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
+        if (bWait)
+            RunWait, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
+        else
+            Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
         RunAs ; revert RunAs value
     } else {                ; Task Scheduler variant
         if (bAdmin) {
             if (!A_IsAdmin) {
-                TODO_MsgBox(A_ThisFunc)
+                TODO_MsgBox1(A_ThisFunc)
                 ExitApp
             } else
-                ; We can't elevate, so this is valid only when caller is elevated too
+            ; We can't elevate, so this is valid only when caller is elevated too
+            if (bWait)
+                RunWait, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
+            else
                 Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
         } else {            ; Use AdvancedRun to drop elevation
+            if (bWait) {
+                TODO_MsgBox2(A_ThisFunc)
+                ExitApp
+            }
             if (FileExist(sExePath)) {
                 ; Look [AdvancedRun.chm] for help
                 ; /RunAs 9 == Run process as "Another logged-in user" (must have at least one running process)
@@ -114,12 +124,12 @@ Run_AsUserToggle(sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", 
 
 ;-------------------------------------------------------------------------------
 
-RunScriptAs(bAdmin, sScriptFullPath, sParams := "")
+RunScriptAs(bAdmin, sScriptFullPath, sParams := "", bWait := false)
 {
     ; Read comment on top of the script! (We need A_AhkPath here!!!)
     sParams = "%sScriptFullPath%" %sParams%
     ; sParams := """" sScriptFullPath """ " sParams
-    return RunAs(bAdmin, A_AhkPath, sParams)
+    return RunAs(bAdmin, A_AhkPath, sParams, , , bWait)
 }
 
 Run_ScriptAsAdmin(sScriptFullPath, sParams := "")
@@ -134,51 +144,46 @@ Run_ScriptAsUser(sScriptFullPath, sParams := "")
 
 ;-------------------------------------------------------------------------------
 
-; Does NOT WORK with Task Scheduler variant
-/*
-RunWaitScriptAs(sLogin, sPassword, sScriptFullPath, sParams := "")
-{
-    RunAs, %sLogin%, %sPassword%
-    RunWait, "%sScriptFullPath%" %sParams%
-    RunAs
-    return ErrorLevel ;RunWait sets ErrorLevel to the program's exit code (a signed 32-bit integer).
-}
-
 Run_WaitScriptAs(bAdmin, sScriptFullPath, sParams := "")
 {
-    crd := GetCredentials(bAdmin)
-    return RunWaitScriptAs(crd.sLogin, crd.sPassword, sScriptFullPath, sParams)
+    return RunScriptAs(bAdmin, sScriptFullPath, sParams, true)
 }
 
 Run_WaitScriptAsAdmin(sScriptFullPath, sParams := "")
 {
-    if (!A_IsAdmin) {
-        crd := GetCredentials(true)
-        return RunWaitScriptAs(crd.sLogin, crd.sPassword, sScriptFullPath, sParams)
-    }
+    return RunScriptAs(true, sScriptFullPath, sParams, true)
 }
 
 Run_WaitScriptAsUser(sScriptFullPath, sParams := "")
 {
-    crd := GetCredentials(false)
-    return RunWaitScriptAs(crd.sLogin, crd.sPassword, sScriptFullPath, sParams)
+    return RunScriptAs(false, sScriptFullPath, sParams, true)
 }
-*/
 
 ;-------------------------------------------------------------------------------
 
-TODO_MsgBox(sThisFunc) {
+TODO_MsgBox1(sThisFunc) {
     sText := "
 (
 Built-in Administrator account disabled!
+Can't elevate process.
 Exit script.
 
-Solution:
+Solution (TODO):
     1. Run from elevated script.
-    2. Send window message to [_Autohotkey_.ahk].
+    2. Send window message to [_Autohotkey_.ahk]. (explicit exploit???)
     3. Make /RunOnce task in Task Scheduler for elevated rights:
         - https://ss64.com/nt/schtasks.html
     4. Disable UAC.
 )"
-    MsgBox,, % ".\Lib\Run.ahk", % sThisFunc "(...)`n`n" sText
+    MsgBox,, % A_ScriptName " ==> .\Lib\Run.ahk", % sThisFunc "(...)`n`n" sText
+}
+
+TODO_MsgBox2(sThisFunc) {
+    sText := "
+(
+Built-in Administrator account disabled!
+Can't drop elevation with RunWait command.
+Exit script.
+)"
+    MsgBox,, % A_ScriptName " ==> .\Lib\Run.ahk", % sThisFunc "(...)`n`n" sText
 }
