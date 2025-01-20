@@ -7,29 +7,12 @@
 ;Comments must starts from new line and begins with ";"
 ;Example:
 ;   2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
-
+;=================================== Win11 =====================================
     ;Set Balanced Power Plan
-  0,U,"%SOFT_BAT%\Power_Plan_Set_Active.bat","381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
+  0,U,"%SOFT_BAT%\Power_Plan_Set_Active.bat","381b4222-f694-41f0-9685-ff5bb260df2e",,"Min"
   0,U,"C:\Program Files\Malwarebytes\Windows Firewall Control\wfcUI.exe"
   0,U,"C:\Program Files\Shadow Defender\DefenderDaemon.exe"
   0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"
-  0,A,"%SOFT%\ScrollNavigator\ScrollNavigator.exe","-WAITFORDATAPATH -AUTOSTART -TASKSCHEDULER"
-  0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings\"""
-  0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
-  0,A,"%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"
-  0,A,"%SOFT%\CrystalDiskInfo\DiskInfo64.exe","/Startup"
-  0,U,"%SOFT%\CUIT\CUIT 2012.exe"
-  0,U,"%SOFT%\Flux\flux.exe","/noshow"
-  0,U,"%SOFT%\Gridy\Gridy.exe"
-  0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
-  0,A,"%SOFT%\MemInfo\meminfo.exe"
-  0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
-  0,A,"%SOFT%\SsdReady\SsdReady.exe"
-    ;HWiNFO add sensors value to OSD MSI Afterburner:
-        ;CPU Fan speed
-    ;HWiNFO: OS crashed if launched without delay
-  7,A,"%SOFT%\HWiNFO\HWiNFO64.exe"
-  7,A,"%SOFT_BAT%\Windows_Firewall_Control.bat",,,"Hide"
     ;AIDA64 add sensors value to OSD MSI Afterburner:
         ;Time
         ;Desktop Resolution
@@ -37,6 +20,32 @@
         ;Battery Level
         ;Battery Power Load
         ;Battery Input
- 15,A,"%SOFT%\AIDA64\AIDA64.exe"
-    ;SpeedFan: CPU + GPU temperature (/NOPCISCAN disable PCI Express scan)
- 25,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
+  0,A,"%SOFT%\AIDA64\AIDA64.exe"
+  0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings\"""
+  0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
+  0,A,"%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"
+  0,A,"%SOFT%\CrystalDiskInfo\DiskInfo64.exe","/Startup"
+  0,U,"%SOFT%\CUIT\CUIT 2012.exe"
+  0,U,"%SOFT%\Flux\flux.exe","/noshow"
+  0,U,"%SOFT%\Gridy\Gridy.exe"
+    ;HWiNFO add sensors value to OSD MSI Afterburner:
+        ;CPU Fan speed
+  0,A,"%SOFT%\HWiNFO\HWiNFO64.exe"
+  0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
+  0,A,"%SOFT%\MemInfo\meminfo.exe"
+  0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
+  0,A,"%SOFT%\ScrollNavigator\ScrollNavigator.exe","-WAITFORDATAPATH -AUTOSTART -TASKSCHEDULER"
+    ;SpeedFan: CPU + GPU temperature
+        ;/NOPCISCAN = disable PCI Express scan [GPU]
+        ;/DONVIDIAI2C = get all info about nVidia GPU (including voltage)
+  0,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
+  0,A,"%SOFT%\SsdReady\SsdReady.exe"
+  0,A,"%SOFT_BAT%\Windows_Firewall_Control.bat"
+;================================== Win7 =======================================
+  0,U,"%SOFT_BAT%\Power_Plan_Set_Active.bat","381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
+    ;HWiNFO: OS crashed if launched without delay
+  7,A,"%SOFT_BAT%\Windows_Firewall_Control.bat",,,"Hide"
+ ;7,A,"%SOFT%\HWiNFO\HWiNFO64.exe"
+;15,A,"%SOFT%\AIDA64\AIDA64.exe"
+;25,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
+;===============================================================================
