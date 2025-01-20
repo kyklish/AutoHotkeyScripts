@@ -65,7 +65,7 @@ class Process
                 Sleep % this.iDelay "000"
                 Run_As(this.bAdmin, this.sExeName, this.sParams, this.sWorkingDir, this.sWinOptions)
             } else {
-                ToolTip % "File not found:`n" this.sExeName
+                ToolTip % A_ScriptName ":" A_ThisFunc "():" A_LineNumber "`nFile not found: " this.sExeName
                 Sleep % 250
             }
         }
@@ -160,9 +160,9 @@ class ParserCSV extends Parser
         oProcParams := {}
         oProcParams.iDelay := oCSV[1]
         oProcParams.bAdmin := (oCSV[2] = "A") ? true : false
-        oProcParams.sExeName := oCSV[3]
-        oProcParams.sParams := oCSV[4]
-        oProcParams.sWorkingDir := oCSV[5]
+        oProcParams.sExeName := ExpandEnvVars(oCSV[3]) ; %SystemRoot% ==> C:\Windows
+        oProcParams.sParams := ExpandEnvVars(oCSV[4])
+        oProcParams.sWorkingDir := ExpandEnvVars(oCSV[5])
         oProcParams.sWinOptions := oCSV[6]
         SplitPath, % oProcParams.sExeName, sFileName
         oProcParams.sFileName := sFileName
@@ -352,15 +352,13 @@ if (g_Debug) {
     ;comment
     ; 0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
     ; 2,A,"cmd.exe","/c dir & pause",,"Hide"
-    5,U,"calc.exe","first ""second param with spaces""",,"Min"
+    ; 5,U,"calc.exe","first ""second param with spaces""",,"Min"
     ; 7,A,"D:\SERGEY\Options\Program Files\BAT\Windows Firewall Control.bat",,,"Hide"
-    10,U,"notepad.exe"
+    ; 10,U,"notepad.exe"
+    0,U,"`%SystemRoot`%\System32\win32calc.exe"
 )
     oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
     oMgr.Start()
-
-    !z:: Reload
-    !x:: ExitApp
 } else {
     sDataFile := "AutoStart.csv"
     oMgr := new Manager(new DataFromFile(sDataFile), new ParserCSV())
@@ -393,7 +391,6 @@ if (g_Debug) {
         ;     PostMessage, 0x5555, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
     }
 
-    Sleep, 1000
     SoundBeep
     ExitApp
 }
@@ -405,3 +402,6 @@ if (g_Debug) {
 ;   built-in Admin, so make regular copy of data from Admin to User.
 ;CrystalDiskInfo := Func("CopyRegKey").Bind(false, "Crystal Dew World")
 ;SetTimer, % CrystalDiskInfo, % 5 * 60 * 1000 ; "CrystalDiskInfo" auto refresh period I set to 5 min, so here too.
+
+!z:: Reload
+!x:: ExitApp

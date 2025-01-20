@@ -22,17 +22,24 @@
 ; SOLUTION: use AdvancedRun from NirSoft to drop elevation.
 ;   Script(User [Elevated]) ==> AdvancedRun(User [Elevated]) ==> App(User [NOT Elevated]) is OK
 
-; IF TRUE  ==> Set login and password in "Credentials.csv": Admin and User
-; IF FALSE ==> Set login and password in "Credentials.csv": Admin and User (real password not needed here!)
-g_bBuiltInAdmin := false
-; g_bDebug := true
-
 RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "")
 {
-    global g_bBuiltInAdmin
-    global g_bDebug
+    ;=============================== CONFIG ====================================
+
+    sAdvancedRun := "%SOFT_AHK%\AdvancedRun.exe"
+    sAdvancedRun := ExpandEnvVars(sAdvancedRun)
+    ; IF TRUE  ==> Set login and password in "Credentials.csv": Admin and User
+    ; IF FALSE ==> Set login and password in "Credentials.csv": Admin and User (real password not needed here!)
+    bBuiltInAdmin := false
+    ; bDebug := true
+
+    ;===========================================================================
+
     oCrd := GetCredentials(bAdmin)
-    if (g_bBuiltInAdmin) {  ; Built-in Administrator variant
+    ; Expand paths with environement variables (%SystemRoot% ==> C:\Windows)
+    sExePath := ExpandEnvVars(sExePath)
+    sParams := ExpandEnvVars(sParams)
+    if (bBuiltInAdmin) {  ; Built-in Administrator variant
         RunAs, % oCrd.sLogin, % oCrd.sPassword
         Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
         RunAs ; revert RunAs value
@@ -41,13 +48,11 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "")
             if (!A_IsAdmin) {
                 TODO_MsgBox(A_ThisFunc)
                 ExitApp
-            }
-            ; We can't elevate, so this is valid only when caller is elevated too
-            Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
-        } else {
+            } else
+                ; We can't elevate, so this is valid only when caller is elevated too
+                Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
+        } else {            ; Use AdvancedRun to drop elevation
             if (FileExist(sExePath)) {
-                EnvGet, sPortableSoftPath, SOFT
-                sAdvancedRun := sPortableSoftPath "\_AutoHotkey_\AdvancedRun.exe"
                 ; Look [AdvancedRun.chm] for help
                 ; /RunAs 9 == Run process as "Another logged-in user" (must have at least one running process)
                 ; /RunAs 9 == No password needed!
@@ -56,7 +61,7 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "")
                 ;   you should enclose the value with single quotes ('').
                 ;   Example: /CommandLine '"my first param" "my second param"'
                 Run, "%sAdvancedRun%" %sCfg% /EXEFilename "%sExePath%" /CommandLine '%sParams%'
-                if (g_bDebug)
+                if (bDebug)
                     MsgBox "%sAdvancedRun%" %sCfg% /EXEFilename "%sExePath%" /CommandLine '%sParams%'
             } else
                 MsgBox % "File not found:`n" sExePath
