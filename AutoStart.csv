@@ -6,7 +6,7 @@
 ;NO ANY SPACES BEFORE AND AFTER COMMA
 ;Comments must starts from new line and begins with ";"
 ;Example:
-;   2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
+; 2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
 ;=================================== Win11 =====================================
     ;Set Balanced Power Plan
     ;Executes a command of Command-Prompt (Console Window) without displaying anything on the screen.
