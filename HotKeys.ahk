@@ -263,10 +263,26 @@ return
 !+f::Run_AsUser("ntfy.exe", "publish --quiet --title PC nokia_test_topic " . Clipboard, "", "Min")
 #If
 !+Esc::Run_AsAdmin("C:\Windows\System32\resmon.exe") ;Resource Monitor
-#Insert::Run_AsAdmin("D:\PORTABLE\ClickMonitorDDC\ClickMonitorDDC.exe", "t b 50 t b 0")
 Launch_Mail::Run_AsUser("D:\PORTABLE\Sylpheed\sylpheed.exe")
 ;Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
+#Insert::
+    ; ClickMonitorDDC does not need admin rights. But RunWait can't be used with
+    ;   Task Scheduler RunAs variant. So launch always as admin: here and in
+    ;   autostart script.
 
+    ; Toggle monitor's brightness: 0 or 50. Just one line, but it does not saves
+    ;   previous value, so user need call it twice to change brightness
+    ; Run_AsAdmin(ExpandEnvVars("%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"), "t b 50 t b 0")
+
+    ;This variant toggle brightness with one hotkey hit.
+    sCMDDC := ExpandEnvVars("%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe")
+    RunWait, "%sCMDDC%" d,, UseErrorLevel ; Get brightness in ErrorLevel
+    iBrightness := ErrorLevel = 0 ? 50 : 0 ; Toggle brightness: 0 or 50
+    Run, "%sCMDDC%" b %iBrightness%        ; Set brightness
+    ; Exit variant: disable autostart and exit after brightness change.
+    ; Very long time to launch and change brightness.
+    ; Run, "%sCMDDC%" b %iBrightness% q      ; Set brightness and exit
+return
 
 ; Slow Down Mouse
 ; The first parameter is always 0x71 (SPI_SETMOUSESPEED).
