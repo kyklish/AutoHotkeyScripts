@@ -350,11 +350,10 @@ if (g_Debug) {
 (
     ;comment
     ; 0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
-    ; 2,A,"cmd.exe","/c dir & pause",,"Hide"
-    ; 5,U,"calc.exe","first ""second param with spaces""",,"Min"
-    ; 7,A,"D:\SERGEY\Options\Program Files\BAT\Windows Firewall Control.bat",,,"Hide"
+    ; 2,A,"`%SystemRoot`%\System32\cmd.exe","/c dir & pause",,"Hide"
+    ; 5,U,"`%SystemRoot`%\System32\calc.exe","first ""second param with spaces""",,"Min"
+    ; 7,A,"`%SOFT_BAT`%\Windows Firewall Control.bat",,,"Hide"
     ; 10,U,"notepad.exe"
-    0,U,"`%SystemRoot`%\System32\win32calc.exe"
 )
     oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
     oMgr.Start()

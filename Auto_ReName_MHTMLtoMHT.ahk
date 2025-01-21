@@ -1,20 +1,22 @@
 ﻿#Include <_COMMON_SETTINGS_>
+#Persistent
 
-;Automatically rename all MHTML files to MHT in %TargetDir% every %Period% milliseconds
+;Rename MHTML to MHT in %oTargetDir% every %iPeriod% milliseconds
 
-#Persistent ;see help to understand why it's needed here
 ;-------------------------------------------------------------------------------------
+
 oTargetDir := []
-oTargetDir.Push("R:")
-oTargetDir.Push("F:\GAMES\ПАПА")
-oTargetDir.Push("C:\Users\Fixer\Documents\")
-oTargetDir.Push("C:\Users\Fixer\Downloads")
+oTargetDir.Push(ExpandEnvVars("R:"))
+oTargetDir.Push(ExpandEnvVars("F:\GAMES\ПАПА"))
+oTargetDir.Push(ExpandEnvVars("%UserProfile%\Desktop"))
+oTargetDir.Push(ExpandEnvVars("%UserProfile%\Documents"))
+oTargetDir.Push(ExpandEnvVars("%UserProfile%\Downloads"))
 
 iPeriod := 1000
 
 SetTimer, AutoReName, %iPeriod%
 
 AutoReName:
-For i, sTargetDir in oTargetDir
-	FileMove, %sTargetDir%\*.mhtml, %sTargetDir%\*.mht
+    For i, sTargetDir in oTargetDir
+        FileMove, %sTargetDir%\*.mhtml, %sTargetDir%\*.mht
 return

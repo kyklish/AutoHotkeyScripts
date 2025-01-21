@@ -62,19 +62,19 @@ if (g_bAutoStart)
         Run, "%g_AutoStartScriptPath%" -SkipDelay
     else
         Run, "%g_AutoStartScriptPath%"
-Run_ScriptAsUser(A_ScriptDir "\Auto_ReName_MHTMLtoMHT.ahk")
-Run_ScriptAsUser(A_ScriptDir "\Clock.ahk")
-Run, "CPU_Fan_On_Off.ahk"
-Run, "CPU_Freq_Cores_Manager.ahk"
-Run, "Esc_Close.ahk"
-Run, "HotKeys.ahk"
+Run_ScriptAsUser( A_ScriptDir "\Auto_ReName_MHTMLtoMHT.ahk")
+Run_ScriptAsUser( A_ScriptDir "\Clock.ahk")
+Run_ScriptAsAdmin(A_ScriptDir "\CPU_Fan_On_Off.ahk")
+Run_ScriptAsAdmin(A_ScriptDir "\CPU_Freq_Cores_Manager.ahk")
+Run_ScriptAsAdmin(A_ScriptDir "\Esc_Close.ahk")
+Run_ScriptAsAdmin(A_ScriptDir "\HotKeys.ahk")
+Run_ScriptAsAdmin(A_ScriptDir "\Window_Manipulation.ahk")
 if (A_OSVersion = "WIN_7") {
     ; Win11 changed tray structure to XML UI, no toolbars.
     ; Old approach to tray manipulation not work (uses toolbars)!
     Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Organize.ahk") ;If run as admin - it hangs explorer.exe
     Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Click.ahk") ;If run as admin - it hangs explorer.exe
 }
-Run, "Window_Manipulation.ahk"
 
 ;-------------------------------------------------------------------------------
 

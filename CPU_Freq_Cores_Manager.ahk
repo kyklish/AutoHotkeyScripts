@@ -90,7 +90,7 @@ PowerWriteCoreParkingMinCoresValueIndex(ByRef Value, ByRef Mode)
 	}
 }
 ;-------------------------------------------------------------------------------------
-;D:\SERGEY\Install\Info\CPU Parking\Processor State Freq Test.txt
+;"D:\SERGEY\Install\Info\CPU Parking\Processor State Freq Test.txt"
 ArrayCPUStateInPercent := [ 30,  31,  34,  40,  46,  53,  56,  62,  68,  71,  78,  84,  90,  93,  99, 100] ;состояние (P-state) процессора в %
 ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (МГц) в соответствии с P-state процессора
 WriteProcessorStateSetting(ByRef Index)
