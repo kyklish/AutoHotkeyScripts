@@ -22,6 +22,14 @@
 ; SOLUTION: use AdvancedRun from NirSoft to drop elevation.
 ;   Script(User [Elevated]) ==> AdvancedRun(User [Elevated]) ==> App(User [NOT Elevated]) is OK
 
+; AdvancedRun - Run Mode:
+;   Run .EXE File
+;   ShellExecute - Open the specified file, folder, or URL with the default program
+;   Command Prompt - Execute command or batch file of Windows Command Prompt (cmd.exe)
+;   PowerShell Command - Execute the specified PowerShell Command
+;   PowerShell Script File - Run the specified PowerShell script (.ps1 file)
+
+
 RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWait := false)
 {
     ;=============================== CONFIG ====================================
@@ -30,8 +38,7 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWa
     ; IF TRUE  ==> Set login and password in "Credentials.csv": Admin and User
     ; IF FALSE ==> Set login and password in "Credentials.csv": Admin and User (real password not needed here!)
     bBuiltInAdmin := false
-    sAdvancedRun := "%SOFT_AHK%\AdvancedRun.exe"
-    sAdvancedRun := ExpandEnvVars(sAdvancedRun)
+    sAdvancedRun := A_ScriptDir "\AdvancedRun.exe"
 
     ;===========================================================================
 
