@@ -1,7 +1,8 @@
-/Testing*.ahk
-/Credentials.csv
-/Steam_Epic_URL_Converter/Steam_Epic_URL_Converter.exe
-/Lib/FindClick.pdf
-/ntfy.exe
 /Game_SnowRunner_Logistics/*.bak
 /Game_SnowRunner_Logistics/Maps/*.rar
+/Lib/FindClick.pdf
+/Steam_Epic_URL_Converter/Steam_Epic_URL_Converter.exe
+/AdvancedRun.exe
+/Credentials.csv
+/ntfy.exe
+/Testing*.ahk
