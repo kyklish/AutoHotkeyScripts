@@ -56,7 +56,9 @@ for i, sParam in A_Args {
 ;-------------------------------------------------------------------------------
 
 ;TODO skip autostart, but allow bypassed apps (SpeedFan, f.lux, WFC)
-Run_ScriptAsAdmin(A_ScriptDir "\AutoStart.ahk", g_bAutoStart ? (g_bSkipDelay ? "-SkipDelay" : "") : "-NoAutoStart")
+;Global var used in CloseAutoStartPrograms()!
+g_AutoStartScriptPath := A_ScriptDir "\AutoStart.ahk"
+Run_ScriptAsAdmin(g_AutoStartScriptPath, g_bAutoStart ? (g_bSkipDelay ? "-SkipDelay" : "") : "-NoAutoStart")
 Run_ScriptAsUser( A_ScriptDir "\Auto_ReName_MHTMLtoMHT.ahk")
 Run_ScriptAsUser( A_ScriptDir "\Clock.ahk")
 Run_ScriptAsAdmin(A_ScriptDir "\CPU_Fan_On_Off.ahk")
@@ -104,9 +106,9 @@ CancelAutoStart()
 CloseAutoStartPrograms()
 {
     global g_AutoStartScriptPath
-    RunWait, "%g_AutoStartScriptPath%" -QuitProgram
+    Run_WaitScriptAsAdmin(g_AutoStartScriptPath, "-QuitProgram")
     Sleep, 1000
-    RunWait, "%g_AutoStartScriptPath%" -KillProgram
+    Run_WaitScriptAsAdmin(g_AutoStartScriptPath, "-KillProgram")
 }
 
 ShowToolTip()
