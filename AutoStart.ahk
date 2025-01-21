@@ -307,13 +307,14 @@ class Manager
 }
 
 ;------------------------------------------------------------------------------;
-;--------------------------------START SCRIPT----------------------------------;
+;------------------------------- START SCRIPT ---------------------------------;
 ;------------------------------------------------------------------------------;
 
 ; Menu, Tray, Icon
-g_bSkipDelay := false
+g_bSkipDelay   := false
 g_bQuitProgram := false
 g_bKillProgram := false
+g_bNoAutoStart := false
 if (A_Args.Length() > 1) {
     MsgBox % A_ScriptName ": requires 0 or 1 parameter, but it received " A_Args.Length() "."
     ExitApp
@@ -321,11 +322,13 @@ if (A_Args.Length() > 1) {
     for i, sParam in A_Args {
         ; MsgBox % sParam
         if (sParam == "-SkipDelay")
-            g_bSkipDelay := true
+            g_bSkipDelay   := true
         else if (sParam == "-QuitProgram")
             g_bQuitProgram := true
         else if (sParam == "-KillProgram")
             g_bKillProgram := true
+        else if (sParam == "-NoAutoStart")
+            g_bNoAutoStart := true
         else {
             MsgBox % A_ScriptName ": wrong parameter " sParam "."
             ExitApp
@@ -342,27 +345,32 @@ if (g_Debug) {
     ;"first field",SecondField,"the word ""special"" is quoted literally",,"last field, has literal comma"
     ;CSV Format:
     ;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]"
+    ;EXE must be full name with path!
     ;NO ANY SPACES BEFORE AND AFTER COMMA
     ;Comments must starts from new line and begins with ";"
+    ;Example:
+    ;   2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
 
     Menu, Tray, Icon
     sDataString =
 (
-    ;comment
-    ; 0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
-    ; 2,A,"`%SystemRoot`%\System32\cmd.exe","/c dir & pause",,"Hide"
-    ; 5,U,"`%SystemRoot`%\System32\calc.exe","first ""second param with spaces""",,"Min"
-    ; 7,A,"`%SOFT_BAT`%\Windows Firewall Control.bat",,,"Hide"
-    ; 10,U,"notepad.exe"
+; comment
+;  0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
+;  2,A,"`%SystemRoot`%\System32\cmd.exe","/c dir & pause",,"Hide"
+;  5,U,"`%SystemRoot`%\System32\calc.exe","first ""second param with spaces""",,"Min"
+;  7,A,"`%SOFT_BAT`%\Windows Firewall Control.bat",,,"Hide"
+; 10,U,"`%SystemRoot`%\System32\notepad.exe"
 )
     oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
     oMgr.Start()
 } else {
+    if (g_bNoAutoStart)
+        ExitApp
     sDataFile := "AutoStart.csv"
     oMgr := new Manager(new DataFromFile(sDataFile), new ParserCSV())
     if (g_bQuitProgram || g_bKillProgram) {
         ;Stop tray icon organizing before stopping/killing apps
-        if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey") {
+        if ((A_OSVersion = "WIN_7") && WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")) {
             PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
             Sleep, 250
         }
@@ -371,7 +379,7 @@ if (g_Debug) {
         if (g_bKillProgram)
             oMgr.Kill()
         ;Clean tray icons without app's process
-        if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
+        if ((A_OSVersion = "WIN_7") && WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey"))
             PostMessage, 0x5557, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
     } else {
         oMgr.Start()

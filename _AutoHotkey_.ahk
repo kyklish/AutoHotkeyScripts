@@ -56,12 +56,7 @@ for i, sParam in A_Args {
 ;-------------------------------------------------------------------------------
 
 ;TODO always start AutoStartObjects.ahk, pass param to skip autostart, but allow bypassed apps (SpeedFan, f.lux, WFC)
-g_AutoStartScriptPath := "AutoStart.ahk"
-if (g_bAutoStart)
-    if (g_bSkipDelay)
-        Run, "%g_AutoStartScriptPath%" -SkipDelay
-    else
-        Run, "%g_AutoStartScriptPath%"
+Run_ScriptAsAdmin(A_ScriptDir "\AutoStart.ahk", g_bAutoStart ? (g_bSkipDelay ? "-SkipDelay" : "") : "-NoAutoStart")
 Run_ScriptAsUser( A_ScriptDir "\Auto_ReName_MHTMLtoMHT.ahk")
 Run_ScriptAsUser( A_ScriptDir "\Clock.ahk")
 Run_ScriptAsAdmin(A_ScriptDir "\CPU_Fan_On_Off.ahk")
