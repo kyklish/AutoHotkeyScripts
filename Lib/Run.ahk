@@ -26,12 +26,12 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWa
 {
     ;=============================== CONFIG ====================================
 
-    sAdvancedRun := "%SOFT_AHK%\AdvancedRun.exe"
-    sAdvancedRun := ExpandEnvVars(sAdvancedRun)
+    ; bDebug := true
     ; IF TRUE  ==> Set login and password in "Credentials.csv": Admin and User
     ; IF FALSE ==> Set login and password in "Credentials.csv": Admin and User (real password not needed here!)
     bBuiltInAdmin := false
-    ; bDebug := true
+    sAdvancedRun := "%SOFT_AHK%\AdvancedRun.exe"
+    sAdvancedRun := ExpandEnvVars(sAdvancedRun)
 
     ;===========================================================================
 
@@ -52,21 +52,26 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWa
                 TODO_MsgBox1(A_ThisFunc)
                 ExitApp
             } else
-            ; We can't elevate, so this is valid only when caller is elevated too
-            if (bWait)
-                RunWait, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
-            else
-                Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
+                ; We can't elevate, so this is valid only when caller is elevated too
+                if (bWait)
+                    RunWait, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
+                else
+                    Run, "%sExePath%" %sParams%, %sWorkingDir%, %sWinOptions%, iPID
         } else {            ; Use AdvancedRun to drop elevation
             if (bWait) {
                 TODO_MsgBox2(A_ThisFunc)
                 ExitApp
             }
-            if (FileExist(sExePath)) {
+            if (!FileExist(sAdvancedRun)) {
+                MsgBox_Err(A_ThisFunc, "AdvancedRun not found.`n`n" sAdvancedRun)
+                return
+            }
+            SplitPath, sExePath,,, sExtension
+            if (sExtension = "exe") {
                 ; Look [AdvancedRun.chm] for help
                 ; /RunAs 9 == Run process as "Another logged-in user" (must have at least one running process)
                 ; /RunAs 9 == No password needed!
-                sCfg := "/Clear /ParseVarCommandLine=1 /RunAsUserName """ oCrd.sLogin """ /RunAs 9 /Run"
+                sCfg := "/Clear /ParseVarCommandLine 1 /UseSearchPath 1 /RunAsUserName """ oCrd.sLogin """ /RunAs 9 /Run"
                 ; If you want to specify a value contains double quotes (""),
                 ;   you should enclose the value with single quotes ('').
                 ;   Example: /CommandLine '"my first param" "my second param"'
@@ -74,7 +79,7 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWa
                 if (bDebug)
                     MsgBox "%sAdvancedRun%" %sCfg% /EXEFilename "%sExePath%" /CommandLine '%sParams%'
             } else
-                MsgBox % "File not found:`n" sExePath
+                TODO_MsgBox_AdvRunErr(A_ThisFunc, sExePath)
         }
     }
 
@@ -161,6 +166,10 @@ Run_WaitScriptAsUser(sScriptFullPath, sParams := "")
 
 ;-------------------------------------------------------------------------------
 
+MsgBox_Err(sThisFunc, sText) {
+    MsgBox,, % A_ScriptName " ==> .\Lib\Run.ahk", % sThisFunc "(...)`n`n" sText
+}
+
 TODO_MsgBox1(sThisFunc) {
     sText := "
 (
@@ -175,7 +184,7 @@ Solution (TODO):
         - https://ss64.com/nt/schtasks.html
     4. Disable UAC.
 )"
-    MsgBox,, % A_ScriptName " ==> .\Lib\Run.ahk", % sThisFunc "(...)`n`n" sText
+    MsgBox_Err(sThisFunc, sText)
 }
 
 TODO_MsgBox2(sThisFunc) {
@@ -185,5 +194,25 @@ Built-in Administrator account disabled!
 Can't drop elevation with RunWait command.
 Exit script.
 )"
-    MsgBox,, % A_ScriptName " ==> .\Lib\Run.ahk", % sThisFunc "(...)`n`n" sText
+    MsgBox_Err(sThisFunc, sText)
+}
+
+TODO_MsgBox_AdvRunErr(sThisFunc, sExePath) {
+    sText := "
+(
+AdvancedRun expects .EXE file.
+
+Run Mode:
+    Run .EXE File
+    ShellExecute - Open the specified file, folder, or URL with the default program
+    Command Prompt - Execute command or batch file of Windows Command Prompt (cmd.exe)
+    PowerShell Command - Execute the specified PowerShell Command
+    PowerShell Script File - Run the specified PowerShell script (.ps1 file)
+
+Create modified function to set different [Run Mode]
+
+File passed:
+)"
+    sText := sText " " sExePath
+    MsgBox_Err(sThisFunc, sText)
 }
