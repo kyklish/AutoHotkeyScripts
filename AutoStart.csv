@@ -9,18 +9,11 @@
 ;   2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
 ;=================================== Win11 =====================================
     ;Set Balanced Power Plan
-  0,U,"%SOFT_BAT%\Power_Plan_Set_Active.bat","381b4222-f694-41f0-9685-ff5bb260df2e",,"Min"
+    ;Executes a command of Command-Prompt (Console Window) without displaying anything on the screen.
+  0,U,"%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
   0,U,"C:\Program Files\Malwarebytes\Windows Firewall Control\wfcUI.exe"
   0,U,"C:\Program Files\Shadow Defender\DefenderDaemon.exe"
   0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"
-    ;AIDA64 add sensors value to OSD MSI Afterburner:
-        ;Time
-        ;Desktop Resolution
-        ;Vertical Refresh Rate
-        ;Battery Level
-        ;Battery Power Load
-        ;Battery Input
-  0,A,"%SOFT%\AIDA64\AIDA64.exe"
   0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings\"""
   0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
   0,A,"%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"
@@ -28,9 +21,6 @@
   0,U,"%SOFT%\CUIT\CUIT 2012.exe"
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
   0,U,"%SOFT%\Gridy\Gridy.exe"
-    ;HWiNFO add sensors value to OSD MSI Afterburner:
-        ;CPU Fan speed
-  0,A,"%SOFT%\HWiNFO\HWiNFO64.exe"
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
   0,A,"%SOFT%\MemInfo\meminfo.exe"
   0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
@@ -38,16 +28,18 @@
     ;SpeedFan: CPU + GPU temperature
         ;/NOPCISCAN = disable PCI Express scan [GPU]
         ;/DONVIDIAI2C = get all info about nVidia GPU (including voltage)
-    ;SpeedFan: DO NOT start minimized (if bring window from tray via AHK command)
-        ;on window's show from AHK edit fields of fan speed not initialized
   0,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
   0,A,"%SOFT%\SsdReady\SsdReady.exe"
-  0,A,"%SOFT_BAT%\Windows_Firewall_Control.bat"
 ;================================== Win7 =======================================
- ;0,U,"%SOFT_BAT%\Power_Plan_Set_Active.bat","381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
-    ;HWiNFO: OS crashed if launched without delay
+ ;0,U,"powercfg","-setactive 381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
  ;7,A,"%SOFT_BAT%\Windows_Firewall_Control.bat",,,"Hide"
+    ;HWiNFO: OS crashed if launched without delay
+    ;HWiNFO add sensors to OSD (MSI Afterburner):
+        ;CPU Fan speed
  ;7,A,"%SOFT%\HWiNFO\HWiNFO64.exe"
+    ;AIDA64 add sensors to OSD (MSI Afterburner):
+        ;Time
+        ;Vertical Refresh Rate
 ;15,A,"%SOFT%\AIDA64\AIDA64.exe"
 ;25,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
 ;===============================================================================
