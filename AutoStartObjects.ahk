@@ -65,8 +65,7 @@ class Process
                 Sleep % this.iDelay "000"
                 Run_As(this.bAdmin, this.sExeName, this.sParams, this.sWorkingDir, this.sWinOptions)
             } else {
-                ToolTip % A_ScriptName ":" A_ThisFunc "():" A_LineNumber "`nFile not found: " this.sExeName
-                Sleep % 250
+                MsgBox % A_ScriptName ":" A_ThisFunc "():" A_LineNumber "`nFile not found: " this.sExeName
             }
         }
     }
