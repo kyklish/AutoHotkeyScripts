@@ -70,7 +70,6 @@ if (A_OSVersion = "WIN_7") {
     ; Win11 changed tray structure to XML UI, no toolbars.
     ; Old approach to tray manipulation not work (uses toolbars)!
     Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Organize.ahk") ;If run as admin - it hangs explorer.exe
-    Run_ScriptAsUser(A_ScriptDir "\Tray_Icon_Click.ahk") ;If run as admin - it hangs explorer.exe
 }
 
 ;-------------------------------------------------------------------------------
