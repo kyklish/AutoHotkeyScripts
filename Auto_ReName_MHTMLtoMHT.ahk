@@ -7,7 +7,7 @@
 
 oTargetDir := []
 oTargetDir.Push(ExpandEnvVars("R:"))
-oTargetDir.Push(ExpandEnvVars("F:\GAMES\ПАПА"))
+oTargetDir.Push(ExpandEnvVars("%SOFT%\ПАПА"))
 oTargetDir.Push(ExpandEnvVars("%UserProfile%\Desktop"))
 oTargetDir.Push(ExpandEnvVars("%UserProfile%\Documents"))
 oTargetDir.Push(ExpandEnvVars("%UserProfile%\Downloads"))
