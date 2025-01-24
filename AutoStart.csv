@@ -17,6 +17,8 @@
   0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings"""
   0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
   0,A,"%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"
+    ;CompactGUI: app always puts itself in autorun when monitoring is on
+ ;0,U,"%SOFT%\CompactGUI\CompactGUI.exe","-tray"
   0,A,"%SOFT%\CrystalDiskInfo\DiskInfo64.exe","/Startup"
   0,U,"%SOFT%\CUIT\CUIT 2012.exe"
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
