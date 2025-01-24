@@ -3,7 +3,7 @@ Menu, Tray, Icon ;Tray icon is disabled in _COMMON_SETTINGS_.ahk, here we enable
 
 g_bAutoStart := true
 g_bSkipDelay := false
-g_iToolTipShowTime := 4000 ; in seconds
+g_iToolTipShowTime := 5000 ; in milliseconds
 
 ;Without delay, immediately after Windows starts, RunAs command in Reload_AsAdmin()
 ;   function crashes this script with error "Service is already started".
