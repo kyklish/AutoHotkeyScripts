@@ -1,5 +1,6 @@
 /_OOBE_/CONFIG/Windows_Defender_Exclusion_List.txt
 /_OOBE_/DRIVERS/*
+/_OOBE_/REG_IMPORT/SsdReady_License.reg
 /Game_SnowRunner_Logistics/*.bak
 /Game_SnowRunner_Logistics/Maps/*.rar
 /Lib/FindClick.pdf
