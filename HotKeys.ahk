@@ -153,7 +153,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
 ;-------------------------------------------------------------------------------
 
 ;Simple word-delete shortcuts for all Edit controls.
-#If ActiveControlIsOfClass("Edit")
+#If, A_OSVersion = "WIN_7" and ActiveControlIsOfClass("Edit")
     ^BS:: Send ^+{Left}{Del}
     ^Del::Send ^+{Right}{Del}
 
@@ -366,11 +366,11 @@ return
    +Del -> Delete mail in Gmail and open next
 AppsKey -> Middle Mouse Click
 [Explorer]
- BS -> Go back in file system hierarchy
+ BS -> Go back in file system hierarchy (Win7)
 [SumatraPDF + STDU Viewer]
  Pause -> Close app and open next file from Total Commander or Explorer
 [CMD]
-  ^V -> Paste text to CMD
+  ^V -> Paste text to CMD (Win7)
  !F4 -> Close CMD
 [Notepad++] debug AutoHotkey scripts
 [AHK Studio] debug AutoHotkey scripts
@@ -379,13 +379,13 @@ AppsKey -> Middle Mouse Click
  +F8 -> Step Out
   F9 -> Run
 [SsdReady]
- #Up -> Maximize window
+ #Up -> Maximize window (Win7)
 [Total Commander]
  !F7 -> Search text in files
  !F9 -> Unpack archive to folder
 [Edit]
-  ^BS -> Delete word to left
- ^Del -> Delete word to right
+  ^BS -> Delete word to left (Win7)
+ ^Del -> Delete word to right (Win7)
 [Win+Fxx]
   #F1 -> CMD User
   #F2 -> CMD Admin
@@ -399,8 +399,8 @@ AppsKey -> Middle Mouse Click
  ^!+S -> Shutdown (_AutoHotkey_)
  ^!+L -> Logoff   (_AutoHotkey_)
 [Win+Alt]
- #!Down -> Restore Window Size
- #!Up   -> Maximize Window Size
+ #!Down -> Restore Window Size (win7)
+ #!Up   -> Maximize Window Size (Win7)
 [Win+Ctrl+Alt]
  #^!1 -> 1by1
  #^!2 -> Download Master
@@ -430,5 +430,5 @@ AppsKey -> Middle Mouse Click
           !+t -> Hide/Show taskbar (Disabled)
        !Shift -> Set English keyboard layout (Disabled)
           !+F -> Send clipboard to ntfy.sh/nokia_test_topic
-  Mouse Wheel -> Scroll Without Activating
+  Mouse Wheel -> Scroll Without Activating (Win7)
 )")
