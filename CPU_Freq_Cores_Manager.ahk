@@ -4,90 +4,90 @@ Process, Priority,, High ;L (or Low), B (or BelowNormal), N (or Normal), A (or A
 ;-------------------------------------------------------------------------------------
 OSD(text)
 {
-	TimeOut := 750
-	#Persistent
-	; BorderLess, no ProgressBar, font size 25, color text 009900
-	Progress, hide Y600 W1000 b zh0 cwFFFFFF FM50 CT00BB00,, %text%, AutoHotKeyProgressBar, Backlash BRK
-	WinSet, TransColor, FFFFFF 255, AutoHotKeyProgressBar
-	Progress, show
-	SetTimer, RemoveToolTip, %TimeOut%
-	Return
+    TimeOut := 750
+    #Persistent
+    ; BorderLess, no ProgressBar, font size 25, color text 009900
+    Progress, hide Y600 W1000 b zh0 cwFFFFFF FM50 CT00BB00,, %text%, AutoHotKeyProgressBar, Backlash BRK
+    WinSet, TransColor, FFFFFF 255, AutoHotKeyProgressBar
+    Progress, show
+    SetTimer, RemoveToolTip, %TimeOut%
+    Return
 
-	RemoveToolTip:
-	SetTimer, RemoveToolTip, Off
-	Progress, Off
-	Return
+    RemoveToolTip:
+    SetTimer, RemoveToolTip, Off
+    Progress, Off
+    Return
 }
 ; ===============================================================================================================================
 ; Checks if a value exists in an array (similar to HasKey)
 ; ===============================================================================================================================
 ; FoundPos := HasVal(Haystack, Needle)
 HasVal(ByRef haystack, ByRef needle) {
-	for index, value in haystack
-		if (value = needle) ;for strings: logical equal (=), case-sensitive-equal (==) ;for digits both are logical equal
-			return index
-	if !(IsObject(haystack))
-		throw Exception("Bad haystack!", -1, haystack)
-	return 0
+    for index, value in haystack
+        if (value = needle) ;for strings: logical equal (=), case-sensitive-equal (==) ;for digits both are logical equal
+            return index
+    if !(IsObject(haystack))
+        throw Exception("Bad haystack!", -1, haystack)
+    return 0
 }
 ;-------------------------------------------------------------------------------------
 TARGET_SCHEME := "d740827b-295c-4564-b160-6c98ca38069c" ;GUID того плана энергосбережения, которого будем "мучать" (заранее нужно создать новый Power Scheme в Windows на базе Balanced Power Scheme и к примеру назвать его "CustomFreqAHK", чтобы не портить Balanced план, добавить в автозагрузку команду установки Balanced плана)
 PowerWriteMaxProcessorStateValueIndex(ByRef Value, ByRef Mode)
 {
-	global TARGET_SCHEME
-	if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC")) ;for strings: logical equal (=), case-sensitive-equal (==) ;for digits both are logical equal
-	{
-		;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
-		;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
-		;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMAX %Value%,, Hide
-		;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
-		RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR PROCTHROTTLEMAX %Value%,, Hide
-		RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
-	}
+    global TARGET_SCHEME
+    if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC")) ;for strings: logical equal (=), case-sensitive-equal (==) ;for digits both are logical equal
+    {
+        ;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
+        ;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
+        ;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMAX %Value%,, Hide
+        ;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
+        RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR PROCTHROTTLEMAX %Value%,, Hide
+        RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
+    }
 }
 ;-------------------------------------------------------------------------------------
 PowerWriteMinProcessorStateValueIndex(ByRef Value, ByRef Mode)
 {
-	global TARGET_SCHEME
-	if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
-	{
-		;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
-		;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
-		;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN %Value%,, Hide
-		;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
-		RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR PROCTHROTTLEMIN %Value%,, Hide
-		RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
-	}
+    global TARGET_SCHEME
+    if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
+    {
+        ;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
+        ;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
+        ;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN %Value%,, Hide
+        ;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
+        RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR PROCTHROTTLEMIN %Value%,, Hide
+        RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
+    }
 }
 ;-------------------------------------------------------------------------------------
 PowerWriteCoreParkingMaxCoresValueIndex(ByRef Value, ByRef Mode)
 {
-	global TARGET_SCHEME
-	PROCCORESMAX := "ea062031-0e34-4ff1-9b6d-eb1059334028" ;GUID для парковки ядер
-	if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
-	{
-		;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
-		;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
-		;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR %PROCCORESMAX% %Value%,, Hide
-		;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
-		RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR %PROCCORESMAX% %Value%,, Hide
-		RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
-	}
+    global TARGET_SCHEME
+    PROCCORESMAX := "ea062031-0e34-4ff1-9b6d-eb1059334028" ;GUID для парковки ядер
+    if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
+    {
+        ;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
+        ;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
+        ;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR %PROCCORESMAX% %Value%,, Hide
+        ;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
+        RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR %PROCCORESMAX% %Value%,, Hide
+        RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
+    }
 }
 ;-------------------------------------------------------------------------------------
 PowerWriteCoreParkingMinCoresValueIndex(ByRef Value, ByRef Mode)
 {
-	global TARGET_SCHEME
-	PROCCORESMIN := "0cc5b647-c1df-4637-891a-dec35c318583" ;GUID для парковки ядер
-	if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
-	{
-		;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
-		;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
-		;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR %PROCCORESMIN% %Value%,, Hide
-		;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
-		RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR %PROCCORESMIN% %Value%,, Hide
-		RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
-	}
+    global TARGET_SCHEME
+    PROCCORESMIN := "0cc5b647-c1df-4637-891a-dec35c318583" ;GUID для парковки ядер
+    if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
+    {
+        ;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
+        ;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
+        ;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR %PROCCORESMIN% %Value%,, Hide
+        ;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
+        RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR %PROCCORESMIN% %Value%,, Hide
+        RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
+    }
 }
 ;-------------------------------------------------------------------------------------
 ;"D:\SERGEY\Install\Info\CPU Parking\Processor State Freq Test.txt"
@@ -95,175 +95,175 @@ ArrayCPUStateInPercent := [ 30,  31,  34,  40,  46,  53,  56,  62,  68,  71,  78
 ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (МГц) в соответствии с P-state процессора
 WriteProcessorStateSetting(ByRef Index)
 {
-	global ArrayCPUStateInPercent
-	global ArrayCPUFreq
-	CPUState := ArrayCPUStateInPercent[Index]
-	PowerWriteMaxProcessorStateValueIndex(CPUState, "AC") ;Line
-	PowerWriteMaxProcessorStateValueIndex(CPUState, "DC") ;Battery
-	OSD(ArrayCPUFreq[Index] . "GHz")
+    global ArrayCPUStateInPercent
+    global ArrayCPUFreq
+    CPUState := ArrayCPUStateInPercent[Index]
+    PowerWriteMaxProcessorStateValueIndex(CPUState, "AC") ;Line
+    PowerWriteMaxProcessorStateValueIndex(CPUState, "DC") ;Battery
+    OSD(ArrayCPUFreq[Index] . "GHz")
 }
 ;-------------------------------------------------------------------------------------
 ArrayCPUCoresInPercent := [25, 50, 75, 100] ;количество работающих ядер процессора в %
 WriteProcessorCoresSetting(ByRef Index)
 {
-	global ArrayCPUCoresInPercent
-	CPUCores := ArrayCPUCoresInPercent[Index]
-	PowerWriteCoreParkingMaxCoresValueIndex(CPUCores, "AC")
-	;PowerWriteCoreParkingMaxCoresValueIndex(CPUCores, "DC")
-	if(Index = 1)
-		OSD(Index . " core")
-	else
-		OSD(Index . " cores")
-	;Or IF-ELSE, or this one line
-	;OSD("Cores num: " . Index)
+    global ArrayCPUCoresInPercent
+    CPUCores := ArrayCPUCoresInPercent[Index]
+    PowerWriteCoreParkingMaxCoresValueIndex(CPUCores, "AC")
+    ;PowerWriteCoreParkingMaxCoresValueIndex(CPUCores, "DC")
+    if(Index = 1)
+        OSD(Index . " core")
+    else
+        OSD(Index . " cores")
+    ;Or IF-ELSE, or this one line
+    ;OSD("Cores num: " . Index)
 }
 ;-------------------------------------------------------------------------------------
 ModifyArrayIndex(ByRef Index, ByRef Delta, ByRef ArrayLen) ;инкремент или декремент Index на величину Delta
 {
-	Index += Delta
-	if (Index < 1)
-	{
-		Index := 1
-		SoundBeepTwice()
-	}
-	else
-		if (Index > ArrayLen)
-		{
-			Index := ArrayLen
-			SoundBeepTwice()
-		}
+    Index += Delta
+    if (Index < 1)
+    {
+        Index := 1
+        SoundBeepTwice()
+    }
+    else
+        if (Index > ArrayLen)
+        {
+            Index := ArrayLen
+            SoundBeepTwice()
+        }
 }
 ;-------------------------------------------------------------------------------------
 ArrayLenP := ArrayCPUStateInPercent.MaxIndex()
 IndexP := ArrayLenP ;индекс массива для P-state
 StepCPUFreq(ByRef Delta) ;изменяем частоту ступенчато, величина ступеньки == Delta
 {
-	global ArrayLenP
-	global IndexP
-	;static IndexP := ArrayLenP ; здесь инициализация static не работает как в Си!!! поэтому используем глобальные переменные
-	ModifyArrayIndex(IndexP, Delta, ArrayLenP)
-	WriteProcessorStateSetting(IndexP)
+    global ArrayLenP
+    global IndexP
+    ;static IndexP := ArrayLenP ; здесь инициализация static не работает как в Си!!! поэтому используем глобальные переменные
+    ModifyArrayIndex(IndexP, Delta, ArrayLenP)
+    WriteProcessorStateSetting(IndexP)
 }
 ;-------------------------------------------------------------------------------------
 IsCorrectArrayIndex(ByRef Index, ByRef ArrayLen)
 {
-	return (1 <= Index && Index <= ArrayLen)
+    return (1 <= Index && Index <= ArrayLen)
 }
 ;-------------------------------------------------------------------------------------
 SetCPUFreqInGHz(ByRef Freq) ;Freq == frequency in x.x GHz ;непосредственно задаем частоту CPU
 {
-	global ArrayCPUFreq
-	global ArrayLenP
-	global IndexP
-	Index := HasVal(ArrayCPUFreq, Freq)
-	if (IsCorrectArrayIndex(Index, ArrayLenP))
-	{
-		IndexP := Index
-		WriteProcessorStateSetting(IndexP)
-	}
-	else
-	{
-		SoundBeepTwice()
-		MsgBox % "Wrong Frequency Value " . Freq . "GHz"
-		;throw Exception("Bad Frequency Value!", -1, Freq)
-	}
+    global ArrayCPUFreq
+    global ArrayLenP
+    global IndexP
+    Index := HasVal(ArrayCPUFreq, Freq)
+    if (IsCorrectArrayIndex(Index, ArrayLenP))
+    {
+        IndexP := Index
+        WriteProcessorStateSetting(IndexP)
+    }
+    else
+    {
+        SoundBeepTwice()
+        MsgBox % "Wrong Frequency Value " . Freq . "GHz"
+        ;throw Exception("Bad Frequency Value!", -1, Freq)
+    }
 }
 ;-------------------------------------------------------------------------------------
 ArrayLenC := ArrayCPUCoresInPercent.MaxIndex()
 IndexC := ArrayLenC ;индекс массива для количества ядер
 StepCPUCores(ByRef Delta) ;изменяем количество ядер ступенчато, величина ступеньки == Delta
 {
-	global ArrayLenC
-	global IndexC
-	;static IndexC := ArrayLenC ;здесь инициализация static не работает как в Си!!! поэтому используем глобальные переменные
-	ModifyArrayIndex(IndexC, Delta, ArrayLenC)
-	WriteProcessorCoresSetting(IndexC)
+    global ArrayLenC
+    global IndexC
+    ;static IndexC := ArrayLenC ;здесь инициализация static не работает как в Си!!! поэтому используем глобальные переменные
+    ModifyArrayIndex(IndexC, Delta, ArrayLenC)
+    WriteProcessorCoresSetting(IndexC)
 }
 ;-------------------------------------------------------------------------------------
 CPUParkingEnabled := true
 ToggleCPUParking() ;вкл/откл парковку ядер
 {
-	global CPUParkingEnabled
-	if (CPUParkingEnabled) {
-		CPUParkingEnabled := false
-		PowerWriteCoreParkingMinCoresValueIndex(100, "AC")
-		;PowerWriteCoreParkingMinCoresValueIndex(100, "DC")
-		OSD("Core Parking Disabled")
-	}
-	else {
-		CPUParkingEnabled := true
-		PowerWriteCoreParkingMinCoresValueIndex(0, "AC")
-		;PowerWriteCoreParkingMinCoresValueIndex(0, "DC")
-		OSD("Core Parking Enabled")
-	}
+    global CPUParkingEnabled
+    if (CPUParkingEnabled) {
+        CPUParkingEnabled := false
+        PowerWriteCoreParkingMinCoresValueIndex(100, "AC")
+        ;PowerWriteCoreParkingMinCoresValueIndex(100, "DC")
+        OSD("Core Parking Disabled")
+    }
+    else {
+        CPUParkingEnabled := true
+        PowerWriteCoreParkingMinCoresValueIndex(0, "AC")
+        ;PowerWriteCoreParkingMinCoresValueIndex(0, "DC")
+        OSD("Core Parking Enabled")
+    }
 }
 ;-------------------------------------------------------------------------------------
 CPUCStateEnabled := true
 ToggleCPUCState() ;вкл/откл C-State процессора
 {
-	global CPUCStateEnabled
-	if (CPUCStateEnabled) {
-		CPUCStateEnabled := false
-		PowerWriteMinProcessorStateValueIndex(100, "AC")
-		;PowerWriteMinProcessorStateValueIndex(100, "DC")
-		OSD("C-State Disabled")
-	}
-	else {
-		CPUCStateEnabled := true
-		PowerWriteMinProcessorStateValueIndex(0, "AC")
-		;PowerWriteMinProcessorStateValueIndex(0, "DC")
-		OSD("C-State Enabled")
-	}
+    global CPUCStateEnabled
+    if (CPUCStateEnabled) {
+        CPUCStateEnabled := false
+        PowerWriteMinProcessorStateValueIndex(100, "AC")
+        ;PowerWriteMinProcessorStateValueIndex(100, "DC")
+        OSD("C-State Disabled")
+    }
+    else {
+        CPUCStateEnabled := true
+        PowerWriteMinProcessorStateValueIndex(0, "AC")
+        ;PowerWriteMinProcessorStateValueIndex(0, "DC")
+        OSD("C-State Enabled")
+    }
 }
 ;-------------------------------------------------------------------------------------
 RestoreMaxFreqCores()
 {
-	global CPUParkingEnabled
-	global CPUCStateEnabled
-	global ArrayLenP
-	global ArrayLenC
-	global IndexP
-	global IndexC
-	IndexP := ArrayLenP
-	IndexC := ArrayLenC
-	WriteProcessorStateSetting(ArrayLenP)
-	WriteProcessorCoresSetting(ArrayLenC)
-	if(!CPUParkingEnabled)
-		ToggleCPUParking()
-	if(!CPUCStateEnabled)
-		ToggleCPUCState()
+    global CPUParkingEnabled
+    global CPUCStateEnabled
+    global ArrayLenP
+    global ArrayLenC
+    global IndexP
+    global IndexC
+    IndexP := ArrayLenP
+    IndexC := ArrayLenC
+    WriteProcessorStateSetting(ArrayLenP)
+    WriteProcessorCoresSetting(ArrayLenC)
+    if(!CPUParkingEnabled)
+        ToggleCPUParking()
+    if(!CPUCStateEnabled)
+        ToggleCPUCState()
 }
 ;-------------------------------------------------------------------------------------
 SetActivePowerScheme(ByRef TARGET_SCHEME, ByRef Info)
 {
-	RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
-	OSD(Info)
+    RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
+    OSD(Info)
 }
 ;-------------------------------------------------------------------------------------
 ShowCustomFreqAHKInfo() ;показать текущие настройки плана CustomFreqAHK
 {
-	global ArrayCPUFreq
-	global CPUParkingEnabled
-	global CPUCStateEnabled
-	global IndexP
-	global IndexC
-	text := ArrayCPUFreq[IndexP] . "GHz`n" . IndexC . " "  ;`n - new line
-	if(IndexC = 1)
-		text := text . "core"
-	else
-		text := text . "cores"
-	if(CPUParkingEnabled)
-		text := text . "`nCore Parking Enabled"
-	else
-		text := text . "`nCore Parking Disabled"
-	if(CPUCStateEnabled)
-		text := text . "`nC-State Enabled"
-	else
-		text := text . "`nC-State Disabled"
-	OSD(text)
-	
-	;Or IF-ELSE, or this one line
-	;OSD(ArrayCPUFreq[IndexP] . "GHz`n" . "Cores num: " . IndexC)
+    global ArrayCPUFreq
+    global CPUParkingEnabled
+    global CPUCStateEnabled
+    global IndexP
+    global IndexC
+    text := ArrayCPUFreq[IndexP] . "GHz`n" . IndexC . " "  ;`n - new line
+    if(IndexC = 1)
+        text := text . "core"
+    else
+        text := text . "cores"
+    if(CPUParkingEnabled)
+        text := text . "`nCore Parking Enabled"
+    else
+        text := text . "`nCore Parking Disabled"
+    if(CPUCStateEnabled)
+        text := text . "`nC-State Enabled"
+    else
+        text := text . "`nC-State Disabled"
+    OSD(text)
+
+    ;Or IF-ELSE, or this one line
+    ;OSD(ArrayCPUFreq[IndexP] . "GHz`n" . "Cores num: " . IndexC)
 }
 ;-------------------------------------------------------------------------------------
 DeltaP := 1 ;шаг изменения значения P-state процессора
