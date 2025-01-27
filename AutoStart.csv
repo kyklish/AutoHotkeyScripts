@@ -8,9 +8,9 @@
 ;Example:
 ; 2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
 ;=================================== Win11 =====================================
-    ;Set Balanced Power Plan
+    ;Set Balanced Power Plan (Disabled) [Win11 by default disable Core Parking]
     ;Executes a command of Command-Prompt (Console Window) without displaying anything on the screen.
-  0,U,"%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
+ ;0,U,"%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
   0,U,"C:\Program Files\Malwarebytes\Windows Firewall Control\wfcUI.exe"
   0,U,"C:\Program Files\Shadow Defender\DefenderDaemon.exe"
   0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"

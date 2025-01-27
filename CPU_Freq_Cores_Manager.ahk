@@ -1,7 +1,16 @@
 ﻿#Include <_COMMON_SETTINGS_>
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+;Windows 11: Core Parking disabled in default power plans.
+;-------------------------------------------------------------------------------
+;Добавить в автозагрузку команду установки Balanced плана (опционально)
+;Ну будем портить Balanced Power Scheme, создадим новый на его базе
+;   POWERCFG /DUPLICATESCHEME 381b4222-f694-41f0-9685-ff5bb260df2e FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+;   POWERCFG /CHANGENAME FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF "AHK" "Balanced power plan for AHK: CPU_Freq_Cores_Manager"
+;GUID того плана энергосбережения, который будем "мучать"
+TARGET_SCHEME := "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"
+;-------------------------------------------------------------------------------
 Process, Priority,, High ;L (or Low), B (or BelowNormal), N (or Normal), A (or AboveNormal), H (or High), R (or Realtime)
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 OSD(text)
 {
     TimeOut := 750
@@ -18,9 +27,9 @@ OSD(text)
     Progress, Off
     Return
 }
-; ===============================================================================================================================
+;-------------------------------------------------------------------------------
 ; Checks if a value exists in an array (similar to HasKey)
-; ===============================================================================================================================
+;-------------------------------------------------------------------------------
 ; FoundPos := HasVal(Haystack, Needle)
 HasVal(ByRef haystack, ByRef needle) {
     for index, value in haystack
@@ -30,8 +39,7 @@ HasVal(ByRef haystack, ByRef needle) {
         throw Exception("Bad haystack!", -1, haystack)
     return 0
 }
-;-------------------------------------------------------------------------------------
-TARGET_SCHEME := "d740827b-295c-4564-b160-6c98ca38069c" ;GUID того плана энергосбережения, которого будем "мучать" (заранее нужно создать новый Power Scheme в Windows на базе Balanced Power Scheme и к примеру назвать его "CustomFreqAHK", чтобы не портить Balanced план, добавить в автозагрузку команду установки Balanced плана)
+;-------------------------------------------------------------------------------
 PowerWriteMaxProcessorStateValueIndex(ByRef Value, ByRef Mode)
 {
     global TARGET_SCHEME
@@ -45,7 +53,7 @@ PowerWriteMaxProcessorStateValueIndex(ByRef Value, ByRef Mode)
         RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     }
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 PowerWriteMinProcessorStateValueIndex(ByRef Value, ByRef Mode)
 {
     global TARGET_SCHEME
@@ -59,7 +67,7 @@ PowerWriteMinProcessorStateValueIndex(ByRef Value, ByRef Mode)
         RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     }
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 PowerWriteCoreParkingMaxCoresValueIndex(ByRef Value, ByRef Mode)
 {
     global TARGET_SCHEME
@@ -74,7 +82,7 @@ PowerWriteCoreParkingMaxCoresValueIndex(ByRef Value, ByRef Mode)
         RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     }
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 PowerWriteCoreParkingMinCoresValueIndex(ByRef Value, ByRef Mode)
 {
     global TARGET_SCHEME
@@ -89,7 +97,7 @@ PowerWriteCoreParkingMinCoresValueIndex(ByRef Value, ByRef Mode)
         RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     }
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ;"D:\SERGEY\Install\Info\CPU Parking\Processor State Freq Test.txt"
 ArrayCPUStateInPercent := [ 30,  31,  34,  40,  46,  53,  56,  62,  68,  71,  78,  84,  90,  93,  99, 100] ;состояние (P-state) процессора в %
 ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (МГц) в соответствии с P-state процессора
@@ -102,7 +110,7 @@ WriteProcessorStateSetting(ByRef Index)
     PowerWriteMaxProcessorStateValueIndex(CPUState, "DC") ;Battery
     OSD(ArrayCPUFreq[Index] . "GHz")
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ArrayCPUCoresInPercent := [25, 50, 75, 100] ;количество работающих ядер процессора в %
 WriteProcessorCoresSetting(ByRef Index)
 {
@@ -117,7 +125,7 @@ WriteProcessorCoresSetting(ByRef Index)
     ;Or IF-ELSE, or this one line
     ;OSD("Cores num: " . Index)
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ModifyArrayIndex(ByRef Index, ByRef Delta, ByRef ArrayLen) ;инкремент или декремент Index на величину Delta
 {
     Index += Delta
@@ -133,7 +141,7 @@ ModifyArrayIndex(ByRef Index, ByRef Delta, ByRef ArrayLen) ;инкремент �
             SoundBeepTwice()
         }
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ArrayLenP := ArrayCPUStateInPercent.MaxIndex()
 IndexP := ArrayLenP ;индекс массива для P-state
 StepCPUFreq(ByRef Delta) ;изменяем частоту ступенчато, величина ступеньки == Delta
@@ -144,12 +152,12 @@ StepCPUFreq(ByRef Delta) ;изменяем частоту ступенчато, 
     ModifyArrayIndex(IndexP, Delta, ArrayLenP)
     WriteProcessorStateSetting(IndexP)
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 IsCorrectArrayIndex(ByRef Index, ByRef ArrayLen)
 {
     return (1 <= Index && Index <= ArrayLen)
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 SetCPUFreqInGHz(ByRef Freq) ;Freq == frequency in x.x GHz ;непосредственно задаем частоту CPU
 {
     global ArrayCPUFreq
@@ -168,7 +176,7 @@ SetCPUFreqInGHz(ByRef Freq) ;Freq == frequency in x.x GHz ;непосредст�
         ;throw Exception("Bad Frequency Value!", -1, Freq)
     }
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ArrayLenC := ArrayCPUCoresInPercent.MaxIndex()
 IndexC := ArrayLenC ;индекс массива для количества ядер
 StepCPUCores(ByRef Delta) ;изменяем количество ядер ступенчато, величина ступеньки == Delta
@@ -179,7 +187,7 @@ StepCPUCores(ByRef Delta) ;изменяем количество ядер сту
     ModifyArrayIndex(IndexC, Delta, ArrayLenC)
     WriteProcessorCoresSetting(IndexC)
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 CPUParkingEnabled := true
 ToggleCPUParking() ;вкл/откл парковку ядер
 {
@@ -197,7 +205,7 @@ ToggleCPUParking() ;вкл/откл парковку ядер
         OSD("Core Parking Enabled")
     }
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 CPUCStateEnabled := true
 ToggleCPUCState() ;вкл/откл C-State процессора
 {
@@ -215,7 +223,7 @@ ToggleCPUCState() ;вкл/откл C-State процессора
         OSD("C-State Enabled")
     }
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 RestoreMaxFreqCores()
 {
     global CPUParkingEnabled
@@ -233,13 +241,13 @@ RestoreMaxFreqCores()
     if(!CPUCStateEnabled)
         ToggleCPUCState()
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 SetActivePowerScheme(ByRef TARGET_SCHEME, ByRef Info)
 {
     RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     OSD(Info)
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 ShowCustomFreqAHKInfo() ;показать текущие настройки плана CustomFreqAHK
 {
     global ArrayCPUFreq
@@ -265,9 +273,17 @@ ShowCustomFreqAHKInfo() ;показать текущие настройки пл
     ;Or IF-ELSE, or this one line
     ;OSD(ArrayCPUFreq[IndexP] . "GHz`n" . "Cores num: " . IndexC)
 }
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
+if (A_OSVersion != "WIN_7") { ;Read comment about Windows 11 at the top
+    ;FALSE: guarantee restore power plan settings to default in RestoreMaxFreqCores()!
+    CPUCStateEnabled := false
+    CPUParkingEnabled := false
+    RestoreMaxFreqCores()
+}
+;-------------------------------------------------------------------------------
 DeltaP := 1 ;шаг изменения значения P-state процессора
 DeltaC := 1 ;шаг изменения количества ядер процессора
+;-------------------------------------------------------------------------------
 /*
 +F8:: RestoreMaxFreqCores() ;восстановить максимальные значения частоты и количества работающих ядер
 +F9:: StepCPUFreq(-DeltaP) ;уменьшаем частоту CPU
@@ -285,7 +301,7 @@ DeltaC := 1 ;шаг изменения количества ядер проце�
 ;+F7:: SetActivePowerScheme("d740827b-295c-4564-b160-6c98ca38069c", "CustomFreqAHK PS") ; незачем, т.к. при любом изменении частоты или количества ядер автоматически устанавливается CustomFreqAHK Power Scheme
 +Pause:: ShowCustomFreqAHKInfo()
 */
-;-------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------
 
 NumpadDot & Numpad9:: RestoreMaxFreqCores() ;восстановить максимальные значения частоты и количества работающих ядер
 NumpadDot & NumpadSub:: StepCPUFreq(-DeltaP) ;уменьшаем частоту CPU
