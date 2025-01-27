@@ -24,6 +24,8 @@
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
   0,U,"%SOFT%\Gridy\Gridy.exe"
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
+ ;0,U,"%SOFT%\Listary5\Listary.exe","-startup"
+ ;0,U,"%SOFT%\Listary6\Listary.exe","--startup"
   0,A,"%SOFT%\MemInfo\meminfo.exe"
   0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
   0,A,"%SOFT%\ScrollNavigator\ScrollNavigator.exe","-MINIMIZE"
