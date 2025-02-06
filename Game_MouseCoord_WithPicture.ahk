@@ -159,7 +159,7 @@ Launch 'FastStone Capture' to save pictures
  Numpad 1 3 7 9  -> Move cursor by one pixel diagonally
  Numpad 5        -> 'FindClick()' save pic for ImageSearch
 ^Numpad 5        -> 'FastStone Capture' save coord, color, pic
- Numpad 0 + Drag -> Draw rectangle, save to clipboard 'X1, Y1, X2, Y2'
+ Numpad 0 + Drag -> Draw rectangle, save to clipboard 'X1, Y1, X2, Y2' (Disabled)
      +LMB + Drag -> Draw rectangle, save to clipboard 'X1, Y1, X2, Y2'
 !Insert          -> Reload Script
  Insert          ->   Exit Script
