@@ -14,6 +14,7 @@
   0,U,"C:\Program Files\Malwarebytes\Windows Firewall Control\wfcUI.exe"
   0,U,"C:\Program Files\Shadow Defender\DefenderDaemon.exe"
   0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"
+  0,A,"C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe","/s"
   0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings"""
   0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
   0,A,"%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"
@@ -22,7 +23,7 @@
   0,A,"%SOFT%\CrystalDiskInfo\DiskInfo64.exe","/Startup"
   0,U,"%SOFT%\CUIT\CUIT 2012.exe"
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
-  0,U,"%SOFT%\Gridy\Gridy.exe"
+  0,A,"%SOFT%\Gridy\Gridy.exe"
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
  ;0,U,"%SOFT%\Listary5\Listary.exe","-startup"
  ;0,U,"%SOFT%\Listary6\Listary.exe","--startup"
@@ -34,6 +35,7 @@
         ;/DONVIDIAI2C = get all info about nVidia GPU (including voltage)
   0,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
   0,A,"%SOFT%\SsdReady\SsdReady.exe"
+  0,A,"%SOFT%\WuMgr\wumgr.exe","-tray"
 ;================================== Win7 =======================================
  ;0,U,"powercfg","-setactive 381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
  ;7,A,"%SOFT_BAT%\Windows_Firewall_Control.bat",,,"Hide"
