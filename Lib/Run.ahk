@@ -82,9 +82,9 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWa
                 ; If you want to specify a value contains double quotes (""),
                 ;   you should enclose the value with single quotes ('').
                 ;   Example: /CommandLine '"my first param" "my second param"'
-                Run, "%sAdvancedRun%" %sCfg% /EXEFilename "%sExePath%" /CommandLine '%sParams%'
+                Run, "%sAdvancedRun%" %sCfg% /EXEFilename "%sExePath%" /CommandLine '%sParams%' /StartDirectory "%sWorkingDir%"
                 if (bDebug)
-                    MsgBox "%sAdvancedRun%" %sCfg% /EXEFilename "%sExePath%" /CommandLine '%sParams%'
+                    MsgBox "%sAdvancedRun%" %sCfg% /EXEFilename "%sExePath%" /CommandLine '%sParams%' /StartDirectory "%sWorkingDir%"
             } else
                 TODO_MsgBox_AdvRunErr(A_ThisFunc, sExePath)
         }
