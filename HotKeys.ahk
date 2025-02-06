@@ -31,7 +31,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
     ;^b:: SendInput, {Ctrl down}l{Ctrl up}{Ctrl down}v{Ctrl up}{Enter}
     ^b:: SendEvent, ^{vk4C}^{vk56}{Enter} ; only working variant for Opera!!!
     ^z:: SendEvent, ^+{vk54} ; Ctrl+Z = Ctrl+Shift+T - restore closed tab
-    ^d:: ; Ctrl+D - поиск в YouTube выделенного текста
+    ^y:: ; Ctrl+Y - поиск в YouTube выделенного текста
         Clipboard := "" ; Empty the clipboard
         SendEvent, ^{vk43} ; Ctrl+C
         ClipWait, 2
@@ -53,9 +53,9 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
         Clipboard := "t " . Clipboard
         GoSub, ^b
     return
-    F9:: SendEvent, ^+{Tab} ; Prev Tab
-    F10:: SendEvent, ^{Tab} ; Next Tab
-    AppsKey:: Click, Middle
+    F1:: SendEvent, ^+{Tab} ; Prev Tab
+    F2:: SendEvent, ^{Tab} ; Next Tab
+    Launch_Media:: Click, Middle
 
     +Delete:: ; delete mail
         ; SendMode - Also makes Click and MouseMove/Click/Drag use the specified method
@@ -171,17 +171,18 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
 ;-------------------------------------------------------------------------------
 
 ;Win+Fxx
-#F1::Run_AsUser(A_ComSpec)
-#F2::Run_AsAdmin(A_ComSpec)
+#F1::Run_AsUser(A_ComSpec,, "R:\")
+#F2::Run_AsAdmin(A_ComSpec,, "R:\")
 ;#F2::Run_AsUser("%SOFT_BAT%\Browser\Opera.bat")
 ;#F3::Run_AsUser("%SOFT_BAT%\Browser\Chrome.bat")
 ;#F4::Run_AsUser("%SOFT_BAT%\Browser\Firefox.bat")
 ;#F5::Run_AsUser("%SOFT%\SimpleDLNA\SimpleDLNA.exe")
 ;#F11::Run_ScriptAsUser(A_ScriptDir "\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\MyTheme.theme")
 ;#F12::Run_ScriptAsUser(A_ScriptDir "\Set_Windows_Theme.ahk", "%LocalAppData%\Microsoft\Windows\Themes\win7msa.theme")
-;#F11::Run_AsUser(%SOFT%\Winaero_Theme_Switcher\ThemeSwitcher.exe", "%LocalAppData%\Microsoft\Windows\Themes\MyTheme.theme")
-;#F12::Run_AsUser(%SOFT%\Winaero_Theme_Switcher\ThemeSwitcher.exe", "%LocalAppData%\Microsoft\Windows\Themes\win7msa.theme")
-
+#If A_OSVersion = WIN_7
+    #F11::Run_AsUser("%SOFT%\Winaero_Theme_Switcher\ThemeSwitcherWin7.exe", "%LocalAppData%\Microsoft\Windows\Themes\MyTheme.theme")
+    #F12::Run_AsUser("%SOFT%\Winaero_Theme_Switcher\ThemeSwitcherWin7.exe", "%LocalAppData%\Microsoft\Windows\Themes\win7msa.theme")
+#If
 ;-------------------------------------------------------------------------------
 
 ;CTRL+ALT+SHIFT
@@ -274,8 +275,8 @@ return
 
 ;-------------------------------------------------------------------------------
 
+#f::Run_AsUser("%SOFT%\Everything\Everything.exe")
 #IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
-    ^+f::Run_AsUser("%SOFT%\Everything\Everything.exe")
     !+f::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd " A_ScriptDir "\ntfy.exe publish --quiet --title PC nokia_test_topic " . A_Clipboard)
 #If
 !+Esc::Run_AsAdmin("%SystemRoot%\System32\resmon.exe") ;Resource Monitor
@@ -353,18 +354,28 @@ return
 */
 ;-------------------------------------------------------------------------------
 
+AppsKey::   ToolTip % "[Cycle Windows] < or >`n[Cycle Desktops] ← or →`n[Context Menu] RCtrl"
+AppsKey Up::ToolTip
+~AppsKey & <::    Send !+{Esc}
+~AppsKey & >::    Send  !{Esc}
+~AppsKey & Left:: Send #^{Left}
+~AppsKey & Right::Send #^{Right}
+~AppsKey & RCtrl::Send {AppsKey}
+
+;-------------------------------------------------------------------------------
+
 #IfWinActive ahk_group Desktop
     Pause:: ShowHelpWindow("
 (
 [Browser]
-     ^B -> Paste clipboard and Go
-     ^D -> Search in YouTube selected text
-     ^Q -> Search in RuTracker selected text
-     ^Z -> Restore recently closed tab
-     F9 -> Previous Tab
-    F10 -> Next Tab
-   +Del -> Delete mail in Gmail and open next
-AppsKey -> Middle Mouse Click
+           ^B -> Paste clipboard and Go
+           ^Y -> Search in YouTube selected text
+           ^Q -> Search in RuTracker selected text
+           ^Z -> Restore recently closed tab
+           F1 -> Previous Tab
+           F2 -> Next Tab
+         +Del -> Delete mail in Gmail and open next
+ Launch_Media -> Middle Mouse Click
 [Explorer]
  BS -> Go back in file system hierarchy (Win7)
 [SumatraPDF + STDU Viewer]
@@ -425,10 +436,13 @@ AppsKey -> Middle Mouse Click
  Browser_Home -> Slow Down Mouse
   Launch_Mail -> Sylpheed
         !+Esc -> Resource Monitor
-          ^+F -> Everything x64
+          #+F -> Everything
          #Ins -> Toggle monitor brightness (0 ÷ 50)
           !+t -> Hide/Show taskbar (Disabled)
        !Shift -> Set English keyboard layout (Disabled)
-          !+F -> Send clipboard to ntfy.sh/nokia_test_topic
+          !+F -> Send clipboard to [ntfy.sh/nokia_test_topic]
   Mouse Wheel -> Scroll Without Activating (Win7)
+      AppsKey -> [Cycle Windows]  < or >
+      AppsKey -> [Cycle Desktops] ← or →
+     ^AppsKey -> [AppsKey] Context menu
 )")
