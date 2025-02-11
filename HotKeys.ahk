@@ -406,9 +406,10 @@ AppsKey Up::ToolTip
  ^!+K -> Empty Recycle Bin
  ^!+M -> Process Monitor
  ^!+P -> Process Explorer
- ^!+R -> Reboot   (_AutoHotkey_)
- ^!+S -> Shutdown (_AutoHotkey_)
- ^!+L -> Logoff   (_AutoHotkey_)
+ ^!+H -> Hibernate (_AutoHotkey_)
+ ^!+R -> Reboot    (_AutoHotkey_)
+ ^!+S -> Shutdown  (_AutoHotkey_)
+ ^!+L -> Logoff    (_AutoHotkey_)
 [Win+Alt]
  #!Down -> Restore Window Size (win7)
  #!Up   -> Maximize Window Size (Win7)
