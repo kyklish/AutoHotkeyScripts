@@ -134,6 +134,9 @@ GetThreadCmd() {
 GetDelCmd(oFileNames) {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
+    sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
+    sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
+    sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
     sCmd .= "CHOICE /M ""Delete source files?""`n"
     sCmd .= "IF %ERRORLEVEL%==1 GOTO :DELETE_SOURCE ELSE GOTO :EOF`n`n"
     sCmd .= ":DELETE_SOURCE`n"
