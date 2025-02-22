@@ -39,7 +39,8 @@ If iAudioId is Integer
 
 ; Get DRC ratio value from file name (no need to edit script every time)
 RegExMatch(A_ScriptName, "DRC(?P<Value>\d)", iDrc)
-If iDrcValue is Integer {
+If iDrcValue is Integer
+{
     If (2 <= iDrcValue && iDrcValue <= 4)
         iDrcRatio := iDrcValue
     Else
@@ -48,7 +49,8 @@ If iDrcValue is Integer {
 
 ; Get number of threads from file name (no need to edit script every time)
 RegExMatch(A_ScriptName, "THREADS(?P<Value>\d)", iThreads)
-If iThreadsValue is Integer {
+If iThreadsValue is Integer
+{
     If (1 <= iThreadsValue)
         iThreadsExe := iThreadsValue
     Else
