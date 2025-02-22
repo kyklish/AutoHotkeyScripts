@@ -20,12 +20,16 @@
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 
+;=============================== DEFAULT PARAMS ================================
+
 ; [0 ... N] - audio stream id to convert with DRC (zero based numeration!)
 iAudioStream := 0
 ; [2 ... 4] - DRC ratio above 4 has no audible difference
 iDrcRatio := 2
 ; [1 ... N] - number of BAT files for manual multi-threading
-iThreads := 4
+iThreadsExe := 1
+
+;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
 
 ; Get audio stream id from file name (no need to edit script every time)
 RegExMatch(A_ScriptName, "AUDIO(?P<Id>\d)", iAudio)
@@ -35,18 +39,34 @@ If iAudioId is Integer
 
 ; Get DRC ratio value from file name (no need to edit script every time)
 RegExMatch(A_ScriptName, "DRC(?P<Value>\d)", iDrc)
-If iDrcValue is Integer
+If iDrcValue is Integer {
     If (2 <= iDrcValue && iDrcValue <= 4)
         iDrcRatio := iDrcValue
+    Else
+        MsgBox Wrong DRC value: must be between 2 and 4
+}
 
-oFileNames := GetVideoFileNames(["*.avi", "*.mkv"], iDrcRatio, iThreads)
+; Get number of threads from file name (no need to edit script every time)
+RegExMatch(A_ScriptName, "THREADS(?P<Value>\d)", iThreads)
+If iThreadsValue is Integer {
+    If (1 <= iThreadsValue)
+        iThreadsExe := iThreadsValue
+    Else
+        MsgBox Wrong THREADS value: must be greater then 1
+}
+
+;================================== EXECUTE ====================================
+
+oFileNames := GetVideoFileNames(["*.avi", "*.mkv"], iDrcRatio, iThreadsExe)
 If (oFileNames[0].Count() > 0)
-    CreateBAT(oFileNames, iThreads)
+    CreateBAT(oFileNames, iThreadsExe)
 ExitApp
 
-CreateBAT(oFileNames, iThreads) {
+;===============================================================================
+
+CreateBAT(oFileNames, iThreadsExe) {
     global iAudioStream, iDrcRatio
-    Loop % iThreads {
+    Loop % iThreadsExe {
         If (oFileNames[A_Index].Count()) {
             oFile := FileOpen("!.AUDIO" iAudioStream + 1 "_DRC" iDrcRatio "_THREAD" A_Index ".BAT", "w")
             oFile.Write(GetMkaCmd(oFileNames[A_Index], iAudioStream, iDrcRatio))
@@ -156,9 +176,9 @@ GetDelCmd(oFileNames) {
     Return sCmd
 }
 
-GetVideoFileNames(oFilePatterns, iDrcRatio, iThreads) {
+GetVideoFileNames(oFilePatterns, iDrcRatio, iThreadsExe) {
     oFileNames := { 0: {} }
-    Loop % iThreads
+    Loop % iThreadsExe
         oFileNames[A_Index] := []
     For _, sFilePattern in oFilePatterns
         Loop, Files, %sFilePattern%
@@ -171,10 +191,10 @@ GetVideoFileNames(oFilePatterns, iDrcRatio, iThreads) {
                 , "name": sName
                 , "path": A_LoopFilePath
                 , "suffix": sSuffix }
-            iIndex := Mod(A_Index, iThreads)
+            iIndex := Mod(A_Index, iThreadsExe)
             ; Modulo returns 0 when [A_Index == iTreads]
-            ; [A_Index] can't be 0 inside [Loop] command, make it equal [iThreads]
-            iIndex := iIndex ? iIndex : iThreads
+            ; [A_Index] can't be 0 inside [Loop] command, make it equal [iThreadsExe]
+            iIndex := iIndex ? iIndex : iThreadsExe
             ; FFMPEG: distribute to multiple BAT files for multi-threading
             oFileNames[iIndex].Push(oFileElement)
             ; MKVMERGE: all files in one BAT file
