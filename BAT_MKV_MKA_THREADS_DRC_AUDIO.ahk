@@ -110,7 +110,7 @@ GetMkvCmd(oFileNames) {
     For _, oFileName in oFileNames {
         sCmd .= "`n"
         sCmd .= "mkvmerge ^`n"
-        sCmd .= "    --output ""MKV\" oFileName["name"] ".mkv"" ^`n"
+        sCmd .= "    --output ""MKV\" oFileName["name"] "." oFileName["suffix"] ".mkv"" ^`n"
         sCmd .= "    --no-audio --subtitle-tracks ukr,rus,eng,und """ oFileName["path"] """ ^`n"
         sCmd .= "    --language 0:eng --track-name 0:""" oFileName["suffix"] """ ""MKA\" oFileName["mka"] """"
         For _, sExt in ["ass", "srt"]
