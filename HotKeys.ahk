@@ -353,14 +353,16 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
 return
 */
 ;-------------------------------------------------------------------------------
-
-AppsKey::   ToolTip % "[Cycle Windows] < or >`n[Cycle Desktops] ← or →`n[Context Menu] RCtrl"
+; ← or → (symbols for future hotkeys)
+AppsKey::   ToolTip % "[Cycle Desktops]`t[ or ]`n[Cycle Windows]`t`; or '`n[Cycle Tabs]`t< or >`n`n[Context Menu]`tRCtrl"
 AppsKey Up::ToolTip
-~AppsKey & <::    Send !+{Esc}
-~AppsKey & >::    Send  !{Esc}
-~AppsKey & Left:: Send #^{Left}
-~AppsKey & Right::Send #^{Right}
-~AppsKey & RCtrl::Send {AppsKey}
+~AppsKey & [::    Send #^{Left}
+~AppsKey & ]::    Send #^{Right}
+~AppsKey & `;::   Send !+{Esc}
+~AppsKey & '::    Send  !{Esc}
+~AppsKey & ,::    Send  ^{PgUp}
+~AppsKey & .::    Send  ^{PgDn}
+~AppsKey & RCtrl::Send   {AppsKey}
 
 ;-------------------------------------------------------------------------------
 
@@ -437,13 +439,14 @@ AppsKey Up::ToolTip
  Browser_Home -> Slow Down Mouse
   Launch_Mail -> Sylpheed
         !+Esc -> Resource Monitor
-          #+F -> Everything
+           #F -> Everything
          #Ins -> Toggle monitor brightness (0 ÷ 50)
           !+t -> Hide/Show taskbar (Disabled)
        !Shift -> Set English keyboard layout (Disabled)
           !+F -> Send clipboard to [ntfy.sh/NOKIA_BenQ]
   Mouse Wheel -> Scroll Without Activating (Win7)
-      AppsKey -> [Cycle Windows]  < or >
-      AppsKey -> [Cycle Desktops] ← or →
+      AppsKey -> [Cycle Desktops] [ or ]
+      AppsKey -> [Cycle Windows]  `; or '
+      AppsKey -> [Cycle Tabs]     < or >
      ^AppsKey -> [AppsKey] Context menu
 )")
