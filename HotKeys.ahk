@@ -277,7 +277,11 @@ return
 
 #f::Run_AsUser("%SOFT%\Everything\Everything.exe")
 #IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
-    !+f::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd " A_ScriptDir "\ntfy.exe publish --quiet --title PC NOKIA_BenQ " . A_Clipboard)
+    !+f::
+        MsgBox, 4, ntfy.exe: Send to NOKIA?,%A_Clipboard%
+        IfMsgBox, Yes
+            Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd " A_ScriptDir "\ntfy.exe publish --quiet --title PC NOKIA_BenQ " . A_Clipboard)
+    return
 #If
 !+Esc::Run_AsAdmin("%SystemRoot%\System32\resmon.exe") ;Resource Monitor
 Launch_Mail::Run_AsUser("%SOFT%\Sylpheed\sylpheed.exe")
