@@ -354,7 +354,7 @@ return
 */
 ;-------------------------------------------------------------------------------
 ; ← or → (symbols for future hotkeys)
-AppsKey::   ToolTip % "[Cycle Desktops]`t[ or ]`n[Cycle Windows]`t`; or '`n[Cycle Tabs]`t< or >`n`n[Context Menu]`tRCtrl"
+AppsKey::   ToolTip % "[Cycle Desktops]`t[ or ]`n[Cycle Windows]`t`; or '`n[Cycle Tabs]`t< or >`n[Back\Forward]`t/ or \`n`n[Context Menu]`tRCtrl"
 AppsKey Up::ToolTip
 ~AppsKey & [::    Send #^{Left}
 ~AppsKey & ]::    Send #^{Right}
@@ -362,6 +362,8 @@ AppsKey Up::ToolTip
 ~AppsKey & '::    Send  !{Esc}
 ~AppsKey & ,::    Send  ^{PgUp}
 ~AppsKey & .::    Send  ^{PgDn}
+~AppsKey & /::    Send  !{Left}
+~AppsKey & \::    Send  !{Right}
 ~AppsKey & RCtrl::Send   {AppsKey}
 
 ;-------------------------------------------------------------------------------
@@ -448,5 +450,6 @@ AppsKey Up::ToolTip
       AppsKey -> [Cycle Desktops] [ or ]
       AppsKey -> [Cycle Windows]  `; or '
       AppsKey -> [Cycle Tabs]     < or >
+      AppsKey -> [Back\Forward]   / or \
      ^AppsKey -> [AppsKey] Context menu
 )")
