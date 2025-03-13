@@ -55,13 +55,14 @@ for i, sParam in A_Args {
 
 ;-------------------------------------------------------------------------------
 
+Process, Priority, , N ;Win11 launches script with Below Normal priority, fix it here
 ;TODO skip autostart, but allow bypassed apps (SpeedFan, f.lux, WFC)
 ;Global var used in CloseAutoStartPrograms()!
 g_AutoStartScriptPath := A_ScriptDir "\AutoStart.ahk"
 Run_ScriptAsAdmin(g_AutoStartScriptPath, g_bAutoStart ? (g_bSkipDelay ? "-SkipDelay" : "") : "-NoAutoStart")
 Run_ScriptAsUser( A_ScriptDir "\Auto_ReName_MHTMLtoMHT.ahk")
-Run_ScriptAsUser( A_ScriptDir "\Clock.ahk")
-Run_ScriptAsAdmin(A_ScriptDir "\CPU_Fan_On_Off.ahk")
+; Run_ScriptAsUser( A_ScriptDir "\Clock.ahk")
+; Run_ScriptAsAdmin(A_ScriptDir "\CPU_Fan_On_Off.ahk")
 Run_ScriptAsAdmin(A_ScriptDir "\CPU_Freq_Cores_Manager.ahk")
 Run_ScriptAsAdmin(A_ScriptDir "\Esc_Close.ahk")
 Run_ScriptAsAdmin(A_ScriptDir "\HotKeys.ahk")
