@@ -249,7 +249,8 @@ return
 #^!f::Run_AsUser("%SOFT%\Flux\flux.exe", "/noshow")
 #^!k::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
 #^!l::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
-#^!m::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "monitor off")
+; #^!m::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "monitor off")
+#^!m::Run_AsUser("%SOFT%\NirLauncher\Sordum\MonitorOff\MonitorOff_x64.exe", "/OFF /MOUSE") ;Block mouse when screen turns off
 #^!o::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe") ;PSKill Opera
 ;TODO force it to always start, even when user choose cancel autostart
 #^!s::Run_AsAdmin("%SOFT%\SpeedFan\SpeedFan.exe", "/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C")
@@ -357,6 +358,7 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
 return
 */
 ;-------------------------------------------------------------------------------
+
 ; ← or → (symbols for future hotkeys)
 AppsKey::   ToolTip % "[Cycle Desktops]`t[ or ]`n[Cycle Windows]`t`; or '`n[Cycle Tabs]`t< or >`n[Back\Forward]`t/ or \`n`n[Context Menu]`tRCtrl"
 AppsKey Up::ToolTip
@@ -440,7 +442,7 @@ AppsKey Up::ToolTip
  #^!F -> f.lux
  #^!K -> Kill MPC-HC
  #^!L -> Kill MPC-BE
- #^!M -> Monitor Off
+ #^!M -> Monitor Off (mouse blocked)
  #^!O -> Kill Opera
 [Window Style Manipulation]
  #`` -> Always On Top
