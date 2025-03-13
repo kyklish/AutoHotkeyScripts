@@ -1,4 +1,4 @@
-﻿; BAT_MKV_MKA_DRC[2 ... 4]_AUDIO[1 ... 9].ahk - set audio stream number and DRC
+﻿; BAT_MKV_MKA_THREADS[1 ... 9]_DRC[2 ... 4]_AUDIO[1 ... 9].ahk - set audio stream number and DRC
 ; ratio in script's name (no need to edit script) or leave it blank to use
 ; internal variable value.
 
@@ -51,10 +51,8 @@ If iDrcValue is Integer
 RegExMatch(A_ScriptName, "THREADS(?P<Value>\d)", iThreads)
 If iThreadsValue is Integer
 {
-    If (1 <= iThreadsValue)
+    If (iThreadsValue > 0)
         iThreadsExe := iThreadsValue
-    Else
-        MsgBox Wrong THREADS value: must be greater then 1
 }
 
 ;================================== EXECUTE ====================================
@@ -62,6 +60,8 @@ If iThreadsValue is Integer
 oFileNames := GetVideoFileNames(["*.avi", "*.mkv"], iDrcRatio, iThreadsExe)
 If (oFileNames[0].Count() > 0)
     CreateBAT(oFileNames, iThreadsExe)
+If (WinExist("Total Commander"))
+    Send ^r ; Refresh panel to show newly created files
 ExitApp
 
 ;===============================================================================
@@ -70,11 +70,12 @@ CreateBAT(oFileNames, iThreadsExe) {
     global iAudioStream, iDrcRatio
     Loop % iThreadsExe {
         If (oFileNames[A_Index].Count()) {
-            oFile := FileOpen("!.AUDIO" iAudioStream + 1 "_DRC" iDrcRatio "_THREAD" A_Index ".BAT", "w")
+            oFile := FileOpen("@.AUDIO" iAudioStream + 1 "_DRC" iDrcRatio "_THREAD" A_Index ".BAT", "w")
             oFile.Write(GetMkaCmd(oFileNames[A_Index], iAudioStream, iDrcRatio))
             oFile.Close()
         }
     }
+
     oFile := FileOpen("1.RUN_ALL_AUDIO_THREADS.BAT", "w")
     oFile.Write(GetThreadCmd())
     oFile.Close()
@@ -85,11 +86,22 @@ CreateBAT(oFileNames, iThreadsExe) {
     oFile := FileOpen("3.DEL_SOURCE_FILES.CMD", "w")
     oFile.Write(GetDelCmd(oFileNames[0]))
     oFile.Close()
+
+    oFile := FileOpen("!.MKA_MOVE_HERE_TO_WATCH_MOVIE.BAT", "w")
+    oFile.Write(GetMkaMoveHereCmd())
+    oFile.Close()
+    oFile := FileOpen("!1.MKV_RE-MUX_ENG_AUDIO_ONLY.BAT", "w")
+    oFile.Write(GetMkvReMuxCmd())
+    oFile.Close()
+    oFile := FileOpen("!2.MKV_MOVE_HERE_RE-MUX_RESULT.BAT", "w")
+    oFile.Write(GetMkvMoveHereReMuxCmd())
+    oFile.Close()
 }
 
 GetMkaCmd(oFileNames, iAudioStream, iDrcRatio) {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
     sCmd .= "IF NOT EXIST ""MKA"" MKDIR ""MKA""`n"
     For _, oFileName in oFileNames {
         sCmd .= "`n"
@@ -106,6 +118,7 @@ GetMkaCmd(oFileNames, iAudioStream, iDrcRatio) {
 GetMkvCmd(oFileNames) {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
     sCmd .= "IF NOT EXIST ""MKV"" MKDIR ""MKV""`n"
     For _, oFileName in oFileNames {
         sCmd .= "`n"
@@ -137,31 +150,68 @@ GetMkvCmd(oFileNames) {
 
 GetThreadCmd() {
     sCmd := ""
-    sCmd := "@ECHO OFF`n"
-    sCmd := "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.BAT"") DO START CMD /C ""%%F""`n"
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.BAT"") DO START CMD /C ""%%F""`n"
     Return sCmd
 }
 
-; GetDelCmd(oFileNames) {
-;     sCmd := ""
-;     sCmd .= "@ECHO OFF`n"
-;     sCmd .= "CHOICE /M ""Delete source files?""`n"
-;     sCmd .= "IF %ERRORLEVEL%==1 GOTO :DELETE_SOURCE ELSE GOTO :EOF`n`n"
-;     sCmd .= ":DELETE_SOURCE`n"
-;     For _, oFileName in oFileNames
-;         sCmd .= "DEL """ oFileName["path"] """ ""MKA\" oFileName["mka"] """`n"
-;     Return sCmd
-; }
+GetMkaMoveHereCmd() {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "MOVE MKA\*.mka`n"
+    sCmd .= "RMDIR MKA`n"
+    Return sCmd
+}
+
+GetMkvMoveHereReMuxCmd() {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "MOVE MKV\*.mkv`n"
+    ; sCmd .= "MOVE /Y MKV\*.mkv .`n"
+    sCmd .= "RMDIR MKV`n"
+    Return sCmd
+}
+
+GetMkvReMuxCmd() {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "SETLOCAL EnableDelayedExpansion`n"
+    sCmd .= "IF NOT EXIST ""MKV"" MKDIR ""MKV""`n"
+    sCmd .= "FOR %%F IN (""*.mkv"") DO (`n"
+    sCmd .= "    mkvmerge -o ""MKV\%%~nF.mkv"" -a eng -s ukr,rus,eng,und ""%%F""`n"
+    sCmd .= ")`n"
+    sCmd .= "@REM Copy second audio track from AVI file`n"
+    sCmd .= "FOR %%F IN (""*.avi"") DO (`n"
+    sCmd .= "    mkvmerge -o ""MKV\%%~nF.mkv"" -a 2 ""%%F""`n"
+    sCmd .= "`n"
+    sCmd .= "    IF !ERRORLEVEL! neq 0 (`n"
+    sCmd .= "        CHOICE /M ""SOMETHING WENT WRONG, CONTINUE?""`n"
+    sCmd .= "        IF !ERRORLEVEL! equ 2 GOTO :EOF`n"
+    sCmd .= "    )`n"
+    sCmd .= ")`n"
+    sCmd .= "PAUSE`n"
+    Return sCmd
+}
 
 GetDelCmd(oFileNames) {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
     sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
     sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
     sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
     sCmd .= "CHOICE /M ""Delete source files?""`n"
-    sCmd .= "IF %ERRORLEVEL%==1 GOTO :DELETE_SOURCE ELSE GOTO :EOF`n`n"
-    sCmd .= ":DELETE_SOURCE`n"
+    sCmd .= "IF %ERRORLEVEL% equ 1 (`n"
+    sCmd .= "    GOTO :DELETE_SOURCE_FILES`n"
+    sCmd .= ") ELSE (`n"
+    sCmd .= "    GOTO :EOF`n"
+    sCmd .= ")`n"
+    sCmd .= "`n"
+    sCmd .= ":DELETE_SOURCE_FILES`n"
     For _, oFileName in oFileNames
         sCmd .= "DEL """ oFileName["path"] """`n"
     sCmd .= "MOVE MKV\*.mkv`n"
@@ -174,7 +224,7 @@ GetDelCmd(oFileNames) {
     sCmd .= "DEL /F /Q *.srt`n"
     sCmd .= "DEL /F /Q *.bat`n"
     sCmd .= "DEL /F /Q *.cmd`n"
-    ; Delete CMD script LAST!!! (Script deletes himself)
+    sCmd .= "@REM Delete CMD script LAST!!! (Script deletes himself)"
     Return sCmd
 }
 
