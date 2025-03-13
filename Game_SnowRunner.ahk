@@ -284,7 +284,7 @@ class GearBox { ;Коробка передач
 
     WrongGearSound() {
         Random, i, 0, 5
-        SoundPlay, ShowRunnerShift%i%.mp3, Wait ;Wait until play finish
+        SoundPlay, SnowRunnerShift%i%.mp3, Wait ;Wait until play finish
         SoundPlay, StopPlayback.mp3 ;Release allocated codecs
         this.OutputDebugCurrentGear(true)
     }
