@@ -11,30 +11,34 @@
     ;Set Balanced Power Plan (Disabled) [Win11 by default disable Core Parking]
     ;Executes a command of Command-Prompt (Console Window) without displaying anything on the screen.
  ;0,U,"%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
+ ;0,U,"%SOFT%\NirLauncher\NirSoft\nircmd.exe","exec hide %SOFT%\Tray_Disk_Free\TrayDiskFree.cmd"
   0,U,"C:\Program Files\Malwarebytes\Windows Firewall Control\wfcUI.exe"
-  0,U,"C:\Program Files\Shadow Defender\DefenderDaemon.exe"
+ ;0,U,"C:\Program Files\Shadow Defender\DefenderDaemon.exe"
   0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"
   0,A,"C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe","/s"
   0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings"""
-  0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
+ ;0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
   0,A,"%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"
     ;CompactGUI: app always puts itself in autorun when monitoring is on
  ;0,U,"%SOFT%\CompactGUI\CompactGUI.exe","-tray"
   0,A,"%SOFT%\CrystalDiskInfo\DiskInfo64.exe","/Startup"
   0,U,"%SOFT%\CUIT\CUIT 2012.exe"
+  0,A,"%SOFT%\FanControl\FanControl.exe"
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
   0,A,"%SOFT%\Gridy\Gridy.exe"
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
  ;0,U,"%SOFT%\Listary5\Listary.exe","-startup"
  ;0,U,"%SOFT%\Listary6\Listary.exe","--startup"
   0,A,"%SOFT%\MemInfo\meminfo.exe"
-  0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
+ ;0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
   0,A,"%SOFT%\ScrollNavigator\ScrollNavigator.exe","-MINIMIZE"
     ;SpeedFan: CPU + GPU temperature
         ;/NOPCISCAN = disable PCI Express scan [GPU]
         ;/DONVIDIAI2C = get all info about nVidia GPU (including voltage)
-  0,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
+ ;0,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
   0,A,"%SOFT%\SsdReady\SsdReady.exe"
+    ;Windows Memory Cleaner: look in Hotkeys.ahk
+ ;0,A,"%SOFT%\Windows_Memory_Cleaner\WinMemoryCleaner.exe"
   0,A,"%SOFT%\WuMgr\wumgr.exe","-tray"
 ;================================== Win7 =======================================
  ;0,U,"powercfg","-setactive 381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
