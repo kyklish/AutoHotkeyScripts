@@ -372,6 +372,10 @@ AppsKey Up::ToolTip
 
 ;-------------------------------------------------------------------------------
 
+^!m::Run_AsAdmin("%SOFT%\Windows_Memory_Cleaner\WinMemoryCleaner.exe", "/CombinedPageList /ModifiedPageList /ProcessesWorkingSet /SystemWorkingSet")
+
+;-------------------------------------------------------------------------------
+
 #IfWinActive ahk_group Desktop
     Pause:: ShowHelpWindow("
 (
@@ -456,4 +460,5 @@ AppsKey Up::ToolTip
       AppsKey -> [Cycle Tabs]     < or >
       AppsKey -> [Back\Forward]   / or \
      ^AppsKey -> [AppsKey] Context menu
+          ^!M -> Windows Memory Cleaner
 )")
