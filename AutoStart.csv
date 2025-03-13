@@ -23,7 +23,7 @@
  ;0,U,"%SOFT%\CompactGUI\CompactGUI.exe","-tray"
   0,A,"%SOFT%\CrystalDiskInfo\DiskInfo64.exe","/Startup"
   0,U,"%SOFT%\CUIT\CUIT 2012.exe"
-  0,A,"%SOFT%\FanControl\FanControl.exe"
+  0,A,"%SOFT%\FanControl\FanControl.exe",,"%SOFT%\FanControl"
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
   0,A,"%SOFT%\Gridy\Gridy.exe"
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
