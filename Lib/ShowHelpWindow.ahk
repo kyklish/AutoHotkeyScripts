@@ -1,13 +1,13 @@
 ﻿;DO NOT use Tabs in string!!! In editor 1 tab = 4 spaces, but in window 1 tab == 8 spaces.
-ShowHelpWindow(ByRef str := "", fontSize := "", sGuiName := "")
+ShowHelpWindow(ByRef sStr := "", sFontOptions := "", sGuiName := "")
 {
     static bToggle := False
     sGuiName := "HelpWindow" sGuiName
 
     if (bToggle := !bToggle) {
         CreateMouseClickTransGui(sGuiName)
-        Gui, %sGuiName%:Font, %fontSize%, Consolas
-        Gui, %sGuiName%:Add, Text,, %str%
+        Gui, %sGuiName%:Font, %sFontOptions%, Consolas
+        Gui, %sGuiName%:Add, Text,, %sStr%
         Gui, %sGuiName%:Show, NoActivate
     }
     else
