@@ -6,9 +6,9 @@
 ; +E0x20 makes GUI mouse-click transparent.
 CreateMouseClickTransGui(id := "")
 {
-	if (id)
-		Gui, %id%: New, -Caption -SysMenu +AlwaysOnTop +LastFound +ToolWindow +E0x20
-	else
-		Gui,       New, -Caption -SysMenu +AlwaysOnTop +LastFound +ToolWindow +E0x20
-	WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
+    if (id)
+        Gui, %id%: New, -Caption -SysMenu +AlwaysOnTop +LastFound +ToolWindow +E0x20
+    else
+        Gui,       New, -Caption -SysMenu +AlwaysOnTop +LastFound +ToolWindow +E0x20
+    WinSet, TransColor, 500 ; This line is necessary to working +E0x20 !!!! Very complicated theme.
 }

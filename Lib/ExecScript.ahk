@@ -1,14 +1,14 @@
 ﻿; ExecScript: Executes the given code as a new AutoHotkey process.
 ExecScript(Script, Wait:=true)
 {
-	shell := ComObjCreate("WScript.Shell")
-	exec := shell.Exec("AutoHotkey.exe /ErrorStdOut *")
-	exec.StdIn.Write(Script)
-	exec.StdIn.Close()
-	if Wait
-		return exec.StdOut.ReadAll()
-	else
-		return exec.ProcessID
+    shell := ComObjCreate("WScript.Shell")
+    exec := shell.Exec("AutoHotkey.exe /ErrorStdOut *")
+    exec.StdIn.Write(Script)
+    exec.StdIn.Close()
+    if Wait
+        return exec.StdOut.ReadAll()
+    else
+        return exec.ProcessID
 }
 
 ; Example:

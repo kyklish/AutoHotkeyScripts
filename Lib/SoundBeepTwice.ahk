@@ -1,5 +1,5 @@
 ﻿SoundBeepTwice()
 {
-	Loop, 2
-		SoundBeep
+    Loop, 2
+        SoundBeep
 }
