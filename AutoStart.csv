@@ -26,6 +26,7 @@
   0,A,"%SOFT%\FanControl\FanControl.exe",,"%SOFT%\FanControl"
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
   0,A,"%SOFT%\Gridy\Gridy.exe"
+  0,A,"%SOFT%\ImDisk\Tools\swapadd.exe","R:\TEMP\pagefile.sys 16M 128M"
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
  ;0,U,"%SOFT%\Listary5\Listary.exe","-startup"
  ;0,U,"%SOFT%\Listary6\Listary.exe","--startup"
