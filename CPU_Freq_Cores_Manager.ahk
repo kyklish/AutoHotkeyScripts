@@ -1,6 +1,8 @@
 ﻿#Include <_COMMON_SETTINGS_>
 ;-------------------------------------------------------------------------------
 ;Windows 11: Core Parking disabled in default power plans.
+;   When Core Parking disabled all cores are always active.
+;   Your CPU can't gain maximum Turbo frequency, because it needs single active core!
 ;-------------------------------------------------------------------------------
 ;Добавить в автозагрузку команду установки Balanced плана (опционально)
 ;Ну будем портить Balanced Power Scheme, создадим новый на его базе
@@ -284,41 +286,34 @@ if (A_OSVersion != "WIN_7") { ;Read comment about Windows 11 at the top
 DeltaP := 1 ;шаг изменения значения P-state процессора
 DeltaC := 1 ;шаг изменения количества ядер процессора
 ;-------------------------------------------------------------------------------
-/*
-+F8:: RestoreMaxFreqCores() ;восстановить максимальные значения частоты и количества работающих ядер
-+F9:: StepCPUFreq(-DeltaP) ;уменьшаем частоту CPU
-+F10:: StepCPUFreq(+DeltaP) ;увеличиваем частоту CPU
-+F11:: StepCPUCores(-DeltaC) ;уменьшаем количество работающих ядер CPU
-+F12:: StepCPUCores(+DeltaC) ;увеличиваем количество работающих ядер CPU
 
-+F1:: SetActivePowerScheme("381b4222-f694-41f0-9685-ff5bb260df2e", "Balanced  PS") ;Balanced Power Scheme
-+F2:: SetActivePowerScheme("a1841308-3541-4fab-bc81-f71556f20b4a", "Power Saver PS") ;Power Saver Power Scheme
-+F3:: SetCPUFreqInGHz(0.8) ;непосредственно задаем частоту в ГГц
-+F4:: SetCPUFreqInGHz(1.3)
-+F5:: SetCPUFreqInGHz(2.0)
-+F6:: SetCPUFreqInGHz(2.5)
-+F7:: SetCPUFreqInGHz(3.0)
-;+F7:: SetActivePowerScheme("d740827b-295c-4564-b160-6c98ca38069c", "CustomFreqAHK PS") ; незачем, т.к. при любом изменении частоты или количества ядер автоматически устанавливается CustomFreqAHK Power Scheme
-+Pause:: ShowCustomFreqAHKInfo()
-*/
-;-------------------------------------------------------------------------------
-
-NumpadDot & Numpad9:: RestoreMaxFreqCores() ;восстановить максимальные значения частоты и количества работающих ядер
 NumpadDot & NumpadSub:: StepCPUFreq(-DeltaP) ;уменьшаем частоту CPU
 NumpadDot & NumpadAdd:: StepCPUFreq(+DeltaP) ;увеличиваем частоту CPU
 NumpadDot & NumpadDiv:: StepCPUCores(-DeltaC) ;уменьшаем количество работающих ядер CPU
 NumpadDot & NumpadMult:: StepCPUCores(+DeltaC) ;увеличиваем количество работающих ядер CPU
 
-NumpadDot & Numpad7:: SetActivePowerScheme("381b4222-f694-41f0-9685-ff5bb260df2e", "Balanced  PS") ;Balanced Power Scheme
-NumpadDot & Numpad8:: SetActivePowerScheme("a1841308-3541-4fab-bc81-f71556f20b4a", "Power Saver PS") ;Power Saver Power Scheme
-NumpadDot & Numpad1:: SetCPUFreqInGHz(0.8) ;непосредственно задаем частоту в ГГц
-NumpadDot & Numpad2:: SetCPUFreqInGHz(1.3)
-NumpadDot & Numpad3:: SetCPUFreqInGHz(2.0)
+NumpadDot & Numpad7:: SetActivePowerScheme("a1841308-3541-4fab-bc81-f71556f20b4a", "Power Saver PS")
+NumpadDot & Numpad8:: SetActivePowerScheme("381b4222-f694-41f0-9685-ff5bb260df2e", "Balanced PS")
+NumpadDot & Numpad9:: SetActivePowerScheme("8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c", "High Performance PS")
+NumpadDot & Numpad1:: SetCPUFreqInGHz(1.0)
+NumpadDot & Numpad2:: SetCPUFreqInGHz(2.0)
+NumpadDot & Numpad3:: SetCPUFreqInGHz(3.0)
 NumpadDot & Numpad4:: SetCPUFreqInGHz(2.5)
-NumpadDot & Numpad5:: SetCPUFreqInGHz(3.0)
+NumpadDot & Numpad5:: RestoreMaxFreqCores() ;восстановить максимальные значения частоты и количества работающих ядер
 NumpadDot & Numpad6:: ToggleCPUParking()
 NumpadDot & Numpad0:: ShowCustomFreqAHKInfo()
 NumpadDot & NumpadEnter:: ToggleCPUCState()
-;~NumpadDot & Numpad0:: ShowCustomFreqAHKInfo() ;тильда для прозрачной работы клавиши, NumpadDot никогда не блокируется, одиночная клавиша NumpadDot срабатывает на нажатие, работает системное автоповторение при длительном нажатии, ниже приведен альтернативный вариант со своими недостатками
+
+;Есть два варианта реализации прозрачной работы клавиши-модификатора:
+;   ~NumpadDot & NumKEY: Func()
+;       добавить [~] везде тильду перед NumpadDot для прозрачной работы клавиши
+;       NumpadDot НЕ БЛОКИРУЕТСЯ при любом ее нажатии
+;       одиночное нажатие на NumpadDot срабатывает на НАЖАТИЕ клавиши
+;       системное автоповторение при длительном нажатии РАБОТАЕТ
+;   $NumpadDot:: Send {NumpadDot}
+;       явно отсылать событие нажатия на клавишу для ее прозрачной работы
+;       NumpadDot БЛОКИРУЕТСЯ при срабатывании комбинации клавиш
+;       одиночное нажатие на NumpadDot срабатывает на ОТПУСКАНИЕ клавиши
+;       системное автоповторения при длительном нажатии НЕ РАБОТАЕТ
 
 $NumpadDot:: Send {NumpadDot} ;для прозрачной работы клавиши, иначе NumpadDot не будет работать как точка при наборе текста, NumpadDot блокируется при срабатывании комбинации клавиш, есть один минус - срабатывает только на отпускание клавиши, соответственно нет автоповторения при длительном нажатии
