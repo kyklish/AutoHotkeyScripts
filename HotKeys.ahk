@@ -463,4 +463,5 @@ AppsKey Up::ToolTip
       AppsKey -> [Back\Forward]   / or \
      ^AppsKey -> [AppsKey] Context menu
           ^!M -> Windows Memory Cleaner
-)")
+)"
+        , "s7")
