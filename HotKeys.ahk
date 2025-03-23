@@ -25,13 +25,13 @@ GroupAdd, Desktop, ahk_class WorkerW
 GroupAdd, Desktop, ahk_class Shell_TrayWnd
 
 #IfWinActive ahk_group Browser
-    ;^b:: SendEvent, ^l^v{Enter} ; Ctrl+B = (Ctrl+L Ctrl+V Enter) - [вместо Ctrl+L можно использовать Ctrl+E] как в старой Opera, вставить ссылку из буфера обмена и перейти по ней. Иронично что в новой Опере не работает нормально, если включена любая не английская раскладка клавиатуры.
-    ;^b:: SendEvent, {Ctrl down}{ASC 00108}{Ctrl up}{Ctrl down}{ASC 00118}{Ctrl up}{Enter}
-    ;^b:: ControlSend,, ^{l}^{v}{Enter}, A
-    ;^b:: SendInput, {Ctrl down}l{Ctrl up}{Ctrl down}v{Ctrl up}{Enter}
-    ^b:: SendEvent, ^{vk4C}^{vk56}{Enter} ; only working variant for Opera!!!
-    ^z:: SendEvent, ^+{vk54} ; Ctrl+Z = Ctrl+Shift+T - restore closed tab
-    ^y:: ; Ctrl+Y - поиск в YouTube выделенного текста
+    ;^B:: SendEvent, ^l^v{Enter} ; Ctrl+B = (Ctrl+L Ctrl+V Enter) - [вместо Ctrl+L можно использовать Ctrl+E] как в старой Opera, вставить ссылку из буфера обмена и перейти по ней. Иронично что в новой Опере не работает нормально, если включена любая не английская раскладка клавиатуры.
+    ;^B:: SendEvent, {Ctrl down}{ASC 00108}{Ctrl up}{Ctrl down}{ASC 00118}{Ctrl up}{Enter}
+    ;^B:: ControlSend,, ^{l}^{v}{Enter}, A
+    ;^B:: SendInput, {Ctrl down}l{Ctrl up}{Ctrl down}v{Ctrl up}{Enter}
+    ^B:: SendEvent, ^{vk4C}^{vk56}{Enter} ; only working variant for Opera!!!
+    ^Z:: SendEvent, ^+{vk54} ; Ctrl+Z = Ctrl+Shift+T - restore closed tab
+    ^Y:: ; Ctrl+Y - поиск в YouTube выделенного текста
         Clipboard := "" ; Empty the clipboard
         SendEvent, ^{vk43} ; Ctrl+C
         ClipWait, 2
@@ -42,7 +42,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
         Clipboard := "https://www.youtube.com/results?search_query=" . StrReplace(Clipboard, A_Space, "+")
         GoSub, ^b
     return
-    ^q:: ; Ctrl+Q - поиск в RuTracker выделенного текста
+    ^Q:: ; Ctrl+Q - поиск в RuTracker выделенного текста
         Clipboard := "" ; Empty the clipboard
         SendEvent, ^{vk43} ; Ctrl+C
         ClipWait, 2
@@ -101,7 +101,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
 ;-------------------------------------------------------------------------------
 
 #If, A_OSVersion = "WIN_7" and WinActive("ahk_class ConsoleWindowClass")
-    ^v:: ;Paste text to CMD
+    ^V:: ;Paste text to CMD
         Send, {Raw}%Clipboard% ; Raw mode - SendRaw or {Raw}: The characters ^+!#{} are interpreted literally rather than translating {Enter} to Enter, ^c to Control+C, etc.
     ;Send, {Text}%Clipboard% ; Raw mode - SendRaw or {Raw}: The characters ^+!#{} are interpreted literally rather than translating {Enter} to Enter, ^c to Control+C, etc.
     ;ControlSend, , {Raw}%Clipboard%, ahk_exe cmd.exe  ; Send directly to a command prompt window. {Text} sends a stream of characters rather than keystrokes. Like Raw mode, Text mode causes the following characters to be interpreted literally: ^+!#{}.
@@ -187,22 +187,22 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
 
 ;CTRL+ALT+SHIFT
 ;Empty Recycle Bin ;FileRecycleEmpty and "nircmd.exe emptybin" not work, if launched from another account!!!
-^!+k::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "emptybin")
-^!+m::Run_AsAdmin("%SOFT%\NirLauncher\Sysinternals\ProcMon64.exe") ;Process Monitor
-^!+p::Run_AsAdmin("%SOFT%\NirLauncher\Sysinternals\ProcExp64.exe") ;Process Explorer
+^!+K::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "emptybin")
+^!+M::Run_AsAdmin("%SOFT%\NirLauncher\Sysinternals\ProcMon64.exe") ;Process Monitor
+^!+P::Run_AsAdmin("%SOFT%\NirLauncher\Sysinternals\ProcExp64.exe") ;Process Explorer
 /*
 ;Reboot ;AutoHotkey commands "Shutdown" not work, if launched from another account!!!
-^!+r::
+^!+R::
     if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
         PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
     Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "exitwin reboot") ;there is "force" parameter can be used
 return
-^!+s::
+^!+S::
     if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
         PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
     Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "exitwin shutdown") ;Shutdown
 return
-^!+l:: ;Logoff
+^!+L:: ;Logoff
     MsgBox, % 4 + 256,, Log off?
     IfMsgBox, Yes
     {
@@ -246,14 +246,16 @@ return
 ;-------------------------------------------------------------------------------
 
 ;WIN+CTRL+ALT
-#^!f::Run_AsUser("%SOFT%\Flux\flux.exe", "/noshow")
-#^!k::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
-#^!l::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
-; #^!m::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "monitor off")
-#^!m::Run_AsUser("%SOFT%\NirLauncher\Sordum\MonitorOff\MonitorOff_x64.exe", "/OFF /MOUSE") ;Block mouse when screen turns off
-#^!o::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe") ;PSKill Opera
+#^!E::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t msedge.exe") ;PSKill Edge
+#^!F::Run_AsUser("%SOFT%\Flux\flux.exe", "/noshow")
+#^!K::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
+#^!L::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
+; #^!M::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "monitor off")
+#^!M::Run_AsUser("%SOFT%\NirLauncher\Sordum\MonitorOff\MonitorOff_x64.exe", "/OFF /MOUSE") ;Block mouse when screen turns off
+#^!O::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe") ;PSKill Opera
 ;TODO force it to always start, even when user choose cancel autostart
-#^!s::Run_AsAdmin("%SOFT%\SpeedFan\SpeedFan.exe", "/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C")
+; #^!S::Run_AsAdmin("%SOFT%\SpeedFan\SpeedFan.exe", "/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C")
+#^!S::Run_AsAdmin("%SOFT%\FanControl\FanControl.exe",, "%SOFT%\FanControl")
 
 ;-------------------------------------------------------------------------------
 
@@ -276,7 +278,7 @@ return
 
 ;-------------------------------------------------------------------------------
 
-#f::Run_AsUser("%SOFT%\Everything\Everything.exe")
+#F::Run_AsUser("%SOFT%\Everything\Everything.exe")
 #IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
     !+f::
         MsgBox, 4, ntfy.exe: Send to NOKIA?,%A_Clipboard%
@@ -334,7 +336,7 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
 
 ;-------------------------------------------------------------------------------
 /*
-!+t:: ;Hide/Show taskbar & Desktop icons
+!+T:: ;Hide/Show taskbar & Desktop icons
     ToggleTaskBar() {
         static bToggle
         If (bToggle := !bToggle) {
@@ -374,7 +376,7 @@ AppsKey Up::ToolTip
 
 ;-------------------------------------------------------------------------------
 
-^!m::Run_AsAdmin("%SOFT%\Windows_Memory_Cleaner\WinMemoryCleaner.exe", "/CombinedPageList /ModifiedPageList /ProcessesWorkingSet /SystemWorkingSet")
+^!M::Run_AsAdmin("%SOFT%\Windows_Memory_Cleaner\WinMemoryCleaner.exe", "/CombinedPageList /ModifiedPageList /ProcessesWorkingSet /SystemWorkingSet")
 
 ;-------------------------------------------------------------------------------
 
@@ -439,11 +441,13 @@ AppsKey Up::ToolTip
  #^!F3 -> SSD - TV
  #^!F4 -> Force close active window
 [Win+Ctrl+Alt]
+ #^!E -> Kill Edge
  #^!F -> f.lux
  #^!K -> Kill MPC-HC
  #^!L -> Kill MPC-BE
  #^!M -> Monitor Off (mouse blocked)
  #^!O -> Kill Opera
+ #^!S -> FanControl
 [Window Style Manipulation]
  #`` -> Always On Top
  !`` -> Borderless
