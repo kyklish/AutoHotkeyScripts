@@ -38,6 +38,7 @@
         ;/DONVIDIAI2C = get all info about nVidia GPU (including voltage)
  ;0,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
   0,A,"%SOFT%\SsdReady\SsdReady.exe"
+  0,A,"%SOFT%\ThrottleStop\ThrottleStop.exe"
     ;Windows Memory Cleaner: look in Hotkeys.ahk
  ;0,A,"%SOFT%\Windows_Memory_Cleaner\WinMemoryCleaner.exe"
   0,A,"%SOFT%\WuMgr\wumgr.exe","-tray"
