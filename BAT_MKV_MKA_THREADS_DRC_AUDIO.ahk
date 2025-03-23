@@ -30,6 +30,7 @@ iDrcRatio := 2
 iThreadsExe := 1
 ; Formats fo source files
 oFormats := ["*.avi", "*.mkv", "*.mp4", "*.webm"]
+sStaxRipTemplate := "SVPFlow 59.94FPS Movie (algo21)"
 
 ;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
 
@@ -61,14 +62,14 @@ If iThreadsValue is Integer
 
 oFileNames := GetVideoFileNames(oFormats, iDrcRatio, iThreadsExe)
 If (oFileNames[0].Count() > 0)
-    CreateBAT(oFileNames, iAudioStream, iDrcRatio, iThreadsExe)
+    CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate)
 If (WinExist("Total Commander"))
     Send ^r ; Refresh panel to show newly created files
 ExitApp
 
 ;===============================================================================
 
-CreateBAT(oFileNames, iAudioStream, iDrcRatio, iThreadsExe) {
+CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate) {
     FileWrite("!!.MOVE_HERE_MKA_TO_WATCH_MOVIE.BAT", GetMkaMoveHereCmd())
     FileWrite("!1.RE-MUX_TO_MKV_ENG_AUDIO" iAudioStream + 1 ".BAT", GetReMuxCmd(oFileNames[0], iAudioStream))
     FileWrite("!2.MOVE_HERE_RE-MUX_RESULT_DELETE_ORIGINAL_FILES.BAT", GetReMuxMoveHereDelOrigVideoCmd(oFileNames[0]))
@@ -85,7 +86,7 @@ CreateBAT(oFileNames, iAudioStream, iDrcRatio, iThreadsExe) {
     FileWrite("2.MUX_TO_MKV.BAT", GetMuxCmd(oFileNames[0]))
     ; Use CMD extension to make it unique, we will use it to delete this file last
     FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ALL_SOURCE_FILES.CMD", GetMuxMoveHereDelAllCmd(oFileNames[0]))
-    ; FileWrite("4.StaxRip_SVPFlow.CMD", GetStaxRipCmd())
+    FileWrite("4.StaxRip_SVPFlow.CMD", GetStaxRipCmd(oFormats, sStaxRipTemplate))
 }
 
 FileWrite(sFileName, sStr) {
@@ -259,6 +260,28 @@ GetMuxMoveHereDelAllCmd(oFileNames) {
     sCmd .= "DEL /F /Q *.bat`n"
     sCmd .= "DEL /F /Q *.cmd`n"
     sCmd .= ":: Delete CMD script LAST!!! (Script deletes himself)`n"
+    Return sCmd
+}
+
+GetStaxRipCmd(oFormats, sStaxRipTemplate) {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "SETLOCAL EnableDelayedExpansion`n"
+    sCmd .= "`n"
+    sCmd .= "SET Template=" sStaxRipTemplate "`n"
+    sCmd .= "`n"
+    sCmd .= "StaxRip -ClearJobs -Exit`n"
+    For _, sFormat in oFormats
+        sCmd .= "CALL :ADD_BATCH_JOB ""%Template%"" " Format("{:U}", sFormat) "`n"
+    sCmd .= "StaxRip -StartJobs -Exit`n"
+    sCmd .= "GOTO :EOF`n"
+    sCmd .= "`n"
+    sCmd .= ":ADD_BATCH_JOB`n"
+    sCmd .= "FOR %%F IN (""%~2"") DO (`n"
+    sCmd .= "    StaxRip ""-LoadTemplate:%~1"" ""-AddBatchJob:%%F"" -Exit`n"
+    sCmd .= ")`n"
+    sCmd .= "EXIT /B`n"
     Return sCmd
 }
 
