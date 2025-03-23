@@ -14,7 +14,7 @@
  ;0,U,"%SOFT%\NirLauncher\NirSoft\nircmd.exe","exec hide %SOFT%\Tray_Disk_Free\TrayDiskFree.cmd"
   0,U,"C:\Program Files\Malwarebytes\Windows Firewall Control\wfcUI.exe"
  ;0,U,"C:\Program Files\Shadow Defender\DefenderDaemon.exe"
-  0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"
+ ;0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe"
   0,A,"C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe","/s"
   0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings"""
  ;0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
@@ -31,6 +31,7 @@
  ;0,U,"%SOFT%\Listary5\Listary.exe","-startup"
  ;0,U,"%SOFT%\Listary6\Listary.exe","--startup"
   0,A,"%SOFT%\MemInfo\meminfo.exe"
+  0,A,"%SOFT%\MSI_Afterburner\MSIAfterburner.exe"
  ;0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
   0,A,"%SOFT%\ScrollNavigator\ScrollNavigator.exe","-MINIMIZE"
     ;SpeedFan: CPU + GPU temperature
