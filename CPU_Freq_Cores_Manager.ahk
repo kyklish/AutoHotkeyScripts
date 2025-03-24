@@ -3,6 +3,9 @@
 ;Windows 11: Core Parking disabled in default power plans.
 ;   When Core Parking disabled all cores are always active.
 ;   Your CPU can't gain maximum Turbo frequency, because it needs single active core!
+;TODO Directly set CPU frequency (Only in Win11)
+;   SUB_PROCESSOR 75b0ae3f-bce0-45a7-8c89-c9611c25e100 Maximum processor frequency (in MHz)
+;   SUB_PROCESSOR 75b0ae3f-bce0-45a7-8c89-c9611c25e101 Maximum processor frequency for Processor Power Efficiency Class 1 (in MHz)
 ;-------------------------------------------------------------------------------
 ;Добавить в автозагрузку команду установки Balanced плана (опционально)
 ;Ну будем портить Balanced Power Scheme, создадим новый на его базе
@@ -102,7 +105,7 @@ PowerWriteCoreParkingMinCoresValueIndex(ByRef Value, ByRef Mode)
 ;-------------------------------------------------------------------------------
 ;"D:\SERGEY\Install\Info\CPU Parking\Processor State Freq Test.txt"
 ArrayCPUStateInPercent := [ 30,  31,  34,  40,  46,  53,  56,  62,  68,  71,  78,  84,  90,  93,  99, 100] ;состояние (P-state) процессора в %
-ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (МГц) в соответствии с P-state процессора
+ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (ГГц) в соответствии с P-state процессора
 WriteProcessorStateSetting(ByRef Index)
 {
     global ArrayCPUStateInPercent
