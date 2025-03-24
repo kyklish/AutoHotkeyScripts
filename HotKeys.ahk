@@ -228,6 +228,8 @@ return
 #^!2::Run_AsUser("%SOFT%\Download_Master\dmaster.exe")
 #^!3::Run_AsUser("%SOFT%\uTorrent\2.0.4\utorrent.exe", "/RECOVER /NOINSTALL")
 #^!4::Run_AsUser("%SOFT%\uTorrent\3.5.5\uTorrent.exe", "/RECOVER /NOINSTALL")
+#^!5::Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "setdisplay monitor:0 1920 1080 32 50")
+#^!6::Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "setdisplay monitor:0 1920 1080 32 60")
 #^!0:: ;Eject\Close CD tray.
     Drive, Eject
     if (A_TimeSinceThisHotkey < 1000) ;If the command completed quickly, the tray was probably already ejected. ; Adjust this time if needed.
@@ -434,6 +436,8 @@ AppsKey Up::ToolTip
  #^!2 -> Download Master
  #^!3 -> uTorrent 2.0.4
  #^!4 -> uTorrent 3.5.5
+ #^!5 -> Monitor 50Hz
+ #^!6 -> Monitor 60Hz
  #^!0 -> Eject\Close CD tray
 [Win+Ctrl+Alt]
  #^!F1 -> SSD - BenQ
