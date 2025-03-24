@@ -109,7 +109,7 @@ WriteProcessorStateSetting(ByRef Index)
     global ArrayCPUFreq
     CPUState := ArrayCPUStateInPercent[Index]
     PowerWriteMaxProcessorStateValueIndex(CPUState, "AC") ;Line
-    PowerWriteMaxProcessorStateValueIndex(CPUState, "DC") ;Battery
+    ; PowerWriteMaxProcessorStateValueIndex(CPUState, "DC") ;Battery
     OSD(ArrayCPUFreq[Index] . "GHz")
 }
 ;-------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ WriteProcessorCoresSetting(ByRef Index)
     global ArrayCPUCoresInPercent
     CPUCores := ArrayCPUCoresInPercent[Index]
     PowerWriteCoreParkingMaxCoresValueIndex(CPUCores, "AC")
-    PowerWriteCoreParkingMaxCoresValueIndex(CPUCores, "DC")
+    ; PowerWriteCoreParkingMaxCoresValueIndex(CPUCores, "DC")
     if(Index = 1)
         OSD(Index . " core")
     else
@@ -197,13 +197,13 @@ ToggleCPUParking() ;вкл/откл парковку ядер
     if (CPUParkingEnabled) {
         CPUParkingEnabled := false
         PowerWriteCoreParkingMinCoresValueIndex(100, "AC")
-        PowerWriteCoreParkingMinCoresValueIndex(100, "DC")
+        ; PowerWriteCoreParkingMinCoresValueIndex(100, "DC")
         OSD("Core Parking Disabled")
     }
     else {
         CPUParkingEnabled := true
         PowerWriteCoreParkingMinCoresValueIndex(0, "AC")
-        PowerWriteCoreParkingMinCoresValueIndex(0, "DC")
+        ; PowerWriteCoreParkingMinCoresValueIndex(0, "DC")
         OSD("Core Parking Enabled")
     }
 }
@@ -215,13 +215,13 @@ ToggleCPUCState() ;вкл/откл C-State процессора
     if (CPUCStateEnabled) {
         CPUCStateEnabled := false
         PowerWriteMinProcessorStateValueIndex(100, "AC")
-        PowerWriteMinProcessorStateValueIndex(100, "DC")
+        ; PowerWriteMinProcessorStateValueIndex(100, "DC")
         OSD("C-State Disabled")
     }
     else {
         CPUCStateEnabled := true
         PowerWriteMinProcessorStateValueIndex(0, "AC")
-        PowerWriteMinProcessorStateValueIndex(0, "DC")
+        ; PowerWriteMinProcessorStateValueIndex(0, "DC")
         OSD("C-State Enabled")
     }
 }
