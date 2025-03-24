@@ -1,8 +1,11 @@
 ﻿#Include <_COMMON_SETTINGS_>
 ;-------------------------------------------------------------------------------
+;ALL INFO ABOUT POWER PLANS HERE ==> "Install\System\CPU Parking\_INFO_"
+;-------------------------------------------------------------------------------
 ;Windows 11: Core Parking disabled in default power plans.
 ;   When Core Parking disabled all cores are always active.
 ;   Your CPU can't gain maximum Turbo frequency, because it needs single active core!
+;-------------------------------------------------------------------------------
 ;TODO Directly set CPU frequency (Only in Win11)
 ;   SUB_PROCESSOR 75b0ae3f-bce0-45a7-8c89-c9611c25e100 Maximum processor frequency (in MHz)
 ;   SUB_PROCESSOR 75b0ae3f-bce0-45a7-8c89-c9611c25e101 Maximum processor frequency for Processor Power Efficiency Class 1 (in MHz)
@@ -11,8 +14,11 @@
 ;Ну будем портить Balanced Power Scheme, создадим новый на его базе
 ;   POWERCFG /DUPLICATESCHEME 381b4222-f694-41f0-9685-ff5bb260df2e FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
 ;   POWERCFG /CHANGENAME FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF "AHK" "Balanced power plan for AHK: CPU_Freq_Cores_Manager"
-;GUID того плана энергосбережения, который будем "мучать"
+;-------------------------------------------------------------------------------
+;GUID of the target power plan
 TARGET_SCHEME := "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"
+;GUID alias of the current power plan
+;TARGET_SCHEME := "SCHEME_CURRENT"
 ;-------------------------------------------------------------------------------
 Process, Priority,, High ;L (or Low), B (or BelowNormal), N (or Normal), A (or AboveNormal), H (or High), R (or Realtime)
 ;-------------------------------------------------------------------------------
@@ -38,7 +44,9 @@ OSD(text)
 ; FoundPos := HasVal(Haystack, Needle)
 HasVal(ByRef haystack, ByRef needle) {
     for index, value in haystack
-        if (value = needle) ;for strings: logical equal (=), case-sensitive-equal (==) ;for digits both are logical equal
+        ;Strings: logical equal (=), case-sensitive-equal (==)
+        ;Digits both are logical equal
+        if (value = needle)
             return index
     if !(IsObject(haystack))
         throw Exception("Bad haystack!", -1, haystack)
@@ -48,12 +56,8 @@ HasVal(ByRef haystack, ByRef needle) {
 PowerWriteMaxProcessorStateValueIndex(ByRef Value, ByRef Mode)
 {
     global TARGET_SCHEME
-    if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC")) ;for strings: logical equal (=), case-sensitive-equal (==) ;for digits both are logical equal
+    if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
     {
-        ;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
-        ;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
-        ;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMAX %Value%,, Hide
-        ;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
         RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR PROCTHROTTLEMAX %Value%,, Hide
         RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     }
@@ -64,10 +68,6 @@ PowerWriteMinProcessorStateValueIndex(ByRef Value, ByRef Mode)
     global TARGET_SCHEME
     if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
     {
-        ;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
-        ;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
-        ;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN %Value%,, Hide
-        ;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
         RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR PROCTHROTTLEMIN %Value%,, Hide
         RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     }
@@ -79,10 +79,6 @@ PowerWriteCoreParkingMaxCoresValueIndex(ByRef Value, ByRef Mode)
     PROCCORESMAX := "ea062031-0e34-4ff1-9b6d-eb1059334028" ;GUID для парковки ядер
     if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
     {
-        ;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
-        ;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
-        ;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR %PROCCORESMAX% %Value%,, Hide
-        ;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
         RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR %PROCCORESMAX% %Value%,, Hide
         RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     }
@@ -94,18 +90,15 @@ PowerWriteCoreParkingMinCoresValueIndex(ByRef Value, ByRef Mode)
     PROCCORESMIN := "0cc5b647-c1df-4637-891a-dec35c318583" ;GUID для парковки ядер
     if ((0 <= Value && Value <= 100) && (Mode = "AC" || Mode = "DC"))
     {
-        ;MsgBox % "Value is " . Value . "Mode is " . Mode . "."
-        ;"D:\SERGEY\Install\Info\CPU Parking\Command Line.txt"
-        ;RunWait, %ComSpec% /c powercfg -set%Mode%valueindex SCHEME_CURRENT SUB_PROCESSOR %PROCCORESMIN% %Value%,, Hide
-        ;RunWait, %ComSpec% /c powercfg -setactive SCHEME_CURRENT,, Hide
         RunWait, %ComSpec% /c powercfg -set%Mode%valueindex %TARGET_SCHEME% SUB_PROCESSOR %PROCCORESMIN% %Value%,, Hide
         RunWait, %ComSpec% /c powercfg -setactive %TARGET_SCHEME%,, Hide
     }
 }
 ;-------------------------------------------------------------------------------
-;"D:\SERGEY\Install\Info\CPU Parking\Processor State Freq Test.txt"
-ArrayCPUStateInPercent := [ 30,  31,  34,  40,  46,  53,  56,  62,  68,  71,  78,  84,  90,  93,  99, 100] ;состояние (P-state) процессора в %
-ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6] ;частота процессора (ГГц) в соответствии с P-state процессора
+;"Install\System\CPU Parking\_INFO_\ReadMe.rar\Processor State Freq Test.txt"
+;CPU P-State [%] and corresponding CPU Frequency [GHz] (found manually)
+ArrayCPUStateInPercent := [ 30,  31,  34,  40,  46,  53,  56,  62,  68,  71,  78,  84,  90,  93,  99, 100]
+ArrayCPUFreq :=           [0.8, 1.0, 1.1, 1.3, 1.5, 1.7, 1.8, 2.0, 2.2, 2.3, 2.5, 2.7, 2.9, 3.0, 3.2, 3.6]
 WriteProcessorStateSetting(ByRef Index)
 {
     global ArrayCPUStateInPercent
@@ -163,7 +156,7 @@ IsCorrectArrayIndex(ByRef Index, ByRef ArrayLen)
     return (1 <= Index && Index <= ArrayLen)
 }
 ;-------------------------------------------------------------------------------
-SetCPUFreqInGHz(ByRef Freq) ;Freq == frequency in x.x GHz ;непосредственно задаем частоту CPU
+SetCPUFreqInGHz(ByRef Freq) ;Frequency in x.x [GHz]
 {
     global ArrayCPUFreq
     global ArrayLenP
@@ -292,7 +285,7 @@ DeltaC := 1 ;шаг изменения количества ядер проце�
 
 NumpadDot & NumpadSub:: StepCPUFreq(-DeltaP) ;уменьшаем частоту CPU
 NumpadDot & NumpadAdd:: StepCPUFreq(+DeltaP) ;увеличиваем частоту CPU
-NumpadDot & NumpadDiv:: StepCPUCores(-DeltaC) ;уменьшаем количество работающих ядер CPU
+NumpadDot & NumpadDiv::  StepCPUCores(-DeltaC) ;уменьшаем количество работающих ядер CPU
 NumpadDot & NumpadMult:: StepCPUCores(+DeltaC) ;увеличиваем количество работающих ядер CPU
 
 NumpadDot & Numpad7:: SetActivePowerScheme("a1841308-3541-4fab-bc81-f71556f20b4a", "Power Saver PS")
