@@ -8,10 +8,10 @@ ECHO Generating icons from 00 to 99 in "%out%" folder...
 FOR /L %%i IN  (0,1,9)  DO CALL :GenerateIcon 0%%i
 FOR /L %%i IN (10,1,99) DO CALL :GenerateIcon  %%i
 
-@REM PAUSE
 GOTO :EOF
 
 :GenerateIcon
+ECHO Icon %1
 magick ^
  -background Black  -fill LightGreen  -font Courier-New-Bold ^
  -size 16x16  -pointsize 16  -gravity center ^
