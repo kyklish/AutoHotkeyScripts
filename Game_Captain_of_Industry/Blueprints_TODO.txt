@@ -1,0 +1,18 @@
+﻿CHECK
+	ELECTRONICS FULL - connections of storages rubber-to-rubber, pcb-to-pcb (side-by-side)
+
+EARLY GAME
+	DIESEL FULL: mirror boiler to see fancy window
+	ELECTRICITY: add size of T3 blueprint to T1 starting blueprint
+
+MIDDLE GAME
+	DIESEL: create blueprint without SOUR WATER STRIPPER for faster starting
+
+LATE GAME
+	METAL:
+		EXHAUST:
+			Is bad idea to collect all exhaust???
+			STEEL produce 144 exhaust, PIPE III (450) supports 3 blueprints. Make second PIPE III to support 6 blueprints.
+			Check exhaust from COPPER and IRON. Do they need more PIPEs.
+			STEEL exhaust in one direction, COPPER and IRON in other direction to separate exhaust's fabrics on both sides of mega plant.
+	IRON: change to simmetrical layout??? why it's not simmetrical???
