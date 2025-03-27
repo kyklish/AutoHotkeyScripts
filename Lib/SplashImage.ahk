@@ -1,4 +1,4 @@
-; Gui Picture: AlwaysOnTop BorderLess NoActivate
+﻿; Gui Picture: AlwaysOnTop BorderLess NoActivate
 SplashImage_New(sFileName, sGuiName := "") {
     sGuiName := "SplashImage" sGuiName
     Gui %sGuiName%:New, -Caption +AlwaysOnTop +LastFound

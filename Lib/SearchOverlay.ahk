@@ -1,4 +1,4 @@
-; Overlay to show search areas of [ImageSearch], [PixelSearch], [PixelGetColor]
+﻿; Overlay to show search areas of [ImageSearch], [PixelSearch], [PixelGetColor]
 ; Use [Screen] or [Client] coordinates!
 ; On start script automatically converts [Client] to [Screen] coordinates.
 ; Usage:

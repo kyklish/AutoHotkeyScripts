@@ -1,4 +1,4 @@
-; Overwrite all files in "VIDEO" folder with blank video files.
+﻿; Overwrite all files in "VIDEO" folder with blank video files.
 ; Put video files in "VIDEO" folder and run script.
 
 #Warn

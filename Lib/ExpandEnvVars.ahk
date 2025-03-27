@@ -1,4 +1,4 @@
-; Expand paths with environment variables (%SystemRoot% ==> C:\Windows)
+﻿; Expand paths with environment variables (%SystemRoot% ==> C:\Windows)
 ExpandEnvVars(sPath)
 {
     VarSetCapacity(sDest, 2000)

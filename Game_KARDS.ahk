@@ -1,4 +1,4 @@
-#Include <_COMMON_SETTINGS_>
+﻿#Include <_COMMON_SETTINGS_>
 
 Menu, Tray, Icon
 SendMode Event
