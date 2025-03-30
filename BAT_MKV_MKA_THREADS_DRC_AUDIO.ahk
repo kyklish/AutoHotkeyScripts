@@ -70,6 +70,7 @@ ExitApp
 ;===============================================================================
 
 CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate) {
+    ; oFileNames[0] contains all source video files
     FileWrite("!!.MOVE_HERE_MKA_TO_WATCH_MOVIE.BAT", GetMkaMoveHereCmd())
     FileWrite("!1.RE-MUX_TO_MKV_ENG_AUDIO" iAudioStream + 1 ".BAT", GetReMuxCmd(oFileNames[0], iAudioStream))
     FileWrite("!2.MOVE_HERE_RE-MUX_RESULT_DELETE_ORIGINAL_FILES.BAT", GetReMuxMoveHereDelOrigVideoCmd(oFileNames[0]))
@@ -82,7 +83,6 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
     }
 
     FileWrite("1.RUN_ALL_AUDIO_THREADS.BAT", GetThreadCmd())
-    ; oFileNames[0] contains all source video files
     FileWrite("2.MUX_TO_MKV.BAT", GetMuxCmd(oFileNames[0]))
     ; Use CMD extension to make it unique, we will use it to delete this file last
     FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ALL_SOURCE_FILES.CMD", GetMuxMoveHereDelAllCmd(oFileNames[0]))
