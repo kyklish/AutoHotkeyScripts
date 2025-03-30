@@ -30,6 +30,7 @@
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
  ;0,U,"%SOFT%\Listary5\Listary.exe","-startup"
  ;0,U,"%SOFT%\Listary6\Listary.exe","--startup"
+  0,A,"%SOFT%\Lossless_Scaling\LosslessScaling.exe","-StartMinimized"
   0,A,"%SOFT%\MemInfo\meminfo.exe"
   0,A,"%SOFT%\MSI_Afterburner\MSIAfterburner.exe"
  ;0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
