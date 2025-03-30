@@ -86,7 +86,7 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
     FileWrite("2.MUX_TO_MKV.BAT", GetMuxCmd(oFileNames[0]))
     ; Use CMD extension to make it unique, we will use it to delete this file last
     FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ALL_SOURCE_FILES.CMD", GetMuxMoveHereDelAllCmd(oFileNames[0]))
-    FileWrite("4.StaxRip_SVPFlow.CMD", GetStaxRipCmd(oFormats, sStaxRipTemplate))
+    FileWrite("4.StaxRip_SVPFlow.CMD", GetStaxRipCmd(oFileNames[0], sStaxRipTemplate))
 }
 
 FileWrite(sFileName, sStr) {
@@ -263,25 +263,20 @@ GetMuxMoveHereDelAllCmd(oFileNames) {
     Return sCmd
 }
 
-GetStaxRipCmd(oFormats, sStaxRipTemplate) {
+GetStaxRipCmd(oFileNames, sStaxRipTemplate) {
+    sFileList := ""    
+    For _, oFileName in oFileNames
+        sFileList .= """" oFileName["path"] """;"
+    sFileList := SubStr(sFileList, 1, -1) ; Delete last semicolon in list
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
     sCmd .= "CD /D ""%~dp0""`n"
     sCmd .= "SETLOCAL EnableDelayedExpansion`n"
     sCmd .= "`n"
-    sCmd .= "SET Template=" sStaxRipTemplate "`n"
+    sCmd .= "SET Template=""" sStaxRipTemplate """`n"
+    sCmd .= "SET FileList=" sFileList "`n"
     sCmd .= "`n"
-    sCmd .= "StaxRip -ClearJobs -Exit`n"
-    For _, sFormat in oFormats
-        sCmd .= "CALL :ADD_BATCH_JOB ""%Template%"" " Format("{:U}", sFormat) "`n"
-    sCmd .= "StaxRip -StartJobs -Exit`n"
-    sCmd .= "GOTO :EOF`n"
-    sCmd .= "`n"
-    sCmd .= ":ADD_BATCH_JOB`n"
-    sCmd .= "FOR %%F IN (""%~2"") DO (`n"
-    sCmd .= "    StaxRip ""-LoadTemplate:%~1"" ""-AddBatchJob:%%F"" -Exit`n"
-    sCmd .= ")`n"
-    sCmd .= "EXIT /B`n"
+    sCmd .= "StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJobs:%FileList% -StartJobs -Exit`n"
     Return sCmd
 }
 
