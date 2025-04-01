@@ -64,22 +64,29 @@ class Process
             if (FileExist(this.sExeName)) {
                 Sleep % this.iDelay "000"
                 Run_As(this.bAdmin, this.sExeName, this.sParams, this.sWorkingDir, this.sWinOptions)
+                WriteLog(A_ThisFunc "(): START " this.sExeName " " this.sParams)
             } else {
                 MsgBox % A_ScriptName ":" A_ThisFunc "():" A_LineNumber "`nFile not found: " this.sExeName
+                WriteLog(A_ThisFunc "(): FILE NOT FOUND " this.sExeName)
             }
-        }
+        } else
+            WriteLog(A_ThisFunc "(): SKIP  " this.sExeName " " this.sParams)
     }
 
     Stop()
     {
-        if (this.Exist())
+        if (this.Exist()) {
             Run % "TASKKILL /IM """ this.sFileName """", , Hide
+            WriteLog(A_ThisFunc "(): " this.sFileName)
+        }
     }
 
     Kill()
     {
-        if (this.Exist())
+        if (this.Exist()) {
             Run % "TASKKILL /F /IM """ this.sFileName """", , Hide
+            WriteLog(A_ThisFunc "(): " this.sFileName)
+        }
     }
 
     Exist()
@@ -335,6 +342,8 @@ if (A_Args.Length() > 1) {
         }
     }
 }
+
+WriteLog()
 
 ;-------------------------------------------------------------------------------
 ; g_Debug := true
