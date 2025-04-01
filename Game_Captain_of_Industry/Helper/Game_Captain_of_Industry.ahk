@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  + User Interface Scale can be set in the script's file name
 ;  * ImageSearch shows more errors
 ;  ! Wait for the map to be fully zoomed out before exploring
 ; v2.13.0
@@ -107,7 +108,8 @@ SetKeyDelay, -1, 25
 
 helpText := "
 (
-Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%)!
+Set USER INTERFACE SCALE ratio by adding text UI80 or UI100 or UI120 and so on to the script's file name (default 100%)!
+Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%)! (alternative variant)
 
              F1 -> Show help (when game not on screen).
       Ctrl + F1 -> Show help (in-game).
@@ -194,6 +196,16 @@ global bSendInput := true
 xBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
 yBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
 ;@AHK++AlignAssignmentOff
+
+;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
+; UI80 or UI100 or UI120 etc...
+RegExMatch(A_ScriptName, "UI(?P<Value>\d\d\d?)", uiScaleRegEx)
+If uiScaleRegExValue is Integer
+    If (uiScaleRegExValue >= 80) {
+        uiScale := uiScaleRegExValue
+        Menu, Tray, Tip, Captain of Industry Helper`nUI Scale (from script's file name): %uiScale%`%
+    }
+;===============================================================================
 
 ; VEHICLE MANAGEMENT ICON (near HEALTH and UNITY icons): absolute coordinates
 global oVMI := { 0:0
