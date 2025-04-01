@@ -3,7 +3,9 @@ Menu, Tray, Icon ;Tray icon is disabled in _COMMON_SETTINGS_.ahk, here we enable
 
 g_bAutoStart := true
 g_bSkipDelay := false
-g_iToolTipShowTime := 5000 ; in milliseconds
+;Delay to launch all the scripts (5sec is enough)
+;Set it to 10sec: fix MSI Afterburner startup sequence (see in the AutoStart.csv)
+g_iToolTipShowTime := 9000 ; in milliseconds
 
 ;Without delay, immediately after Windows starts, RunAs command in Reload_AsAdmin()
 ;   function crashes this script with error "Service is already started".
@@ -108,7 +110,7 @@ CloseAutoStartPrograms()
 {
     global g_AutoStartScriptPath
     Run_WaitScriptAsAdmin(g_AutoStartScriptPath, "-QuitProgram")
-    Sleep, 1000
+    Sleep, 2000
     Run_WaitScriptAsAdmin(g_AutoStartScriptPath, "-KillProgram")
 }
 
