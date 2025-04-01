@@ -141,13 +141,10 @@ Alt + BackSpace -> STORAGE: stored product reset
 
 Useful tips:
     - maximum zoom in for better performance when using VEHICLES DELETE/UPGRADE.
-    - tilt camera to top view (the script assumes that vehicle/building will be
-      placed in the center of the screen when camera moves to it) to prevent
-      miss-clicks at the vehicle/building. When the camera is looking at an
-      angle, vehicle may be hidden behind a building or have an offset in up
-      direction on big camera angles.
-    - increase delay between manipulations [dlOperation] and [dlCameraMove] for
-      better reliability.
+    - tilt camera to top view (the script assumes that vehicle/building will be placed in the center of the screen when camera moves
+      to it) to prevent miss-clicks at the vehicle/building. When the camera is looking at an angle, vehicle may be hidden behind
+      a building or have an offset in up direction on big camera angles.
+    - increase delay between manipulations [dlOperation] and [dlCameraMove] for better reliability.
     - reload the script to remove tooltip with error.
 
 Usage VEHICLE DELETE/UPGRADE:
@@ -160,12 +157,10 @@ Usage VEHICLE DELETE/UPGRADE:
 
 Usage WORLD MAP EXPLORE/BATTLE:
     - WORLD MAP must be closed.
-    - press hotkey to explore/battle (automatically close victory result before
-      explore/battle).
+    - press hotkey to explore/battle (automatically close victory result before explore/battle).
 
 Usage BLUEPRINT DESCRIPTION COPY/PASTE:
-    - put mouse cursor on DESCRIPTION BUTTON and press hotkey to save it's
-      position (it has different position for FILE and FOLDER!).
+    - put mouse cursor on DESCRIPTION BUTTON and press hotkey to save it's position (it has different position for FILE and FOLDER!).
     - put mouse cursor over desired blueprint and press desired hotkey.
 
 Usage STORAGE WITH PRODUCT DELETE:
