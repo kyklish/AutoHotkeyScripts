@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  ! Wait for the map to be fully zoomed out before exploring
 ; v2.13.0
 ;  + New hotkey to make window borderless
 ; v2.12.3
