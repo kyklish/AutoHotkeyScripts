@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  * ImageSearch shows more errors
 ;  ! Wait for the map to be fully zoomed out before exploring
 ; v2.13.0
 ;  + New hotkey to make window borderless
@@ -682,8 +683,11 @@ Borderless(WinTitle) {
 ImageSearch(ByRef x, ByRef y, imageFile, wndSize, bShowError := true)
 {
     ImageSearch, x, y, 0, 0, % wndSize.w, % wndSize.h, % imageFile
-    if (ErrorLevel && bShowError) {
-        ToolTip, % A_ThisFunc . "() - can't find image: " . imageFile, 0, 0
+    if (bShowError) {
+        if (ErrorLevel == 1)
+            ToolTip, % A_ThisFunc . "() - can't find image: " . imageFile, 0, 0
+        if (ErrorLevel == 2)
+            ToolTip, % A_ThisFunc . "() - can't open image: " . imageFile, 0, 0
         SoundBeep
     }
 }
