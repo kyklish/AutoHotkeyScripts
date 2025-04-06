@@ -33,7 +33,7 @@ Win -> MButton
         ; Wait context menu
         Loop {
             PixelGetColor, iColor, % X + 10, % Y + 40, RGB
-            If (iColor == 0x161B1F)
+            If (iColor == 0x161B1F or iColor == 0x171B1F) ; Win7 or Win11
                 break
             If (A_TimeSinceThisHotkey > iTimeout * 1000) {
                 ToolTip("Context menu timeout (" iTimeout " sec)", ttDisplayTime) ; milliseconds
