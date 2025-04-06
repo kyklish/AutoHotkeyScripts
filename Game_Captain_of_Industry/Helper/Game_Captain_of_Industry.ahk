@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.13.1
 ;  + User Interface Scale can be set in the script's file name
 ;  * ImageSearch shows more errors
 ;  ! Wait for the map to be fully zoomed out before exploring
