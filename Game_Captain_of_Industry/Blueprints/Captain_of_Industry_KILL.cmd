@@ -1,2 +1,2 @@
 @ECHO OFF
-%SOFT%\NirLauncher\Sysinternals\pskill.exe "Captain of Industry.exe"
+%SOFT%\NirLauncher\Sysinternals\pskill.exe -t "Captain of Industry.exe"

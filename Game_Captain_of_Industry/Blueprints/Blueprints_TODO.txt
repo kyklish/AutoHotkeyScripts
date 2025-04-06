@@ -1,17 +1,16 @@
-﻿CHECK
-	ELECTRONICS FULL - connections of storages rubber-to-rubber, pcb-to-pcb (side-by-side)
+﻿PRIORITY RESTORED TO DEFAULT:
+	EARLY GAME
+	BRICKS
+	DIESEL + PAPER
+	METAL (SIMPLE)
 
 EARLY GAME
-	DISEL: LIGHT OIL is enough for BOILER (GAS) with two stages, but three stages???
-	DIESEL FULL: mirror boiler to see fancy window
-	ELECTRICITY: starting layout has 3 generators, but turbine can handle only 2 of them, delete 1???
-	ELECTRICITY: add size of T3 blueprint to T1 starting blueprint
 	ELECTRICITY: use BOILER (GAS)
 
 MIDDLE GAME
-	DIESEL: create blueprint without SOUR WATER STRIPPER for faster starting
 
 LATE GAME
+	ELECTRONICS FULL: check connections of storages rubber-to-rubber, pcb-to-pcb (side-by-side)
 	METAL:
 		EXHAUST:
 			Is bad idea to collect all exhaust???
@@ -20,4 +19,3 @@ LATE GAME
 			STEEL exhaust in one direction, COPPER and IRON in other direction to separate exhaust's fabrics on both sides of mega plant.
 	IRON:    change to simmetrical layout??? why it's not simmetrical??? COOLING TOWER LARGE does not fit???
 	IRON T2: change to simmetrical layout??? why it's not simmetrical??? COOLING TOWER LARGE does not fit???
-
