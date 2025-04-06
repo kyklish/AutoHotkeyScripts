@@ -373,8 +373,10 @@ if (g_Debug) {
     oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
     oMgr.Start()
 } else {
-    if (g_bNoAutoStart)
+    if (g_bNoAutoStart) {
+        WriteLog("Main(): NO AUTOSTART")
         ExitApp
+    }
     sDataFile := "AutoStart.csv"
     oMgr := new Manager(new DataFromFile(sDataFile), new ParserCSV())
     if (g_bQuitProgram || g_bKillProgram) {
