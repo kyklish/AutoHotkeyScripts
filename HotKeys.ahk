@@ -250,12 +250,16 @@ return
 ;WIN+CTRL+ALT
 #^!E::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t msedge.exe") ;PSKill Edge
 #^!F::Run_AsUser("%SOFT%\Flux\flux.exe", "/noshow")
-#^!K::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe") ;PSKill MPC-HC
-#^!L::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe") ;PSKill MPC-BE
+#^!K::
+    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe")
+    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc64.exe")
+    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe")
+    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be64.exe")
+return
 ; #^!M::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "monitor off")
 #^!M::Run_AsUser("%SOFT%\NirLauncher\Sordum\MonitorOff\MonitorOff_x64.exe", "/OFF /MOUSE") ;Block mouse when screen turns off
-#^!O::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe") ;PSKill Opera
-;TODO force it to always start, even when user choose cancel autostart
+#^!O::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe")
+#^!R::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd TASKKILL /F /FI ""STATUS eq NOT RESPONDING""") ; KILL NOT RESPONDING
 ; #^!S::Run_AsAdmin("%SOFT%\SpeedFan\SpeedFan.exe", "/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C")
 #^!S::Run_AsAdmin("%SOFT%\FanControl\FanControl.exe",, "%SOFT%\FanControl")
 
@@ -447,11 +451,11 @@ AppsKey Up::ToolTip
 [Win+Ctrl+Alt]
  #^!E -> Kill Edge
  #^!F -> f.lux
- #^!K -> Kill MPC-HC
- #^!L -> Kill MPC-BE
+ #^!K -> Kill MPC-HC + MPC-BE
  #^!M -> Monitor Off (mouse blocked)
  #^!O -> Kill Opera
  #^!S -> FanControl
+ #^!R -> KILL NOT RESPONDING
 [Window Style Manipulation]
  #`` -> Always On Top
  !`` -> Borderless
