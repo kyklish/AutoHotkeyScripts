@@ -142,7 +142,8 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
 ;In Total Commander hit Alt+F7 to open search window, it will have "ahk_class TFindFile"
 ;Then hit Alt+F7 again to check checkbox "С текстом:" to find text in files.
 #IfWinActive, ahk_class TFindFile
-    !F7::Control, Check, , TCheckBox11
+    ; !F7::Control, Check, , TCheckBox11 ;Total Commander 8.x
+    !F7::Control, Check, , TMyCheckBox15 ;Total Commander 11.x
 #IfWinActive, ahk_class TDLGUNZIPALL
     !F9::Control, Check, , TCheckBox1
 
