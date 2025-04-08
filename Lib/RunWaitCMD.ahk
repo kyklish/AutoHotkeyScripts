@@ -31,4 +31,4 @@ RunWaitCMD(commands) {
     return exec.StdOut.ReadAll()
 }
 
-;To run HIDDEN you must use shell.Run command, but in not very useful for CMD
+;To run HIDDEN you must use shell.Run command, but it not very useful for CMD
