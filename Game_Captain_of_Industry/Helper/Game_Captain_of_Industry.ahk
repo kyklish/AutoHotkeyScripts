@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  + Add additional hotkeys for construction priority (for keyboards with single Win-key)
 ; v2.13.1
 ;  + User Interface Scale can be set in the script's file name
 ;  * ImageSearch shows more errors
@@ -141,6 +142,7 @@ Alt + BackSpace -> STORAGE: stored product reset
         Alt + S -> Suspend Script (disable all hotkeys).
         Alt + Z ->  Reload Script.
         Alt + X ->    Exit Script.
+  Win + [1-9,0] -> BUILDING/STORAGE: set priority  1-10. (Ctrl + [7-9,0] -> For keyboards with single Win-key)
 
 Useful tips:
     - maximum zoom in for better performance when using VEHICLES DELETE/UPGRADE.
@@ -282,6 +284,10 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     #8::
     #9::
     #0::
+    ^7::
+    ^8::
+    ^9::
+    ^0::
     !1::
     !2::
     !3::
@@ -602,9 +608,9 @@ Priority(hotkey, dlOperation, clSz)
 {
     ; Calculate priority from hotkey
     modifier := SubStr(hotkey, 1, 1)
-    if modifier not in #,!
+    if modifier not in #,!,^
     {
-        ToolTip, % A_ThisFunc . "() - modifier is not [#] or [!]: " . modifier, 0, 0
+        ToolTip, % A_ThisFunc . "() - modifier is not [#] or [!] or [^]: " . modifier, 0, 0
         return
     }
     number := SubStr(hotkey, 2, 1)
