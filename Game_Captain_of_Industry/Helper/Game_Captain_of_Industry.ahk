@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  * Change modificator for alert/import/export/quantity hotkeys
 ;  + Add additional hotkeys for construction priority (for keyboards with single Win-key)
 ; v2.13.1
 ;  + User Interface Scale can be set in the script's file name
@@ -113,36 +114,35 @@ helpText := "
 Set USER INTERFACE SCALE ratio by adding text UI80 or UI100 or UI120 and so on to the script's file name (default 100%)!
 Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%)! (alternative variant)
 
-             F1 -> Show help (when game not on screen).
-      Ctrl + F1 -> Show help (in-game).
-             F7 -> WORLD MAP: EXPLORE unknown location (first GREY then GREEN).
-             F8 -> WORLD MAP: EXPLORE location with enemy.
-             F9 -> VEHICLE:   DELETE.
-            F10 -> VEHICLE:   UPGRADE.
-        Alt + C -> BLUEPRINT:  copy description text.
-        Alt + V -> BLUEPRINT: paste description text and save it.
-        Alt + B -> BLUEPRINT: paste description text.
-            F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON.
-      Space + Q -> Show VEHICLES MANAGEMENT window.
-      Space + W -> Show RECIPES window.
-      Space + E -> Show STATISTICS window for product under cursor.
-    Shift + Del -> STORAGE: delete product using Unity.
-       Ctrl + - -> STORAGE: toggle NOTIFY IF EMPTY alert.
-       Ctrl + = -> STORAGE: toggle NOTIFY IF FULL alert.
-      Shift + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).
-      Shift + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).
-        Win + `` -> CONSTRUCTION: set highest priority
-  Win + [1-9,0] -> BUILDING/STORAGE: set priority 1-10
-    Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15
-        Alt + - -> STORAGE: stored product keep empty
-        Alt + = -> STORAGE: stored product keep full
-Alt + BackSpace -> STORAGE: stored product reset
-        Alt + `` -> GAME: make game's window borderless
-   Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
-        Alt + S -> Suspend Script (disable all hotkeys).
-        Alt + Z ->  Reload Script.
-        Alt + X ->    Exit Script.
-  Win + [1-9,0] -> BUILDING/STORAGE: set priority  1-10. (Ctrl + [7-9,0] -> For keyboards with single Win-key)
+               F1 -> Show help (when game not on screen).
+        Ctrl + F1 -> Show help (in-game).
+               F7 -> WORLD MAP: EXPLORE unknown location (first GREY then GREEN).
+               F8 -> WORLD MAP: EXPLORE location with enemy.
+               F9 -> VEHICLE:   DELETE.
+              F10 -> VEHICLE:   UPGRADE.
+          Alt + C -> BLUEPRINT:  copy description text.
+          Alt + V -> BLUEPRINT: paste description text and save it.
+          Alt + B -> BLUEPRINT: paste description text.
+              F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON.
+        Space + Q -> Show VEHICLES MANAGEMENT window.
+        Space + W -> Show RECIPES window.
+        Space + E -> Show STATISTICS window for product under cursor.
+      Shift + Del -> STORAGE: delete product using Unity.
+          Alt + - -> STORAGE: toggle NOTIFY IF EMPTY alert.                      (A)lt   = (A)lert notification
+          Alt + = -> STORAGE: toggle NOTIFY IF FULL alert.                       (A)lt   = (A)lert notification
+         Ctrl + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).  (C)trl  = (C)ycle buttons ON/AUTO/OFF
+         Ctrl + = -> BUILDING: cycle right ON/AUTO/OFF buttons (IMPORT/EXPORT).  (C)trl  = (C)ycle buttons ON/AUTO/OFF
+        Shift + - -> STORAGE: stored product keep empty.                         (S)hift = (S)hift sliders RED/GREEN
+        Shift + = -> STORAGE: stored product keep full.                          (S)hift = (S)hift sliders RED/GREEN
+Shift + BackSpace -> STORAGE: stored product reset.                              (S)hift = (S)hift sliders RED/GREEN
+          Win + `` -> CONSTRUCTION: set highest priority.
+    Win + [1-9,0] -> BUILDING/STORAGE: set priority  1-10. (Ctrl + [7-9,0] -> For keyboards with single Win-key)
+      Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15.
+          Alt + `` -> GAME: make game's window borderless.
+     Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
+          Alt + S -> Suspend Script (disable all hotkeys).
+          Alt + Z ->  Reload Script.
+          Alt + X ->    Exit Script.
 
 Useful tips:
     - maximum zoom in for better performance when using VEHICLES DELETE/UPGRADE.
@@ -264,13 +264,13 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !V::        MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
     !B::        MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
     +Del::      MakeManipulation(Func("Storage").Bind("DeleteProductWithUnity", dlOperation))
-    ^-::        MakeManipulation(Func("Storage").Bind("ToggleAlertEmpty", dlOperation))
-    ^=::        MakeManipulation(Func("Storage").Bind("ToggleAlertFull", dlOperation))
-    +-::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Left", dlOperation))
-    +=::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Right", dlOperation))
-    !-::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepEmpty", dlOperation))
-    !=::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepFull", dlOperation))
-    !BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
+    !-::        MakeManipulation(Func("Storage").Bind("ToggleAlertEmpty", dlOperation))
+    !=::        MakeManipulation(Func("Storage").Bind("ToggleAlertFull", dlOperation))
+    ^-::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Left", dlOperation))
+    ^=::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Right", dlOperation))
+    +-::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepEmpty", dlOperation))
+    +=::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepFull", dlOperation))
+    +BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
     F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
     #`::        MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
     !`::        Borderless("ahk_group Game")
