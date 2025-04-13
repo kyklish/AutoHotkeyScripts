@@ -50,6 +50,11 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
             MsgBox, The attempt to copy text onto the clipboard failed.
             return
         }
+        If (WinActive("ahk_exe msedge.exe")) {
+            ; For EDGE we need type search engine hotkey and press space to activate that engine
+            SendEvent, ^{vk4C}^{BackSpace}{vk54}{Space}^{vk56}{Enter} ; Ctrl+L Ctrl+BackSpace t Space Ctrl+V Enter
+            return
+        }
         Clipboard := "t " . Clipboard
         GoSub, ^b
     return
