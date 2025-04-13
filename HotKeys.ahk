@@ -53,8 +53,8 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
         Clipboard := "t " . Clipboard
         GoSub, ^b
     return
-    F1:: SendEvent, ^+{Tab} ; Prev Tab
-    F2:: SendEvent, ^{Tab} ; Next Tab
+    F1:: SendEvent, ^+{Tab} ; Prev Tab alternative in Win11 ^{PgUp}
+    F2:: SendEvent,  ^{Tab} ; Next Tab alternative in Win11 ^{PgDn}
     Launch_Media:: Click, Middle
 
     +Delete:: ; delete mail
