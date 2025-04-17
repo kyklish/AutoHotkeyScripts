@@ -136,7 +136,7 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
         Shift + = -> STORAGE: stored product keep full.                          (S)hift = (S)hift sliders RED/GREEN
 Shift + BackSpace -> STORAGE: stored product reset.                              (S)hift = (S)hift sliders RED/GREEN
           Win + `` -> CONSTRUCTION: set highest priority.
-    Win + [1-9,0] -> BUILDING/STORAGE: set priority  1-10. (Ctrl + [7-9,0] -> For keyboards with single Win-key)
+    Win + [1-9,0] -> BUILDING/STORAGE: set priority  1-10. (Alt + [6-9,0] -> For keyboards with single Win-key)
       Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15.
           Alt + `` -> GAME: make game's window borderless.
      Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
@@ -284,15 +284,16 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     #8::
     #9::
     #0::
-    ^7::
-    ^8::
-    ^9::
-    ^0::
     !1::
     !2::
     !3::
     !4::
-    !5::        MakeManipulation(Func("Priority").Bind(A_ThisHotkey, dlOperation))
+    !5::
+    !6::
+    !7::
+    !8::
+    !9::
+    !0::        MakeManipulation(Func("Priority").Bind(A_ThisHotkey, dlOperation))
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
 #If
@@ -608,9 +609,9 @@ Priority(hotkey, dlOperation, clSz)
 {
     ; Calculate priority from hotkey
     modifier := SubStr(hotkey, 1, 1)
-    if modifier not in #,!,^
+    if modifier not in #,!
     {
-        ToolTip, % A_ThisFunc . "() - modifier is not [#] or [!] or [^]: " . modifier, 0, 0
+        ToolTip, % A_ThisFunc . "() - modifier is not [#] or [!]: " . modifier, 0, 0
         return
     }
     number := SubStr(hotkey, 2, 1)
@@ -622,7 +623,7 @@ Priority(hotkey, dlOperation, clSz)
     if (number == 0)
         priority := 10
     else
-        if (modifier == "!")
+        if (modifier == "!" && (1 <= number && number <= 5))
             priority := 10 + number
         else
             priority := number
