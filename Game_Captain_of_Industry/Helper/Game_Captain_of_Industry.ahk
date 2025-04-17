@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.13.2
 ;  * Change modificator for alert/import/export/quantity hotkeys
 ;  + Add additional hotkeys for construction priority (for keyboards with single Win-key)
 ; v2.13.1
