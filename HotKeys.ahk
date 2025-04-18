@@ -327,6 +327,7 @@ Launch_Mail::Run_AsUser("%SOFT%\Sylpheed\sylpheed.exe")
 ; Very long time to launch and change brightness.
 ; Run, "%sCMDDC%" b %iBrightness% q      ; Set brightness and exit
 return
+#ScrollLock:: Run_ScriptAsAdmin("Game_@_MouseCoord_WithPicture.ahk")
 
 ;-------------------------------------------------------------------------------
 
@@ -480,7 +481,8 @@ AppsKey Up::ToolTip
   Launch_Mail -> Sylpheed
         !+Esc -> Resource Monitor
            #F -> Everything
-         #Ins -> Toggle monitor brightness (0 ÷ 50)
+      #Insert -> Toggle monitor brightness (0 ÷ 50)
+  #ScrollLock -> Game_@_MouseCoord_WithPicture.ahk
           !+t -> Hide/Show taskbar (Disabled)
        !Shift -> Set English keyboard layout (Disabled)
           !+F -> Send clipboard to [ntfy.sh/NOKIA_BenQ]
