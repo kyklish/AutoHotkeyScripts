@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  + New hotkey to delete blueprint without confirmation
+;  * Change modificator for storage delete hotkey
 ; v2.13.2
 ;  * Change modificator for alert/import/export/quantity hotkeys
 ;  + Add additional hotkeys for construction priority (for keyboards with single Win-key)
@@ -124,11 +126,12 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
           Alt + C -> BLUEPRINT:  copy description text.
           Alt + V -> BLUEPRINT: paste description text and save it.
           Alt + B -> BLUEPRINT: paste description text.
-              F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON.
+      Shift + Del -> BLUEPRINT: delete without confirmation.
+              F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON (also used as an anchor for DELETE button).
         Space + Q -> Show VEHICLES MANAGEMENT window.
         Space + W -> Show RECIPES window.
         Space + E -> Show STATISTICS window for product under cursor.
-      Shift + Del -> STORAGE: delete product using Unity.
+       Ctrl + Del -> STORAGE: delete product using Unity.
           Alt + - -> STORAGE: toggle NOTIFY IF EMPTY alert.                      (A)lt   = (A)lert notification
           Alt + = -> STORAGE: toggle NOTIFY IF FULL alert.                       (A)lt   = (A)lert notification
          Ctrl + - -> BUILDING: cycle left  ON/AUTO/OFF buttons (IMPORT/EXPORT).  (C)trl  = (C)ycle buttons ON/AUTO/OFF
@@ -247,6 +250,11 @@ global oPDDL := { 0:0
     ; because last element P15 is hidden on 1/3 (window has scroll area)
     , yOffsetP1: 22 * uiScale // 100
     , yStep: 20 * uiScale // 100 } ; Distance between P(N) and P(N+1) elements in list
+; BLUEPRINT DELETE CONFIRMATION BUTTON SEARCH AREA: relative to center of the screen
+global oBDCB := { 0:0
+    , w: 400 * uiScale // 100
+    , h: 110 * uiScale // 100
+    , xOffset: 64 * uiScale // 100 } ; Offset from DESCRIPTION button to DELETE button in BLUEPRINTS WINDOW
 ; STORAGE STORED PRODUCT KEEP FULL/EMPTY SLIDER ICON: relative to top left corner of green/red line above icon
 global yStoredProduct := 45 * uiScale // 100
 
@@ -264,7 +272,8 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !C::        MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
     !V::        MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
     !B::        MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
-    +Del::      MakeManipulation(Func("Storage").Bind("DeleteProductWithUnity", dlOperation))
+    +Del::      MakeManipulation(Func("BlueprintDelete").Bind(xBtn + oBDCB.xOffset, yBtn, dlOperation))
+    ^Del::      MakeManipulation(Func("Storage").Bind("DeleteProductWithUnity", dlOperation))
     !-::        MakeManipulation(Func("Storage").Bind("ToggleAlertEmpty", dlOperation))
     !=::        MakeManipulation(Func("Storage").Bind("ToggleAlertFull", dlOperation))
     ^-::        MakeManipulation(Func("BuildingCycleOnAutoOffBtn").Bind("Left", dlOperation))
@@ -460,8 +469,7 @@ BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
     ; Move mouse to DESCRIPTION button and wait. Why? Because if description
     ; tooltip from BLUEPRINT covers DESCRIPTION button [Click()] function moves
     ; cursor instantly and clicks on tooltip instead of button! So MOVE, WAIT
-    ; tooltip from description to disappear, CLICK on button. This scenario is
-    ; for COPY operation.
+    ; tooltip from description to disappear, CLICK on button.
     MouseMove(xBtn, yBtn, dlOperation) ; Move to DESCRIPTION button
     Click( , , , dlOperation) ; Click DESCRIPTION button
     Click(clSz.w / 2, clSz.h / 2, , dlOperation) ; Click in the center of the screen
@@ -489,6 +497,37 @@ DscrBtnSavePos(ByRef xBtn, ByRef yBtn)
 {
     ToolTip ; Hide tooltip [if it was showed by BlueprintDescription()]
     MouseGetPos, xBtn, yBtn
+}
+
+BlueprintDelete(xBtn, yBtn, dlOperation, clSz)
+{
+    if (!xBtn or !yBtn) {
+        ToolTip, % "Unknown position of the DESCRIPTION BUTTON in BLUEPRINTS window.`nUsed as anchor for DELETE BUTTON.`n`nLook help [Ctrl + F1] for usage."
+        Return
+    }
+    Click( , , , dlOperation) ; Click on blueprint under cursor
+    ; Move mouse to DELETE button and wait. Why? Because if description
+    ; tooltip from BLUEPRINT covers DELETE button [Click()] function moves
+    ; cursor instantly and clicks on tooltip instead of button! So MOVE, WAIT
+    ; tooltip from description to disappear, CLICK on button.
+    MouseMove(xBtn, yBtn, dlOperation) ; Move to DELETE button
+    Click( , , , dlOperation) ; Click DELETE button
+    ; When DELETE CONFIRMATION window appear whole game's screen become darker.
+    ; Color of the top menu become equal to the color of the black button.
+    ; Search top left corner of the DELETE button in the central area.
+    ; This will skip top menu from searching.
+    ; Search area is WxH in the center of the screen.
+    clSz.x := clSz.w / 2 - oBDCB.w / 2 ; Top left point of the search area
+    clSz.y := clSz.h / 2 - oBDCB.h / 2 ; Top left point of the search area
+    clSz.w := oBDCB.w                  ;  Width of the search area
+    clSz.h := oBDCB.h                  ; Height of the search area
+    ; MouseMove(clSz.x, clSz.y, dlOperation)                   ; DEBUG: move cursor to show search area
+    ; MouseMove(clSz.x + clSz.w, clSz.y + clSz.h, dlOperation) ; DEBUG: move cursor to show search area
+    ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", clSz)
+    if (ErrorLevel)
+        Return
+    ; Click DELETE button
+    Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
 }
 
 Storage(operation, dlOperation, clSz)
@@ -698,7 +737,7 @@ Borderless(WinTitle) {
 
 ImageSearch(ByRef x, ByRef y, imageFile, wndSize, bShowError := true)
 {
-    ImageSearch, x, y, 0, 0, % wndSize.w, % wndSize.h, % imageFile
+    ImageSearch, x, y, % wndSize.x, % wndSize.y, % wndSize.x + wndSize.w, % wndSize.y + wndSize.h, % imageFile
     if (bShowError) {
         if (ErrorLevel == 1)
             ToolTip, % A_ThisFunc . "() - can't find image: " . imageFile, 0, 0
@@ -778,7 +817,7 @@ WinGetClientSize()
 {
     hWnd := WinExist("ahk_group Game")
     oClientPos := WinGetClientPos(hWnd)
-    Return { w: oClientPos.w, h: oClientPos.h }
+    Return { x: 0, y: 0, w: oClientPos.w, h: oClientPos.h }
 }
 
 ShowHelpWindow(ByRef str := "")
