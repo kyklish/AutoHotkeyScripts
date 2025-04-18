@@ -11,7 +11,7 @@
 ;
 ;  + New hotkey to delete blueprint without confirmation
 ;  * Change modificator for storage delete hotkey
-;  * Search blueprint description button instead of manual cursor pointing
+;  * Search blueprint description/delete button instead of manual cursor pointing
 ; v2.13.2
 ;  * Change modificator for alert/import/export/quantity hotkeys
 ;  + Add additional hotkeys for construction priority (for keyboards with single Win-key)
@@ -128,7 +128,6 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
           Alt + V -> BLUEPRINT: paste description text and save it.
           Alt + B -> BLUEPRINT: paste description text.
       Shift + Del -> BLUEPRINT: delete without confirmation.
-              F12 -> BLUEPRINT: save position of DESCRIPTION BUTTON (also used as an anchor for DELETE button).
         Space + Q -> Show VEHICLES MANAGEMENT window.
         Space + W -> Show RECIPES window.
         Space + E -> Show STATISTICS window for product under cursor.
@@ -155,6 +154,7 @@ Useful tips:
       to it) to prevent miss-clicks at the vehicle/building. When the camera is looking at an angle, vehicle may be hidden behind
       a building or have an offset in up direction on big camera angles.
     - increase delay between manipulations [dlOperation] and [dlCameraMove] for better reliability.
+    - deleting empty folder in blueprints window will show tooltip with error.
     - reload the script to remove tooltip with error.
 
 Usage VEHICLE DELETE/UPGRADE:
@@ -170,8 +170,7 @@ Usage WORLD MAP EXPLORE/BATTLE:
     - press hotkey to explore/battle (automatically close victory result before explore/battle).
 
 Usage BLUEPRINT DESCRIPTION COPY/PASTE:
-    - make DESCRIPTION BUTTON visible and press hotkey to save it's position (relative to DELETE BUTTON).
-    - put mouse cursor over desired blueprint and press desired hotkey.
+    - put mouse cursor over desired blueprint/folder and press desired hotkey.
 
 Usage STORAGE WITH PRODUCT DELETE:
     - using DEMOLISH tool mark storages to delete (activates QUICK REMOVE button).
@@ -201,8 +200,6 @@ dlOperation       := 300 ; Delay between operations: open window, click, etc
 dlCameraMove      := 500 ; Delay to wait camera movement to VEHICLE
 xDragDistance     := 500 ; Mouse move distance during Click&Drag manipulation
 global bSendInput := true
-xBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
-yBtn              := "" ; Position of DESCRIPTION BUTTON in BLUEPRINTS window
 ;@AHK++AlignAssignmentOff
 
 ;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
@@ -274,10 +271,10 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     F8::        MakeManipulation(Func("ExploreLocation").Bind("Enemy", dlOperation))
     F9::        MakeManipulation(Func("VehicleOrder").Bind( "Delete", dlOperation, dlCameraMove))
     F10::       MakeManipulation(Func("VehicleOrder").Bind("Upgrade", dlOperation, dlCameraMove))
-    !C::        MakeManipulation(Func("BlueprintDescription").Bind("Copy", xBtn, yBtn, dlOperation))
-    !V::        MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", xBtn, yBtn, dlOperation))
-    !B::        MakeManipulation(Func("BlueprintDescription").Bind("Paste", xBtn, yBtn, dlOperation))
-    +Del::      MakeManipulation(Func("BlueprintDelete").Bind(xBtn + oBDB.xOffset, yBtn, dlOperation))
+    !C::        MakeManipulation(Func("BlueprintDescription").Bind("Copy", dlOperation))
+    !V::        MakeManipulation(Func("BlueprintDescription").Bind("PasteSave", dlOperation))
+    !B::        MakeManipulation(Func("BlueprintDescription").Bind("Paste", dlOperation))
+    +Del::      MakeManipulation(Func("BlueprintDelete").Bind(dlOperation))
     ^Del::      MakeManipulation(Func("Storage").Bind("DeleteProductWithUnity", dlOperation))
     !-::        MakeManipulation(Func("Storage").Bind("ToggleAlertEmpty", dlOperation))
     !=::        MakeManipulation(Func("Storage").Bind("ToggleAlertFull", dlOperation))
@@ -286,7 +283,6 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     +-::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepEmpty", dlOperation))
     +=::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepFull", dlOperation))
     +BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
-    F12::       DscrBtnSavePos(xBtn, yBtn) ; Save position of DESCRIPTION BUTTON in BLUEPRINTS window
     #`::        MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
     !`::        Borderless("ahk_group Game")
     #1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
@@ -464,13 +460,33 @@ ExploreLocation(operation, dlOperation, clSz)
     Send("Tab") ; Close WORLD MAP
 }
 
-BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
+DeleteBtnSearch(ByRef xBtn, ByRef yBtn, clSz)
 {
-    if (!xBtn or !yBtn) {
-        ToolTip, % "Unknown position of the DESCRIPTION BUTTON in BLUEPRINTS window.`n`nLook help [Ctrl + F1] for usage."
+    ToolTip ; Hide tooltip [if it was showed before]
+    PixelSearch(xBtn, yBtn, oBDB.colorID, clSz)
+    if (ErrorLevel) {
+        xBtn := "", yBtn := ""
+        ToolTip, % A_ThisFunc "() - Can't find position of the DELETE BUTTON in BLUEPRINTS window."
         Return
     }
-    Click( , , , dlOperation) ; Click on blueprint under cursor
+    ; MouseGetPos, x, y          ; DEBUG: show found position
+    ; MouseMove(xBtn, yBtn, 500) ; DEBUG: show found position
+    ; MouseMove(x, y)            ; DEBUG: show found position
+}
+
+DscrBtnSearch(ByRef xBtn, ByRef yBtn, clSz)
+{
+    DeleteBtnSearch(xBtn, yBtn, clSz)
+    xBtn := xBtn - oBDB.xOffset
+}
+
+BlueprintDescription(operation, dlOperation, clSz)
+{
+    ; Make DESCRIPTION/DELETE buttons visible for search
+    Click( , , , dlOperation) ; Click on blueprint/folder under cursor.
+    DscrBtnSearch(xBtn, yBtn, clSz)
+    if (!xBtn or !yBtn)
+        Return
     ; Move mouse to DESCRIPTION button and wait. Why? Because if description
     ; tooltip from BLUEPRINT covers DESCRIPTION button [Click()] function moves
     ; cursor instantly and clicks on tooltip instead of button! So MOVE, WAIT
@@ -498,27 +514,13 @@ BlueprintDescription(operation, xBtn, yBtn, dlOperation, clSz)
     }
 }
 
-DscrBtnSavePos(ByRef xBtn, ByRef yBtn)
+BlueprintDelete(dlOperation, clSz)
 {
-    ToolTip ; Hide tooltip [if it was showed by BlueprintDescription() or BlueprintDelete()]
-    PixelSearch(xBtn, yBtn, oBDB.colorID, WinGetClientSize())
-    if (ErrorLevel)
+    ; Make DESCRIPTION/DELETE buttons visible for search
+    Click( , , , dlOperation) ; Click on blueprint/folder under cursor
+    DeleteBtnSearch(xBtn, yBtn, clSz)
+    if (!xBtn or !yBtn)
         Return
-    ; MouseGetPos, x, y          ; DEBUG: show found position
-    ; MouseMove(xBtn, yBtn, 100) ; DEBUG: show found position
-    ; MouseMove(x, y)            ; DEBUG: show found position
-    ; Found DELETE button, add offset to find out DESCRIPTION button position
-    ; Legacy stuff. Don't want change code in other places.
-    xBtn := xBtn - oBDB.xOffset
-}
-
-BlueprintDelete(xBtn, yBtn, dlOperation, clSz)
-{
-    if (!xBtn or !yBtn) {
-        ToolTip, % "Unknown position of the DESCRIPTION BUTTON in BLUEPRINTS window.`nUsed as anchor for DELETE BUTTON.`n`nLook help [Ctrl + F1] for usage."
-        Return
-    }
-    Click( , , , dlOperation) ; Click on blueprint under cursor
     ; Move mouse to DELETE button and wait. Why? Because if description
     ; tooltip from BLUEPRINT covers DELETE button [Click()] function moves
     ; cursor instantly and clicks on tooltip instead of button! So MOVE, WAIT
