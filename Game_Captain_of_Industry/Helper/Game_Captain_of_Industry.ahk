@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.13.3
 ;  + New hotkey to delete blueprint without confirmation
 ;  * Change modificator for storage delete hotkey
 ;  * Search blueprint description/delete button instead of manual cursor pointing
