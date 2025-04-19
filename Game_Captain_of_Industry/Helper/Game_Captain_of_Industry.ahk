@@ -9,6 +9,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.13.4
+;  ! Search blueprint description/delete button instead of manual cursor pointing
 ; v2.13.3
 ;  + New hotkey to delete blueprint without confirmation
 ;  * Change modificator for storage delete hotkey
@@ -253,6 +255,8 @@ global oPDDL := { 0:0
 global oBDB := { 0:0
     ; This color is equal to quantity bars near product on the right side of the screen (watch out mis-clicks)
     , colorID: 0xFB6970 ; Pixel color of the DELETE icon in BLUEPRINTS WINDOW
+    , w: 850 * uiScale // 100 ; search area relative to center of the screen
+    , h: 700 * uiScale // 100 ; search area relative to center of the screen
     , xOffset: 64 * uiScale // 100 } ; Offset from DELETE button to DESCRIPTION button in BLUEPRINTS WINDOW
 ; BLUEPRINT DELETE CONFIRMATION BUTTON SEARCH AREA: relative to center of the screen
 global oBDCB := { 0:0
@@ -464,7 +468,19 @@ ExploreLocation(operation, dlOperation, clSz)
 DeleteBtnSearch(ByRef xBtn, ByRef yBtn, clSz)
 {
     ToolTip ; Hide tooltip [if it was showed before]
-    PixelSearch(xBtn, yBtn, oBDB.colorID, clSz)
+    ; Red color of the DELETE button is equal to negative values:
+    ;   - negative unity on the top side of the screen.
+    ;   - negative quantity of the product on the right side of the screen.
+    ; Search of the DELETE button only in the central area.
+    ; Search area is WxH in the center of the screen.
+    _clSz := {}
+    _clSz.x := clSz.w // 2 - oBDB.w // 2 ; Top left point of the search area
+    _clSz.y := clSz.h // 2 - oBDB.h // 2 ; Top left point of the search area
+    _clSz.w := oBDB.w                    ;  Width of the search area
+    _clSz.h := oBDB.h                    ; Height of the search area
+    ; MouseMove(clSz.x, clSz.y, dlOperation)                   ; DEBUG: move cursor to show search area
+    ; MouseMove(clSz.x + clSz.w, clSz.y + clSz.h, dlOperation) ; DEBUG: move cursor to show search area
+    PixelSearch(xBtn, yBtn, oBDB.colorID, _clSz)
     if (ErrorLevel) {
         xBtn := "", yBtn := ""
         ToolTip, % A_ThisFunc "() - Can't find position of the DELETE BUTTON in BLUEPRINTS window."
@@ -533,13 +549,14 @@ BlueprintDelete(dlOperation, clSz)
     ; Search top left corner of the DELETE button in the central area.
     ; This will skip top menu from searching.
     ; Search area is WxH in the center of the screen.
-    clSz.x := clSz.w / 2 - oBDCB.w / 2 ; Top left point of the search area
-    clSz.y := clSz.h / 2 - oBDCB.h / 2 ; Top left point of the search area
-    clSz.w := oBDCB.w                  ;  Width of the search area
-    clSz.h := oBDCB.h                  ; Height of the search area
+    _clSz := {}
+    _clSz.x := clSz.w // 2 - oBDCB.w // 2 ; Top left point of the search area
+    _clSz.y := clSz.h // 2 - oBDCB.h // 2 ; Top left point of the search area
+    _clSz.w := oBDCB.w                    ;  Width of the search area
+    _clSz.h := oBDCB.h                    ; Height of the search area
     ; MouseMove(clSz.x, clSz.y, dlOperation)                   ; DEBUG: move cursor to show search area
     ; MouseMove(clSz.x + clSz.w, clSz.y + clSz.h, dlOperation) ; DEBUG: move cursor to show search area
-    ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", clSz)
+    ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", _clSz)
     if (ErrorLevel)
         Return
     ; Click DELETE button
