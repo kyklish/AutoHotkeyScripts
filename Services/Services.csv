@@ -34,6 +34,7 @@ GROUP,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multip
 GROUP,TWEAKS1,WINDOWS_UPDATE_OFFLINE_INSTALL,Windows Update (Install offline updates)
 GROUP,TWEAKS1,WINDOWS_UPDATE_INSIDER_PREVIEW,Windows Update (Insider Preview)
 GROUP,TWEAKS1,TABLET,Tablet Mode [for PC and Notebook not needed]
+GROUP,TWEAKS1,TABLET_POWER,Tablet Mode (Sensor Service) [Settings ==> System ==> Power && Battery ==> SETTINGS APP CRASH!!!]
 GROUP,TWEAKS1,MONITOR_REMOTE,Monitor (Connected Remotely) [for local multiple monitors not needed]
 GROUP,TWEAKS1,MONITOR_REMOTE_WIFI_DIRECT,Monitor (WiFi Direct) [SOME WINDOWS IN ACTION CENTER [Win+A] STOP WORKING: Bluetooth (Manage Bluetooth Devices) + Cast [Win+K] + Project (Multi-Monitor Configuration) [Win+P]]
 GROUP,TWEAKS1,PHONE_LINK,Phone Link (Virtual Desktops + Phone Link + Night Light) [COUPLED WITH SPY: MANUALLY DELETE SERVICES]
@@ -126,10 +127,10 @@ SERVICE,WINDOWS_UPDATE_MULTI_DOWNLOAD,4,DoSvc
 SERVICE,WINDOWS_UPDATE_OFFLINE_INSTALL,4,DmEnrollmentSvc
 SERVICE,WINDOWS_UPDATE_INSIDER_PREVIEW,4,wisvc
 SERVICE,TABLET,4,SensrSvc
-SERVICE,TABLET,4,SensorService
 SERVICE,TABLET,4,SensorDataService
 SERVICE,TABLET,4,SEMgrSvc
 SERVICE,TABLET,4,lfsvc
+SERVICE,TABLET_POWER,4,SensorService
 SERVICE,MONITOR_REMOTE,4,DispBrokerDesktopSvc
 SERVICE,MONITOR_REMOTE_WIFI_DIRECT,4,WFDSConMgrSvc
 SERVICE,PHONE_LINK,4,CDPSvc
