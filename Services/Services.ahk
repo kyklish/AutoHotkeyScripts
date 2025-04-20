@@ -215,7 +215,7 @@ GuiUpdateCheckBoxes(oTabs) {
 
 GuiShowRunningServices(sRunningServices, oTabs) {
     global sMask
-    sStr := "`tRUNNING SERVICES`n`nGROUP (CheckBox)`t[2:Auto 3:Manual 4:Disabled] : Name`n`n"
+    sStr := "Mask:" sMask "`tRUNNING SERVICES`n`nGROUP (CheckBox)`t[2:Auto 3:Manual 4:Disabled] : Name`n`n"
     For _, oTab in oTabs
         For sGroup, oGroup in oTab.oGroups
             For _, oService in oGroup.oServices {
