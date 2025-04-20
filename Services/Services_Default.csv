@@ -75,7 +75,9 @@ GROUP,TWEAKS2,ENTERPRISE,Enterprise Tools
 GROUP,CUSTOM,TIME,Windows Time Synchronization
 GROUP,CUSTOM,EVENT_LOG,Windows Event Log [Malwarebytes Windows Firewall Control detects Allowed/Blocked packets]
 GROUP,CUSTOM,CONTROL_PANEL,Control Panel (NVIDIA + INTEL)
-GROUP,CUSTOM,INTEL_GPU,Intel Content Protection HECI Service [Communication with the Content Protection FW]
+GROUP,CUSTOM,INTEL_GPU,Intel Content Protection HECI Service (Communication with the Content Protection FW)
+GROUP,CUSTOM,IMAGE,Windows Image Acquisition (Camera + Scanner)
+GROUP,CUSTOM,LINK,Distributed Link Tracking Client (Links between NTFS files on network)
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,3,HvHost
@@ -191,3 +193,5 @@ SERVICE,EVENT_LOG,2,EventLog
 SERVICE,CONTROL_PANEL,2,igfxCUIService2.0.0.0
 SERVICE,CONTROL_PANEL,2,NVDisplay.ContainerLocalSystem
 SERVICE,INTEL_GPU,3,cphs
+SERVICE,IMAGE,2,StiSvc
+SERVICE,LINK,2,TrkWks
