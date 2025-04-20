@@ -1,0 +1,192 @@
+;CSV v1.0
+
+;,TabName: unique single word + no numbers + used as variable name and as key in associative array
+;TAB,TabName
+TAB,Tweaks1
+TAB,Tweaks2
+TAB,Custom
+
+;,,GroupName: unique single word + used as key in associative array
+;GROUP,TabName,GroupName,Description
+GROUP,TWEAKS1,HYPER_V,Hyper-V
+GROUP,TWEAKS1,RECORD_GAMES,Record Games (built-in Windows Service)
+GROUP,TWEAKS1,LAN_CONFIG,LAN Configuration (DirectAccess [Diagnostics on LAN Troubleshoot] + SSDP [WiFi Direct])
+GROUP,TWEAKS1,MS_STORE,Microsoft Store
+GROUP,TWEAKS1,MS_STORE_SYNC,Microsoft Store (Sync with MS Account [UWP apps] + Sync with MS Account [OS with Online Account])
+GROUP,TWEAKS1,MS_STORE_UWP_APP_BACKGROUND_ACTIVITY,Microsoft Store (UWP apps works in background)
+GROUP,TWEAKS1,MS_STORE_ACCOUNT,Microsoft Store (Create new MS account + MS Apps with MS Account authorization)
+GROUP,TWEAKS1,MS_STORE_SETTINGS_STORAGE,Microsoft Store (Settings ==> System ==> Storage ==> SETTINGS APP CRASH!!!)
+GROUP,TWEAKS1,MS_STORE_OFFLINE,Microsoft Store (Install/Restore Offline Apps)
+GROUP,TWEAKS1,ACCOUNT_PSW,Local Account with Password (Password + Windows Hello [Face + Fingerprint + PIN])
+GROUP,TWEAKS1,BIOMETRICS,Biometrics (Windows Hello [Face + Fingerprint + PIN])
+GROUP,TWEAKS1,BLUETOOTH_DEVICES,Bluetooth Devices (Mouse + Sound + Headphones)
+GROUP,TWEAKS1,BLUETOOTH_DEVICES_SINGLE_ACCOUNT,Bluetooth Devices (Usage with multiple User Accounts) [for Single User Account not needed]
+GROUP,TWEAKS1,BLUETOOTH_DEVICES_TABLET,Bluetooth Devices (Phone call through Bluetooth) [for PC and Notebook not needed]
+GROUP,TWEAKS1,XBOX,Xbox (Live + Saves)
+GROUP,TWEAKS1,XBOX_GAMEPAD,Xbox (Gamepad [Enable apps to pair devices])
+GROUP,TWEAKS1,PRINTER,Printer (Virtual Printer + Network Printer + Local Printer)
+GROUP,TWEAKS1,PRINTER_CLOUD,Printer (Cloud Printer)
+GROUP,TWEAKS1,PRINTER_UWP,Printer (Access/Manage printers from UWP apps)
+GROUP,TWEAKS1,SCANNER,Scanner (Virtual Scanner + Network Scanner + Local Scanner) [use VueScan to access scanner without this service]
+GROUP,TWEAKS1,FAX,Fax (Virtual Fax + Network Fax + Local Fax) [service PhoneSvc only for faxes and not for phones]
+GROUP,TWEAKS1,WINDOWS_UPDATE,Windows Update (Online Updates + MS Store apps updates) [CAN'T BE DISABLED HERE: use Sordum Windows Update Blocker]
+GROUP,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multiple sources) [disable and download from single source]
+GROUP,TWEAKS1,WINDOWS_UPDATE_OFFLINE_INSTALL,Windows Update (Install offline updates)
+GROUP,TWEAKS1,WINDOWS_UPDATE_INSIDER_PREVIEW,Windows Update (Insider Preview)
+GROUP,TWEAKS1,TABLET,Tablet Mode [for PC and Notebook not needed]
+GROUP,TWEAKS1,MONITOR_REMOTE,Monitor (Connected Remotely) [for local multiple monitors not needed]
+GROUP,TWEAKS1,MONITOR_REMOTE_WIFI_DIRECT,Monitor (WiFi Direct) [SOME WINDOWS IN ACTION CENTER [Win+A] STOP WORKING: Bluetooth (Manage Bluetooth Devices) + Cast [Win+K] + Project (Multi-Monitor Configuration) [Win+P]]
+GROUP,TWEAKS1,PHONE_LINK,Phone Link (Virtual Desktops + Phone Link + Night Light) [COUPLED WITH SPY: MANUALLY DELETE SERVICES]
+GROUP,TWEAKS1,PHONE_LINK_MESSAGING,Phone Link (MS Messaging app)
+GROUP,TWEAKS1,PHONE_LINK_MS_STORE_REMOTE_INSTALL,Phone Link (Remote install apps from MS Store to devices with MS Account)
+GROUP,TWEAKS1,PHONE_LINK_WINDOWS_KIOSK,Phone Link (Phone Link + Windows Kiosk)
+GROUP,TWEAKS1,THEMES,Themes [customize and apply desired theme then disable service]
+GROUP,TWEAKS2,MOBILE,Mobile (USB-Modem + USB-Router)
+GROUP,TWEAKS2,MOBILE_HOTSPOT,Mobile (Hotspot) [Settings ==> Bluetooth & Devices ==> Mobile Hotspot ==> NOT WORK!!!]
+GROUP,TWEAKS2,MOBILE_TRAFFIC,Mobile (Traffic Counter) [Settings ==> Network & Internet ==> Advanced Network Settings ==> Data Usage ==> MISSING!!!]
+GROUP,TWEAKS2,LAN,LAN (Wired + Wireless) (Find devices on LAN and advertise this device to LAN) [for direct connection to devices (without SMB) not needed]
+GROUP,TWEAKS2,LAN_SMB,LAN (Network Share)
+GROUP,TWEAKS2,LAN_SMB_CACHE,LAN (Network Share Cache) [NetBIOS over TCP/IP]
+GROUP,TWEAKS2,LAN_NET_LOGON,LAN (Network LogOn) [for simple Home Network not needed or network is configured already]
+GROUP,TWEAKS2,VPN,VPN (System VPN + VPN Clients) [needed for Xbox]
+GROUP,TWEAKS2,WINDOWS_MEDIA,Windows Media (Sync library on other devices with Windows Media Player)
+GROUP,TWEAKS2,REMOTE_CONTROL_RDP_LOCAL,Remote Control (Local "RDP Server") [you still can connect to remote RDP Server]
+GROUP,TWEAKS2,REMOTE_CONTROL_RDP_LOCAL_PORT_REDIRECT,Remote Control (Port Redirect: redirect remote sound && printer drivers to local PC) [you still can connect to remote RDP Server]
+GROUP,TWEAKS2,REMOTE_CONTROL_RDP_LOCAL_PORT_REDIRECT_SNIP_SKETCH,Remote Control (Data Sharing Service for Port Redirect) [used by "Snip && Sketch" app to edit screenshots (Win+Shift+S)] [you still can connect to remote RDP Server]
+GROUP,TWEAKS2,REMOTE_CONTROL_RDP_REMOTE,Remote Control ("Server" connection to configure remote "RDP Server") [you still can connect to remote RDP Server]
+GROUP,TWEAKS2,REMOTE_CONTROL_REGISTRY,Remote Control (Local "Remote Registry") [you still can connect to remote Registry]
+GROUP,TWEAKS2,WINDOWS_ERRORS,Windows Error Reports
+GROUP,TWEAKS2,CLOUD_WEBDAV,Cloud (WebDAV)
+GROUP,TWEAKS2,SMART_CARD,Smart-Card
+GROUP,TWEAKS2,KIOSK,Windows Kiosk
+GROUP,TWEAKS2,SEARCH,Windows Search (Indexing)
+GROUP,TWEAKS2,SEARCH_FILE_HISTORY,Windows Search (File History)
+GROUP,TWEAKS2,ENCRYPTION,Encryption (BitLocker)
+GROUP,TWEAKS2,ENCRYPTION_CLIPBOARD,Encryption (Encrypted File System EFS) [Clipboard [Win+V]???]
+GROUP,TWEAKS2,LOCALIZATION,Localization (Download New Languages for OS) [you still can switch between downloaded languages] [Settings ==> Time && Language ==> Language && Region ==> Add a Language ==> NOT WORK!!!]
+GROUP,TWEAKS2,SECURITY_CENTER,Security Center [notify about disabled security features: Defender + Firewall + SmartScreen + etc]
+GROUP,TWEAKS2,SECURE_EDGE_JAVASCRIPT,Secure JIT Compiler for Edge [intercepts scripts ==> securely compile ==> Defender check on virus ==> allows Edge compile them on its own]
+GROUP,TWEAKS2,PERFORMANCE_COUNTER,Performance Counter
+GROUP,TWEAKS2,DIAGNOSTICS,Background Diagnostics [use SYSTEM rights to disable]
+GROUP,TWEAKS2,DIAGNOSTICS_PROCESS_NETWORK_USAGE,Background Diagnostics (Process Network Usage) [use SYSTEM rights to disable] [Task Manager ==> Processes ==> Network ==> NOT WORK!!!] [NetLimiter as alternative]
+GROUP,TWEAKS2,DIAGNOSTICS_TROUBLESHOOTING,Background Diagnostics (Recommended Troubleshooting)
+GROUP,TWEAKS2,ENTERPRISE,Enterprise Tools
+GROUP,CUSTOM,TIME,Windows Time Synchronization
+GROUP,CUSTOM,EVENT_LOG,Windows Event Log [Malwarebytes Windows Firewall Control detects Allowed/Blocked packets]
+GROUP,CUSTOM,CONTROL_PANEL,Control Panel (NVIDIA + INTEL)
+GROUP,CUSTOM,INTEL_GPU,Intel Content Protection HECI Service [Communication with the Content Protection FW]
+
+;SERVICE,GroupName,StartupType,ServiceName
+SERVICE,HYPER_V,3,HvHost
+SERVICE,HYPER_V,3,vmicguestinterface
+SERVICE,HYPER_V,3,vmicheartbeat
+SERVICE,HYPER_V,3,vmickvpexchange
+SERVICE,HYPER_V,3,vmicrdv
+SERVICE,HYPER_V,3,vmicshutdown
+SERVICE,HYPER_V,3,vmictimesync
+SERVICE,HYPER_V,3,vmicvmsession
+SERVICE,HYPER_V,3,vmicvss
+SERVICE,RECORD_GAMES,3,BcastDVRUserService
+SERVICE,LAN_CONFIG,3,NcaSvc
+SERVICE,LAN_CONFIG,3,SSDPSRV
+SERVICE,MS_STORE,3,PimIndexMaintenanceSvc
+SERVICE,MS_STORE,3,UserDataSvc
+SERVICE,MS_STORE,3,UnistoreSvc
+SERVICE,MS_STORE,3,WalletService
+SERVICE,MS_STORE,3,perceptionsimulation
+SERVICE,MS_STORE,2,MapsBroker
+SERVICE,MS_STORE,3,EntAppSvc
+SERVICE,MS_STORE,3,WEPHOSTSVC
+SERVICE,MS_STORE,3,InstallService
+SERVICE,MS_STORE_SYNC,2,OneSyncSvc
+SERVICE,MS_STORE_UWP_APP_BACKGROUND_ACTIVITY,3,embeddedmode
+SERVICE,MS_STORE_ACCOUNT,3,wlidsvc
+SERVICE,MS_STORE_SETTINGS_STORAGE,2,StorSvc
+SERVICE,MS_STORE_OFFLINE,3,ClipSVC
+SERVICE,ACCOUNT_PSW,3,CredentialEnrollmentManagerUserSvc
+SERVICE,BIOMETRICS,3,WbioSrvc
+SERVICE,BLUETOOTH_DEVICES,3,ConsentUxUserSvc
+SERVICE,BLUETOOTH_DEVICES,3,bthserv
+SERVICE,BLUETOOTH_DEVICES,3,BthAvctpSvc
+SERVICE,BLUETOOTH_DEVICES_SINGLE_ACCOUNT,3,BluetoothUserService
+SERVICE,BLUETOOTH_DEVICES_TABLET,3,BTAGService
+SERVICE,XBOX,3,XboxNetApiSvc
+SERVICE,XBOX,3,XboxGipSvc
+SERVICE,XBOX,3,XblGameSave
+SERVICE,XBOX,3,XblAuthManager
+SERVICE,XBOX_GAMEPAD,3,DeviceAssociationBrokerSvc
+SERVICE,PRINTER,2,Spooler
+SERVICE,PRINTER,3,PrintNotify
+SERVICE,PRINTER_CLOUD,3,McpManagementService
+SERVICE,PRINTER_UWP,3,PrintWorkflowUserSvc
+SERVICE,SCANNER,3,WiaRpc
+SERVICE,FAX,3,PhoneSvc
+SERVICE,WINDOWS_UPDATE,3,wuauserv
+SERVICE,WINDOWS_UPDATE_MULTI_DOWNLOAD,2,DoSvc
+SERVICE,WINDOWS_UPDATE_OFFLINE_INSTALL,3,DmEnrollmentSvc
+SERVICE,WINDOWS_UPDATE_INSIDER_PREVIEW,3,wisvc
+SERVICE,TABLET,3,SensrSvc
+SERVICE,TABLET,3,SensorService
+SERVICE,TABLET,3,SensorDataService
+SERVICE,TABLET,3,SEMgrSvc
+SERVICE,TABLET,3,lfsvc
+SERVICE,MONITOR_REMOTE,2,DispBrokerDesktopSvc
+SERVICE,MONITOR_REMOTE_WIFI_DIRECT,3,WFDSConMgrSvc
+SERVICE,PHONE_LINK,2,CDPSvc
+SERVICE,PHONE_LINK,2,CDPUserSvc
+SERVICE,PHONE_LINK_MESSAGING,3,MessagingService
+SERVICE,PHONE_LINK_MS_STORE_REMOTE_INSTALL,3,PushToInstall
+SERVICE,PHONE_LINK_WINDOWS_KIOSK,2,WpnService
+SERVICE,THEMES,2,Themes
+SERVICE,MOBILE,3,WwanSvc
+SERVICE,MOBILE,3,wlpasvc
+SERVICE,MOBILE,3,autotimesvc
+SERVICE,MOBILE_HOTSPOT,3,icssvc
+SERVICE,MOBILE_TRAFFIC,2,DusmSvc
+SERVICE,LAN,3,FDResPub
+SERVICE,LAN,3,fdPHost
+SERVICE,LAN_SMB,3,lmhosts
+SERVICE,LAN_SMB,2,LanmanServer
+SERVICE,LAN_SMB,2,LanmanWorkstation
+SERVICE,LAN_SMB_CACHE,3,CscService
+SERVICE,LAN_NET_LOGON,3,Netlogon
+SERVICE,VPN,3,PolicyAgent
+SERVICE,VPN,3,IKEEXT
+SERVICE,WINDOWS_MEDIA,3,WPDBusEnum
+SERVICE,REMOTE_CONTROL_RDP_LOCAL,3,TermService
+SERVICE,REMOTE_CONTROL_RDP_LOCAL_PORT_REDIRECT,3,UmRdpService
+SERVICE,REMOTE_CONTROL_RDP_LOCAL_PORT_REDIRECT_SNIP_SKETCH,3,DsSvc
+SERVICE,REMOTE_CONTROL_RDP_REMOTE,3,SessionEnv
+SERVICE,REMOTE_CONTROL_REGISTRY,4,RemoteRegistry
+SERVICE,WINDOWS_ERRORS,3,WerSvc
+SERVICE,WINDOWS_ERRORS,3,wercplsupport
+SERVICE,WINDOWS_ERRORS,3,Wecsvc
+SERVICE,CLOUD_WEBDAV,3,WebClient
+SERVICE,SMART_CARD,3,SCPolicySvc
+SERVICE,SMART_CARD,3,ScDeviceEnum
+SERVICE,SMART_CARD,3,SCardSvr
+SERVICE,SMART_CARD,3,CertPropSvc
+SERVICE,KIOSK,3,AssignedAccessManagerSvc
+SERVICE,KIOSK,3,AppReadiness
+SERVICE,SEARCH,4,WSearch
+SERVICE,SEARCH_FILE_HISTORY,3,fhsvc
+SERVICE,ENCRYPTION,3,BDESVC
+SERVICE,ENCRYPTION_CLIPBOARD,3,EFS
+SERVICE,LOCALIZATION,3,LxpSvc
+SERVICE,SECURITY_CENTER,2,wscsvc
+SERVICE,SECURE_EDGE_JAVASCRIPT,3,WarpJITSvc
+SERVICE,PERFORMANCE_COUNTER,3,wmiApSrv
+SERVICE,PERFORMANCE_COUNTER,3,pla
+SERVICE,PERFORMANCE_COUNTER,3,PerfHost
+SERVICE,DIAGNOSTICS,3,WdiSystemHost
+SERVICE,DIAGNOSTICS,3,WdiServiceHost
+SERVICE,DIAGNOSTICS_PROCESS_NETWORK_USAGE,2,DPS
+SERVICE,DIAGNOSTICS_TROUBLESHOOTING,3,TroubleshootingSvc
+SERVICE,ENTERPRISE,3,dot3svc
+SERVICE,ENTERPRISE,3,DevQueryBroker
+SERVICE,ENTERPRISE,3,AppMgmt
+SERVICE,TIME,3,W32Time
+SERVICE,EVENT_LOG,2,EventLog
+SERVICE,CONTROL_PANEL,2,igfxCUIService2.0.0.0
+SERVICE,CONTROL_PANEL,2,NVDisplay.ContainerLocalSystem
+SERVICE,INTEL_GPU,3,cphs
