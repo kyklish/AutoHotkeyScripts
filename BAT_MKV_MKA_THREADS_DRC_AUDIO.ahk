@@ -90,7 +90,7 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
 }
 
 FileWrite(sFileName, sStr) {
-    oFile := FileOpen(sFileName, "w")
+    oFile := FileOpen(sFileName, "w `n")
     oFile.Write(sStr)
     oFile.Close()
 }
