@@ -1746,7 +1746,7 @@ class Database
 
     WriteCSV(sFileName) { ; Sync any changes with ReadCSV()
         bWriteUserProgress := (sFileName == oFileName.sUP) ? True : False
-        oFile := FileOpen(sFileName, "w")
+        oFile := FileOpen(sFileName, "w `n")
         oFile.WriteLine(";CSV v1.0")
         If (bWriteUserProgress) { ; User Progress
             oFile.WriteLine(";DEFAULT REGION,Region")
