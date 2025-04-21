@@ -19,6 +19,7 @@ oDB.Save()                    ; Update file with DEFAULT values on mismatch (add
 
 Gosub CreateGui
 Gosub ButtonRefresh
+Gui Show,, %sWinTitle%
 GuiControl, Focus, Read&Me
 
 !x::ExitApp
@@ -62,7 +63,6 @@ CreateGui:
     Gui Add, Button, ys, &Sort CSV
     Gui Add, Button, ys, Reload
     Gui Add, Button, ys, E&xit
-    Gui Show,, %sWinTitle%
 Return
 
 ButtonExit:
