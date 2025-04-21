@@ -19,6 +19,7 @@ oDB.Save()                    ; Update file with DEFAULT values on mismatch (add
 
 Gosub CreateGui
 Gosub ButtonRefresh
+GuiControl, Focus, Read&Me
 
 !x::ExitApp
 !z::Reload
@@ -40,7 +41,7 @@ CreateGui:
     Gui Font, , Verdana
     Gui Add, Button, yp x+m Section, &Check All
     Gui Add, Button, yp x+m, &UnCheck All
-    Gui Add, Button, yp x+m, Read&Me
+    Gui Add, Button, yp x+m Default, Read&Me
     Gui Add, Tab3, xs vCurrentTab, % GuiGetTabNames(oDB.oTabs)
     Gui Margin, , 0 ; Too many buttons, make them compact
     For sTab, oTab in oDB.oTabs {
