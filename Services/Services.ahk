@@ -135,6 +135,7 @@ ButtonUnCheckAll:
 Return
 
 ButtonStatus:
+    sRunningServices := GetRunningServices()
     sStr := ""
     ; [A_GuiControl] is equal to the variable name in the [Gui Add, Button] command
     sGroup := GuiGetGroupName(A_GuiControl)
