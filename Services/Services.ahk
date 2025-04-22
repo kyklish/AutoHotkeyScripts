@@ -38,9 +38,11 @@ CreateGui:
     Gui Font, , Consolas
     Gui Add, Edit, v%sEditControlVarName% ReadOnly -Wrap r%iEditRows% w%iEditWidth%
     Gui Font, , Verdana
-    Gui Add, Button, yp x+m Section, &Check All
+    Gui Add, Button, yp x+m Section Default, Read&Me
+    Gui Add, Button, yp x+m, Check &Safe
+    Gui Add, Button, yp x+m, Check &Moderate
+    Gui Add, Button, yp x+m, &Check All
     Gui Add, Button, yp x+m, &UnCheck All
-    Gui Add, Button, yp x+m Default, Read&Me
     Gui Add, Tab3, xs vCurrentTab, % GuiGetTabNames(oDB.oTabs)
     Gui Margin, , 0 ; Too many buttons, make them compact
     For sTab, oTab in oDB.oTabs {
@@ -103,6 +105,10 @@ ButtonSortCSV:
 Return
 
 ButtonApply:
+    If (!A_IsAdmin) {
+        MsgBox(A_DefaultGui, "E", "Need admin rights")
+        Return
+    }
     Gui Submit, NoHide
     For _, oTab in oDB.oTabs
         For sGroup, oGroup in oTab.oGroups {
@@ -124,12 +130,20 @@ ButtonApply:
     Gosub ButtonRefresh
 Return
 
+ButtonCheckSafe:
+    GuiSetCheckBoxProfile(oDB.oTabs, 1)
+Return
+
+ButtonCheckModerate:
+    GuiSetCheckBoxProfile(oDB.oTabs, 2)
+Return
+
 ButtonCheckAll:
-    GuiSetCheckBoxAll(1)
+    GuiSetCheckBoxAll(oDB.oTabs, 1)
 Return
 
 ButtonUnCheckAll:
-    GuiSetCheckBoxAll(0)
+    GuiSetCheckBoxAll(oDB.oTabs, 0)
 Return
 
 ButtonStatus:
@@ -189,13 +203,22 @@ GuiGetEditParams(oTabs) {
     Return oEditParams
 }
 
+GuiSetCheckBoxProfile(oTabs, iProfile) {
+    For _, oTab in oTabs
+        For sGroup, oGroup in oTab.oGroups {
+            If (oGroup.iProfile <= iProfile)
+                GuiSetCheckBox(sGroup, 1)
+            Else
+                GuiSetCheckBox(sGroup, 0)
+        }
+}
+
 GuiSetCheckBox(sGroup, iValue) {
     GuiControl, , %sGroup%cb, %iValue%
 }
 
-GuiSetCheckBoxAll(iValue) {
-    global oDB
-    For _, oTab in oDB.oTabs
+GuiSetCheckBoxAll(oTabs, iValue) {
+    For _, oTab in oTabs
         For sGroup, _ in oTab.oGroups
             GuiSetCheckBox(sGroup, iValue)
 }
@@ -278,14 +301,14 @@ GetMask(sServiceNameWithoutMask) {
 GetStartupType(sServiceName, bShowMsgBoxOnError := false) {
     RegRead, sStart, HKLM\SYSTEM\CurrentControlSet\Services\%sServiceName%, Start
     If (ErrorLevel && bShowMsgBoxOnError)
-        MsgBox % sServiceName ": NO REG ENTRY"
+        MsgBox(A_DefaultGui, "W", sServiceName ": NO REG ENTRY")
     Return sStart
 }
 
 SetStartupType(sServiceName, iStart) {
     RegWrite, REG_DWORD, HKLM\SYSTEM\CurrentControlSet\Services\%sServiceName%, Start, %iStart%
     If (ErrorLevel)
-        MsgBox % sServiceName ": CAN'T WRITE (NEED ADMIN RIGHTS)"
+        MsgBox(A_DefaultGui, "E", sServiceName ": CAN'T WRITE (NEED ADMIN RIGHTS)")
 }
 
 GetRunningServices() {
@@ -412,20 +435,26 @@ class Database {
                 this.oTabs[sTab].iIndex := iTabIndex++
             Case "GROUP":
                 oCSV.RemoveAt(1, 1) ; Remove first element in linear array
-                sTab   := oCSV[1]
-                sGroup := oCSV[2]
-                sDescr := oCSV[3]
+                ;@AHK++AlignAssignmentOn
+                iProfile := oCSV[1]
+                sTab     := oCSV[2]
+                sGroup   := oCSV[3]
+                sDescr   := oCSV[4]
+                ;@AHK++AlignAssignmentOff
                 ; If object is not exist create it
                 If (!IsObject(this.oTabs[sTab].oGroups[sGroup]))
                     this.oTabs[sTab].oGroups[sGroup] := {}
-                this.oTabs[sTab].oGroups[sGroup].sDescr := sDescr
-                this.oTabs[sTab].oGroups[sGroup].iIndex := iGroupIndex++
+                this.oTabs[sTab].oGroups[sGroup].iIndex   := iGroupIndex++
+                this.oTabs[sTab].oGroups[sGroup].iProfile := iProfile
+                this.oTabs[sTab].oGroups[sGroup].sDescr   := sDescr
             Case "SERVICE":
                 bIsFound := false
                 oCSV.RemoveAt(1, 1) ; Remove first element in linear array
+                ;@AHK++AlignAssignmentOn
                 sGroup   := oCSV[1]
                 iStartup := oCSV[2]
                 sName    := oCSV[3]
+                ;@AHK++AlignAssignmentOff
                 this.sAllServices .= sName "`n"
                 oService := { sName: sName, iStartup: iStartup }
                 For _, oTab in this.oTabs
@@ -458,11 +487,11 @@ class Database {
             oFile.WriteLine("TAB," sTab)
 
         oFIle.WriteLine()
-        oFile.WriteLine(";,,GroupName: unique single word + used as key in associative array")
-        oFile.WriteLine(";GROUP,TabName,GroupName,Description")
+        oFile.WriteLine(";,Profile: 1=Safe,GroupName: unique single word + used as key in associative array")
+        oFile.WriteLine(";GROUP,Profile,TabName,GroupName,Description")
         For _, sTab in GetOrderedNamesInArray(this.oTabs)
             For _, sGroup in GetOrderedNamesInArray(this.oTabs[sTab].oGroups)
-                oFile.WriteLine("GROUP," Format("{:U}", sTab) "," sGroup "," this.oTabs[sTab].oGroups[sGroup].sDescr)
+                oFile.WriteLine("GROUP," this.oTabs[sTab].oGroups[sGroup].iProfile "," Format("{:U}", sTab) "," sGroup "," this.oTabs[sTab].oGroups[sGroup].sDescr)
 
         oFIle.WriteLine()
         oFile.WriteLine(";SERVICE,GroupName,StartupType,ServiceName")
