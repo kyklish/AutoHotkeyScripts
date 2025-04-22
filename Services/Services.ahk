@@ -226,8 +226,8 @@ GuiShowRunningServices(sRunningServices, oTabs) {
                 If (IsServiceRunning(sRunningServices, oService.sName))
                     sStr .= sGroup "`t" GetStartupType(oService.sName) " : " oService.sName "`n"
                 If (IsServiceExist(oService.sName "_" sMask))
-                    If (IsServiceRunning(sRunningServices, oService.sName))
                         sStr .= sGroup "`t" GetStartupType(oService.sName "_" sMask) " : " oService.sName "_" sMask "`n"
+                    If (IsServiceRunning(sRunningServices, oService.sName "_" sMask))
             }
     GuiShowText(sStr)
 }
