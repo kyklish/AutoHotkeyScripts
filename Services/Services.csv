@@ -43,8 +43,8 @@ GROUP,1,TWEAKS1,PHONE_LINK_MS_STORE_REMOTE_INSTALL,Phone Link (Remote install ap
 GROUP,1,TWEAKS1,PHONE_LINK_WINDOWS_KIOSK,Phone Link (Phone Link + Windows Kiosk)
 GROUP,1,TWEAKS1,THEMES,Themes [customize and apply desired theme then disable service]
 GROUP,1,TWEAKS2,MOBILE,Mobile (USB-Modem + USB-Router)
-GROUP,1,TWEAKS2,MOBILE_HOTSPOT,Mobile (Hotspot) [Settings ==> Bluetooth & Devices ==> Mobile Hotspot ==> NOT WORK!!!]
-GROUP,1,TWEAKS2,MOBILE_TRAFFIC,Mobile (Traffic Counter) [Settings ==> Network & Internet ==> Advanced Network Settings ==> Data Usage ==> MISSING!!!]
+GROUP,1,TWEAKS2,MOBILE_HOTSPOT,Mobile (Hotspot) [Settings ==> Bluetooth && Devices ==> Mobile Hotspot ==> NOT WORK!!!]
+GROUP,1,TWEAKS2,MOBILE_TRAFFIC,Mobile (Traffic Counter) [Settings ==> Network && Internet ==> Advanced Network Settings ==> Data Usage ==> MISSING!!!]
 GROUP,1,TWEAKS2,LAN,LAN (Wired + Wireless) (Find devices on LAN and advertise this device to LAN) [for direct connection to devices (without SMB) not needed]
 GROUP,1,TWEAKS2,LAN_SMB,LAN (Network Share)
 GROUP,1,TWEAKS2,LAN_SMB_CACHE,LAN (Network Share Cache) [NetBIOS over TCP/IP]
