@@ -58,6 +58,7 @@ CreateGui:
     Gui Tab
     Gui Margin, , 5
     Gui Add, Button, Section, &Apply
+    Gui Add, Button, ys, Sto&p
     Gui Add, Button, ys, &Refresh
     Gui Add, Button, ys, &Edit CSV
     Gui Add, Button, ys, &Sort CSV
@@ -78,16 +79,17 @@ Return
 
 ButtonReadMe:
     sStr := ""
-    sStr .= "Some registry keys needs SYSTEM rights to change them.`n"
-    sStr .= "Use [Services.cmd] to run compiled version of this script.`n"
-    sStr .= "On first start script creates [" sFileNameServicesDefault "].`n"
-    sStr .= "[" sFileNameServicesDefault "]: original values of the services startup value.`n`n"
+    sStr .= "Some registry keys needs SYSTEM rights to change them.`n`n"
+    sStr .= "[Services.cmd]: run compiled version of this script with SYSTEM rights.`n"
+    sStr .= "[" sFileNameServicesDefault "]: original startup values of the services.`n"
+    sStr .= "[" sFileNameServicesDefault "]: creates on first start of the script.`n`n"
     sStr .= "Modify [" sFileNameServices "]:`n - add new`n - del old`n - edit`n - reorder TABs/GROUPs`n"
     sStr .= "Sort & Update [" sFileNameServices "] + [" sFileNameServicesDefault "]:`n - press button [Sort CSV]`n`n"
-    sStr .= "[Apply] button:`n - apply all services setting accordingly to checkboxes value`n - stop services if running`n - start services if stopped`n"
-    sStr .= "[Status] button:`n - shows CurrentStartup:Startup:Status:Service`n"
+    sStr .= "[Stop] button:`n - stop checked services`n"
+    sStr .= "[Apply] button:`n - stop checked services`n - set startup value of all services accordingly to checkboxes value`n"
+    sStr .= "[Status] button:`n - show CurrentStartup:Startup:Status:Service`n"
     sStr .= "[Refresh] button:`n - refresh info about running services and checkboxes value`n"
-    sStr .= "[CheckBox]:`n - shows associated GROUP name`n"
+    sStr .= "[CheckBox]:`n - show associated GROUP name`n"
     ; MsgBox(A_DefaultGui, "I", sStr)
     GuiShowText(sStr)
 Return
@@ -105,31 +107,53 @@ ButtonSortCSV:
 Return
 
 ButtonApply:
+    GuiApply(oDB.oTabs)
+    Gosub ButtonRefresh
+Return
+
+ButtonStop:
+    GuiApply(oDB.oTabs, false)
+    Gosub ButtonRefresh
+Return
+
+; Stop services, set startup type
+GuiApply(oTabs, bSetStartupType := true) {
     If (!A_IsAdmin) {
         MsgBox(A_DefaultGui, "E", "Need admin rights")
         Return
     }
     Gui Submit, NoHide
     sRunningServices := GetRunningServices()
-    For _, oTab in oDB.oTabs
+    For _, oTab in oTabs
         For sGroup, oGroup in oTab.oGroups {
             GuiControlGet, bChecked, , %sGroup%cb
             For _, oService in oGroup.oServices {
+                sStr := ""
                 If (bChecked) {
-                    SetStartupType(oService.sName, oService.iStartup)
-                    If (IsServiceRunning(sRunningServices, oService.sName))
+                    If (IsServiceRunning(sRunningServices, oService.sName)) {
+                        sStr .= " Stop:" oService.sName "`n"
                         StopService(oService.sName)
-                    GuiShowText("Stop:" oService.sName ":" oService.iStartup)
+                    }
+                    If (bSetStartupType) {
+                        sStr .= "  Set:" oService.sName ":" oService.iStartup "`n"
+                        SetStartupType(oService.sName, oService.iStartup)
+                    }
                 } Else {
-                    SetStartupType(oService.sName, oService.iStartupDefault)
-                    If (!IsServiceRunning(sRunningServices, oService.sName))
-                        StartService(oService.sName)
-                    GuiShowText("Restore:" oService.sName ":" oService.iStartupDefault)
+                    ; DO NOT START services.
+                    ; Most of them do not start on Windows startup.
+                    ; If (!IsServiceRunning(sRunningServices, oService.sName)) {
+                    ;     sStr .= "Start:" oService.sName "`n"
+                    ;     StartService(oService.sName)
+                    ; }
+                    If (bSetStartupType) {
+                        SetStartupType(oService.sName, oService.iStartupDefault)
+                        sStr .= "  Set:" oService.sName ":" oService.iStartupDefault "`n"
+                    }
                 }
+                GuiShowText(sStr)
             }
         }
-    Gosub ButtonRefresh
-Return
+}
 
 ButtonCheckSafe:
     GuiSetCheckBoxProfile(oDB.oTabs, 1)
