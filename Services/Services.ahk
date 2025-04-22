@@ -20,7 +20,7 @@ oDB.Save()                    ; Update file with DEFAULT values on mismatch (add
 Gosub CreateGui
 Gosub ButtonRefresh
 Gui Show,, %sWinTitle%
-GuiControl, Focus, Read&Me
+GuiControl, Focus, ReadMe
 
 !x::ExitApp
 !z::Reload
@@ -39,7 +39,7 @@ CreateGui:
     Gui Font, , Consolas
     Gui Add, Edit, v%sEditControlVarName% ReadOnly -Wrap r%iEditRows% w%iEditWidth%
     Gui Font, , Verdana
-    Gui Add, Button, yp x+m Section Default, Read&Me
+    Gui Add, Button, yp x+m Section Default, ReadMe
     Gui Add, Button, yp x+m, Check &Safe
     Gui Add, Button, yp x+m, Check &Moderate
     Gui Add, Button, yp x+m, &Check All
@@ -59,10 +59,10 @@ CreateGui:
     Gui Tab
     Gui Margin, , 5
     Gui Add, Button, Section, &Apply
-    Gui Add, Button, ys, Sto&p
+    Gui Add, Button, ys, S&top
     Gui Add, Button, ys, &Refresh
-    Gui Add, Button, ys, &Edit CSV
-    Gui Add, Button, ys, &Sort CSV
+    Gui Add, Button, ys, Edit CSV
+    Gui Add, Button, ys, Sort CSV
     Gui Add, Button, ys, Reload
     Gui Add, Button, ys, E&xit
 Return
