@@ -123,7 +123,7 @@ ButtonApply:
                     SetStartupType(oService.sName, oService.iStartupDefault)
                     If (!IsServiceRunning(sRunningServices, oService.sName))
                         StartService(oService.sName)
-                    GuiShowText("Restore:" oService.sName ":" oService.iStartup)
+                    GuiShowText("Restore:" oService.sName ":" oService.iStartupDefault)
                 }
             }
         }
