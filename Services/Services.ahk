@@ -33,12 +33,10 @@ CreateGui:
     ;  3 = Two button rows (above + below Edit control) + Tabs header
     ; 21 = Button step, 12 = Text step in Edit control
     iEditRows   := Round((oEditParams.iGroupCount + 3) * 21/12)
-    iEditTabPos := Round( oEditParams.iGroupNameLen * 2.3)
     iEditWidth  := Round((oEditParams.iGroupNameLen + oEditParams.iServiceNameLen + StrLen("_" sMask) + 4) * 6)
     Gui New, +LastFound
     Gui Font, , Consolas
-    ; Tn is tab position, can be multiple tab positions
-    Gui Add, Edit, v%sEditControlVarName% ReadOnly -Wrap r%iEditRows% w%iEditWidth% t%iEditTabPos%
+    Gui Add, Edit, v%sEditControlVarName% ReadOnly -Wrap r%iEditRows% w%iEditWidth%
     Gui Font, , Verdana
     Gui Add, Button, yp x+m Section, &Check All
     Gui Add, Button, yp x+m, &UnCheck All
@@ -219,15 +217,21 @@ GuiUpdateCheckBoxes(oTabs) {
 
 GuiShowRunningServices(sRunningServices, oTabs) {
     global sMask
-    sStr := "Mask:" sMask "`tRUNNING SERVICES`n`nGROUP (CheckBox)`t[2:Auto 3:Manual 4:Disabled] : Name`n`n"
+    sStr := ""
+    oEditParams := GuiGetEditParams(oTabs)
+    ; Tabulator not reliable in Edit control, use Format()
+    ; First string with LEFT alignment, padding with spaces
+    sFormatStr := "{:-" oEditParams.iGroupNameLen "} {}"
+    sStr .= Format(sFormatStr, "Mask:" sMask, "RUNNING SERVICES") "`n`n"
+    sStr .= Format(sFormatStr, "GROUP (CheckBox)","[2:Auto 3:Manual 4:Disabled] : Name") "`n`n"
     For _, oTab in oTabs
         For sGroup, oGroup in oTab.oGroups
             For _, oService in oGroup.oServices {
                 If (IsServiceRunning(sRunningServices, oService.sName))
-                    sStr .= sGroup "`t" GetStartupType(oService.sName) " : " oService.sName "`n"
+                    sStr .= Format(sFormatStr, sGroup, GetStartupType(oService.sName) " : " oService.sName) "`n"
                 If (IsServiceExist(oService.sName "_" sMask))
-                        sStr .= sGroup "`t" GetStartupType(oService.sName "_" sMask) " : " oService.sName "_" sMask "`n"
                     If (IsServiceRunning(sRunningServices, oService.sName "_" sMask))
+                        sStr .= Format(sFormatStr, sGroup, GetStartupType(oService.sName "_" sMask) " : " oService.sName "_" sMask) "`n"
             }
     GuiShowText(sStr)
 }
