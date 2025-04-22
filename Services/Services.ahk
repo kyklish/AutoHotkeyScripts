@@ -510,20 +510,11 @@ class Database {
                 For i, oService in oGroup.oServices {
                     iStartupDefault := ""
 
-                    ; Search DEFAULT startup value.
                     For sTabO, oTabO in oTabsO
-                        For sGroupO, oGroupO in oTabO.oGroups {
-                            bIsFound := false
+                        For sGroupO, oGroupO in oTabO.oGroups
                             For _, oServiceO in oGroupO.oServices
-                                If (oServiceO.sName = oService.sName) {
-                                    bIsFound := true
+                                If (oServiceO.sName = oService.sName)
                                     iStartupDefault := oServiceO.iStartup
-                                }
-                            ; If not found then we have some old entries,
-                            ;   lets overwrite them.
-                            If (!bIsFound)
-                                this.bIsModified := true
-                        }
 
                     If (iStartupDefault)
                         oService.iStartupDefault := iStartupDefault
