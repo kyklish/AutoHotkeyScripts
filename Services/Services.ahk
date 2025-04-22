@@ -35,6 +35,7 @@ CreateGui:
     iEditRows   := Round((oEditParams.iGroupCount + 3) * 21/12)
     iEditWidth  := Round((oEditParams.iGroupNameLen + oEditParams.iServiceNameLen + StrLen("_" sMask) + 4) * 6)
     Gui New, +LastFound
+    ; Gui New, +AlwaysOnTop +LastFound ; No flickering of console window
     Gui Font, , Consolas
     Gui Add, Edit, v%sEditControlVarName% ReadOnly -Wrap r%iEditRows% w%iEditWidth%
     Gui Font, , Verdana
@@ -75,6 +76,7 @@ ButtonRefresh:
     sRunningServices := GetRunningServices()
     GuiShowRunningServices(sRunningServices, oDB.oTabs)
     GuiUpdateCheckBoxes(oDB.oTabs)
+    WinActivate ; RunWaitCMD() in different functions deactivate window
 Return
 
 ButtonReadMe:
@@ -182,6 +184,7 @@ ButtonStatus:
             sStr .= GuiGetStatusLine(sRunningServices, oService.sName "_" sMask, oService.iStartup) "`n"
     }
     GuiShowText(sStr)
+    WinActivate ; RunWaitCMD() in different functions deactivate window
 Return
 
 CheckBox() {
