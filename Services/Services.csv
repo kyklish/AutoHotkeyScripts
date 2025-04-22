@@ -36,7 +36,7 @@ GROUP,TWEAKS1,WINDOWS_UPDATE_INSIDER_PREVIEW,Windows Update (Insider Preview)
 GROUP,TWEAKS1,TABLET,Tablet Mode [for PC and Notebook not needed]
 GROUP,TWEAKS1,TABLET_POWER,Tablet Mode (Sensor Service) [Settings ==> System ==> Power && Battery ==> SETTINGS APP CRASH!!!]
 GROUP,TWEAKS1,MONITOR_REMOTE,Monitor (Connected Remotely) [for local multiple monitors not needed]
-GROUP,TWEAKS1,MONITOR_REMOTE_WIFI_DIRECT,Monitor (WiFi Direct) [SOME WINDOWS IN ACTION CENTER [Win+A] STOP WORKING: Bluetooth (Manage Bluetooth Devices) + Cast [Win+K] + Project (Multi-Monitor Configuration) [Win+P]]
+GROUP,TWEAKS1,MONITOR_REMOTE_WIFI_DIRECT,Monitor (WiFi Direct) [ACTION CENTER [Win+A] ==> Bluetooth (Manage Bluetooth Devices) + Cast [Win+K] + Project (Multi-Monitor Configuration) [Win+P] ==> STOP WORKING!!!]
 GROUP,TWEAKS1,PHONE_LINK,Phone Link (Virtual Desktops + Phone Link + Night Light) [COUPLED WITH SPY: MANUALLY DELETE SERVICES]
 GROUP,TWEAKS1,PHONE_LINK_MESSAGING,Phone Link (MS Messaging app)
 GROUP,TWEAKS1,PHONE_LINK_MS_STORE_REMOTE_INSTALL,Phone Link (Remote install apps from MS Store to devices with MS Account)
@@ -51,11 +51,11 @@ GROUP,TWEAKS2,LAN_SMB_CACHE,LAN (Network Share Cache) [NetBIOS over TCP/IP]
 GROUP,TWEAKS2,LAN_NET_LOGON,LAN (Network LogOn) [for simple Home Network not needed or network is configured already]
 GROUP,TWEAKS2,VPN,VPN (System VPN + VPN Clients) [needed for Xbox]
 GROUP,TWEAKS2,WINDOWS_MEDIA,Windows Media (Sync library on other devices with Windows Media Player)
-GROUP,TWEAKS2,REMOTE_CONTROL_RDP_LOCAL,Remote Control (Local "RDP Server") [you still can connect to remote RDP Server]
-GROUP,TWEAKS2,REMOTE_CONTROL_RDP_LOCAL_PORT_REDIRECT,Remote Control (Port Redirect: redirect remote sound && printer drivers to local PC) [you still can connect to remote RDP Server]
-GROUP,TWEAKS2,REMOTE_CONTROL_RDP_LOCAL_PORT_REDIRECT_SNIP_SKETCH,Remote Control (Data Sharing Service for Port Redirect) [used by "Snip && Sketch" app to edit screenshots (Win+Shift+S)] [you still can connect to remote RDP Server]
-GROUP,TWEAKS2,REMOTE_CONTROL_RDP_REMOTE,Remote Control ("Server" connection to configure remote "RDP Server") [you still can connect to remote RDP Server]
-GROUP,TWEAKS2,REMOTE_CONTROL_REGISTRY,Remote Control (Local "Remote Registry") [you still can connect to remote Registry]
+GROUP,TWEAKS2,RDP_LOCAL,Remote Control (Local "RDP Server") [you still can connect to remote RDP Server]
+GROUP,TWEAKS2,RDP_LOCAL_PORT_REDIRECT,Remote Control ("Port Redirect": redirect remote sound && printer drivers to local PC) [you still can connect to remote RDP Server]
+GROUP,TWEAKS2,RDP_LOCAL_PORT_REDIRECT_SNIP_SKETCH,Remote Control ("Data Sharing Service" for "Port Redirect") [used by "Snip && Sketch" app to edit screenshots (Win+Shift+S)] [you still can connect to remote RDP Server]
+GROUP,TWEAKS2,RDP_REMOTE,Remote Control ("Server" connection to configure remote "RDP Server") [you still can connect to remote RDP Server]
+GROUP,TWEAKS2,REMOTE_REGISTRY,Remote Registry
 GROUP,TWEAKS2,WINDOWS_ERRORS,Windows Error Reports
 GROUP,TWEAKS2,CLOUD_WEBDAV,Cloud (WebDAV)
 GROUP,TWEAKS2,SMART_CARD,Smart-Card
@@ -156,11 +156,11 @@ SERVICE,LAN_NET_LOGON,4,Netlogon
 SERVICE,VPN,4,PolicyAgent
 SERVICE,VPN,4,IKEEXT
 SERVICE,WINDOWS_MEDIA,4,WPDBusEnum
-SERVICE,REMOTE_CONTROL_RDP_LOCAL,4,TermService
-SERVICE,REMOTE_CONTROL_RDP_LOCAL_PORT_REDIRECT,4,UmRdpService
-SERVICE,REMOTE_CONTROL_RDP_LOCAL_PORT_REDIRECT_SNIP_SKETCH,4,DsSvc
-SERVICE,REMOTE_CONTROL_RDP_REMOTE,4,SessionEnv
-SERVICE,REMOTE_CONTROL_REGISTRY,4,RemoteRegistry
+SERVICE,RDP_LOCAL,4,TermService
+SERVICE,RDP_LOCAL_PORT_REDIRECT,4,UmRdpService
+SERVICE,RDP_LOCAL_PORT_REDIRECT_SNIP_SKETCH,4,DsSvc
+SERVICE,RDP_REMOTE,4,SessionEnv
+SERVICE,REMOTE_REGISTRY,4,RemoteRegistry
 SERVICE,WINDOWS_ERRORS,4,WerSvc
 SERVICE,WINDOWS_ERRORS,4,wercplsupport
 SERVICE,WINDOWS_ERRORS,4,Wecsvc
