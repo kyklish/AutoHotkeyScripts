@@ -110,6 +110,7 @@ ButtonApply:
         Return
     }
     Gui Submit, NoHide
+    sRunningServices := GetRunningServices()
     For _, oTab in oDB.oTabs
         For sGroup, oGroup in oTab.oGroups {
             GuiControlGet, bChecked, , %sGroup%cb
