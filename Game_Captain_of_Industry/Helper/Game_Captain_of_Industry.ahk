@@ -208,8 +208,8 @@ global bSendInput := true
 ;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
 ; UI80 or UI100 or UI120 etc...
 RegExMatch(A_ScriptName, "UI(?P<Value>\d\d\d?)", uiScaleRegEx)
-If uiScaleRegExValue is Integer
-    If (uiScaleRegExValue >= 80) {
+if uiScaleRegExValue is Integer
+    if (uiScaleRegExValue >= 80) {
         uiScale := uiScaleRegExValue
         Menu, Tray, Tip, Captain of Industry Helper`nUI Scale (from script's file name): %uiScale%`%
     }
@@ -752,7 +752,8 @@ PriorityConstruction(dlOperation, clSz)
     Send("Esc") ; Close window
 }
 
-Borderless(WinTitle) {
+Borderless(WinTitle)
+{
     static bToggle
     WinExist(WinTitle) ; set Last Found Window
     if (bToggle := !bToggle)
