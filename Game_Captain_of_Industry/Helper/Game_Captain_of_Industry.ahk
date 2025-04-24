@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.13.5
 ;  ! Search blueprint description/delete button
 ; v2.13.4
 ;  ! Search blueprint description/delete button instead of manual cursor pointing
