@@ -798,15 +798,16 @@ Sleep(delay)
 
 Click(x := "", y := "", whichButton := "", delay := -1)
 {
-    if ((x and !y) or (!x and y)) {
+    if ((x == "" and y == "") or (x != "" and y != "")) {
+        if (bSendInput)
+            SendInput, {Click %x% %y% %whichButton%}
+        else
+            SendEvent, {Click %x% %y% %whichButton%}
+        Sleep(delay)
+    } else {
         ToolTip, % A_ThisFunc "(X, Y) - undefined X or Y parameter", 0, 0
-        Return
+        SoundBeep
     }
-    if (bSendInput)
-        SendInput, {Click %x% %y% %whichButton%}
-    else
-        SendEvent, {Click %x% %y% %whichButton%}
-    Sleep(delay)
 }
 
 MouseLeftClickDrag(X1, Y1, X2, delay := -1)
@@ -818,12 +819,13 @@ MouseLeftClickDrag(X1, Y1, X2, delay := -1)
 
 MouseMove(x := "", y := "", delay := -1)
 {
-    if (!x or !y) {
+    if (x != "" and y != "") {
+        MouseMove, %x%, %y%
+        Sleep(delay)
+    } else {
         ToolTip, % A_ThisFunc "(X, Y) - undefined X or Y parameter", 0, 0
-        Return
+        SoundBeep
     }
-    MouseMove, %x%, %y%
-    Sleep(delay)
 }
 
 Send(key, delay := -1)
