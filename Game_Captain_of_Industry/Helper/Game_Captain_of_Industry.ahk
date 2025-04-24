@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  + Add hotkey to show search area
 ; v2.13.5
 ;  ! Search blueprint description/delete button
 ; v2.13.4
@@ -109,6 +110,9 @@ SetWorkingDir %A_ScriptDir%
 Menu, Tray, Icon, CaptainOfIndustry.ico, 1, 1
 Menu, Tray, Tip, Captain of Industry Helper
 
+global DEBUG := false
+global DEBUG_DELAY := 750
+
 ; By default all [CoordMode] are relative to [Screen], change it to [Client].
 CoordMode,   Pixel, Client
 CoordMode,   Mouse, Client
@@ -149,6 +153,7 @@ Shift + BackSpace -> STORAGE: stored product reset.                             
       Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15.
           Alt + `` -> GAME: make game's window borderless.
      Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
+              F12 -> Show search area (moving mouse cursor) before command execute.
           Alt + S -> Suspend Script (disable all hotkeys).
           Alt + Z ->  Reload Script.
           Alt + X ->    Exit Script.
@@ -208,6 +213,9 @@ global bSendInput := true
 ;@AHK++AlignAssignmentOff
 
 ;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
+; DEBUG
+if RegExMatch(A_ScriptName, "DEBUG")
+    DEBUG := true
 ; UI80 or UI100 or UI120 etc...
 RegExMatch(A_ScriptName, "UI(?P<Value>\d\d\d?)", uiScaleRegEx)
 if uiScaleRegExValue is Integer
@@ -318,6 +326,7 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
 #If
 ^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
 ^F1:: ShowHelpWindow(helpText)
+F12:: DEBUG := !DEBUG
 !Z:: Reload
 !X:: ExitApp
 !S::
@@ -481,17 +490,16 @@ DeleteBtnSearch(ByRef xBtn, ByRef yBtn, clSz)
     _clSz.y := clSz.h // 2 - oBDB.h // 2 ; Top left point of the search area
     _clSz.w := oBDB.w                    ;  Width of the search area
     _clSz.h := oBDB.h                    ; Height of the search area
-    ; MouseMove(clSz.x, clSz.y, dlOperation)                   ; DEBUG: move cursor to show search area
-    ; MouseMove(clSz.x + clSz.w, clSz.y + clSz.h, dlOperation) ; DEBUG: move cursor to show search area
     PixelSearch(xBtn, yBtn, oBDB.colorID, _clSz, oBDB.colorVariation)
     if (ErrorLevel) {
         xBtn := "", yBtn := ""
         ToolTip, % A_ThisFunc "() - Can't find position of the DELETE BUTTON in BLUEPRINTS window."
         Return
     }
-    ; MouseGetPos, x, y          ; DEBUG: show found position
-    ; MouseMove(xBtn, yBtn, 500) ; DEBUG: show found position
-    ; MouseMove(x, y)            ; DEBUG: show found position
+    if (DEBUG) {
+        MoveMouseRectangle(_clSz)  ; Show search area
+        MouseMove(xBtn, yBtn, DEBUG_DELAY) ; Show found position
+    }
 }
 
 DscrBtnSearch(ByRef xBtn, ByRef yBtn, clSz)
@@ -553,11 +561,13 @@ BlueprintDelete(dlOperation, clSz)
     _clSz.y := clSz.h // 2 - oBDCB.h // 2 ; Top left point of the search area
     _clSz.w := oBDCB.w                    ;  Width of the search area
     _clSz.h := oBDCB.h                    ; Height of the search area
-    ; MouseMove(clSz.x, clSz.y, dlOperation)                   ; DEBUG: move cursor to show search area
-    ; MouseMove(clSz.x + clSz.w, clSz.y + clSz.h, dlOperation) ; DEBUG: move cursor to show search area
     ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", _clSz)
     if (ErrorLevel)
         Return
+    if (DEBUG) {
+        MoveMouseRectangle(_clSz)  ; Show search area
+        MouseMove(x, y, DEBUG_DELAY) ; Show found position
+    }
     ; Click DELETE button
     Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
 }
@@ -788,6 +798,22 @@ PixelSearch(ByRef x, ByRef y, colorID, wndSize, variation := 0, bShowError := tr
             ToolTip, % A_ThisFunc . "() - can't find pixel: " . colorID, 0, 0
         SoundBeep
     }
+}
+
+MoveMouseRectangle(wndSize)
+{
+    _MouseDelay := A_MouseDelay
+    _DefaultMouseSpeed := A_DefaultMouseSpeed
+    SetMouseDelay, 10
+    SetDefaultMouseSpeed, 2
+    Speed := 10
+    MouseMove, % wndSize.x, % wndSize.y, % Speed
+    MouseMove, % wndSize.x + wndSize.w, % wndSize.y, % Speed
+    MouseMove, % wndSize.x + wndSize.w, % wndSize.y + wndSize.h, % Speed
+    MouseMove, % wndSize.x, % wndSize.y + wndSize.h, % Speed
+    MouseMove, % wndSize.x, % wndSize.y, % Speed
+    SetMouseDelay, % _MouseDelay
+    SetDefaultMouseSpeed, % _DefaultMouseSpeed
 }
 
 Sleep(delay)
