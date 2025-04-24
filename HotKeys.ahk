@@ -50,7 +50,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
             MsgBox, The attempt to copy text onto the clipboard failed.
             return
         }
-        If (WinActive("ahk_exe msedge.exe")) {
+        if (WinActive("ahk_exe msedge.exe")) {
             ; For EDGE we need type search engine hotkey and press space to activate that engine
             SendEvent, ^{vk4C}^{BackSpace}{vk54}{Space}^{vk56}{Enter} ; Ctrl+L Ctrl+BackSpace t Space Ctrl+V Enter
             return
@@ -84,7 +84,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
     Backspace::
         ControlGet renameStatus, Visible, , Edit1, A
         ControlGetFocus focussed, A
-        if(renameStatus != 1 && (focussed = "DirectUIHWND3" || focussed = "SysTreeView321")) {
+        if (renameStatus != 1 && (focussed = "DirectUIHWND3" || focussed = "SysTreeView321")) {
             Send {Alt Down}{Up}{Alt Up}
         } else {
             Send {Backspace}
@@ -360,13 +360,13 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
 !+T:: ;Hide/Show taskbar & Desktop icons
     ToggleTaskBar() {
         static bToggle
-        If (bToggle := !bToggle) {
+        if (bToggle := !bToggle) {
             WinHide, ahk_class Shell_TrayWnd ; TaskBar
             WinHide, Start ahk_class Button  ; "Start" button
 
             ;WinActivate, ahk_class WorkerW
             ;WinWaitActive, ahk_class WorkerW, , 0
-            ;If (!ErrorLevel)
+            ;if (!ErrorLevel)
             ;Control, Hide,, SysListView321, ahk_class WorkerW ; Icons
         } Else {
             WinShow, ahk_class Shell_TrayWnd
@@ -374,7 +374,7 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
 
             ;WinActivate, ahk_class WorkerW
             ;WinWaitActive, ahk_class WorkerW, , 0
-            ;If (!ErrorLevel)
+            ;if (!ErrorLevel)
             ;Control, Show,, SysListView321, ahk_class WorkerW
         }
     }
