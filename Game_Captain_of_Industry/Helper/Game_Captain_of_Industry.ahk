@@ -279,6 +279,7 @@ global yStoredProduct := 45 * uiScale // 100
 GroupAdd, Game, ahk_exe Captain of Industry.exe
 
 #IfWinActive, ahk_group Game ; <==== Main hotkeys.
+    F12:: DEBUG := !DEBUG
     $Space:: Send("Space") ; Unblock modifier [Space] key
     Space & Q:: MakeManipulation(Func("VehicleManagement").Bind(dlOperation)) ; Show VEHICLES MANAGEMENT window
     Space & W:: Send("o") ; Open RECIPES window
@@ -326,7 +327,6 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
 #If
 ^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
 ^F1:: ShowHelpWindow(helpText)
-F12:: DEBUG := !DEBUG
 !Z:: Reload
 !X:: ExitApp
 !S::
