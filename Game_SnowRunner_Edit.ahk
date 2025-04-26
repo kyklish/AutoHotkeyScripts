@@ -1,31 +1,118 @@
 ﻿#NoEnv
 #SingleInstance, Force
 SetBatchLines, -1
-SetWorkingDir, R:\
 
-;Unpack "SnowRunner\en_us\preload\paks\client\initial.pak" to "R:\initial"
-;Modified files will be created in "R:\initial_modified"
-;Original files are not touched, you can run script over and over with new values
+; "initial.pak" = "SnowRunner\en_us\preload\paks\client\initial.pak"
+; Make backup of the original "initial.pak" and add its path to [sInitialPak] var.
+; Script unpacks "initial.pak" with WinRAR (or unpack it manually).
+; Unpacked files must be in "%sWorkingDir%\initial" folder.
+; Modified files will be created in "%sWorkingDir%\initial_modified" folder.
+; You can run script over and over with new values.
 
-oFolders := ["R:\initial\[media]\classes", "R:\initial\[media]\_dlc"]
-global sBeginRegEx := "i)\b"
-global sEndRegEx := "=""\K[^""]+(?="")"
+sInitialPak := "E:\UNPROTECTED\GAMES\SnowRunner_-_Premium_Edition\preload\paks\client\initial_backup.pak"
+sWorkingDir := "R:\MSE"
+EnvGet, sSOFT, SOFT
+sWinRAR := sSOFT "\WinRAR\WinRAR.exe"
 
-global oLogFile := FileOpen("R:\initial_modified_files.log", "w")
+if (!FileExist(sInitialPak)) {
+    MsgBox % "File [" sInitialPak "] not found."
+    ExitApp
+}
 
-For i, sFolder in oFolders
-{
-    OutputDebug, % sFolder "`n"
-    Loop, Files, % sFolder . "\*.xml", R
-    {
-        Edit(A_LoopFilePath)
+; Create working directory. Skip if exist.
+if (!FileExist(sWorkingDir)) {
+    FileCreateDir, %sWorkingDir%
+    if (ErrorLevel) {
+        MsgBox % "Can't create working directory [" sWorkingDir "]"
+        ExitApp
+    }
+}
+SetWorkingDir, %sWorkingDir%
+
+; Copy to working directory original "initial.pak". Skip if exist.
+if (!FileExist("initial_original.pak"))
+    FileCopy, % sInitialPak, % "initial_original.pak"
+
+; Unpack "initial.pak" with WinRAR. Skip if unpacked.
+if (!FileExist("initial")) {
+    if (FileExist(sWinRAR)) {
+        sUnpackCmd := "x initial_original.pak initial\"
+        RunWait, %sWinRAR% %sUnpackCmd%, %sWorkingDir%
+        if (ErrorLevel) {
+            MsgBox % "WinRAR return ErrorLevel: " ErrorLevel
+            ExitApp
+        }
+    }
+    else {
+        MsgBox % "["sWinRAR "] not found.`n`nUnpack [initial.pak] to [" sWorkingDir "\initial] folder."
+        ExitApp
     }
 }
 
-oLogFile.Close()
-SoundBeep
+oFolders := ["initial\[media]\classes", "initial\[media]\_dlc"]
+global sBeginRegEx := "i)\b"
+global sEndRegEx := "=""\K[^""]+(?="")"
 
-Edit(sFilePath)
+; Create folder for modified files and do the job. Skip if exist.
+if (!FileExist("initial_modified")) {
+    oLogFile := FileOpen("modified_files.log", "w `n")
+
+    For _, sFolder in oFolders {
+        OutputDebug, % sFolder "`n"
+        Loop, Files, % sFolder . "\*.xml", R
+            Edit(A_LoopFileLongPath, oLogFile)
+    }
+
+    oLogFile.Close()
+}
+
+; Pack modified files to "initial.pak" in working directory with WinRAR. Skip if not exist.
+if (FileExist("initial_modified")) {
+    MsgBox, 4, , % "Pack modified files to [initial.pak] in working directory?"
+    IfMsgBox, Yes
+    {
+        ; Overwrite old modified file with original one
+        FileCopy, % "initial_original.pak", % "initial.pak", 1 ; (1 = overwrite)
+        ; Move modified files into archive
+        if (FileExist(sWinRAR)) {
+            ; -af  = archive format
+            ; -ep1 = exclude base folder from names (read "WinRAR.chm")
+            ; -df  = delete files
+            ; -dr  = delete files to recycle bin
+            ; -r   = recursive
+            sPackCmd := "m -afzip -df -ep1 -r initial.pak initial_modified\*"
+            RunWait, %sWinRAR% %sPackCmd%, %sWorkingDir%
+            if (ErrorLevel) {
+                MsgBox % "WinRAR return ErrorLevel: " ErrorLevel
+                ExitApp
+            }
+
+            Sleep, 1000 ; Wait OS file system to do the work
+            if (FileExist("initial_modified")) {
+                FileRemoveDir, % "initial_modified"
+                if (ErrorLevel)
+                    MsgBox % "[initial_modified] folder not empty."
+            }
+
+            if (FileExist("initial.pak")) {
+                MsgBox, 4, , % "Overwrite [initial.pak] in game's directory?"
+                IfMsgBox, Yes
+                {
+                    SplitPath, % sInitialPak, , sGameDir
+                    FileCopy, % "initial.pak", % sGameDir, 1 ; (1 = overwrite)
+                }
+            }
+        }
+        else {
+            MsgBox % "["sWinRAR "] not found.`n`nPack modified files to [initial.pak] manually."
+            ExitApp
+        }
+    }
+}
+
+ExitApp
+
+Edit(sFilePath, oLogFile)
 {
     FileRead, sData, %sFilePath%
     sOriginalData := sData
@@ -115,10 +202,10 @@ Edit(sFilePath)
     ;=======================================================================
 
     if (sOriginalData != sData) {
-        oLogFile.Write(sFilePath . "`n")
-        sModifiedFilePath := StrReplace(sFilePath, "\initial\", "\initial_modified\",, 1)
-        sModifiedFileDir := RegExReplace(sModifiedFilePath, "i)\\[^\\]+xml$") ;Cut file name
-        if not FileExist(sModifiedFileDir)
+        oLogFile.Write(sFilePath "`n")
+        sModifiedFilePath := StrReplace(sFilePath, "\initial\", "\initial_modified\", , 1)
+        SplitPath, sModifiedFilePath, , sModifiedFileDir
+        if (!FileExist(sModifiedFileDir))
             FileCreateDir, %sModifiedFileDir%
         oModifiedFile := FileOpen(sModifiedFilePath, "w") ;[w]==[Overwrite existing file]
         oModifiedFile.Write(sData)
