@@ -112,9 +112,10 @@ sPressed := wPressed := bManualMod := false
     return
     `;:: Send, {WheelUp}
     /:: Send, {WheelDown}
-    RCtrl::Click Right
     RAlt:: Send, {MButton down}
     RAlt Up:: Send, {MButton up}
+    RCtrl:: Send, {RButton down}
+    RCtrl Up:: Send, {RButton up}
 
     NumpadMult:: bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
     Numpad0:: oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
