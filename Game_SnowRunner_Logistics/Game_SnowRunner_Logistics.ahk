@@ -17,8 +17,8 @@
 #Warn
 #NoEnv
 #SingleInstance Force
-SetWorkingDir %A_ScriptDir%
 SetBatchLines -1
+SetWorkingDir %A_ScriptDir%
 
 sWinTitle := "SnowRunner Logistics"
 sGame := "Snowrunner.exe"
@@ -223,7 +223,7 @@ CreateMainGui:
     Gui Add, Button, Section, Add &Building
     Gui Add, Button, ys, Add &Job
     Gui Add, Button, ys, Reset User Progress
-    Gui Add, Button, ys gMainGuiReload, Re&load
+    Gui Add, Button, ys gMainGuiReload, Reload
     Gui Add, Button, ys gMainGuiClose, E&xit
     Gui Add, Text,   ys, Default Region:
     Gui Add, DropDownList, ys+1 w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
@@ -957,29 +957,29 @@ ToolTipDestination(bShow) {
     Return
 
     DestinationToolTip:
-        ; MouseGetPos, X, Y
-        ; ToolTip % X ":" Y "`nMove: Arrows`nSave: LMB or Space`nCancel: RMB or Esc"
-        ; Return
-        sControlVarNameMap := sCargoFileName := ""
-        MouseGetPos, X, Y,, hWndControl, 2
-        GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
-        GuiControlGet, sCargoFileName, CargoIcons:, %hWndControl%
-        ; "Pos" sub-command not work here!!! Why???
-        ; GuiControlGet, aCargoIconPos, CargoIcons:Pos, %hWndControl%
-        If (sCargoFileName || InStr(sControlVarNameMap, "MapPicture"))
-            sInfoMsg := ""
-                ; . "SnapPosition: " aCargoIconPosX ":" aCargoIconPosY "`n"
-                ; . "hWndControl: " hWndControl "`n"
-                . "sControlVarNameMap: " sControlVarNameMap "`n"
-                . "sCargoFileName: " SubStr(sCargoFileName, 9)
-        Else
-            sInfoMsg := "Wrong mouse position!"
-        ToolTip % ""
-            . X ":" Y "`n"
-            . "Move: Arrows`n"
-            . "Save: LMB or Space`n"
-            . "Cancel: RMB or Esc`n`n"
-            . sInfoMsg
+    ; MouseGetPos, X, Y
+    ; ToolTip % X ":" Y "`nMove: Arrows`nSave: LMB or Space`nCancel: RMB or Esc"
+    ; Return
+    sControlVarNameMap := sCargoFileName := ""
+    MouseGetPos, X, Y,, hWndControl, 2
+    GuiControlGet, sControlVarNameMap, Main:Name, %hWndControl%
+    GuiControlGet, sCargoFileName, CargoIcons:, %hWndControl%
+    ; "Pos" sub-command not work here!!! Why???
+    ; GuiControlGet, aCargoIconPos, CargoIcons:Pos, %hWndControl%
+    If (sCargoFileName || InStr(sControlVarNameMap, "MapPicture"))
+        sInfoMsg := ""
+            ; . "SnapPosition: " aCargoIconPosX ":" aCargoIconPosY "`n"
+            ; . "hWndControl: " hWndControl "`n"
+            . "sControlVarNameMap: " sControlVarNameMap "`n"
+            . "sCargoFileName: " SubStr(sCargoFileName, 9)
+    Else
+        sInfoMsg := "Wrong mouse position!"
+    ToolTip % ""
+        . X ":" Y "`n"
+        . "Move: Arrows`n"
+        . "Save: LMB or Space`n"
+        . "Cancel: RMB or Esc`n`n"
+        . sInfoMsg
     Return
 }
 
@@ -1864,6 +1864,6 @@ TODO(sText, bModal := False)
     Return
 
     DisableToolTip:
-        ToolTip
+    ToolTip
     Return
 }
