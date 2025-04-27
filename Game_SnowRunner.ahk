@@ -3,6 +3,10 @@
 #SingleInstance, Force
 #UseHook
 SetBatchLines, -1
+SetWorkingDir %A_ScriptDir%
+
+Menu, Tray, Icon, SnowRunner.ico, 1, 1
+Menu, Tray, Tip, SnowRunner Helper
 
 GroupAdd, SpinTires, ahk_exe SnowRunner.exe
 
