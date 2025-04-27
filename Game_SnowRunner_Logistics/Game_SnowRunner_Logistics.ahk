@@ -14,6 +14,7 @@
 ; Possible problem: transparent windows "Building" and "Job" overlaps "Main"
 ;   window. On wrong [sTransColor] "Main" window may become un-clickable. Change
 ;   color or set "Building" and "Job" windows' size to 1080x1080.
+
 #Warn
 #NoEnv
 #SingleInstance Force
@@ -21,6 +22,9 @@ SetBatchLines -1
 SetWorkingDir %A_ScriptDir%
 
 sWinTitle := "SnowRunner Logistics"
+Menu, Tray, Icon, SnowRunner.ico, 1, 1
+Menu, Tray, Tip, %sWinTitle%
+
 sGame := "Snowrunner.exe"
 GroupAdd, Script, %sWinTitle% ahk_exe AutoHotkey.exe
 GroupAdd, Game, ahk_exe %sGame%
