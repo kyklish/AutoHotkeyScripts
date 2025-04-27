@@ -25,6 +25,7 @@ sPressed := wPressed := bManualMod := false
         2          -> Зажать W, движение вперед (нажать W, для отжатия).
         3          -> Зажать S, движение назад (нажать S, для отжатия).
         LShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
+        RAlt       -> Mouse Middle Click
         RCtrl      -> Mouse Right Click
         4          -> Полностью заправить машину.
         Shift + 4  -> Полностью заправить машину + прицеп.
@@ -112,6 +113,8 @@ sPressed := wPressed := bManualMod := false
     `;:: Send, {WheelUp}
     /:: Send, {WheelDown}
     RCtrl::Click Right
+    RAlt:: Send, {MButton down}
+    RAlt Up:: Send, {MButton up}
 
     NumpadMult:: bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
     Numpad0:: oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
