@@ -356,13 +356,13 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
 #If
 
 ;-------------------------------------------------------------------------------
-/*
-!+T:: ;Hide/Show taskbar & Desktop icons
+
+#+T:: ;Hide/Show taskbar & Desktop icons
     ToggleTaskBar() {
-        static bToggle
+        static bToggle := false
         if (bToggle := !bToggle) {
             WinHide, ahk_class Shell_TrayWnd ; TaskBar
-            WinHide, Start ahk_class Button  ; "Start" button
+            ; WinHide, Start ahk_class Button  ; "Start" button
 
             ;WinActivate, ahk_class WorkerW
             ;WinWaitActive, ahk_class WorkerW, , 0
@@ -370,7 +370,7 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
             ;Control, Hide,, SysListView321, ahk_class WorkerW ; Icons
         } Else {
             WinShow, ahk_class Shell_TrayWnd
-            WinShow, Start ahk_class Button
+            ; WinShow, Start ahk_class Button
 
             ;WinActivate, ahk_class WorkerW
             ;WinWaitActive, ahk_class WorkerW, , 0
@@ -378,8 +378,7 @@ Browser_Home up::DllCall("SystemParametersInfo", UInt, 0x71, UInt, 0, UInt, 10, 
             ;Control, Show,, SysListView321, ahk_class WorkerW
         }
     }
-return
-*/
+
 ;-------------------------------------------------------------------------------
 
 ; ← or → (symbols for future hotkeys)
@@ -483,7 +482,7 @@ AppsKey Up::ToolTip
            #F -> Everything
       #Insert -> Toggle monitor brightness (0 ÷ 50)
   #ScrollLock -> Game_@_MouseCoord_WithPicture.ahk
-          !+t -> Hide/Show taskbar (Disabled)
+          #+T -> Hide/Show taskbar
        !Shift -> Set English keyboard layout (Disabled)
           !+F -> Send clipboard to [ntfy.sh/NOKIA_BenQ]
   Mouse Wheel -> Scroll Without Activating (Win7)
