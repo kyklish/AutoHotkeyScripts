@@ -14,7 +14,7 @@ SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
 oStates := [] ;Service variable for script logic. Contains all possible Gear States. Only for debug purpose.
 oGearBox := GearBoxFactory(oStates)
 
-sPressed := wPressed := bManualMod := false
+bOverride := sPressed := wPressed := bManualMod := false
 
 #IfWinActive ahk_group SpinTires
     F1:: ShowHelpWindow("
@@ -65,12 +65,14 @@ sPressed := wPressed := bManualMod := false
     LShift:: ;Временно отжать зажатую клавишу
         Send, {w up}
         Send, {s up}
+        bOverride := true
     return
     LShift Up::
         if (wPressed)
             Send, {w down}
         if (sPressed)
             Send, {s down}
+        bOverride := false
     return
     4:: Refuel() ;Полностью заправить машину
     +4:: Refuel(true) ;Полностью заправить машину и прицеп
@@ -90,15 +92,19 @@ sPressed := wPressed := bManualMod := false
     return
     ~S:: Send, {w up} ;Торможение во время зажатой кнопки W
     ~S Up::
-        if (wPressed)
-            Send, {w down}
-        sPressed := false
+        if (!bOverride) {
+            if (wPressed)
+                Send, {w down}
+            sPressed := false
+        }
     return
     ~W:: Send, {s up} ;Торможение во время зажатой кнопки S
     ~W Up::
-        if (sPressed)
-            Send, {s down}
-        wPressed := false
+        if (!bOverride) {
+            if (sPressed)
+                Send, {s down}
+            wPressed := false
+        }
     return
     ,:: ;Поворот камеры
         SetKeyDelay,, -1 ; Smooth camera movement
