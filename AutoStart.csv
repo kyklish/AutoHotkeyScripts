@@ -18,7 +18,6 @@
     ;MSI Afterburner launch RTSS by himself
  ;0,A,"C:\Program Files (x86)\RivaTuner Statistics Server\RTSS.exe","/s"
   0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings"""
- ;0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
   0,A,"%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"
     ;CompactGUI: app always puts itself in autorun when monitoring is on
  ;0,U,"%SOFT%\CompactGUI\CompactGUI.exe","-tray"
@@ -28,11 +27,8 @@
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
   0,A,"%SOFT%\Gridy\Gridy.exe"
     ;SwapAdd: creates PageFile.sys Win10: creates PageFile.sys + SwapFile.sys (Sic)
-  0,A,"%SOFT%\ImDisk\Tools\swapadd.exe","R:\PageFile.sys 16M 2G"
- ;0,A,"%SOFT%\ImDisk\Tools\swapadd.exe","C:\PageFile.sys 3G 3G"
+  0,A,"%SOFT%\ImDisk\Tools\swapadd.exe","R:\PageFile.sys 16M 2G",,"Hide"
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
- ;0,U,"%SOFT%\Listary5\Listary.exe","-startup"
- ;0,U,"%SOFT%\Listary6\Listary.exe","--startup"
   0,A,"%SOFT%\Lossless_Scaling\LosslessScaling.exe","-StartMinimized"
   0,A,"%SOFT%\MemInfo\meminfo.exe"
     ;MSI Afterburner always adds task to the Task Scheduler and runs on logon
@@ -56,6 +52,7 @@
  ;0,A,"%SOFT%\WuMgr\wumgr.exe","-tray"
 ;================================== Win7 =======================================
  ;0,U,"powercfg","-setactive 381b4222-f694-41f0-9685-ff5bb260df2e",,"Hide"
+ ;0,U,"%SOFT%\Clipdiary\clipdiary-portable.exe","--portable"
  ;7,A,"%SOFT_BAT%\Windows_Firewall_Control.bat",,,"Hide"
     ;HWiNFO: OS crashed if launched without delay
     ;HWiNFO add sensors to OSD (MSI Afterburner):
