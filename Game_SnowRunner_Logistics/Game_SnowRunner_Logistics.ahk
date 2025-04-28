@@ -97,7 +97,7 @@ Hotkeys:
      F2 -> Show legend window.
      F3 -> Show\Hide main window.
       / -> Make selected job complete.
-  LCtrl -> LMB click without double click by bad mouse.
+    Del -> LMB click (for bad mouse with double click).
 Alt + X ->   Exit Script.
 Alt + Z -> Reload Script.
 
@@ -160,7 +160,7 @@ F3:: ToggleMainWindow()
 #IfWinActive ahk_group Script
     F1:: ShowHelpText(sHelpText)
     F2:: ShowLegend()
-    LCtrl::
+    Delete::
         Click
         Sleep 250 ; Prevent multi-clicks by bad mouse
     Return
