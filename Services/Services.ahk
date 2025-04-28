@@ -101,7 +101,7 @@ ButtonReload:
 Return
 
 ButtonEditCSV:
-    Run Notepad.exe %sFileNameServices%
+    Run %sFileNameServices%
 Return
 
 ButtonSortCSV:
