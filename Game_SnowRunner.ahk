@@ -45,6 +45,8 @@ bOverride := sPressed := wPressed := bManualMod := false
         N          -> Skip Night
         , and .    -> Turn Camera (Left/Right)
         ; and /    -> Mouse Wheel Down / Mouse Wheel Up
+        !``         -> Make Window BorderLess
+        !1         -> Stretch Window to Screen Size
         !c         -> Suspend
         !z         -> Reload
         !x         -> ExitApp
@@ -132,6 +134,9 @@ bOverride := sPressed := wPressed := bManualMod := false
     NumpadMult:: bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
     Numpad0:: oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
 
+    !`:: Borderless("ahk_group SpinTires")
+    !1:: WinMove, ahk_group SpinTires,, 0, 0, A_ScreenWidth, A_ScreenHeight
+
 #If WinActive("ahk_group SpinTires") and !bManualMod ;Автоматическое перемещение рычага КПП
     Numpad1:: oGearBox.ShiftGear(1) ;Включить передачу в соответствии со схемой
     Numpad2:: oGearBox.ShiftGear(2)
@@ -160,6 +165,19 @@ bOverride := sPressed := wPressed := bManualMod := false
     Suspend ; Must be first command!
     SuspendToolTip()
 return
+
+Borderless(WinTitle)
+{
+    static bToggle := false
+    WinExist(WinTitle) ; set Last Found Window
+    if (bToggle := !bToggle)
+        WinSet, Style, -0xC40000 ; WS_BORDER + WS_DLGFRAME + WS_SIZEBOX
+    else
+        WinSet, Style, +0xC40000
+    WinMinimize ; Force redraw (fix aesthetical issues).
+    WinRestore
+    WinActivate
+}
 
 SuspendToolTip() {
     static bToggle := false
