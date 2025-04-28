@@ -226,10 +226,12 @@ CreateMainGui:
     Gui Add, ListView, xs w%WLV% h975 +Report +Checked +Grid -Multi +LV0x4000 +LV0x10000 -LV0x10 +AltSubmit Count100 gJobToggle vJobListView, Status|Job Type|Job Name|Cargo
     Gui Add, Button, Section, Add &Building
     Gui Add, Button, ys, Add &Job
+    Gui Add, Button, ys, Edit CSV
+    Gui Add, Button, ys, Sort CSV
     Gui Add, Button, ys, Reset User Progress
     Gui Add, Button, ys gMainGuiReload, Reload
     Gui Add, Button, ys gMainGuiClose, E&xit
-    Gui Add, Text,   ys, Default Region:
+    Gui Add, Text,   ys+5, Default Region:
     Gui Add, DropDownList, ys+1 w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
     Gui Show, w%W% h1080, %sWinTitle%
     WinGetPos, iMainX, iMainY ; For child window with cargo icons
@@ -390,6 +392,21 @@ JobToggle() {
 
 DefaultRegionChanged:
     GuiControlGet, sDefaultRegion, Main:, DefaultRegion
+Return
+
+MainButtonEditCSV:
+    MsgBox("Main", "W", ""
+        . "Usage:`n"
+        . "1. Edit main database file.`n"
+        . "2. Reload script to read changes.`n"
+        . "3. Press [Sort CSV] button to sort main database file.")
+    Run % oFileName.sDB
+Return
+
+MainButtonSortCSV:
+    bDBModified := true ; force saving main database file
+    oDB.Save(oFileName)
+    Reload
 Return
 
 MainButtonResetUserProgress:
