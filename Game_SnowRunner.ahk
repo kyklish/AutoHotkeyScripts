@@ -18,21 +18,23 @@ SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
 oStates := [] ;Service variable for script logic. Contains all possible Gear States. Only for debug purpose.
 oGearBox := GearBoxFactory(oStates)
 
-bOverride := sPressed := wPressed := bManualMod := false
+sPressed := wPressed := bManualMod := bOverride := false
 
 #IfWinActive ahk_group SpinTires
     F1:: ShowHelpWindow("
     (LTrim
         Eng keyboard language required during play!!!
         Change [Clutch Pedal] to [Right Shift] in the game settings.
+        Change [Winch] to [Left Shift] in the game settings.
         A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel).
         2          -> Lock W down, move  forward (press W to unlock)
-        3          -> Lock S down, move backward (press S to unlock)
-        LShift     -> Temporary override locked buttons (unlock/lock them on down/up button)
+        !2         -> Lock S down, move backward (press S to unlock)
+        CapsLock   -> Temporary override locked buttons (unlock/lock them on down/up button)
         RAlt       -> Mouse Middle Button (Down/Up)
         RCtrl      -> Mouse Right Click
         4          -> Full Truck Refuel
         Shift + 4  -> Full Truck Refuel + Trailer
+        RMB        -> Switch Gear (Low Gear / Auto Gear)
         Numpad*    -> Toggle GearBox Mode: Auto/Manual
         Numpad0    -> Reset GearBox State (to Center)
         Numpad1-9  -> Switch Gear (Auto)
@@ -63,18 +65,18 @@ bOverride := sPressed := wPressed := bManualMod := false
         sPressed := false
         wPressed := true
     return
-    3::
+    !2:: ; [1] & [3] is used in game to switch LOAD/UNLOAD menu
         Send, {w up}
         Send, {s down}
         sPressed := true
         wPressed := false
     return
-    LShift:: ;Временно отжать зажатую клавишу
+    CapsLock:: ;Временно отжать зажатую клавишу
         Send, {w up}
         Send, {s up}
         bOverride := true
     return
-    LShift Up::
+    CapsLock Up::
         if (wPressed)
             Send, {w down}
         if (sPressed)
@@ -130,6 +132,15 @@ bOverride := sPressed := wPressed := bManualMod := false
     RCtrl:: Click Right
     ; RCtrl:: Send, {RButton down}
     ; RCtrl Up:: Send, {RButton up}
+    ~RButton::
+        ; if (wPressed || sPressed) {
+        if (GetKeyState("W") || GetKeyState("S")) {
+            if (oGearBox.oCurrentState.iGear != 4)
+                oGearBox.ShiftGear(4)
+            else
+                oGearBox.ShiftGear(5)
+        }
+    return
 
     NumpadMult:: bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
     Numpad0:: oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
@@ -329,7 +340,7 @@ class GearBox { ;Коробка передач
             msg .= "Пиздец блять!"
         else
             msg .= this.oCurrentState.iGear
-        OutputDebug, % msg
+        OutputDebug, % msg "`n"
     }
 }
 
