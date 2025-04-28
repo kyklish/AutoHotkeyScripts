@@ -1,7 +1,7 @@
 ﻿#Warn
 #NoEnv
+; #UseHook
 #SingleInstance, Force
-#UseHook
 SetBatchLines, -1
 SetWorkingDir %A_ScriptDir%
 
@@ -24,26 +24,27 @@ bOverride := sPressed := wPressed := bManualMod := false
     F1:: ShowHelpWindow("
     (LTrim
         Eng keyboard language required during play!!!
-        In game change [Clutch Pedal] to [R.Shift].
-        Switch numeric keyboard to mouse move: camera, RMB, mouse wheel.
-        2          -> Зажать W, движение вперед (нажать W, для отжатия).
-        3          -> Зажать S, движение назад (нажать S, для отжатия).
-        LShift     -> Временно отжать зажатую клавишу, и после отпускания нажать.
-        RAlt       -> Mouse Middle Click
+        Change [Clutch Pedal] to [Right Shift] in the game settings.
+        A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel).
+        2          -> Lock W down, move  forward (press W to unlock)
+        3          -> Lock S down, move backward (press S to unlock)
+        LShift     -> Temporary override locked buttons (unlock/lock them on down/up button)
+        RAlt       -> Mouse Middle Button (Down/Up)
         RCtrl      -> Mouse Right Click
-        4          -> Полностью заправить машину.
-        Shift + 4  -> Полностью заправить машину + прицеп.
-        Numpad*    -> Переключить режим КПП: Автомат - Ручное.
-        Numpad0    -> Сбросить состояние КПП в центральное положение.
-        Numpad1-9  -> Переключить КПП. (Автомат).
-        Numpad4    -> Рычаг КПП влево  (Ручное).
-        Numpad6    -> Рычаг КПП вправо (Ручное).
-        Numpad8    -> Рычаг КПП вверх  (Ручное).
-        Numpad2    -> Рычаг КПП вниз   (Ручное).
-        M          -> Открыть карту, предварительно отключив зажатые клавиши движения.
-        N          -> Пропустить ночь.
-        , and .    -> Поворот камеры
-        ; and /    -> Mouse Wheel Up, Mouse Wheel Down
+        4          -> Full Truck Refuel
+        Shift + 4  -> Full Truck Refuel + Trailer
+        Numpad*    -> Toggle GearBox Mode: Auto/Manual
+        Numpad0    -> Reset GearBox State (to Center)
+        Numpad1-9  -> Switch Gear (Auto)
+        Numpad4    -> Move Gear Lever Left  (Manual)
+        Numpad6    -> Move Gear Lever Right (Manual)
+        Numpad8    -> Move Gear Lever Up    (Manual)
+        Numpad2    -> Move Gear Lever Down  (Manual)
+        Space      -> HandBrake (unlock all buttons)
+        M          -> Map       (unlock all buttons)
+        N          -> Skip Night
+        , and .    -> Turn Camera (Left/Right)
+        ; and /    -> Mouse Wheel Down / Mouse Wheel Up
         !c         -> Suspend
         !z         -> Reload
         !x         -> ExitApp
@@ -124,8 +125,9 @@ bOverride := sPressed := wPressed := bManualMod := false
     /:: Send, {WheelDown}
     RAlt:: Send, {MButton down}
     RAlt Up:: Send, {MButton up}
-    RCtrl:: Send, {RButton down}
-    RCtrl Up:: Send, {RButton up}
+    RCtrl:: Click Right
+    ; RCtrl:: Send, {RButton down}
+    ; RCtrl Up:: Send, {RButton up}
 
     NumpadMult:: bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
     Numpad0:: oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
