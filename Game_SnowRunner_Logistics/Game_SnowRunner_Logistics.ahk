@@ -214,7 +214,8 @@ CreateMainGui:
     Gui Add, Checkbox, x+m yp gShowAllJobs   vShowAllJobs, Show &All Jobs
     Gui Add, Text,   xs+46 y+2 w%WMN% Border vMapName3
     Gui Add, Text,     x+0 yp  wp     Border vMapName4
-    Gui Add, Checkbox, x+m yp Checked gShowJobName vShowJobName, Show Job &Name
+    Gui Add, Checkbox, x+m yp Checked gShowJobName    vShowJobName, Show Job &Name
+    Gui Add, Checkbox, x+m yp         gShowEmptyCargo vShowEmptyCargo, Show &Empty Cargo
     ; AutoHotKey Help: "Window and Control Styles"
     ; +LV0x4000  == Show tooltips
     ; +LV0x10000 == Prevent flickering
@@ -435,6 +436,11 @@ ShowJobName() {
     CargoIconsUpdate(oSelectedCargoTypes)
 }
 
+; Main:Checkbox
+ShowEmptyCargo() {
+    CargoIconsUpdate(oSelectedCargoTypes)
+}
+
 ;========================== GUI: "Main" ListView ===============================
 
 LV_AddJobs(sRegion) {
@@ -575,6 +581,7 @@ ShowJobsCargoIcons(oCargoTypes) {
     global iMainX, iMainY
     oJobsCargosOnScreen := []
     bShowAllJobs := GetShowAllJobsCheckbox()
+    bShowEmptyCargo := GetShowEmptyCargoCheckbox()
     oJobs := oDB.GetJobList(GetRegion(), bShowAllJobs) ; By default "Accepted" jobs only.
     sCargoTypesCSV := ArrayToCSV(oCargoTypes)
 
@@ -602,7 +609,7 @@ ShowJobsCargoIcons(oCargoTypes) {
             For sCargoType, iQuantity in oPosition.oCargo {
                 If sCargoType in %sCargoTypesCSV%
                 {
-                    If (iQuantity || bShowAllJobs) {
+                    If (iQuantity || bShowEmptyCargo) {
                         bShowName := True ; Show names, only when we show icons
                         Gui Add, Picture, x%X% y%Y% w%iIconSize% h%iIconSize% +HwndIconId gCargoClick, % GetCargoFileName(sCargoType)
                         Gui Add, Text, w%iIconSize% Center, %iQuantity%
@@ -689,6 +696,11 @@ GetShowAllJobsCheckbox() {
 GetShowBuildingsCheckbox() {
     GuiControlGet, ShowBuildings, Main:
     Return ShowBuildings
+}
+
+GetShowEmptyCargoCheckbox() {
+    GuiControlGet, ShowEmptyCargo, Main:
+    Return ShowEmptyCargo
 }
 
 GetShowJobNameCheckbox() {
