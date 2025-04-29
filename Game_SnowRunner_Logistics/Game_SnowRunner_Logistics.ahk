@@ -1531,7 +1531,7 @@ class Database
     }
 
     ; Get "Accepted" jobs in linear array, or all jobs in region
-    GetJobList(sRegion, bAllJobs := True) {
+    GetJobList(sRegion, bAllJobs := False) {
         oJobsByRegion := this.GetJobs(sRegion)
         oAcceptedJobs := []
         For _, oJobsByType in oJobsByRegion
