@@ -18,7 +18,8 @@ SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
 oStates := [] ;Service variable for script logic. Contains all possible Gear States. Only for debug purpose.
 oGearBox := GearBoxFactory(oStates)
 
-sPressed := wPressed := bManualMod := bOverride := false
+sPressed := wPressed := false
+bManualMod := false
 
 #IfWinActive ahk_group SpinTires
     F1:: ShowHelpWindow("
@@ -29,7 +30,6 @@ sPressed := wPressed := bManualMod := bOverride := false
         A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel).
         2          -> Lock W down, move  forward (press W to unlock)
         !2         -> Lock S down, move backward (press S to unlock)
-        CapsLock   -> Temporary override locked buttons (unlock/lock them on down/up button)
         RAlt       -> Mouse Middle Button (Down/Up)
         RCtrl      -> Mouse Right Click
         4          -> Full Truck Refuel
@@ -71,18 +71,6 @@ sPressed := wPressed := bManualMod := bOverride := false
         sPressed := true
         wPressed := false
     return
-    CapsLock:: ;Временно отжать зажатую клавишу
-        Send, {w up}
-        Send, {s up}
-        bOverride := true
-    return
-    CapsLock Up::
-        if (wPressed)
-            Send, {w down}
-        if (sPressed)
-            Send, {s down}
-        bOverride := false
-    return
     4:: Refuel() ;Полностью заправить машину
     +4:: Refuel(true) ;Полностью заправить машину и прицеп
     ~Space:: ;Полная остановка при включении стояночного тормоза
@@ -101,19 +89,15 @@ sPressed := wPressed := bManualMod := bOverride := false
     return
     ~S:: Send, {w up} ;Торможение во время зажатой кнопки W
     ~S Up::
-        if (!bOverride) {
-            if (wPressed)
-                Send, {w down}
-            sPressed := false
-        }
+        if (wPressed)
+            Send, {w down}
+        sPressed := false
     return
     ~W:: Send, {s up} ;Торможение во время зажатой кнопки S
     ~W Up::
-        if (!bOverride) {
-            if (sPressed)
-                Send, {s down}
-            wPressed := false
-        }
+        if (sPressed)
+            Send, {s down}
+        wPressed := false
     return
     ,:: ;Поворот камеры
         SetKeyDelay,, -1 ; Smooth camera movement
