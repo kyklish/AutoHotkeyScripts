@@ -49,10 +49,10 @@ bManualMod := false
         ; and /    -> Mouse Wheel Down / Mouse Wheel Up
         !``         -> Make Window BorderLess
         !1         -> Stretch Window to Screen Size
-        !c         -> Suspend
-        !z         -> Reload
-        !x         -> ExitApp
-        Схема КПП:
+        !C         -> Suspend
+        !Z         -> Reload
+        !X         -> ExitApp
+        Gear Scheme in GearBox:
         7 8      + H
         | |      | |
         4-5-6 -> L-A-N
@@ -72,10 +72,10 @@ bManualMod := false
         sPressed := true
         wPressed := false
     return
-    4:: Refuel() ; Full Truck Refuel
-    !4:: Refuel(true) ; Full Truck Refuel + Trailer
-    ~Space:: ;Полная остановка при включении стояночного тормоза
-    ~M:: ;Открыть карту, предварительно отключив зажатые клавиши движения. ~ - when the hotkey fires, its key's native function will not be blocked (hidden from the system).
+    4:: Refuel() ; Full Truck Refuel.
+    !4:: Refuel(true) ; Full Truck Refuel + Trailer.
+    ~Space:: ; Full stop on handbrake.
+    ~M:: ; On Map open unlock [W] & [S].
         Send, {w up} ;Not worked if combined in one Send command!
         Send, {s up}
         sPressed := false
@@ -88,24 +88,24 @@ bManualMod := false
         Send, ttt ; Time fast forward
         Send, m   ; Close map
     return
-    ~S:: Send, {w up} ;Торможение во время зажатой кнопки W
+    ~S:: Send, {w up} ; Braking during [W] locking
     ~S Up::
         if (wPressed)
             Send, {w down}
         sPressed := false
     return
-    ~W:: Send, {s up} ;Торможение во время зажатой кнопки S
+    ~W:: Send, {s up} ; Braking during [S] locking
     ~W Up::
         if (sPressed)
             Send, {s down}
         wPressed := false
     return
-    ,:: ;Поворот камеры
+    ,:: ; Camera turn
         SetKeyDelay,, -1 ; Smooth camera movement
         While, GetKeyState(",", "P")
             Send, {,}
     return
-    .::
+    .:: ; Camera turn
         SetKeyDelay,, -1
         While, GetKeyState(".", "P")
             Send, {.}
@@ -154,9 +154,9 @@ bManualMod := false
     Numpad2:: oGearBox.ShiftGearManual("D")
 
 #IfWinActive
-!z::Reload
-!x::ExitApp
-!c::
+!Z::Reload
+!X::ExitApp
+!C::
     Suspend ; Must be first command!
     SuspendToolTip()
 return
