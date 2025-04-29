@@ -98,8 +98,8 @@ Hotkeys:
      F3 -> Show\Hide main window.
       / -> Make selected job complete.
     Del -> LMB click (for bad mouse with double click).
-Alt + X ->   Exit Script.
-Alt + Z -> Reload Script.
+Alt + X ->   Exit Script (Save User Progress).
+Alt + Z -> Reload Script (Save User Progress).
 
 Keywords:
 - ""Building"": cargo source (Town Storage, Warehouse, etc...).
