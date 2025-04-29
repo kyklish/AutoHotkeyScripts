@@ -288,9 +288,8 @@ RegionChanged() {
 
     LV_ReLoadJobs(sRegion)
 
-    ; Reset values to default
-    GuiControl,, CargoTypes
-    oSelectedCargoTypes := []
+    ; Select all cargo types to show all "Accepted" jobs
+    SelectAllCargoTypes()
     CargoIconsUpdate(oSelectedCargoTypes)
 }
 
@@ -420,8 +419,7 @@ Return
 
 ; Main:Checkbox
 ShowAllJobs() {
-    oSelectedCargoTypes := oDB.oCargoTypes ; Select ALL cargo types
-    GuiControl, Main:, CargoTypes, ALL
+    SelectAllCargoTypes()
     GuiControl, Main:, ShowBuildings, 0
     CargoIconsUpdate(oSelectedCargoTypes)
 }
@@ -719,6 +717,11 @@ PushBtnSetFocus(hGui, hBtn) {
     ; If lParam is FALSE, wParam is a flag that indicates whether the next or previous
     ;   control with the WS_TABSTOP style receives the focus.
     SendMessage, 0x0028, hBtn, True,, ahk_id %hGui%
+}
+
+SelectAllCargoTypes() {
+    oSelectedCargoTypes := oDB.oCargoTypes ; Select ALL cargo types
+    GuiControl, Main:, CargoTypes, ALL
 }
 
 ; Destroy GUI and show "Main" GUI
