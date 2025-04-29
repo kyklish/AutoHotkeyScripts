@@ -33,7 +33,7 @@ bManualMod := false
         RAlt       -> Mouse Middle Button (Down/Up)
         RCtrl      -> Mouse Right Click
         4          -> Full Truck Refuel
-        Shift + 4  -> Full Truck Refuel + Trailer
+        !4         -> Full Truck Refuel + Trailer
         RMB        -> Switch Gear (Low Gear / Auto Gear)
         Numpad*    -> Toggle GearBox Mode: Auto/Manual
         Numpad0    -> Reset GearBox State (to Center)
@@ -59,20 +59,21 @@ bManualMod := false
         | |      | |
         1 2      - R
     )")
-    2:: ;Движение (зажимает кнопку для автоматического движения). Нажать "w" для отжатия.
+    2:: ; Lock [W] down. Press [W] to unlock.
         Send, {s up}
         Send, {w down}
         sPressed := false
         wPressed := true
     return
-    !2:: ; [1] & [3] is used in game to switch LOAD/UNLOAD menu
+    ; [1] & [3] is used in game to switch LOAD/UNLOAD menu
+    !2:: ; Lock [S] down. Press [S] to unlock.
         Send, {w up}
         Send, {s down}
         sPressed := true
         wPressed := false
     return
-    4:: Refuel() ;Полностью заправить машину
-    +4:: Refuel(true) ;Полностью заправить машину и прицеп
+    4:: Refuel() ; Full Truck Refuel
+    !4:: Refuel(true) ; Full Truck Refuel + Trailer
     ~Space:: ;Полная остановка при включении стояночного тормоза
     ~M:: ;Открыть карту, предварительно отключив зажатые клавиши движения. ~ - when the hotkey fires, its key's native function will not be blocked (hidden from the system).
         Send, {w up} ;Not worked if combined in one Send command!
@@ -117,7 +118,6 @@ bManualMod := false
     ; RCtrl:: Send, {RButton down}
     ; RCtrl Up:: Send, {RButton up}
     ~RButton::
-        ; if (wPressed || sPressed) {
         if (GetKeyState("W") || GetKeyState("S")) {
             if (oGearBox.oCurrentState.iGear != 4)
                 oGearBox.ShiftGear(4)
