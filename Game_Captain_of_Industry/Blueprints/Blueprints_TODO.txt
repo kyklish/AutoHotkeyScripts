@@ -1,17 +1,22 @@
-﻿RESTORE PRIORITY TO DEFAULT
+﻿RESTORE PRIORITY TO DEFAULT (restored default has @ in layout name)
 
 EARLY GAME
 	ELECTRICITY: use BOILER (GAS)
 
 MIDDLE GAME
+	FOOD FABRIC for all stuff
 
 LATE GAME
+	CONCRETE:
+		Change many CRUSHERs to one LARGE CRUSHER
+		Make single universal layout to combine COAL and GASES for ROTARY KILN
 	ELECTRONICS FULL: check connections of storages rubber-to-rubber, pcb-to-pcb (side-by-side)
 	METAL:
 		EXHAUST:
-			Is bad idea to collect all exhaust???
 			STEEL produce 144 exhaust, PIPE III (450) supports 3 blueprints. Make second PIPE III to support 6 blueprints.
 			Check exhaust from COPPER and IRON. Do they need more PIPEs.
 			STEEL exhaust in one direction, COPPER and IRON in other direction to separate exhaust's fabrics on both sides of mega plant.
-	IRON:    change to simmetrical layout??? why it's not simmetrical??? COOLING TOWER LARGE does not fit???
-	IRON T2: change to simmetrical layout??? why it's not simmetrical??? COOLING TOWER LARGE does not fit???
+	COPPER T3:	read description to fix layout
+	IRON T3:	read description to fix layout
+	IRON:		compare LARGE CRUSHERs from COPPER and IRON. In COPPER better output in EARLY GAME.
+	
