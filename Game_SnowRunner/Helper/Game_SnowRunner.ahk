@@ -48,6 +48,7 @@ bManualMod := false
         ; and /    -> Mouse Wheel Down / Mouse Wheel Up
         !``         -> Make Window BorderLess
         !1         -> Stretch Window to Screen Size
+        ^Enter     -> Unblock mouse input (if it was blocked by mistake)
         !C         -> Suspend
         !Z         -> Reload
         !X         -> ExitApp
@@ -153,6 +154,7 @@ bManualMod := false
     Numpad2:: oGearBox.ShiftGearManual("D")
 
 #IfWinActive
+^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
 !Z:: Reload
 !X:: ExitApp
 !C::
@@ -266,11 +268,17 @@ class GearBox { ;Коробка передач
     }
 
     ExecuteShiftSequence(sDirectionSequence) { ;For example "LLU": left, left, up
+        Critical, On
+        BlockInput, MouseMove
+
         Loop, Parse, sDirectionSequence
         {
             this.oCurrentState := this.oCurrentState.Shift(A_LoopField)
             this.OutputDebugCurrentGear()
         }
+
+        BlockInput, MouseMoveOff
+        Critical, Off
     }
 
     ShiftGear(iTargetGear) { ;переключить передачу
