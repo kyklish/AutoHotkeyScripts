@@ -33,7 +33,7 @@ bManualMod := false
         RCtrl      -> Mouse Right Click
         4          -> Full Truck Refuel
         !4         -> Full Truck Refuel + Trailer
-        RMB        -> Switch Gear (Low Gear / Auto Gear)
+        RMB        -> Switch Gear (Low Gear / Auto Gear) [ONLY IN AUTO GEARBOX MODE]
         Numpad*    -> Toggle GearBox Mode: Auto/Manual
         Numpad0    -> Reset GearBox State (to Center)
         Numpad1-9  -> Switch Gear (Auto)
