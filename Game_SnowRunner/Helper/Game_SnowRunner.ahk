@@ -153,8 +153,8 @@ bManualMod := false
     Numpad2:: oGearBox.ShiftGearManual("D")
 
 #IfWinActive
-!Z::Reload
-!X::ExitApp
+!Z:: Reload
+!X:: ExitApp
 !C::
     Suspend ; Must be first command!
     SuspendToolTip()
@@ -186,19 +186,17 @@ ShiftGear(cDirection) {
 
     Switch cDirection
     {
-    Case "U": ShiftGearMouseMove(0, -iOffset)	;Up
-    Case "D": ShiftGearMouseMove(0, iOffset)	;Down
-    Case "L": ShiftGearMouseMove(-iOffset, 0)	;Left
-    Case "R": ShiftGearMouseMove(iOffset, 0)	;Right
+    Case "U": ShiftGearMouseMove(0, -iOffset) ;Up
+    Case "D": ShiftGearMouseMove(0, iOffset)  ;Down
+    Case "L": ShiftGearMouseMove(-iOffset, 0) ;Left
+    Case "R": ShiftGearMouseMove(iOffset, 0)  ;Right
     Default: MsgBox, No such direction: %cDirection%
     }
 }
 
 ShiftGearMouseMove(X, Y) {
-    ; Send, {LShift down}
     Send, {RShift down}
     MouseMove, %X%, %Y%, , R
-    ; Send, {LShift up}
     Send, {RShift up}
 }
 
