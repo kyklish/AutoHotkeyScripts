@@ -17,14 +17,14 @@ GroupAdd, SpinTires, ahk_exe SnowRunner.exe
 
 ;===============================================================================
 
-OutputDebug % "Run Helper & Logistics scripts...`n"
+OutputDebug("Run Helper & Logistics scripts...")
 Run, ..\Helper\Game_SnowRunner.ahk
 Run, ..\Logistics\Game_SnowRunner_Logistics.ahk
-OutputDebug % "WinWait...`n"
+OutputDebug("WinWait...")
 WinWait, SnowRunner Logistics
 Sleep 1000
 WinActivate
-OutputDebug % "WinWaitActive...`n"
+OutputDebug("WinWaitActive...")
 WinWaitActive
 Send {F3} ; Hide "SnowRunner Logistics" window
 
@@ -33,12 +33,12 @@ Send {F3} ; Hide "SnowRunner Logistics" window
 sSnowRunner := "E:\UNPROTECTED\GAMES\SnowRunner_-_Premium_Edition\Sources\Bin\SnowRunner.exe"
 SplitPath, sSnowRunner, , sWorkingDir
 If (!WinExist("ahk_group SpinTires")) {
-    OutputDebug % "Run SnowRunner...`n"
+    OutputDebug("Run SnowRunner...")
     Run, %sSnowRunner%, %sWorkingDir%
-    OutputDebug % "WinWait...`n"
+    OutputDebug("WinWait...")
     WinWait, ahk_group SpinTires
     WinActivate
-    OutputDebug % "WinWaitActive...`n"
+    OutputDebug("WinWaitActive...")
     WinWaitActive
 } Else {
     MsgBox % "Game is running..."
@@ -47,7 +47,7 @@ If (!WinExist("ahk_group SpinTires")) {
 
 ;===============================================================================
 
-OutputDebug % "Wait epilepsy message...`n"
+OutputDebug("Wait epilepsy message...")
 WinGetPos, X, Y, iWidth, iHeight
 iPicSz := 40 ; Size of the "Black.png" square
 X1 :=  iWidth // 2 - iPicSz // 2
@@ -64,15 +64,15 @@ Loop {
         ExitApp
     }
     If (ErrorLevel == 1) {
-        OutputDebug % "ImageSearch: Black not found (in the CENTER of the window)...`n"
+        OutputDebug("ImageSearch: Black not found (in the CENTER of the window)...")
         Break
     }
-    OutputDebug % "ImageSearch: Black found (in the CENTER of the window)...`n"
+    OutputDebug("ImageSearch: Black found (in the CENTER of the window)...")
 }
 
 ;===============================================================================
 
-OutputDebug % "Show/Destroy GUI window to loose/gain game's window focus...`n"
+OutputDebug("Show/Destroy GUI window to loose/gain game's window focus...")
 If (WinActive()) {
     Gui, New
     Gui, Add, Text,, Window closed automatically
@@ -85,9 +85,9 @@ If (WinActive()) {
 ;===============================================================================
 
 WinActivate
-OutputDebug % "WinWaitActive...`n"
+OutputDebug("WinWaitActive...")
 WinWaitActive
-OutputDebug % "Press [Esc] to skip intro...`n"
+OutputDebug("Press [Esc] to skip intro...")
 CoordMode, Pixel, Client ; skip window's border and title bar
 Loop {
     Sleep 1000
@@ -98,15 +98,15 @@ Loop {
     ; Search in the top left corner
     ImageSearch, _X, _Y, % 0, % 0, % iPicSz, % iPicSz, Black.png
     If (ErrorLevel == 1) {
-        OutputDebug % "ImageSearch: Black not found (in the TOP LEFT CORNER)...`n"
+        OutputDebug("ImageSearch: Black not found (in the TOP LEFT CORNER)...")
         Break
     }
-    OutputDebug % "ImageSearch: Black found (in the TOP LEFT CORNER)...`n"
+    OutputDebug("ImageSearch: Black found (in the TOP LEFT CORNER)...")
 }
 
 ;===============================================================================
 
-OutputDebug % "Press [Enter] to enter Main Menu and press [Continue]...`n"
+OutputDebug("Press [Enter] to enter Main Menu and press [Continue]...")
 Loop 5 {
     Sleep 1000
     If (WinActive())
@@ -117,5 +117,9 @@ Loop 5 {
 
 ;===============================================================================
 
-OutputDebug % "Exit...`n"
+OutputDebug("Exit...")
 ExitApp
+
+OutputDebug(sText) {
+    OutputDebug % sText "`n"
+}
