@@ -1,6 +1,5 @@
 ﻿#Warn
 #NoEnv
-; #UseHook
 #SingleInstance, Force
 SetBatchLines, -1
 SetWorkingDir %A_ScriptDir%
@@ -343,4 +342,22 @@ FillFullTank() {
     Send, {f down}
     Sleep, 1750
     Send, {f up}
+}
+
+ShowHelpWindow(ByRef str := "")
+{
+    static bToggle := false
+    iCharWidth := 9 ; char width by default
+    iPadding := 10 ; padding from window's border by default
+    iWidth := 0
+
+    if (bToggle := !bToggle) {
+        Loop, Parse, str, `n, `r
+            if (iWidth < StrLen(A_LoopField))
+                iWidth := StrLen(A_LoopField)
+        iWidth := iWidth * iCharWidth + 2 * iPadding
+        Progress, zh0 b2 c0 w%iWidth%, %str%, , , Consolas
+    }
+    else
+        Progress, Off
 }
