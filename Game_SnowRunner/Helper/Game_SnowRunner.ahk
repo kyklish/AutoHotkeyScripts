@@ -235,8 +235,9 @@ class State { ;Положение рычага КПП
         this.iGear := iGear
     }
 
-    Shift(cDirection) { ;Передвинуть рычаг в заданном направлении
-        ShiftGear(cDirection) ;Собственно передвижение
+    ; Move gear lever in specified direction
+    Shift(cDirection) {
+        ShiftGear(cDirection)
         return this.oDirections[cDirection]
     }
 
@@ -258,7 +259,7 @@ class State { ;Положение рычага КПП
     }
 }
 
-class GearBox { ;Коробка передач
+class GearBox {
     oCurrentState := {}
     oResetState := {}
 
@@ -267,7 +268,8 @@ class GearBox { ;Коробка передач
         this.OutputDebugCurrentGear()
     }
 
-    ExecuteShiftSequence(sDirectionSequence) { ;For example "LLU": left, left, up
+    ; Example input: "LLU" (left -> left -> up)
+    ExecuteShiftSequence(sDirectionSequence) {
         Critical, On
         BlockInput, MouseMove
 
@@ -281,7 +283,7 @@ class GearBox { ;Коробка передач
         Critical, Off
     }
 
-    ShiftGear(iTargetGear) { ;переключить передачу
+    ShiftGear(iTargetGear) {
         sDirectionSequence := this.FindShiftSequence(this.oCurrentState, iTargetGear)
         if (sDirectionSequence)
             this.ExecuteShiftSequence(sDirectionSequence)
@@ -289,14 +291,16 @@ class GearBox { ;Коробка передач
             this.WrongGearSound()
     }
 
-    ShiftGearManual(cDirection) { ;переключить передачу вручную
-        if (IsObject(this.oCurrentState.oDirections[cDirection])) ;oDirections содержит связь для данного направления перемещения рычага КПП
+    ShiftGearManual(cDirection) {
+        ; oDirections содержит связь для данного направления перемещения рычага КПП
+        if (IsObject(this.oCurrentState.oDirections[cDirection]))
             this.ExecuteShiftSequence(cDirection)
         else ;You can't shift in that direction
             this.WrongGearSound()
     }
 
-    FindShiftSequence(oSearchState, iTargetGear, iParentGear := -1, sTempSequence := "") { ;Return for example "ULD": up, left, down
+    ; Example result: "ULD" (up -> left -> down)
+    FindShiftSequence(oSearchState, iTargetGear, iParentGear := -1, sTempSequence := "") {
         if (oSearchState.iGear = iTargetGear)
             return
         for cDirection, oState in oSearchState.oDirections
@@ -311,7 +315,8 @@ class GearBox { ;Коробка передач
         }
     }
 
-    Reset() { ;Reset to initial State if you loose sync in-game gearbox with script GearBox.
+    ; Reset to initial State if you loose sync in-game gearbox with script GearBox.
+    Reset() {
         this.oCurrentState := this.oResetState
         this.OutputDebugCurrentGear()
     }
@@ -337,7 +342,7 @@ Refuel(bRefuelWithTrailer := false) {
     Send, c
     Sleep, 250
     FillFullTank()
-    if (bRefuelWithTrailer) { ;Дополнительно заправить прицеп
+    if (bRefuelWithTrailer) {
         Send, e
         FillFullTank()
     }
