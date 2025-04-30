@@ -9,7 +9,7 @@ Menu, Tray, Tip, SnowRunner Helper
 
 GroupAdd, SpinTires, ahk_exe SnowRunner.exe
 
-iOffset := 20 ;Distance to move mouse cursor to shift gear inside game
+iOffset := 15 ;Distance to move mouse cursor to shift gear inside game
 SetKeyDelay, 50 ;Влияет на переключение передач и на скорость поворота камеры
 SetKeyDelay,, 100 ;Reliably key pressure detection by game
 SetDefaultMouseSpeed, 10 ;Max speed, that game support, below 10 - not reliable
@@ -37,10 +37,10 @@ bManualMod := false
         Numpad*    -> Toggle GearBox Mode: Auto/Manual
         Numpad0    -> Reset GearBox State (to Center)
         Numpad1-9  -> Switch Gear (Auto)
-        Numpad4    -> Move Gear Lever Left  (Manual)
-        Numpad6    -> Move Gear Lever Right (Manual)
-        Numpad8    -> Move Gear Lever Up    (Manual)
-        Numpad2    -> Move Gear Lever Down  (Manual)
+        Numpad4    -> Move Gear Stick Left  (Manual)
+        Numpad6    -> Move Gear Stick Right (Manual)
+        Numpad8    -> Move Gear Stick Up    (Manual)
+        Numpad2    -> Move Gear Stick Down  (Manual)
         Space      -> HandBrake (unlock all buttons)
         M          -> Map       (unlock all buttons)
         N          -> Skip Night
@@ -235,7 +235,7 @@ class State { ;Положение рычага КПП
         this.iGear := iGear
     }
 
-    ; Move gear lever in specified direction
+    ; Move gear stick in specified direction
     Shift(cDirection) {
         ShiftGear(cDirection)
         return this.oDirections[cDirection]
