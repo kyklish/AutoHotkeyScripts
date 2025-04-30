@@ -82,7 +82,7 @@ bManualMod := false
         wPressed := false
     return
     N::
-        Gosub, ~M
+        Gosub, ~M ; Unlock [W] & [S]
         SetKeyDelay, 200
         Send, m   ; Show map
         Send, ttt ; Time fast forward
@@ -126,14 +126,14 @@ bManualMod := false
         }
     return
 
-    NumpadMult:: bManualMod := !bManualMod ;Переключить режим КПП: Автомат - Ручное
-    Numpad0:: oGearBox.Reset() ;Сбросить КПП в первоначальное состояние
+    NumpadMult:: bManualMod := !bManualMod ; Toggle GearBox Mode: Auto/Manual
+    Numpad0:: oGearBox.Reset()
 
     !`:: Borderless("ahk_group SpinTires")
     !1:: WinMove, ahk_group SpinTires,, 0, 0, A_ScreenWidth, A_ScreenHeight
 
-#If WinActive("ahk_group SpinTires") and !bManualMod ;Автоматическое перемещение рычага КПП
-    Numpad1:: oGearBox.ShiftGear(1) ;Включить передачу в соответствии со схемой
+#If WinActive("ahk_group SpinTires") and !bManualMod ; Automatically move gear stick
+    Numpad1:: oGearBox.ShiftGear(1)
     Numpad2:: oGearBox.ShiftGear(2)
     Numpad3:: oGearBox.ShiftGear(3)
     Numpad4:: oGearBox.ShiftGear(4)
@@ -143,7 +143,7 @@ bManualMod := false
     Numpad8:: oGearBox.ShiftGear(8)
     Numpad9:: oGearBox.ShiftGear(9)
 
-#If WinActive("ahk_group SpinTires") and bManualMod ;Перемещение рычага КПП с помощью "крестовины"
+#If WinActive("ahk_group SpinTires") and bManualMod ; Manually move gear stick Up/Down/Left/Right
     ; Numpad4:: ShiftGear("L")
     ; Numpad6:: ShiftGear("R")
     ; Numpad8:: ShiftGear("U")
@@ -249,7 +249,8 @@ class State { ;Положение рычага КПП
     }
 
     InvertDirection(cDirection) {
-        Switch cDirection {
+        Switch cDirection
+        {
         Case "L": return "R"
         Case "R": return "L"
         Case "U": return "D"
