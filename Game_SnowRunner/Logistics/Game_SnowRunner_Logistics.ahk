@@ -155,6 +155,8 @@ If (TEST_DATA) {
 }
 Return
 
+;================================= Hotkeys =====================================
+
 F3:: ToggleMainWindow()
 
 #IfWinActive ahk_group Script
