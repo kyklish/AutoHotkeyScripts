@@ -63,13 +63,17 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
     Numpad0    -> Reset GearBox State in script to AUTO gear (sync GearBox)
     RMB        -> Switch Gear (Low Gear / Auto Gear) [ONLY IN AUTO GEARBOX MODE]
 [LEGACY GEARBOX]
-    Numpad1-9       -> Switch Gear (Auto)
-    RMB   + QAZ/EDC -> Switch Gear (Auto)
-    Space + QAZ/EDC -> Switch Gear (Auto)
-    Numpad4    -> Move Gear Stick Left  (Manual)
-    Numpad6    -> Move Gear Stick Right (Manual)
-    Numpad8    -> Move Gear Stick Up    (Manual)
-    Numpad2    -> Move Gear Stick Down  (Manual)
+    Numpad1-9         -> Switch Gear (Auto)
+    RMB   + QAZ/EDC   -> Switch Gear (Auto)
+    Space + QAZ/EDC   -> Switch Gear (Auto)
+    Numpad4           -> Move Gear Stick Left  (Manual)
+    Numpad6           -> Move Gear Stick Right (Manual)
+    Numpad8           -> Move Gear Stick Up    (Manual)
+    Numpad2           -> Move Gear Stick Down  (Manual)
+    Numpad0 & Numpad4 -> Move Gear Stick Left  (Manual) [WITHOUT RESTRICTION AND SOUND]
+    Numpad0 & Numpad6 -> Move Gear Stick Right (Manual) [WITHOUT RESTRICTION AND SOUND]
+    Numpad0 & Numpad8 -> Move Gear Stick Up    (Manual) [WITHOUT RESTRICTION AND SOUND]
+    Numpad0 & Numpad2 -> Move Gear Stick Down  (Manual) [WITHOUT RESTRICTION AND SOUND]
 [NEW GEARBOX]
     Tab        -> Toggle GearBox: Simple (A L R) /Advanced (H A L- L L+ R)
     WheelUp    -> Switch Gear Up   (hold CTRL to zoom)
@@ -158,7 +162,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
     CapsLock::   bLegacyMode := !bLegacyMode ; Toggle GearBox: Legacy/New
     NumpadMult:: bManualMode := !bManualMode ; Toggle GearBox Mode: Auto/Manual
     ; Reset GearBox internal state to AUTO Gear
-    Numpad0:: 
+    Numpad0::
         oGearBox.Reset()
         iGear := 5
         Send {Numpad%iGear%}
@@ -231,8 +235,37 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
         Send {Numpad%iGear%}
     return
 
-; Gears for left hand
+#If WinActive("ahk_group SpinTires") and bLegacyMode
+    ; Move gear stick without restriction and sound
+    Numpad0 & Numpad4:: ShiftGear("L")
+    Numpad0 & Numpad6:: ShiftGear("R")
+    Numpad0 & Numpad8:: ShiftGear("U")
+    Numpad0 & Numpad2:: ShiftGear("D")
+
 #If WinActive("ahk_group SpinTires") and bLegacyMode and !bManualMode
+    ; Automatically move gear stick
+    Numpad1:: oGearBox.ShiftGear(1)
+    Numpad2:: oGearBox.ShiftGear(2)
+    Numpad3:: oGearBox.ShiftGear(3)
+    Numpad4:: oGearBox.ShiftGear(4)
+    Numpad5:: oGearBox.ShiftGear(5)
+    Numpad6:: oGearBox.ShiftGear(6)
+    Numpad7:: oGearBox.ShiftGear(7)
+    Numpad8:: oGearBox.ShiftGear(8)
+    Numpad9:: oGearBox.ShiftGear(9)
+
+    ~RButton::
+        ; Do not interfere with Right Click on Map
+        if (GetKeyState("W") || GetKeyState("S")) {
+            if (oGearBox.oCurrentState.iGear == 5)
+                oGearBox.ShiftGear(4)
+            else
+                oGearBox.ShiftGear(5)
+        }
+    return
+
+    ; GEARS FOR LEFT HAND [SPACE & RMB PREFIX]
+
     ; Prefix key [Space] loses its native function.
     ; Fix it with explicit SEND in [Space] hotkey above.
     ; In this mode [Space] fires on release.
@@ -251,34 +284,8 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
     ~RButton & D:: oGearBox.ShiftGear(5) ; A
     ~RButton & C:: oGearBox.ShiftGear(2) ; R
 
-    ~RButton::
-        ; Do not interfere with Right Click on Map
-        if (GetKeyState("W") || GetKeyState("S")) {
-            if (oGearBox.oCurrentState.iGear == 5)
-                oGearBox.ShiftGear(4)
-            else
-                oGearBox.ShiftGear(5)
-        }
-    return
-
-; Automatically move gear stick
-#If WinActive("ahk_group SpinTires") and bLegacyMode and !bManualMode
-    Numpad1:: oGearBox.ShiftGear(1)
-    Numpad2:: oGearBox.ShiftGear(2)
-    Numpad3:: oGearBox.ShiftGear(3)
-    Numpad4:: oGearBox.ShiftGear(4)
-    Numpad5:: oGearBox.ShiftGear(5)
-    Numpad6:: oGearBox.ShiftGear(6)
-    Numpad7:: oGearBox.ShiftGear(7)
-    Numpad8:: oGearBox.ShiftGear(8)
-    Numpad9:: oGearBox.ShiftGear(9)
-
-; Manually move gear stick Up/Down/Left/Right
 #If WinActive("ahk_group SpinTires") and bLegacyMode and bManualMode
-    ; Numpad4:: ShiftGear("L")
-    ; Numpad6:: ShiftGear("R")
-    ; Numpad8:: ShiftGear("U")
-    ; Numpad2:: ShiftGear("D")
+    ; Manually move gear stick Up/Down/Left/Right
     Numpad4:: oGearBox.ShiftGearManual("L")
     Numpad6:: oGearBox.ShiftGearManual("R")
     Numpad8:: oGearBox.ShiftGearManual("U")
