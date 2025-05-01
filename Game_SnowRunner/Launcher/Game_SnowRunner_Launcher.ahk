@@ -15,6 +15,8 @@ Menu, Tray, Tip, SnowRunner Launcher
 
 GroupAdd, SpinTires, ahk_exe SnowRunner.exe
 
+iPicSz := 40 ; Size of the "BlackSquare.png" in pixels
+
 ;===============================================================================
 
 OutputDebug("Run Helper & Logistics scripts...")
@@ -49,7 +51,6 @@ If (!WinExist("ahk_group SpinTires")) {
 
 OutputDebug("Wait epilepsy message...")
 WinGetPos, X, Y, iWidth, iHeight
-iPicSz := 40 ; Size of the "Black.png" square
 X1 :=  iWidth // 2 - iPicSz // 2
 Y1 := iHeight // 2 - iPicSz // 2
 X2 := X1 + iPicSz
@@ -58,16 +59,16 @@ CoordMode, Pixel, Window ; Match ImageSearch with WinGetPos result
 Loop {
     Sleep 1000
     ; Search in the center of the window
-    ImageSearch, _X, _Y, % X1, % Y1, % X2, % Y2, Black.png
+    ImageSearch, _X, _Y, % X1, % Y1, % X2, % Y2, BlackSquare.png
     If (ErrorLevel == 2) {
         MsgBox % "Can't open image to search."
         ExitApp
     }
     If (ErrorLevel == 1) {
-        OutputDebug("ImageSearch: Black not found (in the CENTER of the window)...")
+        OutputDebug("ImageSearch: black square not found (CENTER of the window)...")
         Break
     }
-    OutputDebug("ImageSearch: Black found (in the CENTER of the window)...")
+    OutputDebug("ImageSearch: black square found (CENTER of the window)...")
 }
 
 ;===============================================================================
@@ -91,17 +92,19 @@ OutputDebug("Press [Esc] to skip intro...")
 CoordMode, Pixel, Client ; skip window's border and title bar
 Loop {
     Sleep 1000
-    If (WinActive())
+    If (WinActive()) {
         Send {Esc}
+        OutputDebug("==> [ESC]")
+    }
     Else
         ExitApp
     ; Search in the top left corner
-    ImageSearch, _X, _Y, % 0, % 0, % iPicSz, % iPicSz, Black.png
+    ImageSearch, _X, _Y, % 0, % 0, % iPicSz, % iPicSz, BlackSquare.png
     If (ErrorLevel == 1) {
-        OutputDebug("ImageSearch: Black not found (in the TOP LEFT CORNER)...")
+        OutputDebug("ImageSearch: black square not found (TOP LEFT CORNER)...")
         Break
     }
-    OutputDebug("ImageSearch: Black found (in the TOP LEFT CORNER)...")
+    OutputDebug("ImageSearch: black square found (TOP LEFT CORNER)...")
 }
 
 ;===============================================================================
@@ -109,8 +112,10 @@ Loop {
 OutputDebug("Press [Enter] to enter Main Menu and press [Continue]...")
 Loop 5 {
     Sleep 1000
-    If (WinActive())
+    If (WinActive()) {
         Send {Enter}
+        OutputDebug("==> [ENTER]")
+    }
     Else
         ExitApp
 }
