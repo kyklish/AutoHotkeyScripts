@@ -30,10 +30,10 @@ oStates := [] ;Service variable for script logic. Contains all possible Gear Sta
 oGearBox := GearBoxFactory(oStates)
 
 sPressed := wPressed := false
-bLegacyMode := false
-bManualMode := false
-bSimpleGearBox := false ; Early game GearBox
-iGear := 5 ; Gear [Auto]
+bLegacyMode    := false ; Switch gears by mouse moves
+bManualMode    := false ; Switch gears UP/DOWN/LEFT/RIGHT
+bSimpleGearBox := false ; Early game GearBox (LOW/AUTO/REVERSE)
+iGear := 5 ; [Auto] Current gear in new GearBox (switch by mouse wheel)
 
 #IfWinActive ahk_group SpinTires
     F1:: ShowHelpWindow("
@@ -48,20 +48,21 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
         - can't switch from A to H/L+ press TAB
         - can't switch from A to L press TAB
 [GAME]
-    2          -> Lock W down, move  forward (press W to unlock)
-    !2         -> Lock S down, move backward (press S to unlock)
-    RAlt       -> Mouse Middle Button (Down/Up)
-    RCtrl      -> Mouse Right Click
-    4          -> Full Truck Refuel
-    !4         -> Full Truck Refuel + Trailer
-    T          -> Time Fast Forward [Skip Night]
-    , and .    -> Turn Camera (Left/Right)
-    / and ;    -> Mouse Wheel Up / Mouse Wheel Down
+    2           -> Lock W down, move  forward (press W to unlock)
+    !2          -> Lock S down, move backward (press S to unlock)
+    RAlt        -> Mouse Middle Button (Down/Up)
+    RCtrl       -> Mouse Right Click
+    4           -> Full Truck Refuel
+    !4          -> Full Truck Refuel + Trailer
+    T           -> Time Fast Forward [Skip Night]
+    , and .     -> Turn Camera (Left/Right)
+    / and ;     -> Mouse Wheel Up / Mouse Wheel Down
 [GEARBOX]
-    CapsLock   -> Switch GearBox (Legacy [NUMPAD] / New [MOUSE WHEEL])
-    Numpad*    -> Toggle GearBox Mode: Auto/Manual
-    Numpad0    -> Reset GearBox State in script to AUTO gear (sync GearBox)
-    RMB        -> Switch Gear (Low Gear / Auto Gear) [ONLY IN AUTO GEARBOX MODE]
+    CapsLock    -> Switch GearBox (Legacy [NUMPAD] / New [MOUSE WHEEL])
+    Numpad*     -> Toggle GearBox Mode: Auto/Manual
+    Numpad0     -> Reset GearBox State in script to AUTO gear (sync GearBox)
+    NumpadEnter -> Show Current GearBox Status
+    RMB         -> Switch Gear (Low Gear / Auto Gear) [ONLY IN AUTO GEARBOX MODE]
 [LEGACY GEARBOX]
     Numpad1-9         -> Switch Gear (Auto)
     RMB   + QAZ/EDC   -> Switch Gear (Auto)
@@ -75,15 +76,15 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
     Numpad0 & Numpad8 -> Move Gear Stick Up    (Manual) [WITHOUT RESTRICTION AND SOUND]
     Numpad0 & Numpad2 -> Move Gear Stick Down  (Manual) [WITHOUT RESTRICTION AND SOUND]
 [NEW GEARBOX]
-    Tab        -> Toggle GearBox: Simple (A L R) /Advanced (H A L- L L+ R)
-    WheelUp    -> Switch Gear Up   (hold CTRL to zoom)
-    WheelDown  -> Switch Gear Down (hold CTRL to zoom)
+    Tab         -> Toggle GearBox: Simple (A L R) /Advanced (H A L- L L+ R)
+    WheelUp     -> Switch Gear Up   (hold CTRL to zoom)
+    WheelDown   -> Switch Gear Down (hold CTRL to zoom)
 [SCRIPT]
-    !``         -> Make Window BorderLess
-    !1         -> Stretch Window to Screen Size
-    !C         -> Suspend
-    !Z         -> Reload
-    !X         -> ExitApp
+    !``          -> Make Window BorderLess
+    !1          -> Stretch Window to Screen Size
+    !C          -> Suspend
+    !Z          -> Reload
+    !X          -> ExitApp
 [GEAR SCHEME in GearBox]
     7 8      + H
     | |      | |
@@ -166,6 +167,21 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
         oGearBox.Reset()
         iGear := 5
         Send {Numpad%iGear%}
+    return
+
+    NumpadEnter::
+        sCurrentStatus := ""
+        if (bLegacyMode) {
+            sCurrentStatus .= "LEGACY (NUMPAD KEYS)`n"
+            sCurrentStatus .= (bManualMode ? "MANUAL" : "AUTO") "`n"
+            sCurrentStatus .= "GEAR: " oGearBox.oCurrentState.iGear
+        }
+        else {
+            sCurrentStatus .= "NEW (MOUSE WHEEL)`n"
+            sCurrentStatus .= (bSimpleGearBox ? "SIMPLE (Low/Auto)" : "ADVANCED (High/Low-/Low+/Auto)") "`n"
+            sCurrentStatus .= "GEAR: " iGear
+        }
+        ToolTip(sCurrentStatus)
     return
 
     !`:: Borderless("ahk_group SpinTires")
@@ -487,8 +503,7 @@ FillFullTank() {
     Send, {f up}
 }
 
-ShowHelpWindow(ByRef str := "")
-{
+ShowHelpWindow(ByRef str := "") {
     static bToggle := false
     iCharWidth := 9 ; char width by default
     iPadding := 10 ; padding from window's border by default
@@ -503,4 +518,11 @@ ShowHelpWindow(ByRef str := "")
     }
     else
         Progress, Off
+}
+
+ToolTip(sMessage, iDisplayTime := 1) {
+    CoordMode, ToolTip, Client
+    ToolTip, % sMessage, 0, 0
+    Sleep, %iDisplayTime%000
+    ToolTip
 }
