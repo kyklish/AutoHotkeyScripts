@@ -126,5 +126,10 @@ OutputDebug("Exit...")
 ExitApp
 
 OutputDebug(sText) {
+    global iPicSz
+    static sStr := ""
+    sStr .= sText "`n"
+    CoordMode, ToolTip, Client
+    ToolTip % sStr, % iPicSz, 0
     OutputDebug % sText "`n"
 }
