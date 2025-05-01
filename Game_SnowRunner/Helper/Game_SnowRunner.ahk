@@ -1,8 +1,20 @@
-﻿#Warn
+﻿; Game always capture mouse moves and wheel moves!!!
+; Can't block it with [BlockInput, MouseMove]!!!
+; Mouse moves during gear shifting will interfere with script logic :(
+
+#Warn
 #NoEnv
 #SingleInstance, Force
 SetBatchLines, -1
 SetWorkingDir %A_ScriptDir%
+
+; Although a value of 1 is allowed, it is not recommended because it would
+; prevent new hotkeys from launching whenever the script is displaying a message
+; box or other dialog. It would also prevent timers from running whenever another
+; thread is sleeping or waiting.
+; REASON: Don't allow fire any other hotkey if current hotkey is in action!
+; Ignore them and don't buffer them.
+#MaxThreads, 1
 
 Menu, Tray, Icon, SnowRunner.ico, 1, 1
 Menu, Tray, Tip, SnowRunner Helper
@@ -18,47 +30,65 @@ oStates := [] ;Service variable for script logic. Contains all possible Gear Sta
 oGearBox := GearBoxFactory(oStates)
 
 sPressed := wPressed := false
-bManualMod := false
+bLegacyMode := false
+bManualMode := false
+bSimpleGearBox := false ; Early game GearBox
+iGear := 5 ; Gear [Auto]
 
 #IfWinActive ahk_group SpinTires
     F1:: ShowHelpWindow("
     (LTrim
-        Eng keyboard language required during play!!!
+        Disable ScrollNavigator!!!
         Change [Clutch Pedal] to [Right Shift] in the game settings.
-        Change [Winch] to [Left Shift] in the game settings.
+        Change [Winch] to [Left Shift] in the game settings. (Its much better!)
+        For NEW GearBox: assign [Gear] to [Numpad] keys according to scheme in the game settings.
+        For LEGACY GearBox: do not assign any keys to [Numpad].
         A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel).
+        [GAME]
         2          -> Lock W down, move  forward (press W to unlock)
         !2         -> Lock S down, move backward (press S to unlock)
         RAlt       -> Mouse Middle Button (Down/Up)
         RCtrl      -> Mouse Right Click
         4          -> Full Truck Refuel
         !4         -> Full Truck Refuel + Trailer
-        RMB        -> Switch Gear (Low Gear / Auto Gear) [ONLY IN AUTO GEARBOX MODE]
+        T          -> Time Fast Forward [Skip Night]
+        , and .    -> Turn Camera (Left/Right)
+        ; and /    -> Mouse Wheel Down / Mouse Wheel Up
+        [GEARBOX]
+        CapsLock   -> Switch GearBox (Legacy [NUMPAD] / New [MOUSE WHEEL])
         Numpad*    -> Toggle GearBox Mode: Auto/Manual
         Numpad0    -> Reset GearBox State (to Center)
-        Numpad1-9  -> Switch Gear (Auto)
+        RMB        -> Switch Gear (Low Gear / Auto Gear) [ONLY IN AUTO GEARBOX MODE]
+        [LEGACY GEARBOX]
+        Numpad1-9       -> Switch Gear (Auto)
+        RMB   + QAZ/EDC -> Switch Gear (Auto)
+        Space + QAZ/EDC -> Switch Gear (Auto)
         Numpad4    -> Move Gear Stick Left  (Manual)
         Numpad6    -> Move Gear Stick Right (Manual)
         Numpad8    -> Move Gear Stick Up    (Manual)
         Numpad2    -> Move Gear Stick Down  (Manual)
-        Space      -> HandBrake (unlock all buttons)
-        M          -> Map       (unlock all buttons)
-        N          -> Skip Night
-        , and .    -> Turn Camera (Left/Right)
-        ; and /    -> Mouse Wheel Down / Mouse Wheel Up
+        [NEW GEARBOX]
+        WheelUp    -> Switch Gear Up   (hold CTRL to zoom)
+        WheelDown  -> Switch Gear Down (hold CTRL to zoom)
+        [SCRIPT]
         !``         -> Make Window BorderLess
         !1         -> Stretch Window to Screen Size
-        ^Enter     -> Unblock mouse input (if it was blocked by mistake)
         !C         -> Suspend
         !Z         -> Reload
         !X         -> ExitApp
-        Gear Scheme in GearBox:
+        [GEAR SCHEME in GearBox]
         7 8      + H
         | |      | |
         4-5-6 -> L-A-N
         | |      | |
         1 2      - R
     )")
+    UnlockKeys: ; Unlock [W] & [S] keys.
+        Send, {w up} ;Not worked if combined in one Send command!
+        Send, {s up}
+        sPressed := false
+        wPressed := false
+    return
     2:: ; Lock [W] down. Press [W] to unlock.
         Send, {s up}
         Send, {w down}
@@ -74,17 +104,19 @@ bManualMod := false
     return
     4:: Refuel() ; Full Truck Refuel.
     !4:: Refuel(true) ; Full Truck Refuel + Trailer.
-    ~Space:: ; Full stop on handbrake.
-    ~M:: ; On Map open unlock [W] & [S].
-        Send, {w up} ;Not worked if combined in one Send command!
-        Send, {s up}
-        sPressed := false
-        wPressed := false
+    ; Do not use [~] with [Space]!
+    ; It will break [Space] as prefix in hotkeys below!
+    Space:: ; Full stop on handbrake
+        Gosub, UnlockKeys
+        Send, {Space}
     return
-    N::
-        Gosub, ~M ; Unlock [W] & [S]
+    M::
+        Gosub, UnlockKeys
+        Send, m
+    return
+    T::
         SetKeyDelay, 200
-        Send, m   ; Show map
+        Gosub, m
         Send, ttt ; Time fast forward
         Send, m   ; Close map
     return
@@ -114,25 +146,95 @@ bManualMod := false
     /:: Send, {WheelDown}
     RAlt:: Send, {MButton down}
     RAlt Up:: Send, {MButton up}
-    RCtrl:: Click Right
     ; RCtrl:: Send, {RButton down}
     ; RCtrl Up:: Send, {RButton up}
+    RCtrl:: Click Right
+
+    Tab::     bSimpleGearBox := !bSimpleGearBox
+    CapsLock::   bLegacyMode := !bLegacyMode ; Toggle GearBox: Legacy/New
+    NumpadMult:: bManualMode := !bManualMode ; Toggle GearBox Mode: Auto/Manual
+    Numpad0:: oGearBox.Reset()
+
+    !`:: Borderless("ahk_group SpinTires")
+    !1:: WinMove, ahk_group SpinTires,, 0, 0, A_ScreenWidth, A_ScreenHeight
+
+#If WinActive("ahk_group SpinTires") and !bLegacyMode
+    WheelUp::
+        if (GetKeyState("Ctrl"))
+            Return
+        ; Game always detects mouse movement and wheel movement!
+        ; Reverse wheel movement to restore current zoom.
+        Send {WheelDown}
+        if (bSimpleGearBox) {
+            Switch iGear
+            { ; R => L => A : 2 => 4 => 5
+            Case 5: oGearBox.WrongGearSound()
+            Case 4: iGear := 5
+            Case 2: iGear := 4
+            }
+        } else {
+            MsgBox ADVANCED GEARBOX UP
+        }
+        Send {Numpad%iGear%}
+    return
+    WheelDown::
+        if (GetKeyState("Ctrl"))
+            return
+        ; Game always detects mouse movement and wheel movement!
+        ; Reverse wheel movement to restore current zoom.
+        Send {WheelUp}
+        if (bSimpleGearBox) {
+            Switch iGear
+            { ; A => L => R : 5 => 4 => 2
+            Case 5: iGear := 4
+            Case 4: iGear := 2
+            Case 2: oGearBox.WrongGearSound()
+            }
+        } else {
+            MsgBox ADVANCED GEARBOX DOWN
+        }
+        Send {Numpad%iGear%}
+    return
     ~RButton::
+        if (iGear == 5)
+            iGear := 4
+        else
+            iGear := 5
+        Send {Numpad%iGear%}
+    return
+
+; Gears for left hand
+#If WinActive("ahk_group SpinTires") and bLegacyMode and !bManualMode
+    ; Prefix key [Space] loses its native function.
+    ; Fix it with explicit SEND in [Space] hotkey above.
+    ; In this mode [Space] fires on release.
+    Space & Q:: oGearBox.ShiftGear(7) ; L+
+    Space & A:: oGearBox.ShiftGear(4) ; L
+    Space & Z:: oGearBox.ShiftGear(1) ; L-
+    Space & E:: oGearBox.ShiftGear(8) ; H
+    Space & D:: oGearBox.ShiftGear(5) ; A
+    Space & C:: oGearBox.ShiftGear(2) ; R
+
+    ; Prefix key [RButton] loses its native function. Fix it with [~].
+    ~RButton & Q:: oGearBox.ShiftGear(7) ; L+
+    ~RButton & A:: oGearBox.ShiftGear(4) ; L
+    ~RButton & Z:: oGearBox.ShiftGear(1) ; L-
+    ~RButton & E:: oGearBox.ShiftGear(8) ; H
+    ~RButton & D:: oGearBox.ShiftGear(5) ; A
+    ~RButton & C:: oGearBox.ShiftGear(2) ; R
+
+    ~RButton::
+        ; Do not interfere with Right Click on Map
         if (GetKeyState("W") || GetKeyState("S")) {
-            if (oGearBox.oCurrentState.iGear != 4)
+            if (oGearBox.oCurrentState.iGear == 5)
                 oGearBox.ShiftGear(4)
             else
                 oGearBox.ShiftGear(5)
         }
     return
 
-    NumpadMult:: bManualMod := !bManualMod ; Toggle GearBox Mode: Auto/Manual
-    Numpad0:: oGearBox.Reset()
-
-    !`:: Borderless("ahk_group SpinTires")
-    !1:: WinMove, ahk_group SpinTires,, 0, 0, A_ScreenWidth, A_ScreenHeight
-
-#If WinActive("ahk_group SpinTires") and !bManualMod ; Automatically move gear stick
+; Automatically move gear stick
+#If WinActive("ahk_group SpinTires") and bLegacyMode and !bManualMode
     Numpad1:: oGearBox.ShiftGear(1)
     Numpad2:: oGearBox.ShiftGear(2)
     Numpad3:: oGearBox.ShiftGear(3)
@@ -143,7 +245,8 @@ bManualMod := false
     Numpad8:: oGearBox.ShiftGear(8)
     Numpad9:: oGearBox.ShiftGear(9)
 
-#If WinActive("ahk_group SpinTires") and bManualMod ; Manually move gear stick Up/Down/Left/Right
+; Manually move gear stick Up/Down/Left/Right
+#If WinActive("ahk_group SpinTires") and bLegacyMode and bManualMode
     ; Numpad4:: ShiftGear("L")
     ; Numpad6:: ShiftGear("R")
     ; Numpad8:: ShiftGear("U")
@@ -154,7 +257,6 @@ bManualMod := false
     Numpad2:: oGearBox.ShiftGearManual("D")
 
 #IfWinActive
-^Enter:: BlockInput, MouseMoveOff ; Unblock mouse input (if it was blocked by mistake)
 !Z:: Reload
 !X:: ExitApp
 !C::
@@ -271,17 +373,11 @@ class GearBox {
 
     ; Example input: "LLU" (left -> left -> up)
     ExecuteShiftSequence(sDirectionSequence) {
-        Critical, On
-        BlockInput, MouseMove
-
         Loop, Parse, sDirectionSequence
         {
             this.oCurrentState := this.oCurrentState.Shift(A_LoopField)
             this.OutputDebugCurrentGear()
         }
-
-        BlockInput, MouseMoveOff
-        Critical, Off
     }
 
     ShiftGear(iTargetGear) {
