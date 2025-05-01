@@ -172,16 +172,16 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
     NumpadEnter::
         sCurrentStatus := ""
         if (bLegacyMode) {
-            sCurrentStatus .= "LEGACY (NUMPAD KEYS)`n"
-            sCurrentStatus .= (bManualMode ? "MANUAL" : "AUTO") "`n"
-            sCurrentStatus .= "GEAR: " oGearBox.oCurrentState.iGear
+            sCurrentStatus .= "[CapsLock]`tLEGACY (NUMPAD KEYS)`n"
+            sCurrentStatus .= "[Numpad*]`t" (bManualMode ? "MANUAL" : "AUTO") "`n"
+            sCurrentStatus .= "[Key]`t`tGEAR: " oGearBox.oCurrentState.iGear
         }
         else {
-            sCurrentStatus .= "NEW (MOUSE WHEEL)`n"
-            sCurrentStatus .= (bSimpleGearBox ? "SIMPLE (Low/Auto)" : "ADVANCED (High/Low-/Low+/Auto)") "`n"
-            sCurrentStatus .= "GEAR: " iGear
+            sCurrentStatus .= "[CapsLock]`tNEW (MOUSE WHEEL)`n"
+            sCurrentStatus .= "[Tab]`t`t" (bSimpleGearBox ? "SIMPLE (Low/Auto)" : "ADVANCED (High/Low-/Low+/Auto)") "`n"
+            sCurrentStatus .= "[Wheel]`t`tGEAR: " iGear
         }
-        ToolTip(sCurrentStatus)
+        ToolTip(sCurrentStatus, 2)
     return
 
     !`:: Borderless("ahk_group SpinTires")
@@ -243,6 +243,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
         }
         Send {Numpad%iGear%}
     return
+    ; Disable ScrollNavigator to fix Right Mouse Button behaviour
     ~RButton::
         if (iGear == 5)
             iGear := 4
