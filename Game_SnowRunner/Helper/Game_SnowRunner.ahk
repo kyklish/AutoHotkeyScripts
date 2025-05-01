@@ -37,51 +37,55 @@ iGear := 5 ; Gear [Auto]
 
 #IfWinActive ahk_group SpinTires
     F1:: ShowHelpWindow("
-    (LTrim
-        Disable ScrollNavigator!!!
-        Change [Clutch Pedal] to [Right Shift] in the game settings.
-        Change [Winch] to [Left Shift] in the game settings. (Its much better!)
-        For NEW GearBox: assign [Gear] to [Numpad] keys according to scheme in the game settings.
-        For LEGACY GearBox: do not assign any keys to [Numpad].
-        A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel).
-        [GAME]
-        2          -> Lock W down, move  forward (press W to unlock)
-        !2         -> Lock S down, move backward (press S to unlock)
-        RAlt       -> Mouse Middle Button (Down/Up)
-        RCtrl      -> Mouse Right Click
-        4          -> Full Truck Refuel
-        !4         -> Full Truck Refuel + Trailer
-        T          -> Time Fast Forward [Skip Night]
-        , and .    -> Turn Camera (Left/Right)
-        ; and /    -> Mouse Wheel Down / Mouse Wheel Up
-        [GEARBOX]
-        CapsLock   -> Switch GearBox (Legacy [NUMPAD] / New [MOUSE WHEEL])
-        Numpad*    -> Toggle GearBox Mode: Auto/Manual
-        Numpad0    -> Reset GearBox State (to Center)
-        RMB        -> Switch Gear (Low Gear / Auto Gear) [ONLY IN AUTO GEARBOX MODE]
-        [LEGACY GEARBOX]
-        Numpad1-9       -> Switch Gear (Auto)
-        RMB   + QAZ/EDC -> Switch Gear (Auto)
-        Space + QAZ/EDC -> Switch Gear (Auto)
-        Numpad4    -> Move Gear Stick Left  (Manual)
-        Numpad6    -> Move Gear Stick Right (Manual)
-        Numpad8    -> Move Gear Stick Up    (Manual)
-        Numpad2    -> Move Gear Stick Down  (Manual)
-        [NEW GEARBOX]
-        WheelUp    -> Switch Gear Up   (hold CTRL to zoom)
-        WheelDown  -> Switch Gear Down (hold CTRL to zoom)
-        [SCRIPT]
-        !``         -> Make Window BorderLess
-        !1         -> Stretch Window to Screen Size
-        !C         -> Suspend
-        !Z         -> Reload
-        !X         -> ExitApp
-        [GEAR SCHEME in GearBox]
-        7 8      + H
-        | |      | |
-        4-5-6 -> L-A-N
-        | |      | |
-        1 2      - R
+    (
+Disable ScrollNavigator!!!
+Change [Clutch Pedal] to [Right Shift] in the game settings.
+Change [Winch] to [Left Shift] in the game settings. (Its much better!)
+For NEW GearBox: assign [Gear] to [Numpad] keys according to scheme in the game settings.
+For LEGACY GearBox: do not assign any keys to [Numpad].
+A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel).
+    Simple/Advanced GearBox mismatch:
+        - can't switch from A to H/L+ press TAB
+        - can't switch from A to L press TAB
+[GAME]
+    2          -> Lock W down, move  forward (press W to unlock)
+    !2         -> Lock S down, move backward (press S to unlock)
+    RAlt       -> Mouse Middle Button (Down/Up)
+    RCtrl      -> Mouse Right Click
+    4          -> Full Truck Refuel
+    !4         -> Full Truck Refuel + Trailer
+    T          -> Time Fast Forward [Skip Night]
+    , and .    -> Turn Camera (Left/Right)
+    / and ;    -> Mouse Wheel Up / Mouse Wheel Down
+[GEARBOX]
+    CapsLock   -> Switch GearBox (Legacy [NUMPAD] / New [MOUSE WHEEL])
+    Numpad*    -> Toggle GearBox Mode: Auto/Manual
+    Numpad0    -> Reset GearBox State in script to AUTO gear (sync GearBox)
+    RMB        -> Switch Gear (Low Gear / Auto Gear) [ONLY IN AUTO GEARBOX MODE]
+[LEGACY GEARBOX]
+    Numpad1-9       -> Switch Gear (Auto)
+    RMB   + QAZ/EDC -> Switch Gear (Auto)
+    Space + QAZ/EDC -> Switch Gear (Auto)
+    Numpad4    -> Move Gear Stick Left  (Manual)
+    Numpad6    -> Move Gear Stick Right (Manual)
+    Numpad8    -> Move Gear Stick Up    (Manual)
+    Numpad2    -> Move Gear Stick Down  (Manual)
+[NEW GEARBOX]
+    Tab        -> Toggle GearBox: Simple (A L R) /Advanced (H A L- L L+ R)
+    WheelUp    -> Switch Gear Up   (hold CTRL to zoom)
+    WheelDown  -> Switch Gear Down (hold CTRL to zoom)
+[SCRIPT]
+    !``         -> Make Window BorderLess
+    !1         -> Stretch Window to Screen Size
+    !C         -> Suspend
+    !Z         -> Reload
+    !X         -> ExitApp
+[GEAR SCHEME in GearBox]
+    7 8      + H
+    | |      | |
+    4-5-6 -> L-A-N
+    | |      | |
+    1 2      - R
     )")
     UnlockKeys: ; Unlock [W] & [S] keys.
         Send, {w up} ;Not worked if combined in one Send command!
@@ -153,7 +157,12 @@ iGear := 5 ; Gear [Auto]
     Tab::     bSimpleGearBox := !bSimpleGearBox
     CapsLock::   bLegacyMode := !bLegacyMode ; Toggle GearBox: Legacy/New
     NumpadMult:: bManualMode := !bManualMode ; Toggle GearBox Mode: Auto/Manual
-    Numpad0:: oGearBox.Reset()
+    ; Reset GearBox internal state to AUTO Gear
+    Numpad0:: 
+        oGearBox.Reset()
+        iGear := 5
+        Send {Numpad%iGear%}
+    return
 
     !`:: Borderless("ahk_group SpinTires")
     !1:: WinMove, ahk_group SpinTires,, 0, 0, A_ScreenWidth, A_ScreenHeight
@@ -166,14 +175,24 @@ iGear := 5 ; Gear [Auto]
         ; Reverse wheel movement to restore current zoom.
         Send {WheelDown}
         if (bSimpleGearBox) {
-            Switch iGear
-            { ; R => L => A : 2 => 4 => 5
-            Case 5: oGearBox.WrongGearSound()
-            Case 4: iGear := 5
+            Switch iGear {
+            ; R => L => A => WrongGearSound
             Case 2: iGear := 4
+            Case 4: iGear := 5
+            Case 5: oGearBox.WrongGearSound()
             }
         } else {
-            MsgBox ADVANCED GEARBOX UP
+            Switch iGear {
+            ; A => H
+            Case 5: iGear := 8
+            ; R => L+
+            Case 2: iGear := 7
+            ; L- => L => L+ => H => WrongGearSound
+            Case 1: iGear := 4
+            Case 4: iGear := 7
+            Case 7: iGear := 8
+            Case 8: oGearBox.WrongGearSound()
+            }
         }
         Send {Numpad%iGear%}
     return
@@ -184,14 +203,23 @@ iGear := 5 ; Gear [Auto]
         ; Reverse wheel movement to restore current zoom.
         Send {WheelUp}
         if (bSimpleGearBox) {
-            Switch iGear
-            { ; A => L => R : 5 => 4 => 2
+            Switch iGear {
+            ; A => L => R => WrongGearSound
             Case 5: iGear := 4
             Case 4: iGear := 2
             Case 2: oGearBox.WrongGearSound()
             }
         } else {
-            MsgBox ADVANCED GEARBOX DOWN
+            Switch iGear {
+            ; A => L+
+            Case 5: iGear := 7
+            ; H => L+ => L => L- => R => WrongGearSound
+            Case 8: iGear := 7
+            Case 7: iGear := 4
+            Case 4: iGear := 1
+            Case 1: iGear := 2
+            Case 2: oGearBox.WrongGearSound()
+            }
         }
         Send {Numpad%iGear%}
     return
