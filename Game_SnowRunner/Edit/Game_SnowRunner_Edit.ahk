@@ -144,6 +144,9 @@ Edit(sFilePath, oLogFile)
     sData := Replace(sData, "Fog Density", "0.0")
     sData := Replace(sData, "SecondaryFog Density", "0.0")
     sData := Replace(sData, "VolumeFog Density", "0.0")
+    ;TRAILERS ==============================================================
+    sData := AllowTrailer(sData) ; Allow attach truck trailer to scout.
+    sData := AllowScoutTrailer(sData) ; Allow attach scout trailer to truck.
     ;CAMERAS ===============================================================
     sData := AllowCameraPassThroughObjects(sData) ; No camera jump.
     sData := MoveCockpitCameraBackward(sData, 0.22) ; More then 0.22 will produce visual glitches on trucks with short cabin.
@@ -269,5 +272,23 @@ AllowCameraPassThroughObjects(sData)
 {
     sSearchText := "<ModelBrand"
     sInsertText := "`n`tClipCamera=""false""" ;Add new line: [ClipCamera="false"]
+    return RegExReplace(sData, "i)" . sSearchText . "\b", sSearchText . sInsertText)
+}
+
+;Add ability to attach scout trailers to trucks.
+AllowScoutTrailer(sData)
+{
+    ;Developers make grammatical mistake in word "Scout"!
+    ;They use word "Skaut" for scout trailer!
+    sSearchText := "<Socket Names=""Trailer"
+    sInsertText := ",ScautTrailer"
+    return RegExReplace(sData, "i)" . sSearchText . "\b", sSearchText . sInsertText)
+}
+
+;Add ability to attach trailers to scouts.
+AllowTrailer(sData)
+{
+    sSearchText := "<Socket Names=""ScautTrailer"
+    sInsertText := ",Trailer"
     return RegExReplace(sData, "i)" . sSearchText . "\b", sSearchText . sInsertText)
 }
