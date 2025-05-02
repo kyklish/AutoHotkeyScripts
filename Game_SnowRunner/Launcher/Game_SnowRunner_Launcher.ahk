@@ -19,8 +19,9 @@ iPicSz := 40 ; Size of the "BlackSquare.png" in pixels
 
 ;===============================================================================
 
-OutputDebug("Run Helper & Logistics scripts...")
+OutputDebug("Run Helper script...")
 Run, ..\Helper\Game_SnowRunner.ahk
+OutputDebug("Run Logistics scripts...")
 Run, ..\Logistics\Game_SnowRunner_Logistics.ahk
 OutputDebug("WinWait...")
 WinWait, SnowRunner Logistics
