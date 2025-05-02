@@ -44,9 +44,7 @@ Change [Winch] to [Left Shift] in the game settings. (Its much better!)
 For NEW GearBox: assign [Gear] to [Numpad] keys according to scheme in the game settings.
 For LEGACY GearBox: do not assign any keys to [Numpad].
 A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel).
-    Simple/Advanced GearBox mismatch:
-        - can't switch from A to H/L+ press TAB
-        - can't switch from A to L press TAB
+    Simple/Advanced GearBox mismatch: can't switch between [L-|L|L+] => press [TAB].
 [GAME]
     2           -> Lock W down, move  forward (press W to unlock)
     !2          -> Lock S down, move backward (press S to unlock)
@@ -76,7 +74,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
     Numpad0 & Numpad8 -> Move Gear Stick Up    (Manual) [WITHOUT RESTRICTION AND SOUND]
     Numpad0 & Numpad2 -> Move Gear Stick Down  (Manual) [WITHOUT RESTRICTION AND SOUND]
 [NEW GEARBOX]
-    Tab         -> Toggle GearBox: Simple (A L R) /Advanced (H A L- L L+ R)
+    Tab         -> Toggle GearBox: Simple (H-A-L-R) / Advanced (H-A-[L-|L|L+]-R)
     WheelUp     -> Switch Gear Up   (hold CTRL to zoom)
     WheelDown   -> Switch Gear Down (hold CTRL to zoom)
 [SCRIPT]
@@ -182,7 +180,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
         }
         else {
             sCurrentStatus .= "[CapsLock]`tNEW (MOUSE WHEEL)`n"
-            sCurrentStatus .= "[Tab]`t`t" (bSimpleGearBox ? "SIMPLE (Low/Auto)" : "ADVANCED (High/Low-/Low+/Auto)") "`n"
+            sCurrentStatus .= "[Tab]`t`t" (bSimpleGearBox ? "SIMPLE (Low/Auto/High)" : "ADVANCED (Low-/Low+/Auto/High)") "`n"
             sCurrentStatus .= "[Wheel]`t`tGEAR: " iGear
         }
         ToolTip(sCurrentStatus, 2)
@@ -200,17 +198,18 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
         Send {WheelDown}
         if (bSimpleGearBox) {
             Switch iGear {
-            ; R => L => A => WrongGearSound
+            ; R => L => A => H => WrongGearSound
             Case 2: iGear := 4
             Case 4: iGear := 5
-            Case 5: oGearBox.WrongGearSound()
+            Case 5: iGear := 8
+            Case 8: oGearBox.WrongGearSound()
             }
         } else {
             Switch iGear {
             ; A => H
             Case 5: iGear := 8
-            ; R => L+
-            Case 2: iGear := 7
+            ; R => L
+            Case 2: iGear := 4
             ; L- => L => L+ => H => WrongGearSound
             Case 1: iGear := 4
             Case 4: iGear := 7
@@ -228,7 +227,8 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
         Send {WheelUp}
         if (bSimpleGearBox) {
             Switch iGear {
-            ; A => L => R => WrongGearSound
+            ; H => A => L => R => WrongGearSound
+            Case 8: iGear := 5
             Case 5: iGear := 4
             Case 4: iGear := 2
             Case 2: oGearBox.WrongGearSound()
