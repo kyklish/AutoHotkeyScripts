@@ -1,4 +1,5 @@
-﻿#NoEnv
+﻿#Warn
+#NoEnv
 #SingleInstance, Force
 SetBatchLines, -1
 
@@ -142,9 +143,10 @@ Edit(sFilePath, oLogFile)
     sData := Replace(sData, "BloomEnabled", "false")
     sData := Replace(sData, "Fog Density", "0.0")
     sData := Replace(sData, "SecondaryFog Density", "0.0")
+    sData := Replace(sData, "VolumeFog Density", "0.0")
     ;CAMERAS ===============================================================
     sData := AllowCameraPassThroughObjects(sData) ; No camera jump.
-    sData := MoveCockpitCameraBackward(sData, 0.25) ; More then 0.25 will produce visual glitches on some trucks.
+    sData := MoveCockpitCameraBackward(sData, 0.22) ; More then 0.22 will produce visual glitches on trucks with short cabin.
     ;sData := ReplaceDigitMul(sData, "WindshieldDetailDensity", 0.1) ; Tiling of the detailed texture (one common texture for all trucks, chips on the windshield). By default: 0.4
 
     ; <Camera>
