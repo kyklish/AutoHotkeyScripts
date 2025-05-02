@@ -515,7 +515,7 @@ class Database {
             oFile.WriteLine("TAB," sTab)
 
         oFIle.WriteLine()
-        oFile.WriteLine(";,Profile: 1=Safe,GroupName: unique single word + used as key in associative array")
+        oFile.WriteLine(";,Profile: 1=Safe 2=Moderate 3=Extreme,GroupName: unique single word + used as key in associative array")
         oFile.WriteLine(";GROUP,Profile,TabName,GroupName,Description")
         For _, sTab in GetOrderedNamesInArray(this.oTabs)
             For _, sGroup in GetOrderedNamesInArray(this.oTabs[sTab].oGroups)
