@@ -419,7 +419,7 @@ AppsKey Up::ToolTip
 [CMD]
   ^V -> Paste text to CMD (Win7)
  !F4 -> Close CMD
-[Notepad++] debug AutoHotkey scripts
+[Notepad++]  debug AutoHotkey scripts
 [AHK Studio] debug AutoHotkey scripts
   F7 -> Step Into
   F8 -> Step Over
