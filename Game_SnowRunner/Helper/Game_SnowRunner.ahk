@@ -119,6 +119,10 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
         Gosub, UnlockKeys
         Send, {Space}
     return
+    B:: ; Full stop on engine stop
+        Gosub, UnlockKeys
+        Send, {b}
+    return
     M::
         Gosub, UnlockKeys
         Send, m
@@ -316,8 +320,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
     SuspendToolTip()
 return
 
-Borderless(WinTitle)
-{
+Borderless(WinTitle) {
     static bToggle := false
     WinExist(WinTitle) ; set Last Found Window
     if (bToggle := !bToggle)
