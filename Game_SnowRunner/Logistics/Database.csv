@@ -41,6 +41,7 @@ BUILDING,MICHIGAN,Abandoned Drilling Site,466,742,Drilling Equipment
 BUILDING,MICHIGAN,Log Station,684,1008,Long Logs
 BUILDING,MICHIGAN,Quarry Loading Zone,798,364,Cargo Container
 BUILDING,MICHIGAN,Logistics Base,587,46,Drilling Spare Parts
+BUILDING,MICHIGAN,Abandoned Drilling Site,182,780,Drilling Equipment
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,0,1045,638,Drilling Equipment,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,0,506,912,Drilling Equipment,3
@@ -82,11 +83,13 @@ JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,0,0,190,306,Lo
 JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,0,0,263,451,Medium Logs,3
 JOB,MICHIGAN,CONTRACT: STEEL RIVER TOWNSHIP,Timber for the Locals,0,0,104,238,Medium Logs,3
 JOB,MICHIGAN,TASKS,Bridge The Gap,0,0,351,789,Wooden Planks,2
+JOB,MICHIGAN,TASKS,Corporate Expansion,0,0,210,805,Wooden Planks,2
 JOB,MICHIGAN,TASKS,Fallen Power Line,0,0,190,401,Concrete Blocks,2,Metal Beams,1
 JOB,MICHIGAN,TASKS,Hungry Workers,0,0,670,210,Consumables,2
 JOB,MICHIGAN,TASKS,Hunter Bob's Bridge,0,0,425,908,Wooden Planks,4
 JOB,MICHIGAN,TASKS,More Fuel,0,0,640,100,Fuel,2
 JOB,MICHIGAN,TASKS,Mountain Bridge,0,0,336,327,Concrete Blocks,2,Metal Beams,1
+JOB,MICHIGAN,TASKS,Of Bridges And Men,0,0,875,920,Wooden Planks,2
 JOB,MICHIGAN,TASKS,Riverside Repair,0,0,73,150,Service Spare Parts,2,Wooden Planks,2
 JOB,MICHIGAN,TASKS,Road Block,0,0,309,255,Service Spare Parts,2
 JOB,MICHIGAN,TASKS,Rock On,0,0,935,55,Service Spare Parts,2
