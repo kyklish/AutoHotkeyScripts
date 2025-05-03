@@ -79,6 +79,7 @@ GROUP,1,CUSTOM1,INTEL_CONTROL_PANEL,Control Panel (INTEL)
 GROUP,1,CUSTOM1,INTEL_GPU,Intel Content Protection HECI Service (Communication with the Content Protection FW)
 GROUP,1,CUSTOM1,IMAGE,Windows Image Acquisition (Camera + Scanner)
 GROUP,1,CUSTOM1,LINK,Distributed Link Tracking Client (Links between NTFS files on network)
+GROUP,1,CUSTOM1,CYBERDUCK,Cyberduck (Bonjour Service [mDNS])
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,4,HvHost
@@ -196,3 +197,4 @@ SERVICE,INTEL_CONTROL_PANEL,4,igfxCUIService2.0.0.0
 SERVICE,INTEL_GPU,4,cphs
 SERVICE,IMAGE,4,StiSvc
 SERVICE,LINK,4,TrkWks
+SERVICE,CYBERDUCK,4,Bonjour Service
