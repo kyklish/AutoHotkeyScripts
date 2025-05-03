@@ -194,11 +194,14 @@ ToggleMainWindow() {
 ;======================= GUI: "SnowRunner Logistics" ===========================
 
 CreateMainGui:
+    ; Make "Always On Top" to show window on top of the Windows TaskBar.
+    ; If the window is bigger then the desktop size it appears with an upward
+    ; shift of a dozen pixels. Fix this by showing it in top left corner.
     WLV  := W - 1090 ; w660 ; ListView     (gJobToggle)
     WCT  := W - 1350 ; w400 ; Text         (vCargoTypes)
     WDDL := 125             ; DropDownList (Region)
     WMN  := 160             ; Text         (vMapName)
-    Gui Main:New, -Caption +LastFound
+    Gui Main:New, -Caption +AlwaysOnTop +LastFound
     Gui Margin, 0, 0
     Gui Add, Picture, w540 h540    gMapClick vMapPicture1 Section
     Gui Add, Picture, wp   hp   ys gMapClick vMapPicture2
@@ -236,7 +239,7 @@ CreateMainGui:
     Gui Add, Button, ys gMainGuiClose, E&xit
     Gui Add, Text,   ys+5, Default Region:
     Gui Add, DropDownList, ys+1 w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
-    Gui Show, w%W% h1080, %sWinTitle%
+    Gui Show, x0 y0 w%W% h1080, %sWinTitle%
     WinGetPos, iMainX, iMainY ; For child window with cargo icons
     ; Uni == Unidirectional sort. This prevents a second click on the same column
     ; from reversing the sort direction.
