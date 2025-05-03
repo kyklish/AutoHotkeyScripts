@@ -42,6 +42,7 @@ BUILDING,MICHIGAN,Log Station,684,1008,Long Logs
 BUILDING,MICHIGAN,Quarry Loading Zone,798,364,Cargo Container
 BUILDING,MICHIGAN,Logistics Base,587,46,Drilling Spare Parts
 BUILDING,MICHIGAN,Abandoned Drilling Site,182,780,Drilling Equipment
+BUILDING,MICHIGAN,Abandoned Drilling Site,328,764,Drilling Equipment
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,0,1045,638,Drilling Equipment,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,0,506,912,Drilling Equipment,3
