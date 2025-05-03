@@ -219,7 +219,7 @@ CreateMainGui:
     Gui Add, Checkbox, x+m yp gShowAllJobs   vShowAllJobs, Show &All Jobs
     Gui Add, Text,   xs+46 y+2 w%WMN% Border vMapName3
     Gui Add, Text,     x+0 yp  wp     Border vMapName4
-    Gui Add, Checkbox, x+m yp Checked gShowJobName    vShowJobName, Show Job &Name
+    Gui Add, Checkbox, x+m yp Checked gShowJobNames    vShowJobNames, Show Job &Names
     Gui Add, Checkbox, x+m yp         gShowEmptyCargo vShowEmptyCargo, Show &Empty Cargo
     ; AutoHotKey Help: "Window and Control Styles"
     ; +LV0x4000  == Show tooltips
@@ -436,7 +436,7 @@ ShowBuildings() {
 }
 
 ; Main:Checkbox
-ShowJobName() {
+ShowJobNames() {
     GuiControl, Main:, ShowBuildings, 0 ; Uncheck "Show Buildings" checkbox
     CargoIconsUpdate(oSelectedCargoTypes)
 }
@@ -632,7 +632,7 @@ ShowJobsCargoIcons(oCargoTypes) {
                     }
                 }
             }
-            If (bShowName && GetShowJobNameCheckbox()) {
+            If (bShowName && GetShowJobNamesCheckbox()) {
                 iFontSizeJob := 8
                 X := oPosition.x + iIconSize * iIconsOnScreen
                 Y := oPosition.y - iFontSizeJob - Round(iFontSizeJob / 1.5)
@@ -708,9 +708,9 @@ GetShowEmptyCargoCheckbox() {
     Return ShowEmptyCargo
 }
 
-GetShowJobNameCheckbox() {
-    GuiControlGet, ShowJobName, Main:
-    Return ShowJobName
+GetShowJobNamesCheckbox() {
+    GuiControlGet, ShowJobNames, Main:
+    Return ShowJobNames
 }
 
 GuiControlFocus(sGui, sControlVarName) {
