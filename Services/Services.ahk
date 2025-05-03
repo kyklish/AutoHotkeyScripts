@@ -359,16 +359,16 @@ GetState(sRunningServices, sServiceName) {
 
 StartService(sServiceName) {
     global sMask
-    RunWaitCMD("sc start " sServiceName)
+    RunWaitCMD("sc start """ sServiceName """")
     If (IsServiceExist(sServiceName "_" sMask))
-        RunWaitCMD("sc start " sServiceName "_" sMask)
+        RunWaitCMD("sc start """ sServiceName "_" sMask """")
 }
 
 StopService(sServiceName) {
     global sMask
-    RunWaitCMD("sc stop " sServiceName)
+    RunWaitCMD("sc stop """ sServiceName """")
     If (IsServiceExist(sServiceName "_" sMask))
-        RunWaitCMD("sc stop " sServiceName "_" sMask)
+        RunWaitCMD("sc stop """ sServiceName "_" sMask """")
 }
 
 ;===============================================================================
