@@ -121,7 +121,7 @@ Return
 ; Stop services, set startup type
 GuiApply(oTabs, bSetStartupType := true) {
     If (!A_IsAdmin) {
-        MsgBox(A_DefaultGui, "E", "Need admin rights")
+        MsgBox(A_DefaultGui, "E", "REQUIRES ADMIN RIGHTS")
         Return
     }
     Gui Submit, NoHide
@@ -336,7 +336,10 @@ GetStartupType(sServiceName, bShowMsgBoxOnError := false) {
 SetStartupType(sServiceName, iStart) {
     RegWrite, REG_DWORD, HKLM\SYSTEM\CurrentControlSet\Services\%sServiceName%, Start, %iStart%
     If (ErrorLevel)
-        MsgBox(A_DefaultGui, "E", sServiceName ": CAN'T WRITE (NEED ADMIN RIGHTS)")
+        If (A_IsAdmin)
+            MsgBox(A_DefaultGui, "E", sServiceName ": CAN'T WRITE (REQUIRES SYSTEM RIGHTS)")
+        Else
+            MsgBox(A_DefaultGui, "E", sServiceName ": CAN'T WRITE (REQUIRES ADMIN RIGHTS)")
 }
 
 GetRunningServices() {
