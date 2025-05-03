@@ -201,7 +201,11 @@ CreateMainGui:
     WCT  := W - 1350 ; w400 ; Text         (vCargoTypes)
     WDDL := 125             ; DropDownList (Region)
     WMN  := 160             ; Text         (vMapName)
+    ; Use monospace font for controls to align CheckBoxes
+    sControlFont := "Consolas"
+    sListFont    := "Verdana"
     Gui Main:New, -Caption +AlwaysOnTop +LastFound
+    Gui Font,, %sControlFont%
     Gui Margin, 0, 0
     Gui Add, Picture, w540 h540    gMapClick vMapPicture1 Section
     Gui Add, Picture, wp   hp   ys gMapClick vMapPicture2
@@ -221,6 +225,7 @@ CreateMainGui:
     Gui Add, Text,     x+0 yp  wp     Border vMapName4
     Gui Add, Checkbox, x+m yp Checked gShowJobNames    vShowJobNames, Show Job &Names
     Gui Add, Checkbox, x+m yp         gShowEmptyCargo vShowEmptyCargo, Show &Empty Cargo
+    Gui Font,, %sListFont%
     ; AutoHotKey Help: "Window and Control Styles"
     ; +LV0x4000  == Show tooltips
     ; +LV0x10000 == Prevent flickering
@@ -230,6 +235,7 @@ CreateMainGui:
     ;                 which greatly improves row-adding performance.
     ; Must be in sync with LV_Add() and JobToggle()!
     Gui Add, ListView, xs w%WLV% h975 +Report +Checked +Grid -Multi +LV0x4000 +LV0x10000 -LV0x10 +AltSubmit Count100 gJobToggle vJobListView, Status|Job Type|Job Name|Cargo
+    Gui Font,, %sControlFont%
     Gui Add, Button, Section, Add &Building
     Gui Add, Button, ys, Add &Job
     Gui Add, Button, ys, Edit CSV
@@ -237,7 +243,7 @@ CreateMainGui:
     Gui Add, Button, ys, Reset User Progress
     Gui Add, Button, ys gMainGuiReload, Reload
     Gui Add, Button, ys gMainGuiClose, E&xit
-    Gui Add, Text,   ys+5, Default Region:
+    Gui Add, Text,   ys, Default Region:
     Gui Add, DropDownList, ys+1 w%WDDL% gDefaultRegionChanged vDefaultRegion, % oDB.GetRegionsDDL(sDefaultRegion)
     Gui Show, x0 y0 w%W% h1080, %sWinTitle%
     WinGetPos, iMainX, iMainY ; For child window with cargo icons
