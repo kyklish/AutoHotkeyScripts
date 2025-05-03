@@ -40,7 +40,7 @@ TEST_DATA := False
 ; Default region on start script
 global sDefaultRegion := "MICHIGAN"
 ; Main window width
-global W := 1750 ; 1750 minimum width
+global W := 1920 ; 1750 minimum width
 ; How far can be mouse cursor from building to detect LMB click on building on map
 global iRadiusDetection := 15
 ; Cargo icon size
