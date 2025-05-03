@@ -343,10 +343,17 @@ SetStartupType(sServiceName, iStart) {
 }
 
 GetRunningServices() {
-    ; FOR /F "usebackq tokens=2" %S IN (`SC QUERY ^| FIND /I "SERVICE_NAME"`) DO @ECHO %S
-    sResult := RunWaitCMD("FOR /F ""usebackq tokens=2"" %S IN (``SC QUERY ^| FIND /I ""SERVICE_NAME""``) DO @ECHO %S")
+    ; Some 3rd party services has spaces in their names.
+    ; Use [:] delimiter instead of [Space].
+    ; Command below returns service names with leading space character and [`r`n].
+    ; Trim it in AHK. Doing this in CMD somewhat complicate.
+    ; FOR /F "usebackq tokens=2 delims=:" %S IN (`SC QUERY ^| FIND /I "SERVICE_NAME"`) DO @ECHO %S
+    sResult := RunWaitCMD("FOR /F ""usebackq tokens=2 delims=:"" %S IN (``SC QUERY ^| FIND /I ""SERVICE_NAME:""``) DO @ECHO %S")
     sResult := StrReplace(sResult, "`r")
-    Return Trim(sResult)
+    sResultTrimmed := ""
+    Loop, Parse, sResult, `n, %A_Space%
+        sResultTrimmed .= A_LoopField "`n"
+    Return sResultTrimmed
 }
 
 GetState(sRunningServices, sServiceName) {
