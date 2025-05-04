@@ -8,14 +8,6 @@
 SetBatchLines, -1
 SetWorkingDir %A_ScriptDir%
 
-; Although a value of 1 is allowed, it is not recommended because it would
-; prevent new hotkeys from launching whenever the script is displaying a message
-; box or other dialog. It would also prevent timers from running whenever another
-; thread is sleeping or waiting.
-; REASON: Don't allow fire any other hotkey if current hotkey is in action!
-; Ignore them and don't buffer them.
-#MaxThreads, 1
-
 Menu, Tray, Icon, SnowRunner.ico, 1, 1
 Menu, Tray, Tip, SnowRunner Helper
 
