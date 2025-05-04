@@ -108,8 +108,8 @@ Keywords:
 Usage:
 - ListView on right side shows ""Jobs"" in current ""Region"". Click on checkbox to
   ""Accept"" job.
-- Check ""Show Buildings"" to show ""Buildings'"" cargo icons on map. Click on cargo
-  icon to select ""Building"". You can click directly on map to select ""Building""
+- Check ""Show Buildings"" to show ""Buildings'"" cargo icons on map. Click on first
+  cargo icon to select ""Building"". You can click directly on map to select ""Building""
   without showing it's cargo icons.
 - Cargo icons appear on map in places (accepted jobs), where you can deliver cargo
   from selected ""Building"".
@@ -121,8 +121,8 @@ Usage:
 
 Update:
 - You can add missed ""Jobs"" and ""Buildings"" via GUI.
-- In set Destination\Position mode you can click on cargo icon to get it's X:Y position
-    (to get same coordinates for same places: different jobs point out to same place)
+- In set Destination\Position mode you can click on first cargo icon to get it's X:Y
+  position (set same coordinates for same places: different jobs point out to same place).
 - All other stuff must be edited directly in """ oFileName.sDB """.
 
 Info:
