@@ -280,6 +280,10 @@ AllowScoutTrailer(sData)
 {
     ;Developers make grammatical mistake in word "Scout"!
     ;They use word "Skaut" for scout trailer!
+    ;Developers enumerate trailers with coma and space (like regular text in document):
+    ;   Names="Trailer, LogTrailer"
+    ;We will use CSV syntax and enumerate with coma without space:
+    ;   Names="Trailer,ScautTrailer, LogTrailer"
     sSearchText := "<Socket Names=""Trailer"
     sInsertText := ",ScautTrailer"
     return RegExReplace(sData, "i)" . sSearchText . "\b", sSearchText . sInsertText)
