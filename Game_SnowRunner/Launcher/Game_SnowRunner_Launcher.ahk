@@ -19,6 +19,11 @@ iPicSz := 40 ; Size of the "BlackSquare.png" in pixels
 
 ;===============================================================================
 
+OutputDebug("HOLD [ESC] TO ABORT LAUNCH SEQUENCE")
+SetTimer, Abort, 100
+
+;===============================================================================
+
 OutputDebug("Run Helper script...")
 Run, ..\Helper\Game_SnowRunner.ahk
 OutputDebug("Run Logistics scripts...")
@@ -125,6 +130,13 @@ Loop 5 {
 
 OutputDebug("Exit...")
 ExitApp
+
+;===============================================================================
+
+Abort() {
+    If (GetKeyState("Esc", "P"))
+        ExitApp
+}
 
 OutputDebug(sText) {
     global iPicSz
