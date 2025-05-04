@@ -120,6 +120,7 @@ Edit(sFilePath, oLogFile)
 
     ;Epic Games\SnowRunner\en_us\Sources\BinEditor\Guides\Integration_of_Trucks_and_Addons.pdf
     ;UNLOCK ================================================================
+    ;sData := Replace(sData, "Country", "US,NE,CE,RU,CAS") ; Unlock trucks for all regions.
     ;sData := Replace(sData, "UnlockByExploration", "false")
     ;sData := Replace(sData, "UnlockByRank", "1")
     ;sData := ReplaceDigitMul(sData, "Price", 0.5)
