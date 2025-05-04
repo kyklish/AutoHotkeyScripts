@@ -116,6 +116,8 @@ Usage:
 - Deliver cargo to desired place. Click on cargo icon to decrement it quantity.
   When cargo quantity of all cargos in accepted job reduces to zero, job automatically
   marked as ""Completed"".
+- Click on empty space to select ALL cargo types and show all accepted jobs. Click
+  [Clear Cargo Types] button to deselect cargo types and hide all icons on map.
 
 Update:
 - You can add missed ""Jobs"" and ""Buildings"" via GUI.
@@ -214,6 +216,7 @@ CreateMainGui:
     Gui Margin, 6, 6
     Gui Add, Text, ym w40 Section, &Region:
     Gui Add, DropDownList, ym  w%WDDL% gRegionChanged vRegion, % oDB.GetRegionsDDL(sDefaultRegion)
+    Gui Add, Button,   ym, Clear Cargo &Types
     Gui Add, Text,     ym, Cargo Types:
     Gui Add, Text, x+m ym w%WCT% 0x200       vCargoTypes ; 0x200 == "Single Line" option
     Gui Add, Text, xs w40, Maps:
@@ -273,7 +276,10 @@ MapClick() {
     GuiControl, Main:, ShowBuildings, 0 ; Uncheck "Show Buildings" checkbox
     oBuilding := oDB.GetBuildingUnderCursor(GetRegion())
     oSelectedCargoTypes := oBuilding.oCargoTypes
-    GuiControl, Main:, CargoTypes, % ArrayToCSV(oSelectedCargoTypes)
+    If (oSelectedCargoTypes)
+        GuiControl, Main:, CargoTypes, % ArrayToCSV(oSelectedCargoTypes)
+    Else
+        SelectAllCargoTypes()
     CargoIconsUpdate(oSelectedCargoTypes)
 }
 
@@ -403,6 +409,14 @@ JobToggle() {
 
 DefaultRegionChanged:
     GuiControlGet, sDefaultRegion, Main:, DefaultRegion
+Return
+
+MainButtonClearCargoTypes:
+    oSelectedCargoTypes := []
+    GuiControl, Main:, CargoTypes
+    ; [Show All Jobs] needs ALL cargo types, uncheck it
+    GuiControl, Main:, ShowAllJobs, 0
+    CargoIconsUpdate(oSelectedCargoTypes)
 Return
 
 MainButtonEditCSV:
