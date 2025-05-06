@@ -72,7 +72,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
 [SCRIPT]
     !``          -> Make Window BorderLess
     !1          -> Stretch Window to Screen Size
-    !C          -> Suspend
+    !S          -> Suspend
     !Z          -> Reload
     !X          -> ExitApp
 [GEAR SCHEME in GearBox]
@@ -307,7 +307,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
 #IfWinActive
 !Z:: Reload
 !X:: ExitApp
-!C::
+!S::
     Suspend ; Must be first command!
     SuspendToolTip()
 return
