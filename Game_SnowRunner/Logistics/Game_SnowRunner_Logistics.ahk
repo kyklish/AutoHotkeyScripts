@@ -217,7 +217,7 @@ CreateMainGui:
     Gui Margin, 6, 6
     Gui Add, Text, ym w40 Section, &Region:
     Gui Add, DropDownList, ym  w%WDDL% gRegionChanged vRegion, % oDB.GetRegionsDDL(sDefaultRegion)
-    Gui Add, Button,   ym, Clear Cargo &Types
+    Gui Add, Button,   ym, &Clear Cargo Types
     Gui Add, Text,     ym, Cargo Types:
     Gui Add, Text, x+m ym w%WCT% 0x200       vCargoTypes ; 0x200 == "Single Line" option
     Gui Add, Text, xs w40, Maps:
