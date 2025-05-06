@@ -811,7 +811,7 @@ GetJobCargoString(oJob) {
 }
 
 GetJobStatusString(oJob) {
-    Return oJob.isAccepted ? "Accepted" : oJob.isCompleted ? "Completed" : "Blocked"
+    Return oJob.isAccepted ? "Accepted" : oJob.isCompleted ? "✓Completed" : "🚫Blocked"
 }
 
 GetJobInfoMsg(sRegion, sType, sName) {
