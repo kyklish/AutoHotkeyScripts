@@ -17,6 +17,14 @@ GroupAdd, SpinTires, ahk_exe SnowRunner.exe
 
 iPicSz := 40 ; Size of the "BlackSquare.png" in pixels
 
+bLaunchScripts := true
+
+;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
+
+; NoScripts
+if RegExMatch(A_ScriptName, "NoScripts")
+    bLaunchScripts := false
+
 ;===============================================================================
 
 OutputDebug("HOLD [ESC] TO ABORT LAUNCH SEQUENCE")
@@ -24,17 +32,19 @@ SetTimer, Abort, 100
 
 ;===============================================================================
 
-OutputDebug("Run Helper script...")
-Run, ..\Helper\Game_SnowRunner.ahk
-OutputDebug("Run Logistics scripts...")
-Run, ..\Logistics\Game_SnowRunner_Logistics.ahk
-OutputDebug("WinWait...")
-WinWait, SnowRunner Logistics
-Sleep 1000
-WinActivate
-OutputDebug("WinWaitActive...")
-WinWaitActive
-Send {F3} ; Hide "SnowRunner Logistics" window
+If (bLaunchScripts) {
+    OutputDebug("Run Helper script...")
+    Run, ..\Helper\Game_SnowRunner.ahk
+    OutputDebug("Run Logistics scripts...")
+    Run, ..\Logistics\Game_SnowRunner_Logistics.ahk
+    OutputDebug("WinWait...")
+    WinWait, SnowRunner Logistics
+    Sleep 1000 ; Waits for slow GUI initialization
+    WinActivate
+    OutputDebug("WinWaitActive...")
+    WinWaitActive
+    Send {F3} ; Hide "SnowRunner Logistics" window
+}
 
 ;===============================================================================
 
