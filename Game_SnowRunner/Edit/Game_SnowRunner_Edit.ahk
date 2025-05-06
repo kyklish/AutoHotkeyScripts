@@ -50,7 +50,6 @@ if (!FileExist("initial")) {
     }
 }
 
-oFolders := ["initial\[media]\classes", "initial\[media]\_dlc"]
 global sBeginRegEx := "i)\b"
 global sEndRegEx := "=""\K[^""]+(?="")"
 
@@ -58,6 +57,7 @@ global sEndRegEx := "=""\K[^""]+(?="")"
 if (!FileExist("initial_modified")) {
     oLogFile := FileOpen("modified_files.log", "w `n")
 
+    oFolders := ["initial\[media]\classes", "initial\[media]\_dlc"]
     For _, sFolder in oFolders {
         OutputDebug, % sFolder "`n"
         Loop, Files, % sFolder . "\*.xml", R
@@ -145,6 +145,11 @@ Edit(sFilePath, oLogFile)
     sData := Replace(sData, "Fog Density", "0.0")
     sData := Replace(sData, "SecondaryFog Density", "0.0")
     sData := Replace(sData, "VolumeFog Density", "0.0")
+    if (InStr(sFilePath, "initial\[media]\classes\particles\exhaust_")) {
+        ; "initial\[media]\classes\particles\exhaust_*.xml"
+        sData := Replace(sData, "Function", "(0.0; 0.0; 0.0)")
+        sData := Replace(sData, "Median", "0.0")
+    }
     ;TRAILERS ==============================================================
     sData := AllowTrailer(sData) ; Allow attach truck trailer to scout.
     sData := AllowScoutTrailer(sData) ; Allow attach scout trailer to truck.
