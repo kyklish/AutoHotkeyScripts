@@ -262,6 +262,9 @@ MainGuiEscape:
 Return
 
 MainGuiClose:
+    ; Save user progress only on Exit/Reload.
+    ; Save on every change require more code all over the script:
+    ;   in CargoClick(), on make Job Complete event, on Accept Job event.
     oDB.SaveUserProgress(oFileName.sUP)
 ExitApp
 
