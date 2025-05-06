@@ -108,7 +108,7 @@ Keywords:
 Usage:
 - ListView on right side shows ""Jobs"" in current ""Region"". Click on checkbox to
   ""Accept"" job.
-- Check ""Show Buildings"" to show ""Buildings'"" cargo icons on map. Click on first
+- Check [Show Buildings] to show ""Buildings'"" cargo icons on map. Click on first
   cargo icon to select ""Building"". You can click directly on map to select ""Building""
   without showing it's cargo icons.
 - Cargo icons appear on map in places (accepted jobs), where you can deliver cargo
@@ -126,15 +126,16 @@ Update:
 - All other stuff must be edited directly in """ oFileName.sDB """.
 
 Info:
-- On start keyboard focus is on ""Region"" control. This allows ""Region"" to be quickly
+- On start keyboard focus is on [Region] control. This allows ""Region"" to be quickly
   selected by typing the first few characters of it's name.
 - Top left corner of cargo icon (or first cargo icon in group of icons) is X:Y
   coordinates of center of ""Building"" or ""Job"" saved in """ oFileName.sDB """.
 - Reset job: make it complete, then accept it.
-- Check ""Show All Jobs"" to show ALL jobs, uncheck - to show all accepted jobs.
+- Check [Show All Jobs] to show ALL jobs, uncheck - to show only accepted jobs.
+- Check [Show Empty Cargo] to show cargo types with zero quantity.
 
 Bugs:
-- Script can't handle very fast ""Region's"" switch.
+- Script can't handle very fast ""Region"" change.
 )"
 
 ;============================= Initialization ==================================
