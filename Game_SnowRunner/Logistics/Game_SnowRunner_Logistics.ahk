@@ -219,16 +219,17 @@ CreateMainGui:
     Gui Add, DropDownList, ym  w%WDDL% gRegionChanged vRegion, % oDB.GetRegionsDDL(sDefaultRegion)
     Gui Add, Button,   ym, &Clear Cargo Types
     Gui Add, Text,     ym, Cargo Types:
-    Gui Add, Text, x+m ym w%WCT% 0x200       vCargoTypes ; 0x200 == "Single Line" option
+    Gui Add, Text, x+m ym w%WCT% 0x200 vCargoTypes ; 0x200 == "Single Line" option
     Gui Add, Text, xs w40, Maps:
     Gui Add, Text,     x+m yp  w%WMN% Border vMapName1
     Gui Add, Text,     x+0 yp  wp     Border vMapName2
-    Gui Add, Checkbox, x+m yp gShowBuildings vShowBuildings, &Show Buildings
-    Gui Add, Checkbox, x+m yp gShowAllJobs   vShowAllJobs, Show &All Jobs
+    Gui Add, Checkbox, x+m yp         gShowBuildings     vShowBuildings, &Show Buildings
+    Gui Add, Checkbox, x+m yp         gShowAllJobs       vShowAllJobs, Show &All Jobs
+    Gui Add, Checkbox, x+m yp Checked gHideCompletedJobs vHideCompletedJobs, &Hide Completed Jobs
     Gui Add, Text,   xs+46 y+2 w%WMN% Border vMapName3
     Gui Add, Text,     x+0 yp  wp     Border vMapName4
-    Gui Add, Checkbox, x+m yp Checked gShowJobNames    vShowJobNames, Show Job &Names
-    Gui Add, Checkbox, x+m yp         gShowEmptyCargo vShowEmptyCargo, Show &Empty Cargo
+    Gui Add, Checkbox, x+m yp Checked gShowJobNames      vShowJobNames, Show Job &Names
+    Gui Add, Checkbox, x+m yp         gShowEmptyCargo    vShowEmptyCargo, Show &Empty Cargo
     Gui Font,, %sListFont%
     ; AutoHotKey Help: "Window and Control Styles"
     ; +LV0x4000  == Show tooltips
@@ -448,6 +449,12 @@ MainButtonResetUserProgress:
 Return
 
 ; Main:Checkbox
+HideCompletedJobs() {
+    sRegion := GetRegion()
+    LV_ReLoadJobs(sRegion)
+}
+
+; Main:Checkbox
 ShowAllJobs() {
     SelectAllCargoTypes()
     GuiControl, Main:, ShowBuildings, 0
@@ -477,12 +484,15 @@ LV_AddJobs(sRegion) {
     Gui Main:Default
     oJobsByRegion := oDB.GetJobs(sRegion)
     For sType, oJobsByType in oJobsByRegion
-        For sName, oJob in oJobsByType
+        For sName, oJob in oJobsByType {
+            If (GetHideCompletedJobs() && oJob.isCompleted)
+                Continue
             LV_Add(oJob.isAccepted ? "Check" : ""
                 , GetJobStatusString(oJob)
                 , sType
                 , sName
                 , GetJobCargoString(oJob))
+        }
     LV_AutoWidth()
     Gui %_DefaultGui%:Default
 }
@@ -710,6 +720,11 @@ CargoIconsUpdate(oCargoTypes) {
         ShowJobsCargoIcons(oCargoTypes)
 
     Gui %_DefaultGui%:Default
+}
+
+GetHideCompletedJobs() {
+    GuiControlGet, HideCompletedJobs, Main:
+    Return HideCompletedJobs
 }
 
 GetRegion() {
