@@ -5,6 +5,7 @@
 TAB,Tweaks1
 TAB,Tweaks2
 TAB,Custom1
+TAB,TEST
 
 ;,Profile: 1=Safe 2=Moderate 3=Extreme,GroupName: unique single word + used as key in associative array
 ;GROUP,Profile,TabName,GroupName,Description
@@ -12,11 +13,14 @@ GROUP,1,TWEAKS1,HYPER_V,Hyper-V
 GROUP,1,TWEAKS1,RECORD_GAMES,Record Games (built-in Windows Service)
 GROUP,1,TWEAKS1,LAN_CONFIG,LAN Configuration (DirectAccess [Diagnostics on LAN Troubleshoot] + SSDP [WiFi Direct])
 GROUP,2,TWEAKS1,MS_STORE,Microsoft Store
-GROUP,2,TWEAKS1,MS_STORE_SYNC,Microsoft Store (Sync with MS Account [UWP apps] + Sync with MS Account [OS with Online Account])
-GROUP,2,TWEAKS1,MS_STORE_UWP_APP_BACKGROUND_ACTIVITY,Microsoft Store (UWP apps works in background)
-GROUP,2,TWEAKS1,MS_STORE_ACCOUNT,Microsoft Store (Create new MS account + MS Apps with MS Account authorization)
+GROUP,2,TWEAKS1,MS_STORE_LICENSE,Microsoft Store (License) [all UWP apps on PC stops running]
+GROUP,1,TWEAKS1,MS_STORE_PASSPORT,Microsoft Store (Password Authorization) [Biometrics services depends on this]
+GROUP,1,TWEAKS1,MS_STORE_APPS,Microsoft Store (Wallet + Maps Download + Holograms)
+GROUP,1,TWEAKS1,MS_STORE_SYNC,Microsoft Store (Sync with MS Account [UWP apps] + Sync with MS Account [OS with Online Account])
+GROUP,1,TWEAKS1,MS_STORE_UWP_APP_BACKGROUND_ACTIVITY,Microsoft Store (UWP apps works in background)
+GROUP,2,TWEAKS1,MS_STORE_ACCOUNT,Microsoft Store (Create new MS account + MS Apps with MS Account authorization) [Edge stops Sync]
 GROUP,2,TWEAKS1,MS_STORE_SETTINGS_STORAGE,Microsoft Store (Settings ==> System ==> Storage ==> SETTINGS APP CRASH!!!)
-GROUP,2,TWEAKS1,MS_STORE_OFFLINE,Microsoft Store (Install/Restore Offline Apps)
+GROUP,1,TWEAKS1,MS_STORE_OFFLINE,Microsoft Store (Install/Restore Offline Apps)
 GROUP,1,TWEAKS1,ACCOUNT_PSW,Local Account with Password (Password + Windows Hello [Face + Fingerprint + PIN])
 GROUP,1,TWEAKS1,BIOMETRICS,Biometrics (Windows Hello [Face + Fingerprint + PIN])
 GROUP,3,TWEAKS1,BLUETOOTH_DEVICES,Bluetooth Devices (Mouse + Sound + Headphones)
@@ -30,9 +34,9 @@ GROUP,1,TWEAKS1,PRINTER_UWP,Printer (Access/Manage printers from UWP apps)
 GROUP,1,TWEAKS1,SCANNER,Scanner (Virtual Scanner + Network Scanner + Local Scanner) [use VueScan to access scanner without this service]
 GROUP,1,TWEAKS1,FAX,Fax (Virtual Fax + Network Fax + Local Fax) [service PhoneSvc only for faxes and not for phones]
 GROUP,3,TWEAKS1,WINDOWS_UPDATE,Windows Update (Online Updates + MS Store apps updates) [CAN'T BE DISABLED HERE: use Sordum Windows Update Blocker]
-GROUP,2,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multiple sources) [disable and download from single source]
-GROUP,2,TWEAKS1,WINDOWS_UPDATE_OFFLINE_INSTALL,Windows Update (Install offline updates)
-GROUP,2,TWEAKS1,WINDOWS_UPDATE_INSIDER_PREVIEW,Windows Update (Insider Preview)
+GROUP,1,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multiple sources) [disable and download from single source]
+GROUP,1,TWEAKS1,WINDOWS_UPDATE_OFFLINE_INSTALL,Windows Update (Install offline updates)
+GROUP,1,TWEAKS1,WINDOWS_UPDATE_INSIDER_PREVIEW,Windows Update (Insider Preview)
 GROUP,1,TWEAKS1,TABLET,Tablet Mode [for PC and Notebook not needed]
 GROUP,2,TWEAKS1,TABLET_POWER,Tablet Mode (Sensor Service) [Settings ==> System ==> Power && Battery ==> SETTINGS APP CRASH!!!]
 GROUP,1,TWEAKS1,MONITOR_REMOTE,Monitor (Connected Remotely) [for local multiple monitors not needed]
@@ -72,13 +76,17 @@ GROUP,2,TWEAKS2,DIAGNOSTICS,Background Diagnostics [use SYSTEM rights to disable
 GROUP,2,TWEAKS2,DIAGNOSTICS_PROCESS_NETWORK_USAGE,Background Diagnostics (Process Network Usage) [use SYSTEM rights to disable] [Task Manager ==> Processes ==> Network ==> NOT WORK!!!] [NetLimiter as alternative]
 GROUP,1,TWEAKS2,DIAGNOSTICS_TROUBLESHOOTING,Background Diagnostics (Recommended Troubleshooting)
 GROUP,1,TWEAKS2,ENTERPRISE,Enterprise Tools
+GROUP,2,CUSTOM1,EVENT_LOG,Windows Event Log [Malwarebytes Windows Firewall Control detects Allowed/Blocked packets]
 GROUP,1,CUSTOM1,TIME,Windows Time Synchronization
-GROUP,1,CUSTOM1,EVENT_LOG,Windows Event Log [Malwarebytes Windows Firewall Control detects Allowed/Blocked packets]
 GROUP,1,CUSTOM1,NVIDIA_CONTROL_PANEL,Control Panel (NVIDIA)
 GROUP,1,CUSTOM1,INTEL_CONTROL_PANEL,Control Panel (INTEL)
 GROUP,1,CUSTOM1,INTEL_GPU,Intel Content Protection HECI Service (Communication with the Content Protection FW)
 GROUP,1,CUSTOM1,IMAGE,Windows Image Acquisition (Camera + Scanner)
 GROUP,1,CUSTOM1,LINK,Distributed Link Tracking Client (Links between NTFS files on network)
+GROUP,1,TEST,DISPLAY_BRIGHTNESS,Display Brightness (Notebook buttons to change brightness)
+GROUP,1,TEST,LAN_POLICY,Network Policy Server Management
+GROUP,1,TEST,LSASS_STORAGE,Cryptographic Storage (Xbox Live + PIN + Biometrics + Visual Studio + Office + Phone Link)
+GROUP,1,TEST,UNKNOWN,Unknown
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,3,HvHost
@@ -96,12 +104,14 @@ SERVICE,LAN_CONFIG,3,SSDPSRV
 SERVICE,MS_STORE,3,PimIndexMaintenanceSvc
 SERVICE,MS_STORE,3,UserDataSvc
 SERVICE,MS_STORE,3,UnistoreSvc
-SERVICE,MS_STORE,3,WalletService
-SERVICE,MS_STORE,3,perceptionsimulation
-SERVICE,MS_STORE,2,MapsBroker
 SERVICE,MS_STORE,3,EntAppSvc
 SERVICE,MS_STORE,3,WEPHOSTSVC
 SERVICE,MS_STORE,3,InstallService
+SERVICE,MS_STORE_LICENSE,3,LicenseManager
+SERVICE,MS_STORE_PASSPORT,3,NgcCtnrSvc
+SERVICE,MS_STORE_APPS,3,WalletService
+SERVICE,MS_STORE_APPS,3,perceptionsimulation
+SERVICE,MS_STORE_APPS,2,MapsBroker
 SERVICE,MS_STORE_SYNC,2,OneSyncSvc
 SERVICE,MS_STORE_UWP_APP_BACKGROUND_ACTIVITY,3,embeddedmode
 SERVICE,MS_STORE_ACCOUNT,3,wlidsvc
@@ -189,10 +199,14 @@ SERVICE,DIAGNOSTICS_TROUBLESHOOTING,3,TroubleshootingSvc
 SERVICE,ENTERPRISE,3,dot3svc
 SERVICE,ENTERPRISE,3,DevQueryBroker
 SERVICE,ENTERPRISE,3,AppMgmt
-SERVICE,TIME,3,W32Time
 SERVICE,EVENT_LOG,2,EventLog
+SERVICE,TIME,3,W32Time
 SERVICE,NVIDIA_CONTROL_PANEL,2,NVDisplay.ContainerLocalSystem
 SERVICE,INTEL_CONTROL_PANEL,2,igfxCUIService2.0.0.0
 SERVICE,INTEL_GPU,3,cphs
 SERVICE,IMAGE,2,StiSvc
 SERVICE,LINK,2,TrkWks
+SERVICE,DISPLAY_BRIGHTNESS,3,DisplayEnhancementService
+SERVICE,LAN_POLICY,3,NPSMSvc
+SERVICE,LSASS_STORAGE,3,KeyIso
+SERVICE,UNKNOWN,3,UdkUserSvc
