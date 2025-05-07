@@ -10,6 +10,17 @@
 ;   SUB_PROCESSOR 75b0ae3f-bce0-45a7-8c89-c9611c25e100 Maximum processor frequency (in MHz)
 ;   SUB_PROCESSOR 75b0ae3f-bce0-45a7-8c89-c9611c25e101 Maximum processor frequency for Processor Power Efficiency Class 1 (in MHz)
 ;-------------------------------------------------------------------------------
+;TODO Skylake SpeedShift technology (Win10)
+;   INFO Process Lasso Blog: Intel’s Speed Shift Validates ‘Bitsum Highest Performance’ Power Plan /w Skylake and Kabylake Generation CPUs
+;   8baa4a8a-14c6-4451-8e8b-14bdbd197537 - Processor performance autonomous mode (Enable/Disable)
+;       Specify whether processors should autonomously determine their target performance state.
+;   36687f9e-e3a5-4dbf-b1dc-15eb381c6863 - Processor energy performance preference policy (Percent)
+;       Specify how much processors should favor energy savings over performance when operating in autonomous mode.
+;   cfeda3d0-7697-4566-a922-a9086cd49dfa - Processor autonomous activity window (Microseconds)
+;       Specify the time period over which to observe processor utilization when operating in autonomous mode.
+;   4e4450b3-6179-4e91-b8f1-5bb9938f81a1 - Processor duty cycling
+;       Specify whether the processor may use duty cycling.
+;-------------------------------------------------------------------------------
 ;Добавить в автозагрузку команду установки Balanced плана (опционально)
 ;Ну будем портить Balanced Power Scheme, создадим новый на его базе
 ;   POWERCFG /DUPLICATESCHEME 381b4222-f694-41f0-9685-ff5bb260df2e FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
