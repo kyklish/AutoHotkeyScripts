@@ -84,9 +84,10 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
 
     FileWrite("1.RUN_ALL_AUDIO_THREADS.BAT", GetThreadCmd())
     FileWrite("2.MUX_TO_MKV.BAT", GetMuxCmd(oFileNames[0]))
+    FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ORIGINAL_FILES.BAT", GetMuxMoveHereDelOrigCmd(oFileNames[0]))
+    FileWrite("4.StaxRip_SVPFlow.BAT", GetStaxRipCmd(sStaxRipTemplate))
     ; Use CMD extension to make it unique, we will use it to delete this file last
-    FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ALL_SOURCE_FILES.CMD", GetMuxMoveHereDelAllCmd(oFileNames[0]))
-    FileWrite("4.StaxRip_SVPFlow.CMD", GetStaxRipCmd(oFileNames[0], sStaxRipTemplate))
+    FileWrite("5.DELETE_SCRIPT_FILES_HERE.CMD", GetDelScriptCmd())
 }
 
 FileWrite(sFileName, sStr) {
@@ -232,7 +233,7 @@ GetReMuxCmd(oFileNames, iAudioStream) {
     Return sCmd
 }
 
-GetMuxMoveHereDelAllCmd(oFileNames) {
+GetMuxMoveHereDelOrigCmd(oFileNames) {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
     sCmd .= "CD /D ""%~dp0""`n"
@@ -254,29 +255,34 @@ GetMuxMoveHereDelAllCmd(oFileNames) {
     sCmd .= "RMDIR /S /Q MKA`n"
     Loop, Files, *, D
         sCmd .= "RMDIR /S /Q """ A_LoopFileName """`n" ; Folders with subs
-    sCmd .= "DEL /F /Q *.ahk`n"
     sCmd .= "DEL /F /Q *.ass`n"
     sCmd .= "DEL /F /Q *.srt`n"
-    sCmd .= "DEL /F /Q *.bat`n"
-    sCmd .= "DEL /F /Q *.cmd`n"
-    sCmd .= ":: Delete CMD script LAST!!! (Script deletes himself)`n"
     Return sCmd
 }
 
-GetStaxRipCmd(oFileNames, sStaxRipTemplate) {
-    sFileList := ""    
-    For _, oFileName in oFileNames
-        sFileList .= """" oFileName["path"] """;"
-    sFileList := SubStr(sFileList, 1, -1) ; Delete last semicolon in list
+GetStaxRipCmd(sStaxRipTemplate) {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
     sCmd .= "CD /D ""%~dp0""`n"
     sCmd .= "SETLOCAL EnableDelayedExpansion`n"
     sCmd .= "`n"
     sCmd .= "SET Template=""" sStaxRipTemplate """`n"
-    sCmd .= "SET FileList=" sFileList "`n"
     sCmd .= "`n"
+    sCmd .= "FOR %%F IN (""*.AVI"") DO SET FileList=!FileList!""%%F"";`n"
+    sCmd .= "FOR %%F IN (""*.MKV"") DO SET FileList=!FileList!""%%F"";`n"
+    sCmd .= "FOR %%F IN (""*.MP4"") DO SET FileList=!FileList!""%%F"";`n"
     sCmd .= "StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJobs:%FileList% -StartJobs -Exit`n"
+    Return sCmd
+}
+
+GetDelScriptCmd() {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "DEL /F /Q *.ahk`n"
+    sCmd .= "DEL /F /Q *.bat`n"
+    sCmd .= ":: Delete CMD script LAST!!! (Script deletes himself)`n"
+    sCmd .= "DEL /F /Q *.cmd`n"
     Return sCmd
 }
 
