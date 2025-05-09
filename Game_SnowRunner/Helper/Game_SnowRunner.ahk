@@ -305,7 +305,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
     Numpad2:: oGearBox.ShiftGearManual("D")
 
 ; Do not interfere with GUI Control accelerators in Logistics script
-#IfWinNotActive, SnowRunner Logistics
+#IfWinActive ahk_group SpinTires
     !S::
         Suspend ; Must be first command!
         SuspendToolTip()
