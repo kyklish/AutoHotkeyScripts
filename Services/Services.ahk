@@ -22,6 +22,9 @@ Gosub ButtonRefresh
 Gui Show,, %sWinTitle%
 GuiControl, Focus, ReadMe
 
+; TODO GROUP text in two rows to decrease window width
+; TODO Save current system services, find unknown services on Windows update/upgrade
+
 !x::ExitApp
 !z::Reload
 
