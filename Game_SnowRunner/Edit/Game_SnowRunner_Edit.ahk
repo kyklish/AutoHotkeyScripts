@@ -157,6 +157,12 @@ Edit(sFilePath, oLogFile)
     sData := AllowCameraPassThroughObjects(sData) ; No camera jump.
     sData := MoveCockpitCameraBackward(sData, 0.22) ; More then 0.22 will produce visual glitches on trucks with short cabin.
     ;sData := ReplaceDigitMul(sData, "WindshieldDetailDensity", 0.1) ; Tiling of the detailed texture (one common texture for all trucks, chips on the windshield). By default: 0.4
+    if (InStr(sFilePath, "initial\[media]\classes\cameras\default.xml")) {
+        ; See [Improved Camera for SnowRunner - mod.io.rar]
+        sData := Replace(sData, "CenteredOffsetEye", "(-3.0; 0.75; 0)") ; By default: (-6.0; 0.75; 0). Move camera closer to truck.
+        sData := Replace(sData, "CenteredOffsetTarget", "(3.0; 1.3; 0)") ; By default: (1.5; 1.5; 0). Move forward the point around which the camera rotates. Closer to the front of the truck.
+        sData := Replace(sData, "CenteredTrailerOffsetEye", "(0.0; 0.0; 0)") ; By default: (-2.5; 0.0; 0). Move camera closer to trailer.
+    }
 
     ; <Camera>
     ; External camera.
