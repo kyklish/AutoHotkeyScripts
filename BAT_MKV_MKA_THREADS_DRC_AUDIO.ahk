@@ -1,6 +1,6 @@
-﻿; BAT_MKV_MKA_THREADS[1 ... 9]_DRC[2 ... 4]_AUDIO[1 ... 9].ahk - set audio stream number and DRC
-; ratio in script's name (no need to edit script) or leave it blank to use
-; internal variable value.
+﻿; BAT_MKV_MKA_THREADS[1 ... 9]_DRC[2 ... 4]_AUDIO[1 ... 9].ahk - set audio stream
+; number and DRC ratio in script's name (no need to edit script) or leave it
+; blank to use internal variable value.
 
 ; Create BAT files with FFMPEG commands to create MKA files with DRC.
 ; FFMPEG is single-thread software, create multiple BAT files for multi-threading.
@@ -73,7 +73,7 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
     ; oFileNames[0] contains all source video files
     FileWrite("!!.MOVE_HERE_MKA_TO_WATCH_MOVIE.BAT", GetMkaMoveHereCmd())
     FileWrite("!1.RE-MUX_TO_MKV_ENG_AUDIO" iAudioStream + 1 ".BAT", GetReMuxCmd(oFileNames[0], iAudioStream))
-    FileWrite("!2.MOVE_HERE_RE-MUX_RESULT_DELETE_ORIGINAL_FILES.BAT", GetReMuxMoveHereDelOrigVideoCmd(oFileNames[0]))
+    FileWrite("!2.MOVE_HERE_RE-MUX_RESULT_DELETE_ORIGINAL_VIDEO.BAT", GetReMuxMoveHereDelOrigVideoCmd(oFileNames[0]))
 
     Loop % iThreadsExe {
         If (oFileNames[A_Index].Count()) {
