@@ -86,6 +86,7 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
     FileWrite("2.MUX_TO_MKV.BAT", GetMuxCmd(oFileNames[0]))
     FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ORIGINAL_FILES.BAT", GetMuxMoveHereDelOrigCmd(oFileNames[0]))
     FileWrite("4.StaxRip_SVPFlow.BAT", GetStaxRipCmd(sStaxRipTemplate))
+    FileWrite("4.StaxRip_SVPFlow_DELETE_ORIGINAL.BAT", GetStaxRipDelOrigCmd(sStaxRipTemplate))
     ; Use CMD extension to make it unique, we will use it to delete this file last
     FileWrite("5.DELETE_SCRIPT_FILES_HERE.CMD", GetDelScriptCmd())
 }
@@ -273,6 +274,29 @@ GetStaxRipCmd(sStaxRipTemplate) {
     sCmd .= "FOR %%F IN (""*.MP4"") DO SET FileList=!FileList!""%%F"";`n"
     sCmd .= "`n"
     sCmd .= "START """" /B StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJobs:%FileList% -StartJobs -Exit`n"
+    Return sCmd
+}
+
+GetStaxRipDelOrigCmd(sStaxRipTemplate) {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "SETLOCAL EnableDelayedExpansion`n"
+    sCmd .= "`n"
+    sCmd .= "SET Template=""" sStaxRipTemplate """`n"
+    sCmd .= "`n"
+    sCmd .= "CALL :ENCODE *.AVI`n"
+    sCmd .= "CALL :ENCODE *.MKV`n"
+    sCmd .= "CALL :ENCODE *.MP4`n"
+    sCmd .= "GOTO :EOF`n"
+    sCmd .= "`n"
+    sCmd .= ":ENCODE`n"
+    sCmd .= "FOR %%F IN (""%~1"") DO (`n"
+    sCmd .= "    StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJob:""%%F"" -StartJobs -Exit`n"
+    sCmd .= "    DEL /F ""%%F""`n"
+    sCmd .= "    ECHO DONE: ""%%F""`n"
+    sCmd .= ")`n"
+    sCmd .= "EXIT /B`n"
     Return sCmd
 }
 
