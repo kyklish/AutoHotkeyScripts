@@ -271,7 +271,8 @@ GetStaxRipCmd(sStaxRipTemplate) {
     sCmd .= "FOR %%F IN (""*.AVI"") DO SET FileList=!FileList!""%%F"";`n"
     sCmd .= "FOR %%F IN (""*.MKV"") DO SET FileList=!FileList!""%%F"";`n"
     sCmd .= "FOR %%F IN (""*.MP4"") DO SET FileList=!FileList!""%%F"";`n"
-    sCmd .= "StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJobs:%FileList% -StartJobs -Exit`n"
+    sCmd .= "`n"
+    sCmd .= "START """" /B StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJobs:%FileList% -StartJobs -Exit`n"
     Return sCmd
 }
 
