@@ -288,6 +288,8 @@ GetStaxRipDelOrigCmd(sStaxRipTemplate) {
     sCmd .= "CALL :ENCODE *.AVI`n"
     sCmd .= "CALL :ENCODE *.MKV`n"
     sCmd .= "CALL :ENCODE *.MP4`n"
+    sCmd .= "CALL :BELL`n"
+    sCmd .= "CALL :BELL`n"
     sCmd .= "GOTO :EOF`n"
     sCmd .= "`n"
     sCmd .= ":ENCODE`n"
@@ -295,7 +297,13 @@ GetStaxRipDelOrigCmd(sStaxRipTemplate) {
     sCmd .= "    StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJob:""%%F"" -StartJobs -Exit`n"
     sCmd .= "    DEL /F ""%%F""`n"
     sCmd .= "    ECHO DONE: ""%%F""`n"
+    sCmd .= "    CALL :BELL`n"
     sCmd .= ")`n"
+    sCmd .= "EXIT /B`n"
+    sCmd .= "`n"
+    sCmd .= ":BELL`n"
+    sCmd .= "ECHO `n"
+    sCmd .= "ping -n 2 google.com > NUL`n"
     sCmd .= "EXIT /B`n"
     Return sCmd
 }
