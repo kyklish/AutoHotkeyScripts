@@ -251,12 +251,12 @@ return
 #^!F3::Run_AsUser("%SOFT%\SSD_(Set_Sound_Device)\SSD.exe", "3")
 #^!F4::WinKill, A ;Force close active window (kill its process)
 #^!F5::
-    RunWaitCMD("btcom -r -b 8E:4D:7B:85:78:26 -s110b") ; Remove previous service
-    RunWaitCMD("btcom -c -b 8E:4D:7B:85:78:26 -s110b") ; Create new service (ends with error if already exist)
+    RunWaitCMD("btcom -r -b""8E:4D:7B:85:78:26"" -s110b") ; Remove previous service
+    RunWaitCMD("btcom -c -b""8E:4D:7B:85:78:26"" -s110b") ; Create new service (ends with error if already exist)
 Return
 #^!F6::
-    RunWaitCMD("btcom -r -b B4:84:D5:97:44:CB -s110b")
-    RunWaitCMD("btcom -c -b B4:84:D5:97:44:CB -s110b")
+    RunWaitCMD("btcom -r -b""B4:84:D5:97:44:CB"" -s110b")
+    RunWaitCMD("btcom -c -b""B4:84:D5:97:44:CB"" -s110b")
 Return
 
 ;-------------------------------------------------------------------------------
@@ -462,8 +462,8 @@ AppsKey Up::ToolTip
  #^!F2 -> SSD - Edifier
  #^!F3 -> SSD - TV
  #^!F4 -> Force close active window
- #^!F5 -> Connect AIRON AirTune PLAY
- #^!F6 -> Connect JBL Wave BUDS
+ #^!F5 -> BLUETOOTH: Connect AIRON AirTune PLAY
+ #^!F6 -> BLUETOOTH: Connect JBL Wave BUDS
 [Win+Ctrl+Alt]
  #^!E -> Kill Edge
  #^!F -> f.lux
