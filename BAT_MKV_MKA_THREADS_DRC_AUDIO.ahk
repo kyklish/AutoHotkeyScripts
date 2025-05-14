@@ -30,7 +30,7 @@ iDrcRatio := 2
 iThreadsExe := 1
 ; Formats fo source files
 oFormats := ["*.avi", "*.mkv", "*.mp4", "*.webm"]
-sStaxRipTemplate := "SVPFlow 59.94FPS Movie (algo21)"
+sStaxRipTemplate := "SVPFlow 2.5xFPS Movie (algo21)"
 
 ;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
 
