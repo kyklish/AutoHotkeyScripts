@@ -274,6 +274,16 @@ GetStaxRipCmd(sStaxRipTemplate) {
     sCmd .= "FOR %%F IN (""*.MP4"") DO SET FileList=!FileList!""%%F"";`n"
     sCmd .= "`n"
     sCmd .= "START """" /B StaxRip -ClearJobs ""-LoadTemplate:%Template%"" -AddBatchJobs:%FileList% -StartJobs -Exit`n"
+    sCmd .= "`n"
+    sCmd .= "CALL :BELL`n"
+    sCmd .= "CALL :BELL`n"
+    sCmd .= "CALL :BELL`n"
+    sCmd .= "GOTO :EOF`n"
+    sCmd .= "`n"
+    sCmd .= ":BELL`n"
+    sCmd .= "ECHO `n"
+    sCmd .= "ping -n 2 google.com > NUL`n"
+    sCmd .= "EXIT /B`n"
     Return sCmd
 }
 
