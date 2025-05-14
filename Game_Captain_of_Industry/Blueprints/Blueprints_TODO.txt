@@ -1,15 +1,13 @@
-﻿RESTORE PRIORITY TO DEFAULT (restored default has @ in layout name)
+﻿RESTORE PRIORITY TO DEFAULT (restored default has @ in layout name or folder name)
 
 EARLY GAME
+	CONCRETE: add description (this layout support upgrade CONCRETE MIXER I -> II, but not II -> III)
 	ELECTRICITY: use BOILER (GAS)
 
 MIDDLE GAME
 	FOOD FABRIC for all stuff
 
 LATE GAME
-	CONCRETE:
-		Change many CRUSHERs to one LARGE CRUSHER
-		Make single universal layout to combine COAL and GASES for ROTARY KILN
 	ELECTRONICS FULL: check connections of storages rubber-to-rubber, pcb-to-pcb (side-by-side)
 	METAL:
 		EXHAUST:
@@ -18,5 +16,4 @@ LATE GAME
 			STEEL exhaust in one direction, COPPER and IRON in other direction to separate exhaust's fabrics on both sides of mega plant.
 	COPPER T3:	read description to fix layout
 	IRON T3:	read description to fix layout
-	IRON:		compare LARGE CRUSHERs from COPPER and IRON. In COPPER better output in EARLY GAME.
-	
+	Medical Supplies III
