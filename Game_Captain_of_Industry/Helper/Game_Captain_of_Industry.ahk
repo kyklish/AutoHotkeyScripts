@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  + Add hotkey to stretch window to screen size
 ;  + Add hotkey to show search area
 ; v2.13.5
 ;  ! Search blueprint description/delete button
@@ -152,6 +153,7 @@ Shift + BackSpace -> STORAGE: stored product reset.                             
     Win + [1-9,0] -> BUILDING/STORAGE: set priority  1-10. (Alt + [6-9,0] -> For keyboards with single Win-key)
       Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15.
           Alt + `` -> GAME: make game's window borderless.
+         Ctrl + 1 -> GAME: stretch game's window to Screen Size.
      Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
               F12 -> Show search area (moving mouse cursor) before command execute.
           Alt + S -> Suspend Script (disable all hotkeys).
@@ -302,6 +304,7 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     +BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
     #`::        MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
     !`::        Borderless("ahk_group Game")
+    ^1::        WinMove, ahk_group Game,, 0, 0, A_ScreenWidth, A_ScreenHeight
     #1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
     #2::
     #3::
