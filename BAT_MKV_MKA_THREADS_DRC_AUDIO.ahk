@@ -85,8 +85,8 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
     FileWrite("1.RUN_ALL_AUDIO_THREADS.BAT", GetThreadCmd())
     FileWrite("2.MUX_TO_MKV.BAT", GetMuxCmd(oFileNames[0]))
     FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ORIGINAL_FILES.BAT", GetMuxMoveHereDelOrigCmd(oFileNames[0]))
-    FileWrite("4.StaxRip_SVPFlow.BAT", GetStaxRipCmd(sStaxRipTemplate))
-    FileWrite("4.StaxRip_SVPFlow_DELETE_ORIGINAL.BAT", GetStaxRipDelOrigCmd(sStaxRipTemplate))
+    FileWrite("4.StaxRip_SVPFlow_BATCH.BAT", GetStaxRipCmd(sStaxRipTemplate))
+    FileWrite("4.StaxRip_SVPFlow_ONE-BY-ONE_DELETE_ORIGINAL.BAT", GetStaxRipDelOrigCmd(sStaxRipTemplate))
     ; Use CMD extension to make it unique, we will use it to delete this file last
     FileWrite("5.DELETE_SCRIPT_FILES_HERE.CMD", GetDelScriptCmd())
 }
