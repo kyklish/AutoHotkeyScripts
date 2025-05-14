@@ -267,13 +267,13 @@ GetStaxRipCmd(sStaxRipTemplate) {
     sCmd .= "CD /D ""%~dp0""`n"
     sCmd .= "SETLOCAL EnableDelayedExpansion`n"
     sCmd .= "`n"
-    sCmd .= "SET Template=""" sStaxRipTemplate """`n"
+    sCmd .= "SET Template=" sStaxRipTemplate "`n"
     sCmd .= "`n"
     sCmd .= "FOR %%F IN (""*.AVI"") DO SET FileList=!FileList!""%%F"";`n"
     sCmd .= "FOR %%F IN (""*.MKV"") DO SET FileList=!FileList!""%%F"";`n"
     sCmd .= "FOR %%F IN (""*.MP4"") DO SET FileList=!FileList!""%%F"";`n"
     sCmd .= "`n"
-    sCmd .= "START """" /B StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJobs:%FileList% -StartJobs -Exit`n"
+    sCmd .= "START """" /B StaxRip -ClearJobs ""-LoadTemplate:%Template%"" -AddBatchJobs:%FileList% -StartJobs -Exit`n"
     Return sCmd
 }
 
@@ -283,7 +283,7 @@ GetStaxRipDelOrigCmd(sStaxRipTemplate) {
     sCmd .= "CD /D ""%~dp0""`n"
     sCmd .= "SETLOCAL EnableDelayedExpansion`n"
     sCmd .= "`n"
-    sCmd .= "SET Template=""" sStaxRipTemplate """`n"
+    sCmd .= "SET Template=" sStaxRipTemplate "`n"
     sCmd .= "`n"
     sCmd .= "CALL :ENCODE *.AVI`n"
     sCmd .= "CALL :ENCODE *.MKV`n"
@@ -294,7 +294,7 @@ GetStaxRipDelOrigCmd(sStaxRipTemplate) {
     sCmd .= "`n"
     sCmd .= ":ENCODE`n"
     sCmd .= "FOR %%F IN (""%~1"") DO (`n"
-    sCmd .= "    StaxRip -ClearJobs -LoadTemplate:%Template% -AddBatchJob:""%%F"" -StartJobs -Exit`n"
+    sCmd .= "    StaxRip -ClearJobs ""-LoadTemplate:%Template%"" -AddBatchJob:""%%F"" -StartJobs -Exit`n"
     sCmd .= "    DEL /F ""%%F""`n"
     sCmd .= "    ECHO DONE: ""%%F""`n"
     sCmd .= "    CALL :BELL`n"
