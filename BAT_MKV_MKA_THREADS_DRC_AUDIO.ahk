@@ -30,7 +30,9 @@ iDrcRatio := 2
 iThreadsExe := 1
 ; Formats for source files
 oFormats := ["*.avi", "*.mkv", "*.mp4", "*.webm"]
-sStaxRipTemplate := "SVPFlow 2.5xFPS Movie (algo21)"
+; StaxRip templates for 24 (23.976) & 25 FPS source files
+sStaxRipTemplate24 := "SVPFlow 2.5xFPS Movie (algo21)"
+sStaxRipTemplate25 := "SVPFlow 2xFPS Movie (algo21)"
 
 ;===================== READ PARAMS FROM SCRIPT'S FILE NAME =====================
 
@@ -62,14 +64,14 @@ If iThreadsValue is Integer
 
 oFileNames := GetVideoFileNames(oFormats, iDrcRatio, iThreadsExe)
 If (oFileNames[0].Count() > 0)
-    CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate)
+    CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate24, sStaxRipTemplate25)
 If (WinExist("Total Commander"))
     Send ^r ; Refresh panel to show newly created files
 ExitApp
 
 ;===============================================================================
 
-CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate) {
+CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate24, sStaxRipTemplate25) {
     ; oFileNames[0] contains all source video files
     FileWrite("!!.MOVE_HERE_MKA_TO_WATCH_MOVIE.BAT", GetMkaMoveHereCmd())
     FileWrite("!1.RE-MUX_TO_MKV_ENG_AUDIO" iAudioStream + 1 ".BAT", GetReMuxCmd(oFileNames[0], iAudioStream))
@@ -85,8 +87,10 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
     FileWrite("1.RUN_ALL_AUDIO_THREADS.BAT", GetThreadCmd())
     FileWrite("2.MUX_TO_MKV.BAT", GetMuxCmd(oFileNames[0]))
     FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ORIGINAL_FILES.BAT", GetMuxMoveHereDelOrigCmd(oFileNames[0]))
-    FileWrite("4.StaxRip_SVPFlow_BATCH.BAT", GetStaxRipCmd(sStaxRipTemplate))
-    FileWrite("4.StaxRip_SVPFlow_ONE-BY-ONE_DELETE_ORIGINAL.BAT", GetStaxRipDelOrigCmd(sStaxRipTemplate))
+    FileWrite("4.StaxRip_SVPFlow_BATCH.BAT", GetStaxRipCmd(sStaxRipTemplate24))
+    FileWrite("4.StaxRip_SVPFlow_BATCH_50FPS.BAT", GetStaxRipCmd(sStaxRipTemplate25))
+    FileWrite("4.StaxRip_SVPFlow_ONE-BY-ONE_DELETE_ORIGINAL.BAT", GetStaxRipDelOrigCmd(sStaxRipTemplate24))
+    FileWrite("4.StaxRip_SVPFlow_ONE-BY-ONE_DELETE_ORIGINAL_50FPS.BAT", GetStaxRipDelOrigCmd(sStaxRipTemplate25))
     ; Use CMD extension to make it unique, we will use it to delete this file last
     FileWrite("5.DELETE_SCRIPT_FILES_HERE.CMD", GetDelScriptCmd())
 }
