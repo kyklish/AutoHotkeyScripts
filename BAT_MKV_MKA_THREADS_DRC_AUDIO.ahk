@@ -28,7 +28,7 @@ iAudioStream := 0
 iDrcRatio := 2
 ; [1 ... N] - number of BAT files for manual multi-threading
 iThreadsExe := 1
-; Formats fo source files
+; Formats for source files
 oFormats := ["*.avi", "*.mkv", "*.mp4", "*.webm"]
 sStaxRipTemplate := "SVPFlow 2.5xFPS Movie (algo21)"
 
