@@ -31,43 +31,26 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
     ;^B:: SendInput, {Ctrl down}l{Ctrl up}{Ctrl down}v{Ctrl up}{Enter}
     ^B:: SendEvent, ^{vk4C}^{vk56}{Enter} ; only working variant for Opera!!!
     ^Z:: SendEvent, ^+{vk54} ; Ctrl+Z = Ctrl+Shift+T - restore closed tab
-    ^Y:: ; Ctrl+Y - поиск в YouTube выделенного текста
-        Clipboard := "" ; Empty the clipboard
-        SendEvent, ^{vk43} ; Ctrl+C
-        ClipWait, 2
-        if (ErrorLevel) {
-            MsgBox, The attempt to copy text onto the clipboard failed.
-            return
-        }
-        Clipboard := "https://www.youtube.com/results?search_query=" . StrReplace(Trim(Clipboard), A_Space, "+")
-        GoSub, ^B
-    return
-    ^Q:: ; Ctrl+Q - поиск в RuTracker выделенного текста
-        Clipboard := "" ; Empty the clipboard
-        SendEvent, ^{vk43} ; Ctrl+C
-        ClipWait, 2
-        if (ErrorLevel) {
-            MsgBox, The attempt to copy text onto the clipboard failed.
-            return
-        }
-        Clipboard := "https://rutracker.org/forum/tracker.php?nm=" . StrReplace(Trim(Clipboard), A_Space, "+") . "&o=10"
-        GoSub, ^B
-    return
-    ^+Q:: ; Ctrl+Shift+Q - поиск в RuTor выделенного текста
-        Clipboard := "" ; Empty the clipboard
-        SendEvent, ^{vk43} ; Ctrl+C
-        ClipWait, 2
-        if (ErrorLevel) {
-            MsgBox, The attempt to copy text onto the clipboard failed.
-            return
-        }
-        ; Clipboard := "https://rutor.info/search/" . StrReplace(Trim(Clipboard), A_Space, "+")
-        Clipboard := "https://rutor.info/search/0/0/000/2/" . StrReplace(Trim(Clipboard), A_Space, "+") ; Sort by seeds
-        GoSub, ^B
-    return
+    ^Y:: SearchSelectedText("https://www.youtube.com/results?search_query=") ; Ctrl+Y - поиск в YouTube выделенного текста
+    ^Q:: SearchSelectedText("https://rutracker.org/forum/tracker.php?nm=", "&o=10") ; Ctrl+Q - поиск в RuTracker выделенного текста
+    ^+Q:: SearchSelectedText("https://rutor.info/search/0/0/000/2/") ; Ctrl+Shift+Q - поиск в RuTor выделенного текста
     F1:: SendEvent, ^+{Tab} ; Prev Tab alternative in Win11 ^{PgUp}
     F2:: SendEvent,  ^{Tab} ; Next Tab alternative in Win11 ^{PgDn}
     Launch_Media:: Click, Middle
+
+    SearchSelectedText(sSearchEngine, sSuffix := "") {
+        Clipboard := "" ; Empty the clipboard for ClipWait command!
+        SendEvent, ^{vk43} ; Ctrl+C
+        ClipWait, 2
+        if (ErrorLevel) {
+            MsgBox, The attempt to copy text onto the clipboard failed.
+            return
+        }
+        sCopiedText := Trim(Clipboard)
+        Clipboard := sSearchEngine . StrReplace(sCopiedText, A_Space, "+") . sSuffix
+        GoSub, ^B
+        Clipboard := sCopiedText
+    }
 
     +Delete:: ; delete mail
         ; SendMode - Also makes Click and MouseMove/Click/Drag use the specified method
