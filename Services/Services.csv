@@ -34,7 +34,7 @@ GROUP,1,TWEAKS1,PRINTER_UWP,Printer (Access/Manage printers from UWP apps)
 GROUP,1,TWEAKS1,SCANNER,Scanner (Virtual Scanner + Network Scanner + Local Scanner) [use VueScan to access scanner without this service]
 GROUP,1,TWEAKS1,FAX,Fax (Virtual Fax + Network Fax + Local Fax) [service PhoneSvc only for faxes and not for phones]
 GROUP,3,TWEAKS1,WINDOWS_UPDATE,Windows Update (Online Updates + MS Store apps updates) [CAN'T BE DISABLED HERE: use Sordum Windows Update Blocker]
-GROUP,1,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multiple sources) [disable and download from single source]
+GROUP,3,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multiple sources) [disable and download from single source] [Windows Defender: UPDATE DATABASE FAILS!!!]
 GROUP,1,TWEAKS1,WINDOWS_UPDATE_OFFLINE_INSTALL,Windows Update (Install offline updates)
 GROUP,1,TWEAKS1,WINDOWS_UPDATE_INSIDER_PREVIEW,Windows Update (Insider Preview)
 GROUP,1,TWEAKS1,TABLET,Tablet Mode [for PC and Notebook not needed]
@@ -72,8 +72,8 @@ GROUP,1,TWEAKS2,LOCALIZATION,Localization (Download New Languages for OS) [you s
 GROUP,2,TWEAKS2,SECURITY_CENTER,Security Center [notify about disabled security features: Defender + Firewall + SmartScreen + etc]
 GROUP,2,TWEAKS2,SECURE_EDGE_JAVASCRIPT,Secure JIT Compiler for Edge [intercepts scripts ==> securely compile ==> Defender check on virus ==> allows Edge compile them on its own]
 GROUP,1,TWEAKS2,PERFORMANCE_COUNTER,Performance Counter
-GROUP,2,TWEAKS2,DIAGNOSTICS,Background Diagnostics [use SYSTEM rights to disable]
-GROUP,2,TWEAKS2,DIAGNOSTICS_PROCESS_NETWORK_USAGE,Background Diagnostics (Process Network Usage) [use SYSTEM rights to disable] [Task Manager ==> Processes ==> Network ==> NOT WORK!!!] [NetLimiter as alternative]
+GROUP,1,TWEAKS2,DIAGNOSTICS,Background Diagnostics [use SYSTEM rights to disable]
+GROUP,1,TWEAKS2,DIAGNOSTICS_PROCESS_NETWORK_USAGE,Background Diagnostics (Process Network Usage) [use SYSTEM rights to disable] [Task Manager ==> Processes ==> Network ==> NOT WORK!!!] [NetLimiter as alternative]
 GROUP,1,TWEAKS2,DIAGNOSTICS_TROUBLESHOOTING,Background Diagnostics (Recommended Troubleshooting)
 GROUP,1,TWEAKS2,ENTERPRISE,Enterprise Tools
 GROUP,2,CUSTOM1,EVENT_LOG,Windows Event Log [Malwarebytes Windows Firewall Control detects Allowed/Blocked packets]
