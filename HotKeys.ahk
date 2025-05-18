@@ -39,8 +39,8 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
             MsgBox, The attempt to copy text onto the clipboard failed.
             return
         }
-        Clipboard := "https://www.youtube.com/results?search_query=" . StrReplace(Clipboard, A_Space, "+")
-        GoSub, ^b
+        Clipboard := "https://www.youtube.com/results?search_query=" . StrReplace(Trim(Clipboard), A_Space, "+")
+        GoSub, ^B
     return
     ^Q:: ; Ctrl+Q - поиск в RuTracker выделенного текста
         Clipboard := "" ; Empty the clipboard
@@ -50,13 +50,20 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
             MsgBox, The attempt to copy text onto the clipboard failed.
             return
         }
-        if (WinActive("ahk_exe msedge.exe")) {
-            ; For EDGE we need type search engine hotkey and press space to activate that engine
-            SendEvent, ^{vk4C}^{BackSpace}{vk54}{Space}^{vk56}{Enter} ; Ctrl+L Ctrl+BackSpace t Space Ctrl+V Enter
+        Clipboard := "https://rutracker.org/forum/tracker.php?nm=" . StrReplace(Trim(Clipboard), A_Space, "+") . "&o=10"
+        GoSub, ^B
+    return
+    ^+Q:: ; Ctrl+Shift+Q - поиск в RuTor выделенного текста
+        Clipboard := "" ; Empty the clipboard
+        SendEvent, ^{vk43} ; Ctrl+C
+        ClipWait, 2
+        if (ErrorLevel) {
+            MsgBox, The attempt to copy text onto the clipboard failed.
             return
         }
-        Clipboard := "t " . Clipboard
-        GoSub, ^b
+        ; Clipboard := "https://rutor.info/search/" . StrReplace(Trim(Clipboard), A_Space, "+")
+        Clipboard := "https://rutor.info/search/0/0/000/2/" . StrReplace(Trim(Clipboard), A_Space, "+") ; Sort by seeds
+        GoSub, ^B
     return
     F1:: SendEvent, ^+{Tab} ; Prev Tab alternative in Win11 ^{PgUp}
     F2:: SendEvent,  ^{Tab} ; Next Tab alternative in Win11 ^{PgDn}
