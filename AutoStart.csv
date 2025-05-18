@@ -26,8 +26,9 @@
   0,A,"%SOFT%\FanControl\FanControl.exe",,"%SOFT%\FanControl"
   0,U,"%SOFT%\Flux\flux.exe","/noshow"
   0,A,"%SOFT%\Gridy\Gridy.exe"
-    ;SwapAdd: creates PageFile.sys Win10: creates PageFile.sys + SwapFile.sys (Sic)
-  0,A,"%SOFT%\ImDisk\Tools\swapadd.exe","R:\PageFile.sys 16M 2G",,"Hide"
+    ;SwapAdd: creates PageFile.sys Win10: creates PageFile.sys + SwapFile.sys (PageFile for UWP apps [SIC])
+        ;Not stable (ImDisk sometimes crashes with less than 6GB free RAM)
+ ;0,A,"%SOFT%\ImDisk\Tools\swapadd.exe","R:\PageFile.sys 16M 2G",,"Hide"
   0,A,"%SOFT%\Libre_Hardware_Monitor\LibreHardwareMonitor.exe"
   0,A,"%SOFT%\Lossless_Scaling\LosslessScaling.exe","-StartMinimized"
   0,A,"%SOFT%\MemInfo\meminfo.exe"
