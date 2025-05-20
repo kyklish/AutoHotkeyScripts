@@ -114,6 +114,8 @@ GetMkaCmd(oFileNames, iAudioStream, iDrcRatio) {
         sCmd .= "        -filter:a:0 ""acompressor=ratio=" iDrcRatio ":mode=upward"" ^`n"
         sCmd .= "        ""MKA\" oFileName["mka"] """`n"
     }
+    sCmd .= "`n"
+    sCmd .= "ECHO DONE > %~n0.DONE`n"
     Return sCmd
 }
 
@@ -165,7 +167,32 @@ GetThreadCmd() {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
     sCmd .= "CD /D ""%~dp0""`n"
-    sCmd .= "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.BAT"") DO START /LOW CMD /C ""%%F""`n"
+    sCmd .= "`n"
+    sCmd .= ":: Count started scripts`n"
+    sCmd .= "SET NumStart=0`n"
+    sCmd .= "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.BAT"") DO (`n"
+    sCmd .= "    START /LOW CMD /C ""%%F""`n"
+    sCmd .= "    SET /a NumStart+=1`n"
+    sCmd .= ")`n"
+    sCmd .= "`n"
+    sCmd .= ":: Count finished scripts in loop until its match started`n"
+    sCmd .= "SET NumDone=0`n"
+    sCmd .= ":WAIT_SCRIPTS_FINISH`n"
+    sCmd .= "ping -n 2 google.com > NUL`n"
+    sCmd .= "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.DONE"") DO (SET /a NumDone+=1)`n"
+    sCmd .= "IF %NumDone% NEQ %NumStart% GOTO :WAIT_SCRIPTS_FINISH`n"
+    sCmd .= "`n"
+    sCmd .= "CALL :BELL`n"
+    sCmd .= "CALL :BELL`n"
+    sCmd .= "CALL :BELL`n"
+    sCmd .= ":: Delete temporary files in last line to avoid race condition`n"
+    sCmd .= "DEL /F /Q *.DONE`n"
+    sCmd .= "GOTO :EOF`n"
+    sCmd .= "`n"
+    sCmd .= ":BELL`n"
+    sCmd .= "ECHO `n"
+    sCmd .= "ping -n 2 google.com > NUL`n"
+    sCmd .= "EXIT /B`n"
     Return sCmd
 }
 
