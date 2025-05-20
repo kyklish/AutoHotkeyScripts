@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v2.13.6 Final (Update 2 [v0.6.4d])
 ;  + Add hotkey to stretch window to HD size
 ;  + Add hotkey to stretch window to screen size
 ;  + Add hotkey to show search area and found images and pixels
