@@ -6,12 +6,5 @@ EARLY GAME
 MIDDLE GAME
 
 LATE GAME
-	METAL:
-		IRON/STEEL: upgrade exhaust transite pipe to PIPE III!!!
-		EXHAUST:	
-			STEEL produce 144 exhaust, PIPE III (450) supports 3 blueprints. Make second PIPE III to support 6 blueprints.
-			Check exhaust from COPPER and IRON. Do they need more PIPEs.
-			STEEL exhaust in one direction, COPPER and IRON in other direction to separate exhaust's fabrics on both sides of mega plant.
-	COPPER T3:	read description to fix layout
-	IRON T3:	read description to fix layout
+	Medical Supplies II: downgrade conveyors to T1
 	Medical Supplies III
