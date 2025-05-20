@@ -12,6 +12,7 @@
 ;  + Add hotkey to stretch window to HD size
 ;  + Add hotkey to stretch window to screen size
 ;  + Add hotkey to show search area and found images and pixels
+;  * Beep only on error
 ;  ! Set priority for building that waits for product
 ; v2.13.5
 ;  ! Search blueprint description/delete button
@@ -788,7 +789,8 @@ ImageSearch(ByRef x, ByRef y, imageFile, wndSize, bShowError := true)
             ToolTip, % A_ThisFunc . "() - can't find image: " . imageFile, 0, 0
         if (ErrorLevel == 2)
             ToolTip, % A_ThisFunc . "() - can't open image: " . imageFile, 0, 0
-        SoundBeep
+        if (ErrorLevel)
+            SoundBeep
     }
     if (DEBUG && !ErrorLevel)
         MouseMove(x, y, DEBUG_DELAY) ; Show found position
@@ -798,9 +800,10 @@ PixelSearch(ByRef x, ByRef y, colorID, wndSize, variation := 0, bShowError := tr
 {
     PixelSearch, x, y, % wndSize.x, % wndSize.y, % wndSize.x + wndSize.w, % wndSize.y + wndSize.h, % colorID, % variation, Fast RGB
     if (bShowError) {
-        if (ErrorLevel == 1)
+        if (ErrorLevel == 1) {
             ToolTip, % A_ThisFunc . "() - can't find pixel: " . colorID, 0, 0
-        SoundBeep
+            SoundBeep
+        }
     }
     if (DEBUG && !ErrorLevel)
         MouseMove(x, y, DEBUG_DELAY) ; Show found position
