@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  + Add hotkey to stretch window to HD size
 ;  + Add hotkey to stretch window to screen size
 ;  + Add hotkey to show search area
 ;  ! Set priority for building that waits for product
@@ -154,7 +155,7 @@ Shift + BackSpace -> STORAGE: stored product reset.                             
     Win + [1-9,0] -> BUILDING/STORAGE: set priority  1-10. (Alt + [6-9,0] -> For keyboards with single Win-key)
       Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15.
           Alt + `` -> GAME: make game's window borderless.
-         Ctrl + 1 -> GAME: stretch game's window to Screen Size.
+     Ctrl + 1 / 2 -> GAME: stretch game's window to Screen Size / HD Size.
      Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
               F12 -> Show search area (moving mouse cursor) before command execute.
           Alt + S -> Suspend Script (disable all hotkeys).
@@ -306,6 +307,7 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     #`::        MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
     !`::        Borderless("ahk_group Game")
     ^1::        WinMove, ahk_group Game,, 0, 0, A_ScreenWidth, A_ScreenHeight
+    ^2::        WinMove, ahk_group Game,, (A_ScreenWidth - 1280) // 2, (A_ScreenHeight - 720) // 2, 1280, 720
     #1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
     #2::
     #3::
