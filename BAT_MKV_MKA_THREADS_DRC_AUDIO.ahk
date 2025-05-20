@@ -165,7 +165,7 @@ GetThreadCmd() {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
     sCmd .= "CD /D ""%~dp0""`n"
-    sCmd .= "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.BAT"") DO START CMD /C ""%%F""`n"
+    sCmd .= "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.BAT"") DO START /LOW CMD /C ""%%F""`n"
     Return sCmd
 }
 
