@@ -178,7 +178,7 @@ GetThreadCmd() {
     sCmd .= ":: Count finished scripts in loop until its match started`n"
     sCmd .= "SET NumDone=0`n"
     sCmd .= ":WAIT_SCRIPTS_FINISH`n"
-    sCmd .= "ping -n 2 google.com > NUL`n"
+    sCmd .= "ping -n 2 localhost > NUL`n"
     sCmd .= "FOR %%F IN (""*AUDIO*_DRC*_THREAD*.DONE"") DO (SET /a NumDone+=1)`n"
     sCmd .= "IF %NumDone% NEQ %NumStart% GOTO :WAIT_SCRIPTS_FINISH`n"
     sCmd .= "`n"
@@ -191,7 +191,7 @@ GetThreadCmd() {
     sCmd .= "`n"
     sCmd .= ":BELL`n"
     sCmd .= "ECHO `n"
-    sCmd .= "ping -n 2 google.com > NUL`n"
+    sCmd .= "ping -n 2 localhost > NUL`n"
     sCmd .= "EXIT /B`n"
     Return sCmd
 }
@@ -314,7 +314,7 @@ GetStaxRipCmd(sStaxRipTemplate) {
     sCmd .= "`n"
     sCmd .= ":BELL`n"
     sCmd .= "ECHO `n"
-    sCmd .= "ping -n 2 google.com > NUL`n"
+    sCmd .= "ping -n 2 localhost > NUL`n"
     sCmd .= "EXIT /B`n"
     Return sCmd
 }
@@ -345,7 +345,7 @@ GetStaxRipDelOrigCmd(sStaxRipTemplate) {
     sCmd .= "`n"
     sCmd .= ":BELL`n"
     sCmd .= "ECHO `n"
-    sCmd .= "ping -n 2 google.com > NUL`n"
+    sCmd .= "ping -n 2 localhost > NUL`n"
     sCmd .= "EXIT /B`n"
     Return sCmd
 }
