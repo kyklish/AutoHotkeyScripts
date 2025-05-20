@@ -11,6 +11,7 @@
 ;
 ;  + Add hotkey to stretch window to screen size
 ;  + Add hotkey to show search area
+;  ! Set priority for building that waits for product
 ; v2.13.5
 ;  ! Search blueprint description/delete button
 ; v2.13.4
