@@ -11,7 +11,7 @@
 ;
 ;  + Add hotkey to stretch window to HD size
 ;  + Add hotkey to stretch window to screen size
-;  + Add hotkey to show search area
+;  + Add hotkey to show search area and found images and pixels
 ;  ! Set priority for building that waits for product
 ; v2.13.5
 ;  ! Search blueprint description/delete button
@@ -157,7 +157,7 @@ Shift + BackSpace -> STORAGE: stored product reset.                             
           Alt + `` -> GAME: make game's window borderless.
      Ctrl + 1 / 2 -> GAME: stretch game's window to Screen Size / HD Size.
      Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
-              F12 -> Show search area (moving mouse cursor) before command execute.
+              F12 -> DEBUG: show found image/pixel, show search area (moving mouse cursor) before command execute.
           Alt + S -> Suspend Script (disable all hotkeys).
           Alt + Z ->  Reload Script.
           Alt + X ->    Exit Script.
@@ -496,15 +496,13 @@ DeleteBtnSearch(ByRef xBtn, ByRef yBtn, clSz)
     _clSz.y := clSz.h // 2 - oBDB.h // 2 ; Top left point of the search area
     _clSz.w := oBDB.w                    ;  Width of the search area
     _clSz.h := oBDB.h                    ; Height of the search area
+    if (DEBUG)
+        MoveMouseRectangle(_clSz)  ; Show search area
     PixelSearch(xBtn, yBtn, oBDB.colorID, _clSz, oBDB.colorVariation)
     if (ErrorLevel) {
         xBtn := "", yBtn := ""
         ToolTip, % A_ThisFunc "() - Can't find position of the DELETE BUTTON in BLUEPRINTS window."
         Return
-    }
-    if (DEBUG) {
-        MoveMouseRectangle(_clSz)  ; Show search area
-        MouseMove(xBtn, yBtn, DEBUG_DELAY) ; Show found position
     }
 }
 
@@ -567,13 +565,11 @@ BlueprintDelete(dlOperation, clSz)
     _clSz.y := clSz.h // 2 - oBDCB.h // 2 ; Top left point of the search area
     _clSz.w := oBDCB.w                    ;  Width of the search area
     _clSz.h := oBDCB.h                    ; Height of the search area
+    if (DEBUG)
+        MoveMouseRectangle(_clSz)  ; Show search area
     ImageSearch(x, y, "CaptainOfIndustryButtonBlack.png", _clSz)
     if (ErrorLevel)
         Return
-    if (DEBUG) {
-        MoveMouseRectangle(_clSz)  ; Show search area
-        MouseMove(x, y, DEBUG_DELAY) ; Show found position
-    }
     ; Click DELETE button
     Click(x + 10, y + 10, , dlOperation) ; Add offset equal to image size (10x10)
 }
@@ -722,14 +718,14 @@ Priority(hotkey, dlOperation, clSz)
     isStorage := false
     ; Search top left corner of the IDLE/PAUSED/WORKING status
     ; (present only in BUILDING window)
-    ImageSearch(_, _, "CaptainOfIndustryBuildingStatusIdle.png", clSz, false)
+    ImageSearch(x, y, "CaptainOfIndustryBuildingStatusIdle.png", clSz, false)
     if (ErrorLevel) {
         ; PAUSED status has different color then IMPORT OFF button.
-        ImageSearch(_, _, "CaptainOfIndustryBuildingStatusPaused.png", clSz, false)
+        ImageSearch(x, y, "CaptainOfIndustryBuildingStatusPaused.png", clSz, false)
         if (ErrorLevel) {
             ; This search may be false positive on IMPORT ON/OFF buttons! Make
             ; image long enough to detect only WORKING status and not ON button!
-            ImageSearch(_, _, "CaptainOfIndustryBuildingStatusWorking.png", clSz, false)
+            ImageSearch(x, y, "CaptainOfIndustryBuildingStatusWorking.png", clSz, false)
             if (ErrorLevel) ; this is not BUILDING, it's STORAGE
                 isStorage := true
         }
@@ -794,6 +790,8 @@ ImageSearch(ByRef x, ByRef y, imageFile, wndSize, bShowError := true)
             ToolTip, % A_ThisFunc . "() - can't open image: " . imageFile, 0, 0
         SoundBeep
     }
+    if (DEBUG && !ErrorLevel)
+        MouseMove(x, y, DEBUG_DELAY) ; Show found position
 }
 
 PixelSearch(ByRef x, ByRef y, colorID, wndSize, variation := 0, bShowError := true)
@@ -804,6 +802,8 @@ PixelSearch(ByRef x, ByRef y, colorID, wndSize, variation := 0, bShowError := tr
             ToolTip, % A_ThisFunc . "() - can't find pixel: " . colorID, 0, 0
         SoundBeep
     }
+    if (DEBUG && !ErrorLevel)
+        MouseMove(x, y, DEBUG_DELAY) ; Show found position
 }
 
 MoveMouseRectangle(wndSize)
