@@ -47,6 +47,8 @@ CreateGui:
     Gui Add, Button, yp x+m, Check &Moderate
     Gui Add, Button, yp x+m, &Check All
     Gui Add, Button, yp x+m, &UnCheck All
+    Gui Add, Button, yp x+m, PS Srv Simple
+    Gui Add, Button, yp x+m, PS Srv All
     Gui Add, Tab3, xs vCurrentTab, % GuiGetTabNames(oDB.oTabs)
     Gui Margin, , 0 ; Too many buttons, make them compact
     For sTab, oTab in oDB.oTabs {
@@ -174,6 +176,14 @@ Return
 
 ButtonUnCheckAll:
     GuiSetCheckBoxAll(oDB.oTabs, 0)
+Return
+
+ButtonPSSrvSimple:
+    Run, PowerShell -NoProfile -Ex Bypass -Command "Get-Service | Out-GridView -Wait"
+Return
+
+ButtonPSSrvAll:
+    Run, PowerShell -NoProfile -Ex Bypass -Command "Get-Service | Select-Object * | Out-GridView -Wait"
 Return
 
 ButtonStatus:
