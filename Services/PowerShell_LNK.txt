@@ -1,0 +1,5 @@
+PowerShell -Command "Get-Service | Out-GridView -Wait"
+PowerShell -Command "Get-Service | Select-Object * | Out-GridView -Wait"
+
+PowerShell -Command "Get-ScheduledTask | Out-GridView -Wait"
+PowerShell -Command "Get-ScheduledTask | Select-Object * | Out-GridView -Wait"
