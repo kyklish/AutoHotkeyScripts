@@ -1,10 +1,10 @@
 /Game_Captain_of_Industry/Blueprints/daxfb-calculator
 /Game_SnowRunner/Logistics/*.bak
 /Game_SnowRunner/Logistics/Maps/*.rar
-/Lib/FindClick.pdf
-/Steam_Epic_URL_Converter/Steam_Epic_URL_Converter.exe
-/Services/Services.exe
-/AdvancedRun.exe
+/Lib/*.pdf
+/Steam_Epic_URL_Converter/*.exe
+/Services/*.exe
+/Services/*.lnk
+/*.exe
 /Credentials.csv
-/ntfy.exe
 /Testing*.ahk
