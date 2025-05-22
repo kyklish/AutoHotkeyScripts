@@ -9,6 +9,7 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+;  * Change modificator for building/storage priority
 ; v2.13.6 Final (Update 2 [v0.6.4d])
 ;  + Add hotkey to stretch window to HD size
 ;  + Add hotkey to stretch window to screen size
@@ -154,8 +155,8 @@ Set USER INTERFACE SCALE ratio to [uiScale] variable in the script (default 100%
         Shift + = -> STORAGE: stored product keep full.                          (S)hift = (S)hift sliders RED/GREEN
 Shift + BackSpace -> STORAGE: stored product reset.                              (S)hift = (S)hift sliders RED/GREEN
           Win + `` -> CONSTRUCTION: set highest priority.
-    Win + [1-9,0] -> BUILDING/STORAGE: set priority  1-10. (Alt + [6-9,0] -> For keyboards with single Win-key)
-      Alt + [1-5] -> BUILDING/STORAGE: set priority 11-15.
+      Alt + [0-9] -> BUILDING/STORAGE: set priority  1-10. (0 == 10)
+      Win + [1-5] -> BUILDING/STORAGE: set priority 11-15.
           Alt + `` -> GAME: make game's window borderless.
      Ctrl + 1 / 2 -> GAME: stretch game's window to Screen Size / HD Size.
      Ctrl + Enter -> Unblock mouse input (if it was blocked by mistake).
@@ -306,21 +307,7 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     +-::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepEmpty", dlOperation))
     +=::        MakeManipulation(Func("StorageStoredProduct").Bind("KeepFull", dlOperation))
     +BackSpace::MakeManipulation(Func("StorageStoredProduct").Bind("Reset", dlOperation))
-    #`::        MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
-    !`::        Borderless("ahk_group Game")
-    ^1::        WinMove, ahk_group Game,, 0, 0, A_ScreenWidth, A_ScreenHeight
-    ^2::        WinMove, ahk_group Game,, (A_ScreenWidth - 1280) // 2, (A_ScreenHeight - 720) // 2, 1280, 720
-    #1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
-    #2::
-    #3::
-    #4::
-    #5::
-    #6::
-    #7::
-    #8::
-    #9::
-    #0::
-    !1::
+    !1::        ; This is fall-through hotkeys for PRIORITY. They all call one function!
     !2::
     !3::
     !4::
@@ -329,7 +316,16 @@ GroupAdd, Game, ahk_exe Captain of Industry.exe
     !7::
     !8::
     !9::
-    !0::        MakeManipulation(Func("Priority").Bind(A_ThisHotkey, dlOperation))
+    !0::
+    #1::
+    #2::
+    #3::
+    #4::
+    #5::        MakeManipulation(Func("Priority").Bind(A_ThisHotkey, dlOperation))
+    #`::        MakeManipulation(Func("PriorityConstruction").Bind(dlOperation))
+    !`::        Borderless("ahk_group Game")
+    ^1::        WinMove, ahk_group Game,, 0, 0, A_ScreenWidth, A_ScreenHeight
+    ^2::        WinMove, ahk_group Game,, (A_ScreenWidth - 1280) // 2, (A_ScreenHeight - 720) // 2, 1280, 720
 #IfWinNotActive, ahk_group Game
     F1:: ShowHelpWindow(helpText)
 #If
@@ -709,7 +705,7 @@ Priority(hotkey, dlOperation, clSz)
     if (number == 0)
         priority := 10
     else
-        if (modifier == "!" && (1 <= number && number <= 5))
+        if (modifier == "#")
             priority := 10 + number
         else
             priority := number
