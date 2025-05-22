@@ -1,10 +1,8 @@
 ﻿RESTORE PRIORITY TO DEFAULT (restored default has @ in layout name or folder name)
 
 EARLY GAME
-	ELECTRICITY: use BOILER (GAS)
 
 MIDDLE GAME
 
 LATE GAME
-	Medical Supplies II: downgrade conveyors to T1
-	Medical Supplies III
+
