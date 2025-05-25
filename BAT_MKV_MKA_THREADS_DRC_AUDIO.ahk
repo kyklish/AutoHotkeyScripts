@@ -73,7 +73,8 @@ ExitApp
 
 CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate24, sStaxRipTemplate25) {
     ; oFileNames[0] contains all source video files
-    FileWrite("!!.MOVE_HERE_MKA_TO_WATCH_MOVIE.BAT", GetMkaMoveHereCmd())
+    FileWrite("!!.MAKE_HERE_FLAC_TO_WATCH_MOVIE_AUDIO" iAudioStream + 1 "_DRC" iDrcRatio ".BAT", GetFlacHereCmd(oFileNames[0], iAudioStream, iDrcRatio))
+    FileWrite("!!.MOVE_HERE_MKA__TO_WATCH_MOVIE.BAT", GetMkaMoveHereCmd())
     FileWrite("!1.RE-MUX_TO_MKV_ENG_AUDIO" iAudioStream + 1 ".BAT", GetReMuxCmd(oFileNames[0], iAudioStream))
     FileWrite("!2.MOVE_HERE_RE-MUX_RESULT_DELETE_ORIGINAL_VIDEO.BAT", GetReMuxMoveHereDelOrigVideoCmd(oFileNames[0]))
 
@@ -92,6 +93,7 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
     FileWrite("4.StaxRip_SVPFlow_ONE-BY-ONE_DELETE_ORIGINAL.BAT", GetStaxRipDelOrigCmd(sStaxRipTemplate24))
     FileWrite("4.StaxRip_SVPFlow_ONE-BY-ONE_DELETE_ORIGINAL_50FPS.BAT", GetStaxRipDelOrigCmd(sStaxRipTemplate25))
     ; Use CMD extension to make it unique, we will use it to delete this file last
+    ; This file is calling in "!!.MAKE_HERE_FLAC_TO_WATCH_MOVIE.BAT"
     FileWrite("5.DELETE_SCRIPT_FILES_HERE.CMD", GetDelScriptCmd())
 }
 
@@ -99,6 +101,33 @@ FileWrite(sFileName, sStr) {
     oFile := FileOpen(sFileName, "w `n")
     oFile.Write(sStr)
     oFile.Close()
+}
+
+GetFlacHereCmd(oFileNames, iAudioStream, iDrcRatio) {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "`n"
+    sCmd .= ":: ~1GB file for 2h movie`n"
+    sCmd .= ":: FFMPEG default FLAC compression_level == 5`n"
+    For _, oFileName in oFileNames {
+        sCmd .= "`n"
+        sCmd .= "ffmpeg ^`n"
+        sCmd .= "    -y -i """ oFileName["path"] """ ^`n"
+        sCmd .= "    -map 0:a:" iAudioStream " -c:a:0 flac -compression_level 8 -ac 2 ^`n"
+        sCmd .= "        -filter:a:0 ""acompressor=ratio=" iDrcRatio ":mode=upward"" ^`n"
+        sCmd .= "        """ oFileName["flac"] """`n"
+    }
+    sCmd .= "`n"
+    sCmd .= "CALL :BELL`n"
+    sCmd .= """5.DELETE_SCRIPT_FILES_HERE.CMD""`n"
+    sCmd .= "GOTO :EOF`n"
+    sCmd .= "`n"
+    sCmd .= ":BELL`n"
+    sCmd .= "ECHO `n"
+    sCmd .= "ping -n 2 localhost > NUL`n"
+    sCmd .= "EXIT /B`n"
+    Return sCmd
 }
 
 GetMkaCmd(oFileNames, iAudioStream, iDrcRatio) {
@@ -373,6 +402,7 @@ GetVideoFileNames(oFilePatterns, iDrcRatio, iThreadsExe) {
             sSuffix := "DRC" iDrcRatio "_UPWARD"
             oFileElement := { 0:""
                 , "ext": A_LoopFileExt
+                , "flac": sNameNoExt "." sSuffix ".flac"
                 , "mka": sNameNoExt "." sSuffix ".mka"
                 , "name": sNameNoExt
                 , "path": A_LoopFilePath
