@@ -85,6 +85,7 @@ CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTe
         }
     }
 
+    FileWrite("0.RUN_1-3.BAT", GetRun13Cmd())
     FileWrite("1.RUN_ALL_AUDIO_THREADS.BAT", GetThreadCmd())
     FileWrite("2.MUX_TO_MKV.BAT", GetMuxCmd(oFileNames[0]))
     FileWrite("3.MOVE_HERE_MUX_RESULT_DELETE_ORIGINAL_FILES.BAT", GetMuxMoveHereDelOrigCmd(oFileNames[0]))
@@ -101,6 +102,16 @@ FileWrite(sFileName, sStr) {
     oFile := FileOpen(sFileName, "w `n")
     oFile.Write(sStr)
     oFile.Close()
+}
+
+GetRun13Cmd() {
+    sCmd := ""
+    sCmd .= "@ECHO OFF`n"
+    sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "CALL ""1.RUN_ALL_AUDIO_THREADS.BAT""`n"
+    sCmd .= "CALL ""2.MUX_TO_MKV.BAT"" || GOTO :EOF`n"
+    sCmd .= "CALL ""3.MOVE_HERE_MUX_RESULT_DELETE_ORIGINAL_FILES.BAT"" /FORCE`n"
+    Return sCmd
 }
 
 GetFlacHereCmd(oFileNames, iAudioStream, iDrcRatio) {
