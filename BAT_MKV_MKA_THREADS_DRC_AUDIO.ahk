@@ -299,7 +299,7 @@ GetMuxMoveHereDelOrigCmd(oFileNames) {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
     sCmd .= "CD /D ""%~dp0""`n"
-    sCmd .= "IF ""%~1"" == ""/SILENT"" GOTO :DELETE_SOURCE_FILES`n"
+    sCmd .= "IF ""%~1"" == ""/FORCE"" GOTO :DELETE_SOURCE_FILES`n"
     sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
     sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
     sCmd .= "ECHO !!!SCRIPT WILL DELETE ALL FOLDERS!!!`n"
