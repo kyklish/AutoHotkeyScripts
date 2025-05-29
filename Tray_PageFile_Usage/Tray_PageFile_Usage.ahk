@@ -4,7 +4,7 @@
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 
-g_iPeriod := 10 ; Update interval in seconds
+g_iPeriod := 60 ; Update interval in seconds
 g_sPageFileName := PageFileName()
 
 SetTimer, TrayIcon, % g_iPeriod * 1000
