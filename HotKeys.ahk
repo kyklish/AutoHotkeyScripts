@@ -252,17 +252,17 @@ Return
 ;-------------------------------------------------------------------------------
 
 ;WIN+CTRL+ALT
-#^!E::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t msedge.exe") ;PSKill Edge
+#^!E::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t msedge.exe", , "Hide") ;PSKill Edge
 #^!F::Run_AsUser("%SOFT%\Flux\flux.exe", "/noshow")
 #^!K::
-    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe")
-    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc64.exe")
-    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe")
-    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be64.exe")
+    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc.exe", , "Hide")
+    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-hc64.exe", , "Hide")
+    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe", , "Hide")
+    Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be64.exe", , "Hide")
 return
 ; #^!M::Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "monitor off")
 #^!M::Run_AsUser("%SOFT%\NirLauncher\Sordum\MonitorOff\MonitorOff_x64.exe", "/OFF /MOUSE") ;Block mouse when screen turns off
-#^!O::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe")
+#^!O::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe", , "Hide")
 #^!R::Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe","execmd TASKKILL /F /FI ""STATUS eq NOT RESPONDING""") ; KILL NOT RESPONDING
 ; #^!S::Run_AsAdmin("%SOFT%\SpeedFan\SpeedFan.exe", "/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C")
 #^!S::Run_AsAdmin("%SOFT%\FanControl\FanControl.exe",, "%SOFT%\FanControl")
