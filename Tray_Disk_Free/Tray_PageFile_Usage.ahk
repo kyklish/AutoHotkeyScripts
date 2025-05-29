@@ -4,10 +4,10 @@
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 
-g_iPeriod := 10000 ; Update interval
+g_iPeriod := 10 ; Update interval in seconds
 g_sPageFileName := PageFileName()
 
-SetTimer, TrayIcon, % g_iPeriod
+SetTimer, TrayIcon, % g_iPeriod * 1000
 TrayIcon()
 
 PageFileName() {
@@ -54,13 +54,9 @@ TrayIcon() {
     }
 }
 
-RunWaitCMD(commands) {
-    ; WshShell object: http://msdn.microsoft.com/en-us/library/aew9yb99
-    shell := ComObjCreate("WScript.Shell")
-    ; Open cmd.exe with echoing of commands disabled
-    exec := shell.Exec(A_ComSpec " /Q /K echo off")
-    ; Send the commands to execute, separated by newline
-    exec.StdIn.WriteLine(commands "`nexit")  ; Always exit at the end!
-    ; Read and return the output of all commands
-    return exec.StdOut.ReadAll()
+RunWaitCMD(sCommand) {
+    sFileName := A_Temp "\" A_ScriptName ".log"
+    RunWait, %A_ComSpec% /C %sCommand% > "%sFileName%", , Hide
+    FileRead, sConsoleOutput, %sFileName%
+    Return sConsoleOutput
 }
