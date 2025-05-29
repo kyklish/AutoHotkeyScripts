@@ -5,11 +5,11 @@ SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 
 g_sPath := A_Temp ; Any path contained by the drive
-g_iPeriod := 1000 ; Update interval
+g_iPeriod := 1 ; Update interval in seconds
 
 Menu, Tray, Tip, %A_ScriptName%`n%g_sPath%
 TrayIconTimer := Func("TrayIcon").Bind(g_sPath)
-SetTimer, % TrayIconTimer, % g_iPeriod
+SetTimer, % TrayIconTimer, % g_iPeriod * 1000
 
 ; Free disk space of the drive which contains the specified path.
 ; Result as a percentage: two digits with zero padding.
