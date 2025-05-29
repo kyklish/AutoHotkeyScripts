@@ -78,7 +78,14 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWa
                 ; Look [AdvancedRun.chm] for help
                 ; /RunAs 9 == Run process as "Another logged-in user" (must have at least one running process)
                 ; /RunAs 9 == No password needed!
-                sCfg := "/Clear /ParseVarCommandLine 1 /UseSearchPath 1 /RunAsUserName """ oCrd.sLogin """ /RunAs 9 /Run"
+                Switch sWinOptions {
+                    Case "Hide": iWindowState := 0
+                    Case "Min" : iWindowState := 2
+                    Case "Max" : iWindowState := 3
+                    Default    : iWindowState := 1
+                }
+                sWindowState := "/WindowState " iWindowState
+                sCfg := "/Clear " sWindowState " /ParseVarCommandLine 1 /UseSearchPath 1 /RunAsUserName """ oCrd.sLogin """ /RunAs 9 /Run"
                 ; If you want to specify a value contains double quotes (""),
                 ;   you should enclose the value with single quotes ('').
                 ;   Example: /CommandLine '"my first param" "my second param"'
