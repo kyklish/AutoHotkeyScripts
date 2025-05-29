@@ -69,6 +69,7 @@ Run_ScriptAsAdmin(A_ScriptDir "\CPU_Freq_Cores_Manager.ahk")
 Run_ScriptAsAdmin(A_ScriptDir "\Esc_Close.ahk")
 Run_ScriptAsAdmin(A_ScriptDir "\HotKeys.ahk")
 Run_ScriptAsUser( A_ScriptDir "\Tray_Disk_Free\Tray_Disk_Free.ahk")
+Run_ScriptAsUser( A_ScriptDir "\Tray_PageFile_Usage\Tray_PageFile_Usage.ahk")
 Run_ScriptAsAdmin(A_ScriptDir "\Window_Manipulation.ahk")
 if (A_OSVersion = "WIN_7") {
     ; Win11 changed tray structure to XML UI, no toolbars.
