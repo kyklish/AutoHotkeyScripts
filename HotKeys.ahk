@@ -183,7 +183,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
 
 ;CTRL+ALT+SHIFT
 ;Empty Recycle Bin ;FileRecycleEmpty and "nircmd.exe emptybin" not work, if launched from another account!!!
-^!+K::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "emptybin")
+^!+K::Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "emptybin")
 ^!+M::Run_AsAdmin("%SOFT%\NirLauncher\Sysinternals\ProcMon64.exe") ;Process Monitor
 ^!+P::Run_AsAdmin("%SOFT%\NirLauncher\Sysinternals\ProcExp64.exe") ;Process Explorer
 /*
@@ -191,12 +191,12 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
 ^!+R::
     if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
         PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-    Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "exitwin reboot") ;there is "force" parameter can be used
+    Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "exitwin reboot") ;there is "force" parameter can be used
 return
 ^!+S::
     if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
         PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-    Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "exitwin shutdown") ;Shutdown
+    Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "exitwin shutdown") ;Shutdown
 return
 ^!+L:: ;Logoff
     MsgBox, % 4 + 256,, Log off?
@@ -204,7 +204,7 @@ return
     {
         if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
             PostMessage, 0x5556, 11, 22  ; The message is sent to the "last found window" due to WinExist() above.
-        Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "exitwin logoff")
+        Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "exitwin logoff")
     }
 return
 */
@@ -260,10 +260,10 @@ Return
     Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be.exe")
     Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t mpc-be64.exe")
 return
-; #^!M::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe", "monitor off")
+; #^!M::Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "monitor off")
 #^!M::Run_AsUser("%SOFT%\NirLauncher\Sordum\MonitorOff\MonitorOff_x64.exe", "/OFF /MOUSE") ;Block mouse when screen turns off
 #^!O::Run_AsUser("%SOFT%\NirLauncher\Sysinternals\pskill.exe", "-t opera.exe")
-#^!R::Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd TASKKILL /F /FI ""STATUS eq NOT RESPONDING""") ; KILL NOT RESPONDING
+#^!R::Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe","execmd TASKKILL /F /FI ""STATUS eq NOT RESPONDING""") ; KILL NOT RESPONDING
 ; #^!S::Run_AsAdmin("%SOFT%\SpeedFan\SpeedFan.exe", "/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C")
 #^!S::Run_AsAdmin("%SOFT%\FanControl\FanControl.exe",, "%SOFT%\FanControl")
 
@@ -293,7 +293,7 @@ return
     !+f::
         MsgBox, 4, ntfy.exe: Send to NOKIA?,%A_Clipboard%
         IfMsgBox, Yes
-            Run_AsUser("%SOFT%\NirLauncher\NirSoft\nircmd.exe","execmd " A_ScriptDir "\ntfy.exe publish --quiet --title PC NOKIA_BenQ " . A_Clipboard)
+            Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe","execmd " A_ScriptDir "\ntfy.exe publish --quiet --title PC NOKIA_BenQ " . A_Clipboard)
     return
 #If
 !+Esc::Run_AsAdmin("%SystemRoot%\System32\resmon.exe") ;Resource Monitor
