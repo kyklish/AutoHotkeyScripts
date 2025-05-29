@@ -15,6 +15,8 @@
 ; MKVMERGE: [-V, --version] Show version information and exit.
 ; mkvmerge v44.0.0 ('Domino') 64-bit works fine.
 
+; FFMPEG does not open files with RUS characters in the file names
+
 #NoEnv
 #SingleInstance, Force
 SetBatchLines, -1
