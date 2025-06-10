@@ -122,7 +122,6 @@ GetFlacHereCmd(oFileNames, iAudioStream, iDrcRatio) {
     sCmd .= "CD /D ""%~dp0""`n"
     sCmd .= "`n"
     sCmd .= ":: ~1GB file for 2h movie`n"
-    sCmd .= ":: FFMPEG default FLAC compression_level == 5`n"
     For _, oFileName in oFileNames {
         sCmd .= "`n"
         sCmd .= "ffmpeg ^`n"
