@@ -76,7 +76,7 @@ ExitApp
 CreateBAT(oFileNames, oFormats, iAudioStream, iDrcRatio, iThreadsExe, sStaxRipTemplate24, sStaxRipTemplate25) {
     ; oFileNames[0] contains all source video files
     FileWrite("!!.MAKE_HERE_FLAC_TO_WATCH_MOVIE_AUDIO" iAudioStream + 1 "_DRC" iDrcRatio ".BAT", GetFlacHereCmd(oFileNames[0], iAudioStream, iDrcRatio))
-    FileWrite("!!.MOVE_HERE_MKA__TO_WATCH_MOVIE.BAT", GetMkaMoveHereCmd())
+    FileWrite("!!.MAKE_HERE_MKA__TO_WATCH_MOVIE.BAT", GetMkaHereCmd())
     FileWrite("!1.RE-MUX_TO_MKV_ENG_AUDIO" iAudioStream + 1 ".BAT", GetReMuxCmd(oFileNames[0], iAudioStream))
     FileWrite("!2.MOVE_HERE_RE-MUX_RESULT_DELETE_ORIGINAL_VIDEO.BAT", GetReMuxMoveHereDelOrigVideoCmd(oFileNames[0]))
 
@@ -238,10 +238,11 @@ GetThreadCmd() {
     Return sCmd
 }
 
-GetMkaMoveHereCmd() {
+GetMkaHereCmd() {
     sCmd := ""
     sCmd .= "@ECHO OFF`n"
     sCmd .= "CD /D ""%~dp0""`n"
+    sCmd .= "CALL ""1.RUN_ALL_AUDIO_THREADS.BAT""`n"
     sCmd .= "MOVE MKA\*.mka`n"
     sCmd .= "RMDIR MKA`n"
     Return sCmd
