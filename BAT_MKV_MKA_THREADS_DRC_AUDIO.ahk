@@ -132,7 +132,7 @@ GetFlacHereCmd(oFileNames, iAudioStream, iDrcRatio) {
     }
     sCmd .= "`n"
     sCmd .= "CALL :BELL`n"
-    sCmd .= """5.DELETE_SCRIPT_FILES_HERE.CMD""`n"
+    sCmd .= "CALL ""5.DELETE_SCRIPT_FILES_HERE.CMD""`n"
     sCmd .= "GOTO :EOF`n"
     sCmd .= "`n"
     sCmd .= ":BELL`n"
