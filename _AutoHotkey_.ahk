@@ -5,7 +5,7 @@ g_bAutoStart := true
 g_bSkipDelay := false
 ;Delay to launch all the scripts (5sec is enough)
 ;Set it to 10sec: fix MSI Afterburner startup sequence (see in the AutoStart.csv)
-g_iToolTipShowTime := 9000 ; in milliseconds
+g_iToolTipShowTime := 15000 ; in milliseconds
 
 ;Without delay, immediately after Windows starts, RunAs command in Reload_AsAdmin()
 ;   function crashes this script with error "Service is already started".
