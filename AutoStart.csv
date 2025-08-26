@@ -47,7 +47,7 @@
  ;0,A,"%SOFT%\SpeedFan\SpeedFan.exe","/NOSMBSCAN /NOSMARTSCAN /NOSCSISCAN /NOACPISCAN /NONVIDIAI2C"
   0,U,"%SOFT%\ssControl\ssControl.exe"
   0,A,"%SOFT%\SsdReady\SsdReady.exe"
-  0,A,"%SOFT%\ThrottleStop\ThrottleStop.exe"
+ ;0,A,"%SOFT%\ThrottleStop\ThrottleStop.exe"
     ;Windows Memory Cleaner: look in Hotkeys.ahk
  ;0,A,"%SOFT%\Windows_Memory_Cleaner\WinMemoryCleaner.exe"
     ;WuMgr: app checks updates in background if autorun reg-key is present (can't force it to do from this script)
