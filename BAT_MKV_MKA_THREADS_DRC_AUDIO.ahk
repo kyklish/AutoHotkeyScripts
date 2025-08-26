@@ -245,6 +245,7 @@ GetMkaHereCmd() {
     sCmd .= "CALL ""1.RUN_ALL_AUDIO_THREADS.BAT""`n"
     sCmd .= "MOVE MKA\*.mka`n"
     sCmd .= "RMDIR MKA`n"
+    sCmd .= "CALL ""5.DELETE_SCRIPT_FILES_HERE.CMD""`n"
     Return sCmd
 }
 
