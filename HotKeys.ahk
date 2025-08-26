@@ -304,14 +304,14 @@ Launch_Mail::Run_AsUser("%SOFT%\Sylpheed\sylpheed.exe")
     ;   Task Scheduler RunAs variant. So launch always as admin: here and in
     ;   autostart script.
 
-    ; Toggle monitor's brightness: 0 or 50. Just one line, but it does not saves
+    ; Toggle monitor's brightness: 0 or 25. Just one line, but it does not saves
     ;   previous value, so user need call it twice to change brightness
-    ; Run_AsAdmin(ExpandEnvVars("%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"), "t b 50 t b 0")
+    ; Run_AsAdmin(ExpandEnvVars("%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"), "t b 25 t b 0")
 
     ;This variant toggle brightness with one hotkey hit.
     sCMDDC := ExpandEnvVars("%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe")
     RunWait, "%sCMDDC%" d,, UseErrorLevel ; Get brightness in ErrorLevel
-    iBrightness := ErrorLevel = 0 ? 50 : 0 ; Toggle brightness: 0 or 50
+    iBrightness := ErrorLevel = 0 ? 25 : 0 ; Toggle brightness: 0 or 25
     Run, "%sCMDDC%" b %iBrightness%        ; Set brightness
 ; Exit variant: disable autostart and exit after brightness change.
 ; Very long time to launch and change brightness.
