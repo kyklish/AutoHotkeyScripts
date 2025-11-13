@@ -48,6 +48,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
         }
         sCopiedText := Trim(Clipboard)
         Clipboard := sSearchEngine . StrReplace(sCopiedText, A_Space, "+") . sSuffix
+        SendEvent, ^{vk54} ; Ctrl+T - Open New Tab
         GoSub, ^B
         Clipboard := sCopiedText
     }
