@@ -1,8 +1,8 @@
 ;CSV v1.0
 ;BUILDING TYPE,BuildingType1,...,BuildingTypeN
-BUILDING TYPE,Abandoned Drilling Site,Drilling Site,Factory,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Quarry Loading Zone,Sawmill,Service Hub,Town Storage,Warehouse
+BUILDING TYPE,Abandoned Drilling Site,Consumables Loading Zone,Drilling Site,Factory,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Port,Quarry Loading Zone,Sawmill,Service Hub,Service Site,Town Storage,Warehouse
 ;CARGO TYPE,CargoType1,...,CargoTypeN
-CARGO TYPE,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumables,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Long Logs,Medium Logs,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
+CARGO TYPE,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumables,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Long Logs,Medium Logs,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Oversized Cargo,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
 ;JOB TYPE,Region,JobType1,...,JobTypeN
 JOB TYPE,ALASKA,BLACK BIRD,GR ENTERPRISE,MORRISON MINING
 JOB TYPE,MICHIGAN,DYSON DIESEL,HUSKY FORWARDING,STEEL RIVER TOWNSHIP
@@ -22,6 +22,14 @@ REGION,TENNESSEE,Burning Mill
 REGION,WISCONSIN,Black Badger Lake,Grainwoods River
 REGION,YUKON,Flooded Foothills,Big Salmon Peak
 ;BUILDING,Region,BuildingType,X,Y,CargoType1,...,CargoTypeN
+BUILDING,ALASKA,Service Hub,374,366,Service Spare Parts
+BUILDING,ALASKA,Fuel Station,253,335,Fuel
+BUILDING,ALASKA,Log Station,253,297,Long Logs,Medium Logs,Wooden Planks
+BUILDING,ALASKA,Consumables Loading Zone,133,387,Service Spare Parts
+BUILDING,ALASKA,Factory,86,258,Large Pipe,Metal Beams
+BUILDING,ALASKA,Warehouse,99,313,Bricks,Medium Pipes,Service Spare Parts
+BUILDING,ALASKA,Port,171,460,Cargo Container,Consumables,Drilling Equipment,Large Pipe,Oversized Cargo
+BUILDING,ALASKA,Service Site,430,472,Drilling Spare Parts
 BUILDING,MICHIGAN,Town Storage,104,238,Metal Beams
 BUILDING,MICHIGAN,Lumber Mill,190,306,Wooden Planks
 BUILDING,MICHIGAN,Farm,263,451,Consumables
@@ -39,7 +47,7 @@ BUILDING,MICHIGAN,Log Station,666,1038,Wooden Planks
 BUILDING,MICHIGAN,Log Station,290,717,Metal Beams,Wooden Planks
 BUILDING,MICHIGAN,Abandoned Drilling Site,466,742,Drilling Equipment
 BUILDING,MICHIGAN,Log Station,684,1008,Long Logs
-BUILDING,MICHIGAN,Quarry Loading Zone,798,364,Cargo Container
+BUILDING,MICHIGAN,Quarry Loading Zone,798,364,Cargo Container,Cement
 BUILDING,MICHIGAN,Logistics Base,587,46,Drilling Spare Parts
 BUILDING,MICHIGAN,Abandoned Drilling Site,182,780,Drilling Equipment
 BUILDING,MICHIGAN,Abandoned Drilling Site,328,764,Drilling Equipment
@@ -47,6 +55,19 @@ BUILDING,MICHIGAN,Sawmill,395,906,Wooden Planks
 BUILDING,MICHIGAN,Log Station,413,720,Medium Logs
 BUILDING,MICHIGAN,Warehouse,507,910,Drilling Equipment
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
+JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Parts Delivery,0,0,86,259,Drilling Spare Parts,4
+JOB,ALASKA,CONTRACT: BLACK BIRD,Fire In A Barrel,0,0,171,459,Fuel,2
+JOB,ALASKA,CONTRACT: BLACK BIRD,Oil Delivery,0,0,430,472,Oil Barrels,1
+JOB,ALASKA,CONTRACT: BLACK BIRD,Oil Delivery,0,0,86,259,Oil Barrels,1
+JOB,ALASKA,CONTRACT: BLACK BIRD,Oil Delivery,0,0,265,115,Oil Barrels,1
+JOB,ALASKA,CONTRACT: BLACK BIRD,Oil Delivery,0,0,374,366,Oil Barrels,1
+JOB,ALASKA,CONTRACT: BLACK BIRD,Pipeline Construction,0,0,434,254,Service Spare Parts,2
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Port Polar Base Supply,0,0,300,144,Bricks,4,Fuel,2,Metal Beams,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Timber!,0,0,200,119,Long Logs,1,Medium Logs,2
+JOB,ALASKA,CONTRACT: MORRISON MINING,Drilling Supplies,0,0,294,237,Cargo Container,1,Medium Pipes,1
+JOB,ALASKA,TASKS,Bridge Repair,0,0,207,371,Metal Beams,1
+JOB,ALASKA,TASKS,Rocks Fall,0,0,132,337,Wooden Planks,2
+JOB,ALASKA,TASKS,Stone Fall,0,0,85,355,Metal Beams,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,0,1045,638,Drilling Equipment,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,0,506,912,Drilling Equipment,3
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Not A Drill,0,0,200,229,Metal Beams,2,Oil Rig Drill,1
