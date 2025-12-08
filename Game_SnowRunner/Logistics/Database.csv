@@ -1,6 +1,6 @@
 ;CSV v1.0
 ;BUILDING TYPE,BuildingType1,...,BuildingTypeN
-BUILDING TYPE,Abandoned Drilling Site,Consumables Loading Zone,Drilling Site,Factory,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Port,Quarry Loading Zone,Sawmill,Service Hub,Service Site,Town Storage,Warehouse
+BUILDING TYPE,Abandoned Drilling Site,Airdrome,Consumables Loading Zone,Drilling Site,Factory,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Oil Rig Service Site,Port,Quarry Loading Zone,Sawmill,Service Hub,Service Site,Stock Loading,Town Storage,Warehouse,Warehouse Loading
 ;CARGO TYPE,CargoType1,...,CargoTypeN
 CARGO TYPE,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumables,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Long Logs,Medium Logs,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Oversized Cargo,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
 ;JOB TYPE,Region,JobType1,...,JobTypeN
@@ -30,6 +30,31 @@ BUILDING,ALASKA,Factory,86,258,Large Pipe,Metal Beams
 BUILDING,ALASKA,Warehouse,99,313,Bricks,Medium Pipes,Service Spare Parts
 BUILDING,ALASKA,Port,171,460,Cargo Container,Consumables,Drilling Equipment,Large Pipe,Oversized Cargo
 BUILDING,ALASKA,Service Site,430,472,Drilling Spare Parts
+BUILDING,ALASKA,Sawmill,200,119,Wooden Planks
+BUILDING,ALASKA,Drilling Site,294,235,Oil Barrels
+BUILDING,ALASKA,Factory,265,115,Metal Beams
+BUILDING,ALASKA,Fuel Station,416,112,Fuel
+BUILDING,ALASKA,Warehouse,62,137,Bricks,Cement,Medium Pipes,Service Spare Parts
+BUILDING,ALASKA,Service Hub,646,298,Consumables,Service Spare Parts
+BUILDING,ALASKA,Warehouse,739,358,Bricks,Cement,Concrete Slabs,Medium Pipes,Small Pipes
+BUILDING,ALASKA,Warehouse,844,159,Cement,Concrete Slabs,Medium Pipes,Small Pipes
+BUILDING,ALASKA,Sawmill,904,262,Wooden Planks
+BUILDING,ALASKA,Fuel Station,623,197,Fuel
+BUILDING,ALASKA,Fuel Station,748,430,Fuel
+BUILDING,ALASKA,Factory,789,211,Metal Beams
+BUILDING,ALASKA,Service Site,998,245,Drilling Equipment,Drilling Spare Parts
+BUILDING,ALASKA,Warehouse,212,633,Cement,Concrete Blocks,Large Pipe,Medium Pipes,Small Pipes
+BUILDING,ALASKA,Factory,336,731,Concrete Blocks,Metal Beams
+BUILDING,ALASKA,Sawmill,391,833,Wooden Planks
+BUILDING,ALASKA,Fuel Station,365,879,Fuel
+BUILDING,ALASKA,Airdrome,331,1031,Consumables,Drilling Equipment,Oversized Cargo
+BUILDING,ALASKA,Log Station,282,773,Medium Logs,Wooden Planks
+BUILDING,ALASKA,Oil Rig Service Site,268,803,Drilling Spare Parts
+BUILDING,ALASKA,Drilling Site,333,786,Fuel,Oil Barrels
+BUILDING,ALASKA,Log Station,406,992,Long Logs,Wooden Planks
+BUILDING,ALASKA,Service Hub,266,927,Service Spare Parts
+BUILDING,ALASKA,Warehouse Loading,1006,969,Concrete Blocks
+BUILDING,ALASKA,Stock Loading,781,804,Wooden Planks
 BUILDING,MICHIGAN,Town Storage,104,238,Metal Beams
 BUILDING,MICHIGAN,Lumber Mill,190,306,Wooden Planks
 BUILDING,MICHIGAN,Farm,263,451,Consumables
@@ -55,17 +80,56 @@ BUILDING,MICHIGAN,Sawmill,395,906,Wooden Planks
 BUILDING,MICHIGAN,Log Station,413,720,Medium Logs
 BUILDING,MICHIGAN,Warehouse,507,910,Drilling Equipment
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
+JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Equipment,0,0,333,786,Drilling Equipment,1
 JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Parts Delivery,0,0,86,259,Drilling Spare Parts,4
 JOB,ALASKA,CONTRACT: BLACK BIRD,Fire In A Barrel,0,0,171,459,Fuel,2
+JOB,ALASKA,CONTRACT: BLACK BIRD,From Water To The Land,0,0,336,732,Drilling Spare Parts,4
+JOB,ALASKA,CONTRACT: BLACK BIRD,More Parts,0,0,844,158,Drilling Spare Parts,4
+JOB,ALASKA,CONTRACT: BLACK BIRD,Mountain Delivery,0,0,646,298,Oil Barrels,4
+JOB,ALASKA,CONTRACT: BLACK BIRD,Mountain Pipeline Building,0,0,702,214,Medium Pipes,1,Metal Beams,2,Service Spare Parts,2,Small Pipes,1
 JOB,ALASKA,CONTRACT: BLACK BIRD,Oil Delivery,0,0,430,472,Oil Barrels,1
 JOB,ALASKA,CONTRACT: BLACK BIRD,Oil Delivery,0,0,86,259,Oil Barrels,1
 JOB,ALASKA,CONTRACT: BLACK BIRD,Oil Delivery,0,0,265,115,Oil Barrels,1
 JOB,ALASKA,CONTRACT: BLACK BIRD,Oil Delivery,0,0,374,366,Oil Barrels,1
 JOB,ALASKA,CONTRACT: BLACK BIRD,Pipeline Construction,0,0,434,254,Service Spare Parts,2
+JOB,ALASKA,CONTRACT: BLACK BIRD,Pipeline Repair,0,0,751,933,Metal Beams,2
+JOB,ALASKA,CONTRACT: BLACK BIRD,Valley Pipeline Building,0,0,409,720,Medium Pipes,1,Metal Beams,1,Oversized Cargo,1,Service Spare Parts,1,Wooden Planks,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Airdome Logging,0,0,391,833,Long Logs,2,Medium Logs,2
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Cargopocalypse,0,0,739,360,Concrete Blocks,4,Large Pipe,3
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Cargopocalypse,0,0,0,211,4,8,633,Bricks,Concrete Slabs
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Far Far Away,0,0,1006,969,Long Logs,1,Medium Logs,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,It's A Long Way To The Top,0,0,904,262,Long Logs,2,Medium Logs,2
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Mountain Maze,0,0,717,71,Fuel,2,Wooden Planks,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Oil Barrels Delivery,0,0,332,1030,Oil Barrels,5
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,On The Top Of The World,0,0,833,367,Consumables,2,Fuel,4,Wooden Planks,2
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Order Master Supreme,0,0,844,158,Oversized Cargo,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Order Master Supreme,0,0,789,210,Oversized Cargo,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Order Master Supreme,0,0,940,885,Cement,1,Concrete Slabs,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Order Master Supreme,0,0,781,802,Cement,1,Concrete Slabs,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Order Master Supreme,0,0,1006,969,Metal Beams,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Order Master Supreme,0,0,336,732,Concrete Slabs,2
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Order Master Supreme,0,0,268,802,Cargo Container,1
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Order Master Supreme,0,0,332,1030,Cargo Container,1
 JOB,ALASKA,CONTRACT: GR ENTERPRISE,Port Polar Base Supply,0,0,300,144,Bricks,4,Fuel,2,Metal Beams,1
 JOB,ALASKA,CONTRACT: GR ENTERPRISE,Timber!,0,0,200,119,Long Logs,1,Medium Logs,2
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Town Supplies,0,0,356,1008,Concrete Blocks,2,Small Pipes,1,Wooden Planks,2
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Valley Polar Base Research,0,0,298,685,Cement,1,Fuel,2,Metal Beams,1,Service Spare Parts,2,Wooden Planks,2
+JOB,ALASKA,CONTRACT: GR ENTERPRISE,Village Delivery,0,0,998,457,Cement,2,Consumables,2
+JOB,ALASKA,CONTRACT: MORRISON MINING,Drilling Stuff Delivery,0,0,294,237,Drilling Equipment,1
 JOB,ALASKA,CONTRACT: MORRISON MINING,Drilling Supplies,0,0,294,237,Cargo Container,1,Medium Pipes,1
+JOB,ALASKA,CONTRACT: MORRISON MINING,Lumber Mill Supplies,0,0,904,262,Fuel,2,Metal Beams,1,Service Spare Parts,4,Small Pipes,1
+JOB,ALASKA,CONTRACT: MORRISON MINING,Service Hub Reactivation,0,0,655,958,Concrete Blocks,2,Consumables,2
+JOB,ALASKA,CONTRACT: MORRISON MINING,Supply Crates,0,0,391,833,Consumables,4
+JOB,ALASKA,TASKS,Blocked Tunnel,0,0,317,585,Concrete Blocks,1,Small Pipes,1
+JOB,ALASKA,TASKS,Bridge,0,0,333,834,Service Spare Parts,2
 JOB,ALASKA,TASKS,Bridge Repair,0,0,207,371,Metal Beams,1
+JOB,ALASKA,TASKS,Dangerous Route,0,0,895,771,Wooden Planks,4
+JOB,ALASKA,TASKS,Long Bridge,0,0,267,845,Service Spare Parts,2,Wooden Planks,2
+JOB,ALASKA,TASKS,Morrison's Landslide,0,0,901,656,Wooden Planks,2
+JOB,ALASKA,TASKS,Moving The Stock,0,0,940,885,Wooden Planks,2
+JOB,ALASKA,TASKS,Pole Down,0,0,945,980,Wooden Planks,2
+JOB,ALASKA,TASKS,Restoring The Bridge,0,0,676,424,Concrete Slabs,1,Service Spare Parts,2
+JOB,ALASKA,TASKS,Rock Obstacle,0,0,468,211,Metal Beams,1
 JOB,ALASKA,TASKS,Rocks Fall,0,0,132,337,Wooden Planks,2
 JOB,ALASKA,TASKS,Stone Fall,0,0,85,355,Metal Beams,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,0,1045,638,Drilling Equipment,1
