@@ -1,6 +1,6 @@
 ;CSV v1.0
 ;BUILDING TYPE,BuildingType1,...,BuildingTypeN
-BUILDING TYPE,Abandoned Drilling Site,Airdrome,Consumables Loading Zone,Drilling Site,Factory,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Oil Rig Service Site,Port,Quarry Loading Zone,Sawmill,Service Hub,Service Site,Stock Loading,Town Storage,Warehouse,Warehouse Loading
+BUILDING TYPE,Abandoned Drilling Site,Airdrome,Consumables Loading Zone,Drilling Site,Factory,Factory Loading,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Oil Rig Service Site,Port,Quarry Loading Zone,Sawmill,Service Hub,Service Site,Stock Loading,Town Storage,Warehouse,Warehouse Loading
 ;CARGO TYPE,CargoType1,...,CargoTypeN
 CARGO TYPE,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumables,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Long Logs,Medium Logs,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Oversized Cargo,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
 ;JOB TYPE,Region,JobType1,...,JobTypeN
@@ -55,6 +55,7 @@ BUILDING,ALASKA,Log Station,406,992,Long Logs,Wooden Planks
 BUILDING,ALASKA,Service Hub,266,927,Service Spare Parts
 BUILDING,ALASKA,Warehouse Loading,1006,969,Concrete Blocks
 BUILDING,ALASKA,Stock Loading,781,804,Wooden Planks
+BUILDING,ALASKA,Factory Loading,939,885,Consumables
 BUILDING,MICHIGAN,Town Storage,104,238,Metal Beams
 BUILDING,MICHIGAN,Lumber Mill,190,306,Wooden Planks
 BUILDING,MICHIGAN,Farm,263,451,Consumables
