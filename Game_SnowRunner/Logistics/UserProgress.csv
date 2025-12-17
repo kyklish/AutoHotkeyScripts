@@ -1,6 +1,6 @@
 ;CSV v1.0
 ;DEFAULT REGION,Region
-DEFAULT REGION,ALASKA
+DEFAULT REGION,TAYMYR
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
 JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Equipment,0,1,333,786,Drilling Equipment,0
 JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Parts Delivery,0,1,86,259,Drilling Spare Parts,0
@@ -113,3 +113,16 @@ JOB,MICHIGAN,TASKS,The Long Way,0,1,1065,247,Service Spare Parts,0
 JOB,MICHIGAN,TASKS,Tough Negotiations,0,1,465,758,Wooden Planks,0
 JOB,MICHIGAN,TASKS,Well Well Well,0,1,762,29,Vehicle Spare Parts,0
 JOB,MICHIGAN,TASKS,Wooden Bridge,0,1,249,248,Wooden Planks,0
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Looking Beyond The Horizon,0,0,830,30,Cargo Container,1,Metal Beams,1,Service Spare Parts,2
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,1,802,452,Oil Barrels,0
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,1,633,140,Oil Barrels,0
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,1,880,413,Oil Barrels,0
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,East Wind,1,0,633,140,Medium Logs,6
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Hub Recovery 2nd Stage,0,1,843,276,Vehicle Spare Parts,0
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Up And Running,1,0,1016,374,Long Logs,3
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Wooden Planks Order,0,1,1045,72,Wooden Planks,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,1,1016,374,Cement,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,1,802,452,Wooden Planks,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,1,633,140,Concrete Slabs,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Radioactive Fossils,0,0,1045,72,Secure Container,4
+JOB,TAYMYR,CONTRACT: VORONOE 12,Radioactive Fossils,0,0,802,452,Secure Container,2
