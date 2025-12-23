@@ -33,7 +33,8 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
     ^Z:: SendEvent, ^+{vk54} ; Ctrl+Z = Ctrl+Shift+T - restore closed tab
     ^Y:: SearchSelectedText("https://www.youtube.com/results?search_query=") ; Ctrl+Y - поиск в YouTube выделенного текста
     ^Q:: SearchSelectedText("https://rutracker.org/forum/tracker.php?nm=", "&o=10") ; Ctrl+Q - поиск в RuTracker выделенного текста
-    ^+Q:: SearchSelectedText("https://rutor.info/search/0/0/000/2/") ; Ctrl+Shift+Q - поиск в RuTor выделенного текста
+    ;^+Q:: SearchSelectedText("https://rutor.info/search/0/0/000/2/") ; Ctrl+Shift+Q - поиск в RuTor выделенного текста
+	^+Q:: SearchSelectedText("https://rutor.info/search/") ; Ctrl+Shift+Q - поиск в RuTor выделенного текста
     F1:: SendEvent, ^+{Tab} ; Prev Tab alternative in Win11 ^{PgUp}
     F2:: SendEvent,  ^{Tab} ; Next Tab alternative in Win11 ^{PgDn}
     Launch_Media:: Click, Middle
