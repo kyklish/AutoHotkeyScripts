@@ -17,6 +17,7 @@
     ;RivaTuner Statistics Server: do not start it!!!
     ;MSI Afterburner launch RTSS by himself
  ;0,A,"%ProgramFiles(x86)%\RivaTuner Statistics Server\RTSS.exe","/s"
+  0,A,"%ProgramFiles(x86)%\ScrollNavigator\ScrollNavigator.exe","-MINIMIZE"
   0,U,"%SOFT%\BitMeter\BitMeter2.exe","-D ""%SOFT%\BitMeter\Settings"""
   0,A,"%SOFT%\ClickMonitorDDC\ClickMonitorDDC.exe"
     ;CompactGUI: app always puts itself in autorun when monitoring is on
@@ -40,7 +41,6 @@
     ;   that point).
   0,A,"%SOFT%\MSI_Afterburner\MSIAfterburner.exe"
  ;0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
-  0,A,"%SOFT%\ScrollNavigator\ScrollNavigator.exe","-MINIMIZE"
     ;SpeedFan: CPU + GPU temperature
         ;/NOPCISCAN = disable PCI Express scan [GPU]
         ;/DONVIDIAI2C = get all info about nVidia GPU (including voltage)
