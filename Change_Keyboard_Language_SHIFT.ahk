@@ -18,7 +18,7 @@ return
         PostMessage 0x50, 0, 0x4190419,, A ; Change layout to Russian
     }
     Send {RShift} ; To end Input after LShift keydown
-    last_key =
+    last_key := ""
 return
 ;-------------------------------------------------------------------------------------
 ~RShift:: ;to english layout
@@ -33,7 +33,7 @@ return
         PostMessage 0x50, 0, 0x4090409,, A ; Change layout to English
     }
     Send {LShift} ; To end Input after RShift keydown
-    last_key =
+    last_key := ""
 return
 ;-------------------------------------------------------------------------------------
 ;Предположил нажимаете LShift (левый Shift) сразу в переменную startLShift заносится временная метка.
