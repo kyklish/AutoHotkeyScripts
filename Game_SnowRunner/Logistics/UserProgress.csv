@@ -1,6 +1,6 @@
 ;CSV v1.0
 ;DEFAULT REGION,Region
-DEFAULT REGION,TAYMYR
+DEFAULT REGION,KOLA PENINSULA
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
 JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Equipment,0,1,333,786,Drilling Equipment,0
 JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Parts Delivery,0,1,86,259,Drilling Spare Parts,0
@@ -54,6 +54,10 @@ JOB,ALASKA,TASKS,Restoring The Bridge,0,1,676,424,Concrete Slabs,0,Service Spare
 JOB,ALASKA,TASKS,Rock Obstacle,0,1,468,211,Metal Beams,0
 JOB,ALASKA,TASKS,Rocks Fall,0,1,132,337,Wooden Planks,0
 JOB,ALASKA,TASKS,Stone Fall,0,1,85,355,Metal Beams,0
+JOB,KOLA PENINSULA,TASKS,Snabby Guard House,1,0,314,425,Wooden Planks,1
+JOB,KOLA PENINSULA,TASKS,Supplies Delivery,1,0,330,95,Service Spare Parts,1
+JOB,KOLA PENINSULA,TASKS,Supplies Delivery,1,0,492,35,Service Spare Parts,1
+JOB,KOLA PENINSULA,TASKS,Unlucky Number,1,0,348,471,Service Spare Parts,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,1,1045,638,Drilling Equipment,0
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,1,506,912,Drilling Equipment,0
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Not A Drill,0,1,200,229,Metal Beams,0,Oil Rig Drill,0
@@ -113,16 +117,34 @@ JOB,MICHIGAN,TASKS,The Long Way,0,1,1065,247,Service Spare Parts,0
 JOB,MICHIGAN,TASKS,Tough Negotiations,0,1,465,758,Wooden Planks,0
 JOB,MICHIGAN,TASKS,Well Well Well,0,1,762,29,Vehicle Spare Parts,0
 JOB,MICHIGAN,TASKS,Wooden Bridge,0,1,249,248,Wooden Planks,0
-JOB,TAYMYR,CONTRACT: TAIGA OIL,Looking Beyond The Horizon,0,0,830,30,Cargo Container,1,Metal Beams,1,Service Spare Parts,2
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Derrick Delivery,0,1,106,588,Oil Rig Drill,0
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Drilling Equipment Delivery,0,1,106,588,Cargo Container,0,Oversized Cargo,0
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Looking Beyond The Horizon,0,1,830,30,Cargo Container,0,Metal Beams,0,Service Spare Parts,0
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Oil Rig Restoration,0,1,326,311,Oversized Cargo,0
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Uplink,0,1,821,813,Metal Beams,0,Wooden Planks,0
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,A Bigger Boat,0,1,209,473,Medium Logs,0
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,1,802,452,Oil Barrels,0
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,1,633,140,Oil Barrels,0
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,1,880,413,Oil Barrels,0
-JOB,TAYMYR,CONTRACT: TRANSTAYMYR,East Wind,1,0,633,140,Medium Logs,6
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,East Wind,0,1,633,140,Medium Logs,0
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Hub Recovery 2nd Stage,0,1,843,276,Vehicle Spare Parts,0
-JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Up And Running,1,0,1016,374,Long Logs,3
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Repair Shop Restock,0,1,231,242,Vehicle Spare Parts,0
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Test Flight,0,1,73,908,Long Logs,0
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Up And Running,0,1,1016,374,Long Logs,0
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Waterlogged,0,1,259,68,Medium Logs,0
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Wooden Planks Order,0,1,1045,72,Wooden Planks,0
 JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,1,1016,374,Cement,0
 JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,1,802,452,Wooden Planks,0
 JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,1,633,140,Concrete Slabs,0
-JOB,TAYMYR,CONTRACT: VORONOE 12,Radioactive Fossils,0,0,1045,72,Secure Container,4
-JOB,TAYMYR,CONTRACT: VORONOE 12,Radioactive Fossils,0,0,802,452,Secure Container,2
+JOB,TAYMYR,CONTRACT: VORONOE 12,Key Buildings Restoration,0,1,418,572,Concrete Slabs,0,Fuel,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Loud and Clear,0,1,942,676,Vehicle Spare Parts,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Pier Recovery,0,1,369,1016,Concrete Slabs,0,Oversized Cargo,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Radioactive Fossils,0,1,1045,72,Secure Container,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Radioactive Fossils,0,1,802,452,Secure Container,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Supply and Demand,0,1,271,937,Concrete Slabs,0
+JOB,TAYMYR,CONTRACT: VORONOE 12,Supply and Demand,0,1,421,883,Vehicle Spare Parts,0
+JOB,TAYMYR,TASKS,Clearing The Way,0,1,268,109,Metal Beams,0
+JOB,TAYMYR,TASKS,Metal Delivery,0,1,418,572,Metal Beams,0
+JOB,TAYMYR,TASKS,Sawmill,0,1,73,908,Metal Beams,0,Oversized Cargo,0
+JOB,TAYMYR,TASKS,Settling In,0,1,364,349,Wooden Planks,0
+JOB,TAYMYR,TASKS,Zimnegorsk Bridge Recovery,0,1,342,921,Concrete Slabs,0
