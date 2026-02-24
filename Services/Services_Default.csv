@@ -34,7 +34,7 @@ GROUP,1,TWEAKS1,PRINTER_UWP,Printer (Access/Manage printers from UWP apps)
 GROUP,1,TWEAKS1,SCANNER,Scanner (Virtual Scanner + Network Scanner + Local Scanner) [use VueScan to access scanner without this service]
 GROUP,1,TWEAKS1,FAX,Fax (Virtual Fax + Network Fax + Local Fax) [service PhoneSvc only for faxes and not for phones]
 GROUP,3,TWEAKS1,WINDOWS_UPDATE,Windows Update (Online Updates + MS Store apps updates) [CAN'T BE DISABLED HERE: use Sordum Windows Update Blocker]
-GROUP,1,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multiple sources) [disable and download from single source]
+GROUP,3,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multiple sources) [disable and download from single source] [Windows Defender: UPDATE DATABASE FAILS!!!]
 GROUP,1,TWEAKS1,WINDOWS_UPDATE_OFFLINE_INSTALL,Windows Update (Install offline updates)
 GROUP,1,TWEAKS1,WINDOWS_UPDATE_INSIDER_PREVIEW,Windows Update (Insider Preview)
 GROUP,1,TWEAKS1,TABLET,Tablet Mode [for PC and Notebook not needed]
@@ -72,8 +72,8 @@ GROUP,1,TWEAKS2,LOCALIZATION,Localization (Download New Languages for OS) [you s
 GROUP,2,TWEAKS2,SECURITY_CENTER,Security Center [notify about disabled security features: Defender + Firewall + SmartScreen + etc]
 GROUP,2,TWEAKS2,SECURE_EDGE_JAVASCRIPT,Secure JIT Compiler for Edge [intercepts scripts ==> securely compile ==> Defender check on virus ==> allows Edge compile them on its own]
 GROUP,1,TWEAKS2,PERFORMANCE_COUNTER,Performance Counter
-GROUP,2,TWEAKS2,DIAGNOSTICS,Background Diagnostics [use SYSTEM rights to disable]
-GROUP,2,TWEAKS2,DIAGNOSTICS_PROCESS_NETWORK_USAGE,Background Diagnostics (Process Network Usage) [use SYSTEM rights to disable] [Task Manager ==> Processes ==> Network ==> NOT WORK!!!] [NetLimiter as alternative]
+GROUP,1,TWEAKS2,DIAGNOSTICS,Background Diagnostics [use SYSTEM rights to disable]
+GROUP,1,TWEAKS2,DIAGNOSTICS_PROCESS_NETWORK_USAGE,Background Diagnostics (Process Network Usage) [use SYSTEM rights to disable] [Task Manager ==> Processes ==> Network ==> NOT WORK!!!] [NetLimiter as alternative]
 GROUP,1,TWEAKS2,DIAGNOSTICS_TROUBLESHOOTING,Background Diagnostics (Recommended Troubleshooting)
 GROUP,1,TWEAKS2,ENTERPRISE,Enterprise Tools
 GROUP,2,CUSTOM1,EVENT_LOG,Windows Event Log [Malwarebytes Windows Firewall Control detects Allowed/Blocked packets]
@@ -83,10 +83,15 @@ GROUP,1,CUSTOM1,INTEL_CONTROL_PANEL,Control Panel (INTEL)
 GROUP,1,CUSTOM1,INTEL_GPU,Intel Content Protection HECI Service (Communication with the Content Protection FW)
 GROUP,1,CUSTOM1,IMAGE,Windows Image Acquisition (Camera + Scanner)
 GROUP,1,CUSTOM1,LINK,Distributed Link Tracking Client (Links between NTFS files on network)
-GROUP,1,TEST,DISPLAY_BRIGHTNESS,Display Brightness (Notebook buttons to change brightness)
-GROUP,1,TEST,LAN_POLICY,Network Policy Server Management
-GROUP,1,TEST,LSASS_STORAGE,Cryptographic Storage (Xbox Live + PIN + Biometrics + Visual Studio + Office + Phone Link)
+GROUP,1,CUSTOM1,DISPLAY_BRIGHTNESS,Display Brightness (Notebook buttons to change brightness)
+GROUP,1,CUSTOM1,LAN_POLICY,Network Policy Server Management
+GROUP,1,CUSTOM1,LSASS_STORAGE,Cryptographic Storage (Xbox Live + PIN + Biometrics + Visual Studio + Office + Phone Link)
 GROUP,1,TEST,UNKNOWN,Unknown
+GROUP,1,TEST,HEALTH,Windows Health and Optimized Experience
+GROUP,1,TEST,WEB_CAMERA,Windows Camera Frame Server (Simultaneous access to Web Camera from several apps)
+GROUP,1,TEST,WEB_CAMERA_MONITOR,Windows Camera Frame Server Monitor
+GROUP,1,TEST,COMPATIBILITY_APP,Program Compatibility Assistant Service
+GROUP,1,TEST,COMPATIBILITY_SYSTEM,IMPORTANT Checks your System's Hardware and Software for Compatibility with updates and upgrades
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,3,HvHost
@@ -210,3 +215,8 @@ SERVICE,DISPLAY_BRIGHTNESS,3,DisplayEnhancementService
 SERVICE,LAN_POLICY,3,NPSMSvc
 SERVICE,LSASS_STORAGE,3,KeyIso
 SERVICE,UNKNOWN,3,UdkUserSvc
+SERVICE,HEALTH,2,whesvc
+SERVICE,WEB_CAMERA,3,FrameServer
+SERVICE,WEB_CAMERA_MONITOR,3,FrameServerMonitor
+SERVICE,COMPATIBILITY_APP,2,PcaSvc
+SERVICE,COMPATIBILITY_SYSTEM,2,InventorySvc

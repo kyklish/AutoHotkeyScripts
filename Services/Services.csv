@@ -83,10 +83,15 @@ GROUP,1,CUSTOM1,INTEL_CONTROL_PANEL,Control Panel (INTEL)
 GROUP,1,CUSTOM1,INTEL_GPU,Intel Content Protection HECI Service (Communication with the Content Protection FW)
 GROUP,1,CUSTOM1,IMAGE,Windows Image Acquisition (Camera + Scanner)
 GROUP,1,CUSTOM1,LINK,Distributed Link Tracking Client (Links between NTFS files on network)
-GROUP,1,TEST,DISPLAY_BRIGHTNESS,Display Brightness (Notebook buttons to change brightness)
-GROUP,1,TEST,LAN_POLICY,Network Policy Server Management
-GROUP,1,TEST,LSASS_STORAGE,Cryptographic Storage (Xbox Live + PIN + Biometrics + Visual Studio + Office + Phone Link)
+GROUP,1,CUSTOM1,DISPLAY_BRIGHTNESS,Display Brightness (Notebook buttons to change brightness)
+GROUP,1,CUSTOM1,LAN_POLICY,Network Policy Server Management
+GROUP,1,CUSTOM1,LSASS_STORAGE,Cryptographic Storage (Xbox Live + PIN + Biometrics + Visual Studio + Office + Phone Link)
 GROUP,1,TEST,UNKNOWN,Unknown
+GROUP,1,TEST,HEALTH,Windows Health and Optimized Experience
+GROUP,1,TEST,WEB_CAMERA,Windows Camera Frame Server (Simultaneous access to Web Camera from several apps)
+GROUP,1,TEST,WEB_CAMERA_MONITOR,Windows Camera Frame Server Monitor
+GROUP,1,TEST,COMPATIBILITY_APP,Program Compatibility Assistant Service
+GROUP,1,TEST,COMPATIBILITY_SYSTEM,IMPORTANT Checks your System's Hardware and Software for Compatibility with updates and upgrades
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,4,HvHost
@@ -210,3 +215,8 @@ SERVICE,DISPLAY_BRIGHTNESS,4,DisplayEnhancementService
 SERVICE,LAN_POLICY,4,NPSMSvc
 SERVICE,LSASS_STORAGE,4,KeyIso
 SERVICE,UNKNOWN,4,UdkUserSvc
+SERVICE,HEALTH,4,whesvc
+SERVICE,WEB_CAMERA,4,FrameServer
+SERVICE,WEB_CAMERA_MONITOR,4,FrameServerMonitor
+SERVICE,COMPATIBILITY_APP,4,PcaSvc
+SERVICE,COMPATIBILITY_SYSTEM,4,InventorySvc
