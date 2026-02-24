@@ -5,6 +5,7 @@ BUILDING TYPE,Abandoned Drilling Site,Airdrome,Barrels,Consumables Loading Zone,
 CARGO TYPE,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumables,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Long Logs,Medium Logs,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Oversized Cargo,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
 ;JOB TYPE,Region,JobType1,...,JobTypeN
 JOB TYPE,ALASKA,BLACK BIRD,GR ENTERPRISE,MORRISON MINING
+JOB TYPE,KOLA PENINSULA,KOLA EXPEDITION,KOLSKY ADMINISTRATION
 JOB TYPE,MICHIGAN,DYSON DIESEL,HUSKY FORWARDING,STEEL RIVER TOWNSHIP
 JOB TYPE,TAYMYR,TAIGA OIL,TRANSTAYMYR,VORONOE 12
 ;REGION LIST,Region1,...,RegionN
@@ -159,9 +160,13 @@ JOB,ALASKA,TASKS,Restoring The Bridge,0,0,676,424,Concrete Slabs,1,Service Spare
 JOB,ALASKA,TASKS,Rock Obstacle,0,0,468,211,Metal Beams,1
 JOB,ALASKA,TASKS,Rocks Fall,0,0,132,337,Wooden Planks,2
 JOB,ALASKA,TASKS,Stone Fall,0,0,85,355,Metal Beams,1
+JOB,KOLA PENINSULA,CONTRACT: KOLA EXPEDITION,Log of Discord,0,0,495,355,Medium Logs,3
+JOB,KOLA PENINSULA,TASKS,Forecast Unclear,0,0,200,35,Wooden Planks,1
+JOB,KOLA PENINSULA,TASKS,Old Crossing,0,0,62,335,Metal Beams,1
 JOB,KOLA PENINSULA,TASKS,Snabby Guard House,0,0,314,425,Wooden Planks,1
 JOB,KOLA PENINSULA,TASKS,Supplies Delivery,0,0,330,95,Service Spare Parts,1
 JOB,KOLA PENINSULA,TASKS,Supplies Delivery,0,0,492,35,Service Spare Parts,1
+JOB,KOLA PENINSULA,TASKS,Temporary Measure,0,0,414,474,Metal Beams,1
 JOB,KOLA PENINSULA,TASKS,Unlucky Number,0,0,348,471,Service Spare Parts,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,0,1045,638,Drilling Equipment,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,0,506,912,Drilling Equipment,3
