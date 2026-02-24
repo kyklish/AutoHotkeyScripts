@@ -54,10 +54,14 @@ JOB,ALASKA,TASKS,Restoring The Bridge,0,1,676,424,Concrete Slabs,0,Service Spare
 JOB,ALASKA,TASKS,Rock Obstacle,0,1,468,211,Metal Beams,0
 JOB,ALASKA,TASKS,Rocks Fall,0,1,132,337,Wooden Planks,0
 JOB,ALASKA,TASKS,Stone Fall,0,1,85,355,Metal Beams,0
-JOB,KOLA PENINSULA,TASKS,Snabby Guard House,1,0,314,425,Wooden Planks,1
+JOB,KOLA PENINSULA,CONTRACT: KOLA EXPEDITION,Log of Discord,1,0,495,355,Medium Logs,3
+JOB,KOLA PENINSULA,TASKS,Forecast Unclear,1,0,200,35,Wooden Planks,1
+JOB,KOLA PENINSULA,TASKS,Old Crossing,0,1,62,335,Metal Beams,0
+JOB,KOLA PENINSULA,TASKS,Snabby Guard House,0,1,314,425,Wooden Planks,0
 JOB,KOLA PENINSULA,TASKS,Supplies Delivery,1,0,330,95,Service Spare Parts,1
 JOB,KOLA PENINSULA,TASKS,Supplies Delivery,1,0,492,35,Service Spare Parts,1
-JOB,KOLA PENINSULA,TASKS,Unlucky Number,1,0,348,471,Service Spare Parts,1
+JOB,KOLA PENINSULA,TASKS,Temporary Measure,0,1,414,474,Metal Beams,0
+JOB,KOLA PENINSULA,TASKS,Unlucky Number,0,1,348,471,Service Spare Parts,0
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,1,1045,638,Drilling Equipment,0
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,1,506,912,Drilling Equipment,0
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Not A Drill,0,1,200,229,Metal Beams,0,Oil Rig Drill,0
