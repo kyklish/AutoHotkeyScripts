@@ -72,6 +72,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
 [SCRIPT]
     !``          -> Make Window BorderLess
     !1          -> Stretch Window to Screen Size
+    #1          -> Set 1280x720 Window Size
     !S          -> Suspend
     !Z          -> Reload
     !X          -> ExitApp
@@ -180,6 +181,7 @@ A4Tech Keyboard: switch numeric keyboard to mouse move (Camera, RMB, Mouse Wheel
 
     !`:: Borderless("ahk_group SpinTires")
     !1:: WinMove, ahk_group SpinTires,, 0, 0, A_ScreenWidth, A_ScreenHeight
+    #1:: WinMove, ahk_group SpinTires,, (A_ScreenWidth - 1280) / 2, (A_ScreenHeight - 720 ) / 2, 1280, 720
 
 #If WinActive("ahk_group SpinTires") and !bLegacyMode
     WheelUp::
