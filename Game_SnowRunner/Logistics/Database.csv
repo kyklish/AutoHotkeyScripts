@@ -1,6 +1,6 @@
 ;CSV v1.0
 ;BUILDING TYPE,BuildingType1,...,BuildingTypeN
-BUILDING TYPE,Abandoned Drilling Site,Airdrome,Barrels,Consumables Loading Zone,Drilling Site,Factory,Factory Loading,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Oil Rig Service Site,Port,Quarry Loading Zone,Railway Station,Ruined Warehouse,Sawmill,Service Hub,Service Site,Stock Loading,Town Storage,Warehouse,Warehouse Loading
+BUILDING TYPE,Abandoned Drilling Site,Airdrome,Barrels,Consumables Loading Zone,Dock Storage,Drilling Site,Factory,Factory Loading,Farm,Fuel Station,Log Station,Logistics Base,Lumber Mill,Oil Rig Service Site,Old Lumber Yard,Old Lumbermill,Port,Quarry,Quarry Loading Zone,Railway Station,Resupply Point,Ruined Warehouse,Sawmill,Sawmill Warehouse,Scrapyard,Service Hub,Service Site,Shipwreck,Stock Loading,Town Storage,Warehouse,Warehouse Loading
 ;CARGO TYPE,CargoType1,...,CargoTypeN
 CARGO TYPE,Bricks,Cabin,Cargo Container,Cement,Concrete Blocks,Concrete Slabs,Consumables,Drilling Equipment,Drilling Spare Parts,Fuel,Large Pipe,Long Logs,Medium Logs,Medium Pipes,Metal Beams,Metal Rolls,Oil Barrels,Oil Rig Drill,Oversized Cargo,Secure Container,Service Spare Parts,Small Pipes,Vehicle Spare Parts,Wooden Planks
 ;JOB TYPE,Region,JobType1,...,JobTypeN
@@ -56,6 +56,9 @@ BUILDING,ALASKA,Service Hub,266,927,Service Spare Parts
 BUILDING,ALASKA,Warehouse Loading,1006,969,Concrete Blocks
 BUILDING,ALASKA,Stock Loading,781,804,Wooden Planks
 BUILDING,ALASKA,Factory Loading,939,885,Consumables
+BUILDING,KOLA PENINSULA,Dock Storage,464,300,Metal Beams
+BUILDING,KOLA PENINSULA,Sawmill Warehouse,55,430,Wooden Planks
+BUILDING,KOLA PENINSULA,Railway Station,143,468,Service Spare Parts
 BUILDING,MICHIGAN,Town Storage,104,238,Metal Beams
 BUILDING,MICHIGAN,Lumber Mill,190,306,Wooden Planks
 BUILDING,MICHIGAN,Farm,263,451,Consumables
@@ -80,7 +83,7 @@ BUILDING,MICHIGAN,Abandoned Drilling Site,328,764,Drilling Equipment
 BUILDING,MICHIGAN,Sawmill,395,906,Wooden Planks
 BUILDING,MICHIGAN,Log Station,413,720,Medium Logs
 BUILDING,MICHIGAN,Warehouse,507,910,Drilling Equipment
-BUILDING,TAYMYR,Railway Station,1050,74,Cargo Container,Cement,Oil Barrels,Service Spare Parts
+BUILDING,TAYMYR,Railway Station,1050,74,Cargo Container,Cement,Oil Barrels,Oil Rig Drill,Service Spare Parts
 BUILDING,TAYMYR,Log Station,1043,108,Long Logs,Medium Logs
 BUILDING,TAYMYR,Warehouse,710,180,Metal Beams,Vehicle Spare Parts
 BUILDING,TAYMYR,Barrels,620,167,Fuel
@@ -89,6 +92,20 @@ BUILDING,TAYMYR,Sawmill,1016,375,Wooden Planks
 BUILDING,TAYMYR,Log Station,800,482,Long Logs,Medium Logs
 BUILDING,TAYMYR,Factory,802,452,Concrete Slabs,Service Spare Parts,Vehicle Spare Parts
 BUILDING,TAYMYR,Ruined Warehouse,611,371,Secure Container
+BUILDING,TAYMYR,Fuel Station,357,79,Fuel
+BUILDING,TAYMYR,Quarry,259,68,Concrete Slabs
+BUILDING,TAYMYR,Old Lumbermill,342,193,Wooden Planks
+BUILDING,TAYMYR,Log Station,342,158,Long Logs,Medium Logs
+BUILDING,TAYMYR,Log Station,364,349,Medium Logs
+BUILDING,TAYMYR,Service Hub,231,243,Service Spare Parts
+BUILDING,TAYMYR,Shipwreck,210,473,Oversized Cargo
+BUILDING,TAYMYR,Factory,271,937,Metal Beams
+BUILDING,TAYMYR,Warehouse,421,882,Cargo Container
+BUILDING,TAYMYR,Sawmill,73,908,Wooden Planks
+BUILDING,TAYMYR,Warehouse,397,583,Oversized Cargo
+BUILDING,TAYMYR,Old Lumber Yard,942,675,Wooden Planks
+BUILDING,TAYMYR,Scrapyard,990,757,Metal Beams
+BUILDING,TAYMYR,Resupply Point,995,1046,Cement
 ;JOB,Region,JobType,JobName,isAccepted,isCompleted,X,Y,CargoType1,Quantity1,...,...,CargoTypeN,QuantityN
 JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Equipment,0,0,333,786,Drilling Equipment,1
 JOB,ALASKA,CONTRACT: BLACK BIRD,Drilling Parts Delivery,0,0,86,259,Drilling Spare Parts,4
@@ -142,6 +159,10 @@ JOB,ALASKA,TASKS,Restoring The Bridge,0,0,676,424,Concrete Slabs,1,Service Spare
 JOB,ALASKA,TASKS,Rock Obstacle,0,0,468,211,Metal Beams,1
 JOB,ALASKA,TASKS,Rocks Fall,0,0,132,337,Wooden Planks,2
 JOB,ALASKA,TASKS,Stone Fall,0,0,85,355,Metal Beams,1
+JOB,KOLA PENINSULA,TASKS,Snabby Guard House,0,0,314,425,Wooden Planks,1
+JOB,KOLA PENINSULA,TASKS,Supplies Delivery,0,0,330,95,Service Spare Parts,1
+JOB,KOLA PENINSULA,TASKS,Supplies Delivery,0,0,492,35,Service Spare Parts,1
+JOB,KOLA PENINSULA,TASKS,Unlucky Number,0,0,348,471,Service Spare Parts,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,0,1045,638,Drilling Equipment,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,0,506,912,Drilling Equipment,3
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Not A Drill,0,0,200,229,Metal Beams,2,Oil Rig Drill,1
@@ -201,16 +222,34 @@ JOB,MICHIGAN,TASKS,The Long Way,0,0,1065,247,Service Spare Parts,2
 JOB,MICHIGAN,TASKS,Tough Negotiations,0,0,465,758,Wooden Planks,2
 JOB,MICHIGAN,TASKS,Well Well Well,0,0,762,29,Vehicle Spare Parts,1
 JOB,MICHIGAN,TASKS,Wooden Bridge,0,0,249,248,Wooden Planks,2
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Derrick Delivery,0,0,106,588,Oil Rig Drill,1
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Drilling Equipment Delivery,0,0,106,588,Cargo Container,2,Oversized Cargo,1
 JOB,TAYMYR,CONTRACT: TAIGA OIL,Looking Beyond The Horizon,0,0,830,30,Cargo Container,1,Metal Beams,1,Service Spare Parts,2
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Oil Rig Restoration,0,0,326,311,Oversized Cargo,1
+JOB,TAYMYR,CONTRACT: TAIGA OIL,Uplink,0,0,821,813,Metal Beams,2,Wooden Planks,2
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,A Bigger Boat,0,0,209,473,Medium Logs,3
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,0,802,452,Oil Barrels,2
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,0,633,140,Oil Barrels,1
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Dirty Deeds,0,0,880,413,Oil Barrels,1
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,East Wind,0,0,633,140,Medium Logs,6
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Hub Recovery 2nd Stage,0,0,843,276,Vehicle Spare Parts,4
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Repair Shop Restock,0,0,231,242,Vehicle Spare Parts,3
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Test Flight,0,0,73,908,Long Logs,3
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Up And Running,0,0,1016,374,Long Logs,3
+JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Waterlogged,0,0,259,68,Medium Logs,3
 JOB,TAYMYR,CONTRACT: TRANSTAYMYR,Wooden Planks Order,0,0,1045,72,Wooden Planks,5
 JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,0,1016,374,Cement,2
 JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,0,802,452,Wooden Planks,2
 JOB,TAYMYR,CONTRACT: VORONOE 12,Cycle of Cargo,0,0,633,140,Concrete Slabs,1
+JOB,TAYMYR,CONTRACT: VORONOE 12,Key Buildings Restoration,0,0,418,572,Concrete Slabs,2,Fuel,1
+JOB,TAYMYR,CONTRACT: VORONOE 12,Loud and Clear,0,0,942,676,Vehicle Spare Parts,2
+JOB,TAYMYR,CONTRACT: VORONOE 12,Pier Recovery,0,0,369,1016,Concrete Slabs,2,Oversized Cargo,1
 JOB,TAYMYR,CONTRACT: VORONOE 12,Radioactive Fossils,0,0,1045,72,Secure Container,4
 JOB,TAYMYR,CONTRACT: VORONOE 12,Radioactive Fossils,0,0,802,452,Secure Container,2
+JOB,TAYMYR,CONTRACT: VORONOE 12,Supply and Demand,0,0,271,937,Concrete Slabs,2
+JOB,TAYMYR,CONTRACT: VORONOE 12,Supply and Demand,0,0,421,883,Vehicle Spare Parts,4
+JOB,TAYMYR,TASKS,Clearing The Way,0,0,268,109,Metal Beams,2
+JOB,TAYMYR,TASKS,Metal Delivery,0,0,418,572,Metal Beams,2
+JOB,TAYMYR,TASKS,Sawmill,0,0,73,908,Metal Beams,2,Oversized Cargo,1
+JOB,TAYMYR,TASKS,Settling In,0,0,364,349,Wooden Planks,3
+JOB,TAYMYR,TASKS,Zimnegorsk Bridge Recovery,0,0,342,921,Concrete Slabs,2
