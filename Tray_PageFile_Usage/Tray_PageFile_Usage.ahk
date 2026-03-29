@@ -50,7 +50,7 @@ TrayIcon() {
     iSize := PageFileSize()
     If (iSize != iSizePrev) {
         iSizePrev := iSize
-        Menu, Tray, Tip, % A_ScriptName "`n" g_sPageFileName "`nSize: " iSize "MB`nUsage: " iUsage "%"
+        Menu, Tray, Tip, % A_ScriptName "`n" g_sPageFileName "`nSize: " iSize "MB"
     }
 }
 
