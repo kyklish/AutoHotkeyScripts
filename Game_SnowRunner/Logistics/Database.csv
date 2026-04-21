@@ -60,6 +60,9 @@ BUILDING,ALASKA,Factory Loading,939,885,Consumables
 BUILDING,KOLA PENINSULA,Dock Storage,464,300,Metal Beams
 BUILDING,KOLA PENINSULA,Sawmill Warehouse,55,430,Wooden Planks
 BUILDING,KOLA PENINSULA,Railway Station,143,468,Service Spare Parts
+BUILDING,KOLA PENINSULA,Log Station,50,466,Long Logs,Medium Logs
+BUILDING,KOLA PENINSULA,Warehouse,861,115,Cargo Container,Fuel,Vehicle Spare Parts
+BUILDING,KOLA PENINSULA,Log Station,668,425,Medium Logs
 BUILDING,MICHIGAN,Town Storage,104,238,Metal Beams
 BUILDING,MICHIGAN,Lumber Mill,190,306,Wooden Planks
 BUILDING,MICHIGAN,Farm,263,451,Consumables
@@ -161,12 +164,16 @@ JOB,ALASKA,TASKS,Rock Obstacle,0,0,468,211,Metal Beams,1
 JOB,ALASKA,TASKS,Rocks Fall,0,0,132,337,Wooden Planks,2
 JOB,ALASKA,TASKS,Stone Fall,0,0,85,355,Metal Beams,1
 JOB,KOLA PENINSULA,CONTRACT: KOLA EXPEDITION,Log of Discord,0,0,495,355,Medium Logs,3
+JOB,KOLA PENINSULA,CONTRACT: KOLA EXPEDITION,Strategic Reserve,0,0,861,115,Long Logs,3
+JOB,KOLA PENINSULA,TASKS,Broken Power Station,0,0,657,43,Metal Beams,2
 JOB,KOLA PENINSULA,TASKS,Forecast Unclear,0,0,200,35,Wooden Planks,1
+JOB,KOLA PENINSULA,TASKS,Landslide in the Mountains,0,0,743,380,Cargo Container,1
 JOB,KOLA PENINSULA,TASKS,Old Crossing,0,0,62,335,Metal Beams,1
 JOB,KOLA PENINSULA,TASKS,Snabby Guard House,0,0,314,425,Wooden Planks,1
 JOB,KOLA PENINSULA,TASKS,Supplies Delivery,0,0,330,95,Service Spare Parts,1
 JOB,KOLA PENINSULA,TASKS,Supplies Delivery,0,0,492,35,Service Spare Parts,1
 JOB,KOLA PENINSULA,TASKS,Temporary Measure,0,0,414,474,Metal Beams,1
+JOB,KOLA PENINSULA,TASKS,The Riddle of Geology,0,0,837,484,Cargo Container,1
 JOB,KOLA PENINSULA,TASKS,Unlucky Number,0,0,348,471,Service Spare Parts,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Harbor Delivery,0,0,1045,638,Drilling Equipment,1
 JOB,MICHIGAN,CONTRACT: DYSON DIESEL,Instruments Of Development,0,0,506,912,Drilling Equipment,3
