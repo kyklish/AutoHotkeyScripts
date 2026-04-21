@@ -1,0 +1,55 @@
+#NoEnv
+#SingleInstance Force
+#UseHook ; All hotkeys can't be triggered by Send command
+SendMode, Input
+SetBatchLines -1
+SetWorkingDir %A_ScriptDir%
+Menu, Tray, Icon, OxygenNotIncluded.ico, 1, 1
+Menu, Tray, Tip, OxygenNotIncluded More Hotkeys
+
+SetDefaultMouseSpeed, 0
+SetMouseDelay, 100
+
+GroupAdd, Game, ahk_exe OxygenNotIncluded.exe
+
+sHelpText := "
+(
+   Alt + F1 = Show Help
+Alt + Q\W\E = Door [Open \ Auto \ Lock] Button
+    Alt + A = Suit Dock [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button
+    Alt + C = [PreConfigure Building Settings] Button
+    Alt + D = [Deconstruct \ Cancel Deconstruct] Button
+
+Usage: move cursor over [Building] or [Tile] and press hotkey.
+)"
+
+#IfWinActive ahk_group Game
+    !Q::ClickRestore(1360, 565)        ; [Open] Button
+    !W::ClickRestore(1450, 565)        ; [Auto] Button
+    !E::ClickRestore(1540, 565)        ; [Lock] Button
+    !A::ClickRestore(1450, 865)        ; [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button
+    !C::ClickRestore(1450, 945, False) ; [PreConfigure Building Settings] Button
+    !D::ClickRestore(1670, 915)        ; [Deconstruct \ Cancel Deconstruct] Button
+#If
+
+!F1::ShowHelpWindow(sHelpText)
+
+!Z::Reload
+!X::ExitApp
+
+ClickRestore(Xbtn, Ybtn, bDeselect := true)
+{
+    Critical, On
+    BlockInput, MouseMove
+
+    ; [Click] command without XY coordinates doesn't work in this game!
+
+    MouseGetPos, X, Y
+    Send, {Click, %X% %Y%}           ; Click on object (Open UI)
+    Send, {Click, %Xbtn% %Ybtn%}     ; Click button in UI
+    If (bDeselect)
+        Send, {Click, %X% %Y% Right} ; Deselect (Close UI) and restore mouse position
+
+    BlockInput, MouseMoveOff
+    Critical, Off
+}
