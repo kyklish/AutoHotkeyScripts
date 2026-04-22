@@ -6,6 +6,8 @@
 ;  - deleted
 ;  ! bug fixed
 ;
+; v1.2.8
+; * Remove border in Gui window with picture
 ; v1.2.7
 ;  + Add hotkey to unblock mouse input
 ; v1.2.6
@@ -998,6 +1000,7 @@ ShowHelpImage(imageFile)
     static toggle
     if (toggle := !toggle) {
         CreateMouseClickTransGui("HelpImage")
+        Gui Margin, 0, 0
         Gui, HelpImage: Add, Picture, , % imageFile
         Gui, HelpImage: Show, NoActivate
     }
