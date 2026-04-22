@@ -986,11 +986,11 @@ CheckMilitarySettings()
 
 ; ShowHelpImage(imageFile)
 ; {
-; 	static toggle
-; 	if (toggle := !toggle)
-; 		SplashImage, % imageFile, B
-; 	else
-; 		SplashImage, OFF
+;     static toggle
+;     if (toggle := !toggle)
+;         SplashImage, % imageFile, B
+;     else
+;         SplashImage, OFF
 ; }
 
 ShowHelpImage(imageFile)
