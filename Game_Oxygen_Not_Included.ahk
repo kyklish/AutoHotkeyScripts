@@ -15,6 +15,8 @@ GroupAdd, Game, ahk_exe OxygenNotIncluded.exe
 sHelpText := "
 (
    Alt + F1 = Show Help
+   Alt + F2 = Show Rocket Calculator Cheat Sheet
+   Alt + F3 = Show Transit Tube Landing
 Alt + Q\W\E = Door [Open \ Auto \ Lock] Button
     Alt + A = Suit Dock [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button
     Alt + C = [PreConfigure Building Settings] Button
@@ -33,6 +35,8 @@ Usage: move cursor over [Building] or [Tile] and press hotkey.
 #If
 
 !F1::ShowHelpWindow(sHelpText)
+!F2::ShowHelpImage("OxygenNotIncludedBaseGameRocketCalculatorCheatSheet.png")
+!F3::ShowHelpImage("OxygenNotIncludedTransitTubeLanding.png")
 
 !Z::Reload
 !X::ExitApp
