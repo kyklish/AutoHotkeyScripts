@@ -43,6 +43,7 @@
     ;Temporary solution: bigger delay to start all scripts (task is completed at
     ;   that point).
   0,A,"%SOFT%\MSI_Afterburner\MSIAfterburner.exe"
+  0,U,"%SOFT%\Process_Lasso\ProcessLassoLauncher.exe"
  ;0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
     ;SpeedFan: CPU + GPU temperature
         ;/NOPCISCAN = disable PCI Express scan [GPU]
