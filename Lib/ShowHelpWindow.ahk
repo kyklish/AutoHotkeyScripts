@@ -4,13 +4,13 @@ ShowHelpWindow(ByRef sStr := "", sFontOptions := "", sGuiName := "")
     static bToggle := False
     sGuiName := "HelpWindow" sGuiName
 
-    if (bToggle := !bToggle) {
+    If (bToggle := !bToggle) {
         CreateMouseClickTransGui(sGuiName)
         Gui, %sGuiName%:Font, %sFontOptions%, Consolas
         Gui, %sGuiName%:Add, Text,, %sStr%
         Gui, %sGuiName%:Show, NoActivate
     }
-    else
+    Else
         Gui, %sGuiName%:Destroy
 }
 
