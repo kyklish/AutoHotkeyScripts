@@ -12,6 +12,8 @@ SetMouseDelay, 100
 
 GroupAdd, Game, ahk_exe OxygenNotIncluded.exe
 
+bShowTooltip := False
+
 sHelpText := "
 (
    Alt + F1 = Show Help
@@ -21,6 +23,10 @@ Alt + Q\W\E = Door [Open \ Auto \ Lock] Button
     Alt + A = Suit Dock [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button
     Alt + C = [PreConfigure Building Settings] Button
     Alt + D = [Deconstruct \ Cancel Deconstruct] Button
+
+ ScrollLock = Toggle Tooltip [Mouse Cursor Position]
+    NumpadN = Move Mouse Cursor [Numpad1-4 \ Numpad6-9]
+    Numpad5 = Copy Mouse Cursor Position
 
 Usage: move cursor over [Building] or [Tile] and press hotkey.
 )"
@@ -37,6 +43,19 @@ Usage: move cursor over [Building] or [Tile] and press hotkey.
 !F1::ShowHelpWindow(sHelpText)
 !F2::ShowHelpImage("OxygenNotIncludedBaseGameRocketCalculatorCheatSheet.png")
 !F3::ShowHelpImage("OxygenNotIncludedTransitTubeLanding.png")
+ScrollLock::ToggleTooltip()
+
+#If bShowTooltip
+    Numpad4::MouseMove, -1,  0, , R
+    Numpad6::MouseMove,  1,  0, , R
+    Numpad8::MouseMove,  0, -1, , R
+    Numpad2::MouseMove,  0,  1, , R
+    Numpad7::MouseMove, -1, -1, , R
+    Numpad9::MouseMove,  1, -1, , R
+    Numpad1::MouseMove, -1,  1, , R
+    Numpad3::MouseMove,  1,  1, , R
+    Numpad5::Clipboard := mX ", " mY
+#If
 
 !Z::Reload
 !X::ExitApp
@@ -56,4 +75,23 @@ ClickRestore(Xbtn, Ybtn, bDeselect := true)
 
     BlockInput, MouseMoveOff
     Critical, Off
+}
+
+GetData()
+{
+    global mX, mY, mColor
+    MouseGetPos, mX, mY
+    PixelGetColor, mColor, %mX%, %mY%, RGB
+    ToolTip % "X:" mX ", Y:" mY ", RGB:" mColor
+}
+
+ToggleTooltip()
+{
+    global bShowTooltip
+    If (bShowTooltip := !bShowTooltip) {
+        SetTimer, GetData, 100
+    } Else {
+        SetTimer, GetData, Off
+        ToolTip
+    }
 }
