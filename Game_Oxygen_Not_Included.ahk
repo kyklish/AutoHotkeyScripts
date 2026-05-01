@@ -19,17 +19,23 @@ sHelpText := "
    Alt + F1 = Show Help
    Alt + F2 = Show Rocket Calculator Cheat Sheet
    Alt + F3 = Show Transit Tube Landing
+
 Alt + Q\W\E = Door [Open \ Auto \ Lock] Button
-    Alt + A = Suit Dock [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button
-    Alt + C = [PreConfigure Building Settings] Button
+    Alt + A = Printing Pod [Choose a Blueprint] Button
+    Alt + A = Signal Switch [Switch Picture] Button
+    Alt + A = Suit Dock [Deliver Suit] Button
     Alt + Z = Suit Dock [UnDock Suit] Button
     Alt + D = [Deconstruct \ Cancel Deconstruct] Button
+    Alt + C = [PreConfigure Building Settings] Button
 
  ScrollLock = Toggle Tooltip [Mouse Cursor Position]
     NumpadN = Move Mouse Cursor [Numpad1-4 \ Numpad6-9]
     Numpad5 = Copy Mouse Cursor Position
 
-Usage: move cursor over [Building] or [Tile] and press hotkey.
+    Alt + Z = Reload Script
+    Alt + X = Exit Script
+
+Usage: move mouse cursor over object and press hotkey.
 )"
 
 #IfWinActive ahk_group Game
