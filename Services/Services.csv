@@ -20,7 +20,7 @@ GROUP,1,TWEAKS1,MS_STORE_SYNC,Microsoft Store (Sync with MS Account [UWP apps] +
 GROUP,1,TWEAKS1,MS_STORE_UWP_APP_BACKGROUND_ACTIVITY,Microsoft Store (UWP apps works in background)
 GROUP,2,TWEAKS1,MS_STORE_ACCOUNT,Microsoft Store (Create new MS account + MS Apps with MS Account authorization) [Edge stops Sync]
 GROUP,2,TWEAKS1,MS_STORE_SETTINGS_STORAGE,Microsoft Store (Settings ==> System ==> Storage ==> SETTINGS APP CRASH!!!)
-GROUP,1,TWEAKS1,MS_STORE_OFFLINE,Microsoft Store (Install/Restore Offline Apps)
+GROUP,1,TWEAKS1,MS_STORE_OFFLINE,Microsoft Store (Install/Restore Offline Apps [APPX])
 GROUP,1,TWEAKS1,ACCOUNT_PSW,Local Account with Password (Password + Windows Hello [Face + Fingerprint + PIN])
 GROUP,1,TWEAKS1,BIOMETRICS,Biometrics (Windows Hello [Face + Fingerprint + PIN])
 GROUP,3,TWEAKS1,BLUETOOTH_DEVICES,Bluetooth Devices (Mouse + Sound + Headphones)
