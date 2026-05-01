@@ -22,6 +22,7 @@ sHelpText := "
 Alt + Q\W\E = Door [Open \ Auto \ Lock] Button
     Alt + A = Suit Dock [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button
     Alt + C = [PreConfigure Building Settings] Button
+    Alt + Z = Suit Dock [UnDock Suit] Button
     Alt + D = [Deconstruct \ Cancel Deconstruct] Button
 
  ScrollLock = Toggle Tooltip [Mouse Cursor Position]
@@ -36,6 +37,7 @@ Usage: move cursor over [Building] or [Tile] and press hotkey.
     !W::ClickRestore(1450, 565)        ; [Auto] Button
     !E::ClickRestore(1540, 565)        ; [Lock] Button
     !A::ClickRestore(1450, 865)        ; [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button
+    !Z::ClickRestore(1450, 920)        ; [UnDock Suit] Button
     !C::ClickRestore(1450, 945, False) ; [PreConfigure Building Settings] Button
     !D::ClickRestore(1670, 915)        ; [Deconstruct \ Cancel Deconstruct] Button
 #If
