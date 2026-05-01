@@ -48,11 +48,11 @@ ClickRestore(Xbtn, Ybtn, bDeselect := true)
 
     ; [Click] command without XY coordinates doesn't work in this game!
 
-    MouseGetPos, X, Y
-    Send, {Click, %X% %Y%}           ; Click on object (Open UI)
+    MouseGetPos, mX, mY
+    Send, {Click, %mX% %mY%}           ; Click on object (Open UI)
     Send, {Click, %Xbtn% %Ybtn%}     ; Click button in UI
     If (bDeselect)
-        Send, {Click, %X% %Y% Right} ; Deselect (Close UI) and restore mouse position
+        Send, {Click, %mX% %mY% Right} ; Deselect (Close UI) and restore mouse position
 
     BlockInput, MouseMoveOff
     Critical, Off
