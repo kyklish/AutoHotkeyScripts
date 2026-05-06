@@ -18,7 +18,8 @@ sHelpText := "
 (
    Alt + F1 = Show Help
    Alt + F2 = Show Rocket Calculator Cheat Sheet
-   Alt + F3 = Show Transit Tube Landing
+   Alt + F3 = Show Gas & Liquid Density
+   Alt + F4 = Show Transit Tube Landing
 
 Alt + Q\W\E = Door [Open \ Auto \ Lock] Button
     Alt + A = Printing Pod [Choose a Blueprint] Button
@@ -50,7 +51,8 @@ Usage: move mouse cursor over object and press hotkey.
 
 !F1::ShowHelpWindow(sHelpText)
 !F2::ShowHelpImage("OxygenNotIncludedBaseGameRocketCalculatorCheatSheet.png")
-!F3::ShowHelpImage("OxygenNotIncludedTransitTubeLanding.png")
+!F3::ShowHelpImage("OxygenNotIncludedGasLiquidDensity.png")
+!F4::ShowHelpImage("OxygenNotIncludedTransitTubeLanding.png")
 ScrollLock::ToggleTooltip()
 
 #If bShowTooltip
