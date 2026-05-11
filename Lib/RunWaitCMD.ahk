@@ -32,3 +32,11 @@ RunWaitCMD(commands) {
 }
 
 ;To run HIDDEN you must use shell.Run command, but it not very useful for CMD
+
+; Workaround to run hidden commands. Uses temporary file in TEMP folder.
+RunWaitCMD_Hide(sCommand) {
+    sFileName := A_Temp "\" A_ScriptName ".log"
+    RunWait, %A_ComSpec% /C %sCommand% > "%sFileName%", , Hide
+    FileRead, sConsoleOutput, %sFileName%
+    Return sConsoleOutput
+}
