@@ -43,7 +43,7 @@ RunAs(bAdmin, sExePath, sParams := "", sWorkingDir := "", sWinOptions := "", bWa
     ;===========================================================================
 
     oCrd := GetCredentials(bAdmin)
-    ; Expand paths with environement variables (%SystemRoot% ==> C:\Windows)
+    ; Expand paths with environment variables (%SystemRoot% ==> C:\Windows)
     sExePath := ExpandEnvVars(sExePath)
     sParams := ExpandEnvVars(sParams)
     if (bBuiltInAdmin) {  ; Built-in Administrator variant
