@@ -33,8 +33,8 @@ Alt + Q\W\E = Door [Open \ Auto \ Lock] Button
     NumpadN = Move Mouse Cursor [Numpad1-4 \ Numpad6-9]
     Numpad5 = Copy Mouse Cursor Position
 
-    Alt + Z = Reload Script
-    Alt + X = Exit Script
+    Ctrl + Alt + Z = Reload Script
+    Ctrl + Alt + X = Exit Script
 
 Usage: move mouse cursor over object and press hotkey.
 )"
@@ -67,8 +67,8 @@ ScrollLock::ToggleTooltip()
     Numpad5::Clipboard := mX ", " mY
 #If
 
-!Z::Reload
-!X::ExitApp
+^!Z::Reload
+^!X::ExitApp
 
 ClickRestore(Xbtn, Ybtn, bDeselect := true)
 {
