@@ -26,8 +26,9 @@ Alt + Q\W\E = Door [Open \ Auto \ Lock] Button
     Alt + A = Signal Switch [Switch Picture] Button
     Alt + A = Suit Dock [Deliver Suit] Button
     Alt + Z = Suit Dock [UnDock Suit] Button
-    Alt + D = [Deconstruct \ Cancel Deconstruct] Button
-    Alt + C = [PreConfigure Building Settings] Button
+    Alt + D = Building [Deconstruct \ Cancel Deconstruct] Button
+    Alt + C = Building [PreConfigure Building Settings] Button (from <Blueprints Expanded> Mod)
+    Alt + X = Tool Filter [Dig Orders] Radio Button (from <Blueprints Expanded> Mod)
 
  ScrollLock = Toggle Tooltip [Mouse Cursor Position]
     NumpadN = Move Mouse Cursor [Numpad1-4 \ Numpad6-9]
@@ -40,13 +41,14 @@ Usage: move mouse cursor over object and press hotkey.
 )"
 
 #IfWinActive ahk_group Game
-    !Q::ClickRestore(1360, 565)        ; [Open] Button
-    !W::ClickRestore(1450, 565)        ; [Auto] Button
-    !E::ClickRestore(1540, 565)        ; [Lock] Button
-    !A::ClickRestore(1450, 865)        ; [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button
-    !Z::ClickRestore(1450, 920)        ; [UnDock Suit] Button
-    !C::ClickRestore(1450, 945, False) ; [PreConfigure Building Settings] Button
-    !D::ClickRestore(1670, 915)        ; [Deconstruct \ Cancel Deconstruct] Button
+    !Q::ClickRestore(1360, 565)                     ; Door [Open] Button
+    !W::ClickRestore(1450, 565)                     ; Door [Auto] Button
+    !E::ClickRestore(1540, 565)                     ; Door [Lock] Button
+    !A::ClickRestore(1450, 865)                     ; Suit Dock [Deliver Suit] Button \ Printing Pod [Choose a Blueprint] Button \ Signal Switch [Switch Picture] Button
+    !Z::ClickRestore(1450, 920)                     ; Suit Dock [UnDock Suit] Button
+    !C::ClickRestore(1450, 945, True, False, False) ; Building [PreConfigure Building Settings] Button (from <Blueprints Expanded> Mod)
+    !D::ClickRestore(1670, 915)                     ; Building [Deconstruct \ Cancel Deconstruct] Button
+    !X::ClickRestore(1883, 823, False, False, True) ; Tool Filter [Dig Orders] Radio Button (from <Blueprints Expanded> Mod)
 #If
 
 !F1::ShowHelpWindow(sHelpText)
@@ -70,7 +72,7 @@ ScrollLock::ToggleTooltip()
 ^!Z::Reload
 ^!X::ExitApp
 
-ClickRestore(Xbtn, Ybtn, bDeselect := true)
+ClickRestore(Xbtn, Ybtn, bSelect := True, bDeselect := True, bRestore := True)
 {
     Critical, On
     BlockInput, MouseMove
@@ -78,10 +80,17 @@ ClickRestore(Xbtn, Ybtn, bDeselect := true)
     ; [Click] command without XY coordinates doesn't work in this game!
 
     MouseGetPos, mX, mY
-    Send, {Click, %mX% %mY%}           ; Click on object (Open UI)
-    Send, {Click, %Xbtn% %Ybtn%}     ; Click button in UI
-    If (bDeselect)
-        Send, {Click, %mX% %mY% Right} ; Deselect (Close UI) and restore mouse position
+    If (bSelect)                 ; Click on object (Open UI)
+        Send, {Click, %mX% %mY%}
+    Send, {Click, %Xbtn% %Ybtn%} ; Click button in UI
+    If (bDeselect && bRestore)   ; Deselect (Close UI) & Restore mouse position
+        Send, {Click, %mX% %mY% Right}
+    Else {
+        If (bDeselect)           ; Deselect (Close UI)
+            MsgBox % NOT IMPLEMENTED (TRY ESCAPE BUTTON)
+        If (bRestore)            ; Restore mouse position
+            MouseMove, mX, mY
+    }
 
     BlockInput, MouseMoveOff
     Critical, Off
