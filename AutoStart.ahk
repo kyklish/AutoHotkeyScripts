@@ -355,7 +355,8 @@ if (A_Args.Length() > 1) {
 WriteLog()
 
 ;-------------------------------------------------------------------------------
-; g_Debug := true
+sFullCmdLine := DllCall("GetCommandLine", "Str")
+g_Debug := RegExMatch(sFullCmdLine, "i)/debug")
 ;-------------------------------------------------------------------------------
 
 if (g_Debug) {
@@ -386,6 +387,8 @@ if (g_Debug) {
 )
     oMgr := new Manager(new DataFromString(sDataString), new ParserCSV())
     oMgr.Start()
+    SoundBeep
+    ExitApp
 } else {
     if (g_bNoAutoStart) {
         WriteLog("Main(): NO AUTOSTART")
@@ -434,6 +437,3 @@ if (g_Debug) {
 ;   built-in Admin, so make regular copy of data from Admin to User.
 ;CrystalDiskInfo := Func("CopyRegKey").Bind(false, "Crystal Dew World")
 ;SetTimer, % CrystalDiskInfo, % 5 * 60 * 1000 ; "CrystalDiskInfo" auto refresh period I set to 5 min, so here too.
-
-!z:: Reload
-!x:: ExitApp
