@@ -1,8 +1,12 @@
 ﻿;CSV Example:
 ;"first field",SecondField,"the word ""special"" is quoted literally",,"last field, has literal comma"
 ;CSV Format:
-;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]"
-;EXE must be full name with path!
+;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]","ExeAlt"
+;EXE must be full name with path! (even apps launched from the working directory of the script)
+;EXEALT only process name without path!
+;EXEALT is an alternative process name that is used to check if app is running (avoid starting it again on script reload)
+;EXEALT example: launcher is launching main exe file and exits (some portable apps)
+;EXEALT example: apps with strange behaviour (integrated launcher) that launch main processes with another extension (ex2)
 ;NO ANY SPACES BEFORE AND AFTER COMMA
 ;Comments must starts from new line and begins with ";"
 ;Example:

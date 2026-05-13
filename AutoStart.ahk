@@ -32,8 +32,9 @@ class Process
 {
     iDelay := 0
     bAdmin := false
-    sExeName := "" ;Name with extension with optional path
+    sExeName := "" ;Name with extension with path
     sFileName := "" ;Name with extension without path
+    sFileNameAlternative := "" ;Alternative name with extension without path
     sParams := ""
     sWorkingDir := ""
     sWinOptions := ""
@@ -49,6 +50,7 @@ class Process
         this.bAdmin := oProcParams.bAdmin
         this.sExeName := oProcParams.sExeName
         this.sFileName := oProcParams.sFileName
+        this.sFileNameAlternative := oProcParams.sFileNameAlternative
         this.sParams := oProcParams.sParams
         this.sWorkingDir := oProcParams.sWorkingDir
         this.sWinOptions := oProcParams.sWinOptions
@@ -91,7 +93,13 @@ class Process
 
     Exist()
     {
-        Process, Exist, % this.sFileName    ;Sets ErrorLevel to the Process ID (PID) if a matching process exists, or 0 otherwise.
+        ; Apps with launchers: check main process name, not luncher's process name
+        if (this.sFileNameAlternative)
+            Process, Exist, % this.sFileNameAlternative
+        else
+            Process, Exist, % this.sFileName
+        ; Process command sets ErrorLevel to the Process ID (PID) if a matching
+        ;   process exists, or 0 otherwise.
         return ErrorLevel
     }
 }
@@ -172,6 +180,7 @@ class ParserCSV extends Parser
         oProcParams.sWinOptions := oCSV[6]
         SplitPath, % oProcParams.sExeName, sFileName
         oProcParams.sFileName := sFileName
+        oProcParams.sFileNameAlternative := oCSV[7]
         if (oProcParams.sExeName = "")
             throw Exception("Empty sExeName")
         if (oProcParams.sWinOptions != "" && oProcParams.sWinOptions != "Max" && oProcParams.sWinOptions != "Min" && oProcParams.sWinOptions != "Hide")
@@ -354,17 +363,22 @@ if (g_Debug) {
     ;"first field",SecondField,"the word ""special"" is quoted literally",,"last field, has literal comma"
     ;CSV Format:
     ;StartDelay,(A)dmin|(U)ser,"Exe","Params","WorkingDir","WindowParams [Max|Min|Hide]"
-    ;EXE must be full name with path!
+    ;EXE must be full name with path! (even apps launched from the working directory of the script)
+    ;EXEALT only process name without path!
+    ;EXEALT is an alternative process name that is used to check if app is running (avoid starting it again on script reload)
+    ;EXEALT example: launcher is launching main exe file and exits (some portable apps)
+    ;EXEALT example: apps with strange behaviour (integrated launcher) that launch main processes with another extension (ex2)
     ;NO ANY SPACES BEFORE AND AFTER COMMA
     ;Comments must starts from new line and begins with ";"
     ;Example:
-    ;   2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
+    ; 2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
 
     Menu, Tray, Icon
     sDataString =
 (
 ; comment
-;  0,A,"C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe","/s"
+;  0,U,"`%SOFT`%\Process_Lasso\ProcessLassoLauncher.exe",,,,"ProcessLasso.exe"
+;  0,A,"`%SOFT`%\MSI_Afterburner\MSIAfterburner.exe","/s"
 ;  2,A,"`%SystemRoot`%\System32\cmd.exe","/c dir & pause",,"Hide"
 ;  5,U,"`%SystemRoot`%\System32\calc.exe","first ""second param with spaces""",,"Min"
 ;  7,A,"`%SOFT_BAT`%\Windows Firewall Control.bat",,,"Hide"
