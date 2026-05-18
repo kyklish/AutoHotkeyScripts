@@ -135,6 +135,8 @@ GuiApply(oTabs, bSetStartupType := true) {
         For sGroup, oGroup in oTab.oGroups {
             GuiControlGet, bChecked, , %sGroup%cb
             For _, oService in oGroup.oServices {
+                If (!IsServiceExist(oService.sName))
+                    Continue
                 sStr := ""
                 If (bChecked) {
                     If (IsServiceRunning(sRunningServices, oService.sName)) {
