@@ -1,0 +1,5 @@
+NPSMSvc: NO REG ENTRY
+InventorySvc: NO REG ENTRY
+whesvc: NO REG ENTRY
+FrameServerMonitor: NO REG ENTRY
+McpManagementService: NO REG ENTRY

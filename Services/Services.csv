@@ -34,7 +34,7 @@ GROUP,1,TWEAKS1,PRINTER_UWP,Printer (Access/Manage printers from UWP apps)
 GROUP,1,TWEAKS1,SCANNER,Scanner (Virtual Scanner + Network Scanner + Local Scanner) [use VueScan to access scanner without this service]
 GROUP,1,TWEAKS1,FAX,Fax (Virtual Fax + Network Fax + Local Fax) [service PhoneSvc only for faxes and not for phones]
 GROUP,3,TWEAKS1,WINDOWS_UPDATE,Windows Update (Online Updates + MS Store apps updates) [CAN'T BE DISABLED HERE: use Sordum Windows Update Blocker]
-GROUP,3,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Download from multiple sources) [disable and download from single source] [Windows Defender: UPDATE DATABASE FAILS!!!]
+GROUP,3,TWEAKS1,WINDOWS_UPDATE_MULTI_DOWNLOAD,Windows Update (Delivery Optimization) (Download from multiple sources) [disable and download from single source] [Windows Defender: UPDATE DATABASE FAILS!!!]
 GROUP,1,TWEAKS1,WINDOWS_UPDATE_OFFLINE_INSTALL,Windows Update (Install offline updates)
 GROUP,1,TWEAKS1,WINDOWS_UPDATE_INSIDER_PREVIEW,Windows Update (Insider Preview)
 GROUP,1,TWEAKS1,TABLET,Tablet Mode [for PC and Notebook not needed]
