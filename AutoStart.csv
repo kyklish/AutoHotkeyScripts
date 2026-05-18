@@ -12,6 +12,9 @@
 ;Example:
 ; 2,U,"%SystemRoot%\System32\calc.exe","first ""second param with spaces"""
 ;=================================== Win11 =====================================
+    ;Constantly kill various system processes to free up memory
+ ;0,U,"%SOFT%\Process_Lasso\ProcessLassoLauncher.exe",,,,"ProcessLasso.exe"
+;=================================== Win10 =====================================
     ;Set Balanced Power Plan (Disabled) [Win11 by default disable Core Parking]
     ;Executes a command of Command-Prompt (Console Window) without displaying anything on the screen.
  ;0,U,"%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe","execmd powercfg -setactive 381b4222-f694-41f0-9685-ff5bb260df2e"
@@ -47,7 +50,6 @@
     ;Temporary solution: bigger delay to start all scripts (task is completed at
     ;   that point).
   0,A,"%SOFT%\MSI_Afterburner\MSIAfterburner.exe"
-  0,U,"%SOFT%\Process_Lasso\ProcessLassoLauncher.exe",,,,"ProcessLasso.exe"
  ;0,U,"%SOFT%\Sandboxie-Plus\SandMan.exe","-autorun"
     ;SpeedFan: CPU + GPU temperature
         ;/NOPCISCAN = disable PCI Express scan [GPU]
