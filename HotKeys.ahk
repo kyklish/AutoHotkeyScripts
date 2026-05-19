@@ -299,6 +299,7 @@ return
     return
 #If
 !+Esc::Run_AsAdmin("%SystemRoot%\System32\resmon.exe") ;Resource Monitor
+^+F1::Run_AsAdmin("%SOFT%\System_Informer\SystemInformer.exe") ;System Informer
 Launch_Mail::Run_AsUser("%SOFT%\Sylpheed\sylpheed.exe")
 ;Alt & Shift:: PostMessage, 0x0050, 0, 0x4090409,, A ; Set English keyboard layout\language ; 0x0050 is WM_INPUTLANGCHANGEREQUEST
 #Insert::
@@ -471,6 +472,7 @@ AppsKey Up::ToolTip
  Browser_Home -> Slow Down Mouse
   Launch_Mail -> Sylpheed
         !+Esc -> Resource Monitor
+         ^+F1 -> System Informer
            #F -> Everything
       #Insert -> Toggle monitor brightness (0 ÷ 50)
   #ScrollLock -> Game_@_MouseCoord_WithPicture.ahk
