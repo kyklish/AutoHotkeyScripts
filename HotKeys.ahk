@@ -44,7 +44,7 @@ GroupAdd, Desktop, ahk_class Shell_TrayWnd
         SendEvent, ^{vk43} ; Ctrl+C
         ClipWait, 2
         if (ErrorLevel) {
-            MsgBox, The attempt to copy text onto the clipboard failed.
+            MsgBox % "The attempt to copy text onto the clipboard failed."
             return
         }
         sCopiedText := Trim(Clipboard)
@@ -201,7 +201,7 @@ return
     Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe", "exitwin shutdown") ;Shutdown
 return
 ^!+L:: ;Logoff
-    MsgBox, % 4 + 256,, Log off?
+    MsgBox, % 4 + 256,, % "Log off?"
     IfMsgBox, Yes
     {
         if WinExist("Tray_Icon_Organize.ahk ahk_class AutoHotkey")
@@ -293,7 +293,7 @@ return
 #F::Run_AsUser("%SOFT%\Everything\Everything.exe")
 #IfWinNotActive, ahk_exe Code.exe ; VSCode use Ctrl+Shift+F for internal global search, Alt+Shift+F for AHK++ formatter
     !+f::
-        MsgBox, 4, ntfy.exe: Send to NOKIA?,%A_Clipboard%
+        MsgBox, 4, % "ntfy.exe: Send to NOKIA?", % A_Clipboard
         IfMsgBox, Yes
             Run_AsUser("%SOFT%\NirLauncher\NirSoft\x64\nircmd.exe","execmd " A_ScriptDir "\ntfy.exe publish --quiet --title PC NOKIA_BenQ " . A_Clipboard)
     return
