@@ -86,12 +86,12 @@ GROUP,1,CUSTOM1,LINK,Distributed Link Tracking Client (Links between NTFS files 
 GROUP,1,CUSTOM1,DISPLAY_BRIGHTNESS,Display Brightness (Notebook buttons to change brightness)
 GROUP,1,CUSTOM1,LAN_POLICY,Network Policy Server Management
 GROUP,1,CUSTOM1,LSASS_STORAGE,Cryptographic Storage (Xbox Live + PIN + Biometrics + Visual Studio + Office + Phone Link)
-GROUP,1,TEST,UNKNOWN,Unknown
-GROUP,1,TEST,HEALTH,Windows Health and Optimized Experience
-GROUP,1,TEST,WEB_CAMERA,Windows Camera Frame Server (Simultaneous access to Web Camera from several apps)
-GROUP,1,TEST,WEB_CAMERA_MONITOR,Windows Camera Frame Server Monitor
-GROUP,1,TEST,COMPATIBILITY_APP,Program Compatibility Assistant Service
-GROUP,1,TEST,COMPATIBILITY_SYSTEM,IMPORTANT Checks your System's Hardware and Software for Compatibility with updates and upgrades
+GROUP,1,CUSTOM1,UNKNOWN,Unknown
+GROUP,1,CUSTOM1,HEALTH,Windows Health and Optimized Experience
+GROUP,1,CUSTOM1,WEB_CAMERA,Windows Camera Frame Server (Simultaneous access to Web Camera from several apps)
+GROUP,1,CUSTOM1,WEB_CAMERA_MONITOR,Windows Camera Frame Server Monitor
+GROUP,1,CUSTOM1,COMPATIBILITY_APP,Program Compatibility Assistant Service
+GROUP,1,CUSTOM1,COMPATIBILITY_SYSTEM,IMPORTANT Checks your System's Hardware and Software for Compatibility with updates and upgrades
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,4,HvHost
