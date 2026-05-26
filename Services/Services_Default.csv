@@ -93,6 +93,7 @@ GROUP,1,CUSTOM1,WEB_CAMERA_MONITOR,Windows Camera Frame Server Monitor
 GROUP,1,CUSTOM1,COMPATIBILITY_APP,Program Compatibility Assistant Service
 GROUP,1,CUSTOM1,COMPATIBILITY_SYSTEM,IMPORTANT Checks your System's Hardware and Software for Compatibility with updates and upgrades
 GROUP,1,TEST,SPY,Telemetry (Spy)
+GROUP,1,TEST,LAN_STREAM,LAN (Quality Windows Audio Video Experience qWAVE) [Audio-Video streaming in LAN]
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,3,HvHost
@@ -223,3 +224,4 @@ SERVICE,COMPATIBILITY_APP,2,PcaSvc
 SERVICE,COMPATIBILITY_SYSTEM,2,InventorySvc
 SERVICE,SPY,3,dmwappushservice
 SERVICE,SPY,3,diagnosticshub.standardcollector.service
+SERVICE,LAN_STREAM,3,QWAVE
