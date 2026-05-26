@@ -7,7 +7,7 @@ TAB,Tweaks2
 TAB,Custom1
 TAB,TEST
 
-;,Profile: 1=Safe 2=Moderate 3=Extreme,GroupName: unique single word + used as key in associative array
+;,Profile: 1=Safe 2=Moderate 3=Extreme (NOT IMPLEMENTED IN GUI),GroupName: unique single word + used as key in associative array
 ;GROUP,Profile,TabName,GroupName,Description
 GROUP,1,TWEAKS1,HYPER_V,Hyper-V
 GROUP,1,TWEAKS1,RECORD_GAMES,Record Games (built-in Windows Service)
@@ -90,8 +90,8 @@ GROUP,1,CUSTOM1,UNKNOWN,Unknown
 GROUP,1,CUSTOM1,HEALTH,Windows Health and Optimized Experience
 GROUP,1,CUSTOM1,WEB_CAMERA,Windows Camera Frame Server (Simultaneous access to Web Camera from several apps)
 GROUP,1,CUSTOM1,WEB_CAMERA_MONITOR,Windows Camera Frame Server Monitor
-GROUP,1,CUSTOM1,COMPATIBILITY_APP,Program Compatibility Assistant Service
-GROUP,1,CUSTOM1,COMPATIBILITY_SYSTEM,IMPORTANT Checks your System's Hardware and Software for Compatibility with updates and upgrades
+GROUP,1,CUSTOM1,COMPATIBILITY_APP,Compatibility: Program Compatibility Assistant Service
+GROUP,1,CUSTOM1,COMPATIBILITY_SYSTEM,Compatibility: System's Hardware and Software Compatibility with updates and upgrades (!!!IMPORTANT!!!)
 GROUP,1,TEST,SPY,Telemetry (Spy)
 GROUP,1,TEST,LAN_STREAM,LAN (Quality Windows Audio Video Experience qWAVE) [Audio-Video streaming in LAN]
 GROUP,1,TEST,LAN_IP6,LAN (IPv6 Support) [IPv6 Internet Provider + Xbox]
