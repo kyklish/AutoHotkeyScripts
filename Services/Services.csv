@@ -95,6 +95,10 @@ GROUP,1,CUSTOM1,COMPATIBILITY_SYSTEM,Compatibility: System's Hardware and Softwa
 GROUP,1,TEST,SPY,Telemetry (Spy)
 GROUP,1,TEST,LAN_STREAM,LAN (Quality Windows Audio Video Experience qWAVE) [Audio-Video streaming in LAN]
 GROUP,1,TEST,LAN_IP6,LAN (IPv6 Support) [IPv6 Internet Provider + Xbox]
+GROUP,1,TEST,LAN_VPN,LAN (VPN Support) (Connect via VPN to remote PC) [not needed for RDP and Remote Connection to this PC]
+GROUP,1,TEST,NOTEBOOK_INPUT,Notebook (Wireless Pen + Sensor Keyboard) [not needed for keyboards with keys] [ASUS Notebooks fails to disable Airplane Mode]
+GROUP,3,TEST,NOTEBOOK_RADIO,Notebook (Airplane Mode) (!!!Win10 ONLY!!!) [all notebooks fails to disable Airplane Mode] [Win11 network icon disappear]
+GROUP,1,TEST,FONT_CACHE,Font Cache API [MS Office required for install/modify/uninstall]
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,4,HvHost
@@ -227,3 +231,7 @@ SERVICE,SPY,4,dmwappushservice
 SERVICE,SPY,4,diagnosticshub.standardcollector.service
 SERVICE,LAN_STREAM,4,QWAVE
 SERVICE,LAN_IP6,4,iphlpsvc
+SERVICE,LAN_VPN,4,RasMan
+SERVICE,NOTEBOOK_INPUT,4,TabletInputService
+SERVICE,NOTEBOOK_RADIO,4,RmSvc
+SERVICE,FONT_CACHE,4,FontCache
