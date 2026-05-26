@@ -94,6 +94,7 @@ GROUP,1,CUSTOM1,COMPATIBILITY_APP,Program Compatibility Assistant Service
 GROUP,1,CUSTOM1,COMPATIBILITY_SYSTEM,IMPORTANT Checks your System's Hardware and Software for Compatibility with updates and upgrades
 GROUP,1,TEST,SPY,Telemetry (Spy)
 GROUP,1,TEST,LAN_STREAM,LAN (Quality Windows Audio Video Experience qWAVE) [Audio-Video streaming in LAN]
+GROUP,1,TEST,LAN_IP6,LAN (IPv6 Support) [IPv6 Internet Provider + Xbox]
 
 ;SERVICE,GroupName,StartupType,ServiceName
 SERVICE,HYPER_V,3,HvHost
@@ -225,3 +226,4 @@ SERVICE,COMPATIBILITY_SYSTEM,2,InventorySvc
 SERVICE,SPY,3,dmwappushservice
 SERVICE,SPY,3,diagnosticshub.standardcollector.service
 SERVICE,LAN_STREAM,3,QWAVE
+SERVICE,LAN_IP6,2,iphlpsvc
