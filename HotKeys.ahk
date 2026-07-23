@@ -394,7 +394,7 @@ AppsKey Up::ToolTip
 ;-------------------------------------------------------------------------------
 
 #IfWinActive ahk_group Desktop
-    Pause:: ShowHelpWindow("
+    !Pause:: ShowHelpWindow("
 (
 [Browser]
            ^B -> Paste clipboard and Go
