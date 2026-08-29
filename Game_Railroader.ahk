@@ -12,6 +12,8 @@ SetMouseDelay, 50
 
 GroupAdd, Game, ahk_exe Railroader.exe
 
+oPlaces := ["Bryson", "Ela","Whittier","East Whittier"]
+
 #IfWinActive, ahk_group Game
     !1::SetControlMode("Manual")
     !2::SetControlMode("AE Road")
@@ -27,6 +29,8 @@ GroupAdd, Game, ahk_exe Railroader.exe
     +F8::Teleport("Bryson")
     +F9::Teleport("Walker")
     ; +F::Teleport("")
+    PgDn::TeleportDirection("Left")
+    PgUp::TeleportDirection("Right")
     F4::Send, ^t ; Jump to Mouse
     G:: Send, ^g ; Auto Engineer Waypoint Select
     O:: SendEvent, q ; Lean Left
@@ -69,4 +73,26 @@ Teleport(sPlace)
     Send, {Enter}
     Sleep, 250
     Send, ``
+}
+
+TeleportDirection(sDirection)
+{
+    global oPlaces
+    static i := 1
+    Switch sDirection
+    {
+    Case "Left":
+        If (i > 1)
+            i--
+        Else
+            Return
+    Case "Right":
+        If (i < oPlaces.Length())
+            i++
+        Else
+            Return
+    Default:
+        MsgBox % A_ThisFunc " [" sDirection "] wrong input parameter."
+    }
+    Teleport(oPlaces[i])
 }
