@@ -12,6 +12,7 @@ SetMouseDelay, 50
 
 GroupAdd, Game, ahk_exe Railroader.exe
 
+GetClientSize(WinExist("ahk_group Game"), iClientWidth, iClientHeight)
 oPlaces := ["Bryson", "Ela","Whittier","East Whittier"]
 
 #IfWinActive, ahk_group Game
@@ -42,12 +43,26 @@ oPlaces := ["Bryson", "Ela","Whittier","East Whittier"]
 !Z::Reload
 !X::ExitApp
 
+; WindowSpy.ahk (Lexikos)
+GetClientSize(hWnd, ByRef w := "", ByRef h := "")
+{
+    VarSetCapacity(rect, 16)
+    DllCall("GetClientRect", "ptr", hWnd, "ptr", &rect)
+    w := NumGet(rect, 8, "int")
+    h := NumGet(rect, 12, "int")
+}
+
 SetControlMode(sMode)
 {
+    global iClientHeight
     BlockInput, MouseMove
     MouseGetPos, _X, _Y
-    Click, 60 690 ; 720p
-    ; Click, 60 1050 ; 1080p
+    ; Locomotive UI is aligned to bottom-left corner. Calculate [Y] coordinate
+    ; to be independent from window client's size.
+    X := 60, Y := iClientHeight - 30
+    Click, %X% %Y%   ;       [Control Mode] Button
+    ; Click, 60 690  ;  720p [Control Mode] Button
+    ; Click, 60 1050 ; 1080p [Control Mode] Button
     Switch sMode
     {
     Case "Manual":
