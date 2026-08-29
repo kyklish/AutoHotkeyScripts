@@ -13,6 +13,7 @@ SetMouseDelay, 50
 GroupAdd, Game, ahk_exe Railroader.exe
 
 GetClientSize(WinExist("ahk_group Game"), iClientWidth, iClientHeight)
+iPlaceIndex := 4 ; [oPlaces] index for "East Whittier"
 oPlaces := ["Bryson", "Ela","Whittier","East Whittier"]
 
 #IfWinActive, ahk_group Game
@@ -93,22 +94,18 @@ Teleport(sPlace)
 
 TeleportDirection(sDirection)
 {
+    global iPlaceIndex
     global oPlaces
-    static i := 1
     Switch sDirection
     {
     Case "Left":
-        If (i > 1)
-            i--
-        Else
-            Return
+        If (iPlaceIndex > 1)
+            iPlaceIndex--
     Case "Right":
-        If (i < oPlaces.Length())
-            i++
-        Else
-            Return
+        If (iPlaceIndex < oPlaces.Length())
+            iPlaceIndex++
     Default:
         MsgBox % A_ThisFunc " [" sDirection "] wrong input parameter."
     }
-    Teleport(oPlaces[i])
+    Teleport(oPlaces[iPlaceIndex])
 }
