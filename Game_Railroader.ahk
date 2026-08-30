@@ -27,11 +27,10 @@ oPlaces := ["Bryson", "Ela","Whittier","East Whittier"]
     +F10::Teleport("Wilmot")
     +F9:: Teleport("East Whittier")
     +F8:: Teleport("Whittier")
-    !F8:: Teleport("Connelly") ; Alt = Alternative "Whittier"
+    !F8:: Teleport("Connelly") ; Alt = Alternative route near "Whittier"
     +F7:: Teleport("Ela")
     +F6:: Teleport("Bryson")
-    !F6:: Teleport("Walker") ; Alt = Alternative "Bryson"
-    ; +F::Teleport("")
+    !F6:: Teleport("Walker")   ; Alt = Alternative route near "Bryson"
     PgDn::TeleportDirection("Left")
     PgUp::TeleportDirection("Right")
     F4::Send, ^t ; Jump to Mouse
@@ -40,7 +39,7 @@ oPlaces := ["Bryson", "Ela","Whittier","East Whittier"]
     P:: SendEvent, e ; Lean Right
 #If
 
-!S::Suspend
+!C::Suspend
 !Z::Reload
 !X::ExitApp
 
