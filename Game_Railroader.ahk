@@ -37,9 +37,10 @@ oPlaces := ["Bryson", "Ela","Whittier","East Whittier"]
     +E::SendEvent, ^] ; Direction F
     !A::SendEvent, 9  ; Camera Follow Tail
     !D::SendEvent, 0  ; Camera Follow Head
-    !S::SendEvent, +0 ; Camera Jump to Tail (Jump to N-1 Car)
-    !W::SendEvent, +9 ; Camera Jump to Head (Jump to N+1 Car)
+    !S::SendEvent, +9 ; Camera Jump to Tail
+    !W::SendEvent, +0 ; Camera Jump to Head
     F4::Send, ^t ; Jump to Mouse
+    F:: Send, ^f ; Place Flare
     G:: Send, ^g ; Auto Engineer Waypoint Select
     O:: SendEvent, q ; Lean Left
     P:: SendEvent, e ; Lean Right
