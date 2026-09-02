@@ -45,8 +45,19 @@ iPlaceIndex := oPlaces.Length() ; Starting "place-in-game" in [oPlaces] array
     +F10:: Teleport("Alarka Jct")
     PgDn::TeleportDirection("Left")
     PgUp::TeleportDirection("Right")
-    +Q::SendEvent, ^[ ; Direction R
-    +E::SendEvent, ^] ; Direction F
+    ; Hotkey changes direction only in "Manual Control Mode".
+    ; Use mouse click to change direction, this works for all "Control Modes".
+    ; !Q::SendEvent, ^[ ; Direction R
+    ; !E::SendEvent, ^] ; Direction F
+    !Q::Click(140, iClientHeight - 65) ; Direction: R
+    !E::Click(200, iClientHeight - 65) ; Direction: L
+    ; [R] = move any control forward (brake and release throttle)
+    ; [F] = move any control backward (release brake and apply full throttle)
+    ; !R::SendEvent, {= 10} ; Zero Throttle
+    ; !F::SendEvent, {- 10} ; Full Throttle
+    !R::Click(255, iClientHeight - 65) ; Simplified Controls: Full Brake
+    !F::Click(420, iClientHeight - 65) ; Simplified Controls: Full Throttle
+    Space::Click(340, iClientHeight - 65) ; Simplified Controls: Neutral
     !A::SendEvent, 9  ; Camera Follow Tail
     !D::SendEvent, 0  ; Camera Follow Head
     !S::SendEvent, +9 ; Camera Jump to Tail
@@ -61,6 +72,19 @@ iPlaceIndex := oPlaces.Length() ; Starting "place-in-game" in [oPlaces] array
 !C::Suspend
 !Z::Reload
 !X::ExitApp
+
+Click(X := "", Y := "")
+{
+    If ((X and !Y) or (!X and Y)) {
+        ToolTip % A_ThisFunc "(X, Y) - undefined X or Y parameter"
+        Return
+    }
+    BlockInput, MouseMove
+    MouseGetPos, _X, _Y
+    Click %X% %Y%
+    MouseMove, _X, _Y
+    BlockInput, MouseMoveOff
+}
 
 ; WindowSpy.ahk (Lexikos)
 GetClientSize(hWnd, ByRef w := "", ByRef h := "")
