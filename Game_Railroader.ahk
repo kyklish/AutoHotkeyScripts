@@ -27,15 +27,22 @@ iPlaceIndex := oPlaces.Length() ; Starting "place-in-game" in [oPlaces] array
     !3::SetControlMode("AE Yard")
     !4::SetControlMode("AE Waypoint")
     ; Places from West to East (Places from "early game" to "late game")
-    +F12::Teleport("Sylva")
-    +F11::Teleport("Dillsboro")
-    +F10::Teleport("Wilmot")
-    +F9:: Teleport("East Whittier")
-    +F8:: Teleport("Whittier")
+    ; Hint to remember: split whole railroad to two parts: EAST and WEST
+    ; EAST LINE: from "Sylva" to "Hemingway" = from F12 to F5
+    ; WEST LINE: from "Alarka" trough "Alarka Jct" to "Andrews" = from +F12 to +F5
+    F12::Teleport("Sylva")
+    F11::Teleport("Dillsboro")
+    F10::Teleport("Wilmot")
+    F9:: Teleport("East Whittier")
+    F8:: Teleport("Whittier")
     !F8:: Teleport("Connelly") ; Alt = Alternative route near "Whittier"
-    +F7:: Teleport("Ela")
-    +F6:: Teleport("Bryson")
+    F7:: Teleport("Ela")
+    F6:: Teleport("Bryson")
     !F6:: Teleport("Walker")   ; Alt = Alternative route near "Bryson"
+    F5:: Teleport("Hemingway")
+    +F12:: Teleport("Alarka")
+    +F11:: Teleport("Cochran")
+    +F10:: Teleport("Alarka Jct")
     PgDn::TeleportDirection("Left")
     PgUp::TeleportDirection("Right")
     +Q::SendEvent, ^[ ; Direction R
