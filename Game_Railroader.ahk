@@ -1,3 +1,6 @@
+; Make "base point" in bottom-left corner. There is GUI controls for engine.
+; Also this allows freely change resolution of the game.
+
 #NoEnv
 #SingleInstance, Force
 SendMode, Input
@@ -12,9 +15,11 @@ SetMouseDelay, 50
 
 GroupAdd, Game, ahk_exe Railroader.exe
 
+iClientWidth  := 0
+iClientHeight := 0
 GetClientSize(WinExist("ahk_group Game"), iClientWidth, iClientHeight)
-iPlaceIndex := 4 ; [oPlaces] index for "East Whittier"
-oPlaces := ["Bryson", "Ela","Whittier","East Whittier"]
+oPlaces := ["Alarka Jct","Hemingway","Bryson", "Ela","Whittier","East Whittier"]
+iPlaceIndex := oPlaces.Length() ; Starting "place-in-game" in [oPlaces] array
 
 #IfWinActive, ahk_group Game
     !1::SetControlMode("Manual")
