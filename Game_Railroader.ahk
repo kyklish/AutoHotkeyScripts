@@ -45,18 +45,18 @@ iPlaceIndex := oPlaces.Length() ; Starting "place-in-game" in [oPlaces] array
     +F10:: Teleport("Alarka Jct")
     PgDn::TeleportDirection("Left")
     PgUp::TeleportDirection("Right")
-    ; Hotkey changes direction only in "Manual Control Mode".
+    ; In-game hotkey changes direction only in "Manual Control Mode".
     ; Use mouse click to change direction, this works for all "Control Modes".
     ; !Q::SendEvent, ^[ ; Direction R
     ; !E::SendEvent, ^] ; Direction F
     !Q::Click(140, iClientHeight - 65) ; Direction: R
-    !E::Click(200, iClientHeight - 65) ; Direction: L
-    ; [R] = move any control forward (brake and release throttle)
-    ; [F] = move any control backward (release brake and apply full throttle)
+    !E::Click(200, iClientHeight - 65) ; Direction: F
+    ; [R] = move any control forward (apply brake, release throttle)
+    ; [F] = move any control backward (release brake, apply full throttle)
     ; !R::SendEvent, {= 10} ; Zero Throttle
     ; !F::SendEvent, {- 10} ; Full Throttle
-    !R::Click(255, iClientHeight - 65) ; Simplified Controls: Full Brake
-    !F::Click(420, iClientHeight - 65) ; Simplified Controls: Full Throttle
+    !R::   Click(250, iClientHeight - 65) ; Simplified Controls + Road + Waypoint: Full Brake
+    !F::   Click(420, iClientHeight - 65) ; Simplified Controls + Road + Waypoint: Full Throttle
     Space::Click(340, iClientHeight - 65) ; Simplified Controls: Neutral
     !A::SendEvent, 9  ; Camera Follow Tail
     !D::SendEvent, 0  ; Camera Follow Head
