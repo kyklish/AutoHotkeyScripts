@@ -71,7 +71,7 @@ ShowToolTip:
     ToolTip(sResult "" sProcessName "`n" sProcessPath "`n" sTitle, 3000, , 0, 0)
 Return
 
-ExitFunc()
+ExitFunc(ExitReason, ExitCode)
 {
     global iPID
     If (iPID)
