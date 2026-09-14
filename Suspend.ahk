@@ -30,13 +30,11 @@ Return
 SuspendResumeApp:
     If (iPID) {
         sResult := Resume(sProcessName)
-        ; Counterpart for [WinHide], look comments below why its commented out
-        ; WinShow, ahk_pid %iPID%
 
-        ; Counterpart for [WinMinimize]
-        WinRestore, ahk_pid %iPID%
-
+        WinShow, ahk_pid %iPID%     ; Counterpart for [WinHide]
+        WinRestore, ahk_pid %iPID%  ; Counterpart for [WinMinimize]
         WinActivate, ahk_pid %iPID%
+
         Gosub, ShowToolTip
         iPID := 0
     }
@@ -55,14 +53,12 @@ SuspendResumeApp:
                 sResult := "SKIPPING ALL PROCESSES FROM DISK [C:]`n`n"
                 iPID := 0
             } Else {
-                ; [WinHide] does not hide intensive CPU apps, needs workaround:
-                ;   minimize/restore all apps with [Win+D] OS hotkey.
-                ; WinHide, ahk_pid %iPID%
                 ; Send, #d ; Minimize all apps
                 ; Sleep, 100
                 ; Send, #d ;  Restore all apps
 
-                ; This works fine now
+                ; Hide then minimize!
+                WinHide, ahk_pid %iPID%
                 WinMinimize, ahk_pid %iPID%
 
                 sResult := Suspend(sProcessName)
