@@ -27,9 +27,10 @@ iPlaceIndex := oPlaces.Length() ; Starting "place-in-game" in [oPlaces] array
     !3::SetControlMode("AE Yard")
     !4::SetControlMode("AE Waypoint")
     ; Places from West to East (Places from "early game" to "late game")
-    ; Hint to remember: split whole railroad to two parts: EAST and WEST
+    ; Hint to remember: split the entire railroad line into two parts: EAST and WEST
     ; EAST LINE: from "Sylva" to "Hemingway" = from F12 to F5
     ; WEST LINE: from "Alarka" trough "Alarka Jct" to "Andrews" = from +F12 to +F5
+    ; ALT key modifier for alternative route near station
     F12::Teleport("Sylva")
     F11::Teleport("Dillsboro")
     F10::Teleport("Wilmot")
