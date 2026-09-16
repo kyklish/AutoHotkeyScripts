@@ -151,3 +151,41 @@ TeleportDirection(sDirection)
     }
     Teleport(oPlaces[iPlaceIndex])
 }
+
+!F1:: ShowHelpWindow("
+(
+Reload script on game's window size change to redetect its dimensions.
+Suspend script while typing text.
+
+EAST LINE: from [Hemingway] to [Sylva]
+WEST LINE: from [Andrews] to [Alarka] trough [Alarka Jct]
+ALT key modifier for alternative route near station
+
+TELEPORTATION
+        F5 .. F12 = Teleport to EAST LINE
+Shift + F5 .. F12 = Teleport to WEST LINE
+         Alt + F6 = Teleport to [Walker] alternative route near [Whittier]
+         Alt + F8 = Teleport to [Connelly] alternative route near [Bryson]
+      PgUp && PgDn = Teleport to right/left location
+
+ENGINE CONTROLS
+Alt + 1 .. 4 = Set [Control Mode] of the engine
+ Alt + Q && E = Set [Direction]
+ Alt + R && F = Set [Full Brake] && [Full Throttle]
+       Space = Set [Neutral]
+
+ENGINE CAMERA
+Alt + A && D = Camera [Follow Tail && Head]
+Alt + S && W = Camera [Jump to Tail && Head]
+      O && P = Camera [Lean Left && Right]
+
+MISC
+F4 = Jump to Mouse
+ F = Place Flare
+ G = Auto Engineer Waypoint Select
+
+SCRIPT
+Alt + C = Suspend
+Alt + Z = Reload
+Alt + X = Exit
+)")
