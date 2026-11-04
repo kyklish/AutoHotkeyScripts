@@ -29,6 +29,7 @@ OnExit("ExitSteamCMD")
 
 #IfWinActive ahk_group Browser
     CapsLock::SteamWorkshopDownloader(784150) ; Workers & Resources: Soviet Republic
+    +CapsLock::SteamWorkshopDownloader(457140) ; Oxygen Not Included
 #If
 
 !L::LoginSteamCMD()
